@@ -31,18 +31,8 @@ function App() {
   // console.log(copy)
   const brainMesh = useOBJData(electrodeData)
 
-  console.log(brainMesh);
+  // console.log(brainMesh);
 
-
-  // if(!brainMesh){
-  //   return (
-  //     <Container fluid>
-  //       <Row>
-  //         Data Loading
-  //       </Row>
-  //     </Container>
-  //   )
-  // }
   return (
     <ComponentContainer
       electrodeData = {electrodeData}

@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { BreadcrumbItem, Col } from "react-bootstrap"
+import { Col } from "react-bootstrap"
 import{vec3, subtractVectors, scaleVector, addVectors, 
     perspective, length, lookAt, inverse, yRotation, 
     xRotation, multiply, translate, normalize} from '../library/m4'
@@ -49,9 +49,13 @@ export const BrainRendering = ({
     const canvasRef = useRef(null)
     canvas = canvasRef.current;
 
+    console.log(brainMesh)
     console.log(canvas)
 
     if(brainMesh){
+        console.log("inside brainmesh condition")
+        canvas.width = 700;
+        canvas.height = 700;
         gl = canvas.getContext("webgl2");
         if (!gl) {
             alert("Unable to initialize WebGL2. Your browser may not support it");
@@ -161,6 +165,7 @@ export const BrainRendering = ({
 
 
 function render(time) {
+    console.log("rendering")
     time *= 0.001;  // convert to seconds
 
     resizeCanvasToDisplaySize(gl.canvas);

@@ -1,21 +1,20 @@
 import { useRef } from "react"
 import { Col } from "react-bootstrap"
-import{vec3, subtractVectors, scaleVector, addVectors, 
-    perspective, length, lookAt, inverse, yRotation, 
-    xRotation, multiply, translate, normalize} from '../library/m4'
-import {vertexshader, fragmetnshader} from '../library/shader-srcs'
-import {createBufferInfoFromArrays, createProgramInfo, 
-    resizeCanvasToDisplaySize, setUniforms , 
-    setBuffersAndAttributes, drawBufferInfo} from '../library/webgl-utils-fundamental'
+import {
+    subtractVectors, scaleVector, addVectors,
+    perspective, length, lookAt, inverse, yRotation,
+    xRotation, multiply, translate, normalize
+} from '../library/m4'
+import { vertexshader, fragmetnshader } from '../library/shader-srcs'
+import {
+    createBufferInfoFromArrays, createProgramInfo,
+    resizeCanvasToDisplaySize, setUniforms,
+    setBuffersAndAttributes, drawBufferInfo
+} from '../library/webgl-utils-fundamental'
 
 
 let gl = null;
 let canvas = null;
-const WIDTH = 1000;
-const HEIGHT = 1000;
-// canvas = document.getElementById('glcanvas')
-
-let camera = null;
 let zFar = null;
 let zNear = null;
 let cameraPosition = null;
@@ -49,14 +48,16 @@ export const BrainRendering = ({
     const canvasRef = useRef(null)
     canvas = canvasRef.current;
 
-    console.log(brainMesh)
-    console.log(canvas)
+    // console.log(brainMesh)
+    // console.log(canvas)
 
-    if(brainMesh){
+    if (brainMesh) {
         console.log("inside brainmesh condition")
+        console.log(brainMesh.geometries[0].data.color)
         canvas.width = 700;
         canvas.height = 700;
         gl = canvas.getContext("webgl2");
+
         if (!gl) {
             alert("Unable to initialize WebGL2. Your browser may not support it");
             return;
@@ -77,42 +78,6 @@ export const BrainRendering = ({
             //   normal: [...],
             // }
             //
-            // and because those names match the attributes in our vertex
-            // shader we can pass it directly into `createBufferInfoFromArrays`
-            // from the article "less code more fun".
-            // console.log(data)
-            // if (data.color) {
-            //     if (data.position.length === data.color.length) {
-            //         // it's 3. The our helper library assumes 4 so we need
-            //         // to tell it there are only 3.
-            //         data.color = { numComponents: 3, data: data.color };
-            //     }
-            // } else {
-            //     // there are no vertex colors so just use constant white
-            //     data.color = { value: [0.840, 0.840, 0.840, 1] };
-            // }
-
-            data.color = { numComponents: 3, data: [] };
-            for (let i = 0; i < data.position.length; i = i + 3) {
-                let match = false
-                for (let j = 0; j < electrodeData.length; j++) {
-                    if (
-                        data.position[i].toFixed(3) == electrodeData[j][0].toFixed(3) &&
-                        data.position[i + 1].toFixed(3) == electrodeData[j][1].toFixed(3) &&
-                        data.position[i + 2].toFixed(3) == electrodeData[j][2].toFixed(3)
-                    ) {
-                        // console.log([data.position[i], data.position[i + 1], data.position[i + 2]], electrodeData[j])
-                        // console.log("true")
-                        data.color.data.push(1.0, 0.0, 0.0)
-                        match = true;
-                        break;
-                    }
-                }
-                if (match == false) {
-                    data.color.data.push(0.840, 0.840, 0.840)
-                }
-
-            }
             // create a buffer for each array by calling
             // gl.createBuffer, gl.bindBuffer, gl.bufferData
             const bufferInfo = createBufferInfoFromArrays(gl, data);
@@ -154,25 +119,25 @@ export const BrainRendering = ({
         requestAnimationFrame(render);
 
     }
-    
 
-    return(
+
+    return (
         <Col md='6'>
-            <canvas ref={canvasRef}></canvas>                    
+            <canvas ref={canvasRef}></canvas>
         </Col>
     )
 }
 
 
 function render(time) {
-    console.log("rendering")
+    // console.log("rendering")
     time *= 0.001;  // convert to seconds
 
     resizeCanvasToDisplaySize(gl.canvas);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.clearColor(0.370, 0.370, 0.370, 1.0);
     gl.enable(gl.DEPTH_TEST);
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     const fieldOfViewRadians = degToRad(60);
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;

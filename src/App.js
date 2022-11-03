@@ -28,15 +28,16 @@ const electrodeData = [
 ];
 
 function App() {
+  // console.log(electrodeData)
   // console.log(copy)
-  const brainMesh = useOBJData(electrodeData)
+  const brainMesh = useOBJData({ electrodeData })
 
   // console.log(brainMesh);
 
   return (
     <ComponentContainer
-      electrodeData = {electrodeData}
-      brainMesh = {brainMesh}
+      electrodeData={electrodeData}
+      brainMesh={brainMesh}
     />
   );
 }

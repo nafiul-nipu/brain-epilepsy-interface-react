@@ -1,5 +1,6 @@
 export function parseOBJ(text, electrodeData) {
     // because indices are base 1 let's just fill in the 0th data
+    // console.log(electrodeData)
     const objPositions = [[0, 0, 0]];
     const objTexcoords = [[0, 0]];
     const objNormals = [[0, 0, 0]];
@@ -95,6 +96,30 @@ export function parseOBJ(text, electrodeData) {
                 let arr = parts.map(parseFloat)
                 objPositions.push(arr);
                 // console.log(parts.map(parseFloat))
+
+                let match = false;
+
+                //check the electrode data and color the electrodes as red
+                // console.log(arr)
+                for (let j = 0; j < electrodeData.length; j++) {
+                    if (
+                        arr[0].toFixed(3) === electrodeData[j][0].toFixed(3) &&
+                        arr[1].toFixed(3) === electrodeData[j][1].toFixed(3) &&
+                        arr[2].toFixed(3) === electrodeData[j][2].toFixed(3)
+                    ) {
+                        // console.log([data.position[i], data.position[i + 1], data.position[i + 2]], electrodeData[j])
+                        // console.log("true")
+                        // data.color.data.push(1.0, 0.0, 0.0)
+                        objColors.push([1.0, 0.0, 0.0]);
+                        match = true;
+                        // console.log("match is true")
+                        break;
+                    }
+                }
+                if (match === false) {
+                    objColors.push([0.840, 0.840, 0.840]);
+                    // console.log("match is false now")
+                }
             }
         },
         vn(parts) {

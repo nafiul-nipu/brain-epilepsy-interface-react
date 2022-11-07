@@ -3,7 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row } from 'react-bootstrap';
 import { ComponentContainer } from './components/ComponentContainer';
 import { useOBJData } from './library/useOBJData';
+import { useElectrodeData } from './library/useElectrodeData';
 
+
+const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/ep187_electrodes.csv"
 const electrodeData = [
   [61.7397994995117, 139.014129638672, 178.866790771484],
   [57.0425949096680, 139.287994384766, 172.553298950195],
@@ -29,7 +32,11 @@ const electrodeData = [
 
 function App() {
   // console.log(electrodeData)
-  // console.log(copy)
+  console.log(electrodeURL)
+  const electrodeDataCsv = useElectrodeData({ url: electrodeURL })
+
+  console.log(electrodeDataCsv)
+
   const brainMesh = useOBJData({ electrodeData })
 
   // console.log(brainMesh);

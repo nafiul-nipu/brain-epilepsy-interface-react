@@ -52,8 +52,8 @@ export const BrainRendering = ({
     // console.log(canvas)
 
     if (brainMesh) {
-        console.log("inside brainmesh condition")
-        console.log(brainMesh.geometries[0].data.color)
+        // console.log("inside brainmesh condition")
+        // console.log(brainMesh.geometries[0].data.color)
         canvas.width = 700;
         canvas.height = 700;
         gl = canvas.getContext("webgl2");

@@ -7,6 +7,8 @@ export const useElectrodeData = ({ url }) => {
 
     useEffect(() => {
         const row = d => {
+            d.electrode_number = +d.electrode_number;
+            d.position = +d.position
             return d
         }
         csv(url, row).then(setData)

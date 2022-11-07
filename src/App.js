@@ -32,14 +32,21 @@ const electrodeData = [
 
 function App() {
   // console.log(electrodeData)
-  console.log(electrodeURL)
+  // console.log(electrodeURL)
   const electrodeDataCsv = useElectrodeData({ url: electrodeURL })
 
-  console.log(electrodeDataCsv)
+  if (electrodeDataCsv) console.log(electrodeDataCsv[0].position[0])
 
-  const brainMesh = useOBJData({ electrodeData })
+  const brainMesh = useOBJData({ electrodeData: electrodeDataCsv })
 
-  // console.log(brainMesh);
+  // if (!electrodeDataCsv) {
+  //   return (
+  //     <div>Loading</div>
+  //   )
+
+  // }
+
+  console.log(brainMesh);
 
   return (
     <ComponentContainer

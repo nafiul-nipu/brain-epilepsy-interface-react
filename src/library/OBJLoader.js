@@ -107,11 +107,11 @@ export function parseOBJ(text, electrodeData) {
                     // console.log(arr)
                     for (let j = 0; j < electrodeData.length; j++) {
                         if (
-                            arr[0].toFixed(2) === electrodeData[j].newPosition[0].toFixed(2)
+                            arr[0].toFixed(3) === electrodeData[j].newPosition[0].toFixed(3)
                             &&
-                            arr[1].toFixed(2) === electrodeData[j].newPosition[1].toFixed(2)
+                            arr[1].toFixed(3) === electrodeData[j].newPosition[1].toFixed(3)
                             &&
-                            arr[2].toFixed(2) === electrodeData[j].newPosition[2].toFixed(2)
+                            arr[2].toFixed(3) === electrodeData[j].newPosition[2].toFixed(3)
 
                             // Math.round(arr[0]) === Math.round(electrodeData[j].position[0])
                             // &&
@@ -140,7 +140,7 @@ export function parseOBJ(text, electrodeData) {
                             // data.color.data.push(1.0, 0.0, 0.0)
                             objColors.push([1.0, 0.0, 0.0]);
                             match = true;
-                            // console.log("match is true")
+                            console.log("match is true")
                             break;
                         }
                     }

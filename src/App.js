@@ -6,7 +6,7 @@ import { useOBJData } from './library/useOBJData';
 import { useElectrodeData } from './library/useElectrodeData';
 
 
-const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/ep187_electrodes.csv"
+const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/ep187_electrodes_new.csv"
 const electrodeData = [
   [61.7397994995117, 139.014129638672, 178.866790771484],
   [57.0425949096680, 139.287994384766, 172.553298950195],
@@ -32,10 +32,10 @@ const electrodeData = [
 
 function App() {
   // console.log(electrodeData)
-  // console.log(electrodeURL)
+  console.log(electrodeURL)
   const electrodeDataCsv = useElectrodeData({ url: electrodeURL })
 
-  if (electrodeDataCsv) console.log(electrodeDataCsv[0].position[0])
+  if (electrodeDataCsv) console.log(electrodeDataCsv)
 
   const brainMesh = useOBJData({ electrodeData: electrodeDataCsv })
 
@@ -46,7 +46,7 @@ function App() {
 
   // }
 
-  console.log(brainMesh);
+  // console.log(brainMesh);
 
   return (
     <ComponentContainer

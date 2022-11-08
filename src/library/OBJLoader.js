@@ -107,11 +107,11 @@ export function parseOBJ(text, electrodeData) {
                     // console.log(arr)
                     for (let j = 0; j < electrodeData.length; j++) {
                         if (
-                            arr[0].toFixed(3) === electrodeData[j].position[0].toFixed(3)
+                            arr[0].toFixed(2) === electrodeData[j].position[0].toFixed(2)
                             &&
-                            arr[1].toFixed(3) === electrodeData[j].position[1].toFixed(3)
+                            arr[1].toFixed(2) === electrodeData[j].position[1].toFixed(2)
                             &&
-                            arr[2].toFixed(3) === electrodeData[j].position[2].toFixed(3)
+                            arr[2].toFixed(2) === electrodeData[j].position[2].toFixed(2)
 
                             // Math.round(arr[0]) === Math.round(electrodeData[j].position[0])
                             // &&

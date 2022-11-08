@@ -32,10 +32,10 @@ const electrodeData = [
 
 function App() {
   // console.log(electrodeData)
-  console.log(electrodeURL)
+  // console.log(electrodeURL)
   const electrodeDataCsv = useElectrodeData({ url: electrodeURL })
 
-  if (electrodeDataCsv) console.log(electrodeDataCsv)
+  // if (electrodeDataCsv) console.log(electrodeDataCsv)
 
   const brainMesh = useOBJData({ electrodeData: electrodeDataCsv })
 

@@ -1,16 +1,21 @@
 import { Container, Row, Col } from "react-bootstrap"
 import { BrainRendering } from "./BrainRendering"
+import { Transparent } from "./Transparent"
 
 export const ComponentContainer = ({
     electrodeData,
-    brainMesh
+    brainMesh,
+    brain
 }) => {
     return(
         <Container fluid >
             <Row>
-                <BrainRendering 
+                {/* <BrainRendering 
                     brainMesh = {brainMesh}
                     electrodeData={electrodeData}
+                /> */}
+                <Transparent 
+                    brain={brain}
                 />
             </Row>
         </Container>

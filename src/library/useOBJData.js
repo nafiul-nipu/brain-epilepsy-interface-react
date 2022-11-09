@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { parseOBJ } from "./OBJLoader";
 
-import brain from "../models/brain.obj"
+// import brain from "../models/brain.obj"
 export const useOBJData = ({
-    electrodeData
+    electrodeData,
+    brain
 }) => {
     // console.log(electrodeData)
     const [data, setData] = useState(null);

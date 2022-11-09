@@ -140,7 +140,7 @@ export function parseOBJ(text, electrodeData) {
                             // data.color.data.push(1.0, 0.0, 0.0)
                             objColors.push([1.0, 0.0, 0.0]);
                             match = true;
-                            console.log("match is true")
+                            // console.log("match is true")
                             break;
                         }
                     }

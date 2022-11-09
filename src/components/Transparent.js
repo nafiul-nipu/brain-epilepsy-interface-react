@@ -16,7 +16,7 @@ export const Transparent = ({brain}) => {
         canvas = canvasRef.current
 
         renderer = new THREE.WebGLRenderer({canvas:canvas, alpha:true});
-        renderer.setSize(1200,700);
+        renderer.setSize(700,400);
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setClearColor( 0X000000, 1);
 
@@ -49,14 +49,16 @@ export const Transparent = ({brain}) => {
 
 
         // model
-        console.log(brain)
+        // console.log(brain)
         new OBJLoader().load( `${brain}`, function ( obj ) {
-            console.log(obj)
+            console.log(obj.children[0])
             obj.children.forEach( function ( child ) {
                 // console.log(child)
                 if ( child instanceof THREE.Mesh ) {
 
                     child.material.color.setHex( 0x111111 );
+                    child.material.opacity = 0.3;
+                    child.material.transparent = true;
                     child.geometry.center()
 
                     child.material.side = THREE.DoubleSide;

@@ -10,10 +10,10 @@ export const ComponentContainer = ({
     return(
         <Container fluid >
             <Row>
-                {/* <BrainRendering 
+                <BrainRendering 
                     brainMesh = {brainMesh}
                     electrodeData={electrodeData}
-                /> */}
+                />
                 <Transparent 
                     brain={brain}
                 />

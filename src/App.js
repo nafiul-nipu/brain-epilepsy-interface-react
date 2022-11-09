@@ -36,15 +36,15 @@ function App() {
   // console.log(electrodeData)
   // console.log(electrodeURL)
 
-  // const electrodeDataCsv = useElectrodeData({ url: electrodeURL });
-  // const brainMesh = useOBJData({ electrodeData: electrodeDataCsv, brain:brain });
+  const electrodeDataCsv = useElectrodeData({ url: electrodeURL });
+  const brainMesh = useOBJData({ electrodeData: electrodeDataCsv, brain:brain });
 
   // console.log(brainMesh);
 
   return (
     <ComponentContainer
-      // electrodeData={electrodeData}
-      // brainMesh={brainMesh}
+      electrodeData={electrodeData}
+      brainMesh={brainMesh}
       brain={brain}
     />
   );

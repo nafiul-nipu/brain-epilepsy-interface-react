@@ -3,6 +3,7 @@ import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
+import combined_paraview from '../models/combined_paraview.obj'
 
 let canvas = null;
 let renderer, scene, camera, controls;
@@ -31,7 +32,7 @@ export const Transparent = ({
 
         // camera
         camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 2000);
-        camera.position.set(-50, -50, -50);
+        camera.position.set(-250, -50, -50);
         scene.add(camera);
 
 
@@ -57,14 +58,15 @@ export const Transparent = ({
         // model
         // console.log(brain)
         //load brain
-        OBJLoaderThreeJS(scene, brain, 0X111111, 0.3, true, animate, true)
-        //load lesion1
-        OBJLoaderThreeJS(scene, lesion1, 0XFF0000, 1, false, animate, false)
-        //load lesion2
-        OBJLoaderThreeJS(scene, lesion2, 0XFF0000, 1, false, animate, false)
-        //load lesion3
-        OBJLoaderThreeJS(scene, lesion3, 0XFF0000, 1, false, animate, false)
+        // OBJLoaderThreeJS(scene, brain, 0X111111, 0.3, true, animate, true)
+        // //load lesion1
+        // OBJLoaderThreeJS(scene, lesion1, 0XFF0000, 1, false, animate, false)
+        // //load lesion2
+        // OBJLoaderThreeJS(scene, lesion2, 0XFF0000, 1, false, animate, false)
+        // //load lesion3
+        // OBJLoaderThreeJS(scene, lesion3, 0XFF0000, 1, false, animate, false)
 
+        OBJLoaderThreeJS(scene, combined_paraview, 0X111111, 0.3, true, animate, true)
         // scene.position.set(50, 0, 0)
 
 
@@ -123,19 +125,13 @@ function OBJLoaderThreeJS(
     let loader = new OBJLoader()
 
     loader.load(`${objType}`, function (obj) {
+        console.log(obj.children.length)
         obj.children.forEach((child) => {
-            console.log(child)
             if (child instanceof THREE.Mesh) {
                 child.material.color.setHex(color);
                 child.material.opacity = opacity;
                 child.material.transparent = transparency;
-                // if (center === true) {
-                //     center = new THREE.Vector3();
-                //     child.geometry.computeBoundingBox();
-                //     child.geometry.boundingBox.getCenter(center);
-                //     child.geometry.center();
-                //     child.position.copy(center);
-                // }
+                child.geometry.center();
 
                 child.material.side = THREE.DoubleSide;
 

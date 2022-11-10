@@ -5,17 +5,23 @@ import { Transparent } from "./Transparent"
 export const ComponentContainer = ({
     electrodeData,
     brainMesh,
-    brain
+    brain,
+    lesion1,
+    lesion2,
+    lesion3
 }) => {
-    return(
+    return (
         <Container fluid >
             <Row>
-                <BrainRendering 
-                    brainMesh = {brainMesh}
+                <BrainRendering
+                    brainMesh={brainMesh}
                     electrodeData={electrodeData}
                 />
-                <Transparent 
+                <Transparent
                     brain={brain}
+                    lesion1={lesion1}
+                    lesion2={lesion2}
+                    lesion3={lesion3}
                 />
             </Row>
         </Container>

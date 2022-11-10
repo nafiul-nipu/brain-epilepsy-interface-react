@@ -6,7 +6,9 @@ import { useOBJData } from './library/useOBJData';
 import { useElectrodeData } from './library/useElectrodeData';
 
 import brain from "./models/brain.obj"
-
+import lesion1_para from './models/lesion1_para.obj';
+import lesion2_para from './models/lesion2_para.obj';
+import lesion3_para from './models/lesion3_para.obj';
 
 const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/ep187_electrodes_new.csv"
 const electrodeData = [
@@ -37,7 +39,7 @@ function App() {
   // console.log(electrodeURL)
 
   const electrodeDataCsv = useElectrodeData({ url: electrodeURL });
-  const brainMesh = useOBJData({ electrodeData: electrodeDataCsv, brain:brain });
+  const brainMesh = useOBJData({ electrodeData: electrodeDataCsv, brain: brain });
 
   // console.log(brainMesh);
 
@@ -46,6 +48,9 @@ function App() {
       electrodeData={electrodeData}
       brainMesh={brainMesh}
       brain={brain}
+      lesion1={lesion1_para}
+      lesion2={lesion2_para}
+      lesion3={lesion3_para}
     />
   );
 }

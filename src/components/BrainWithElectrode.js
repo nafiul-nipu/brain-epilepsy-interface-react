@@ -54,7 +54,7 @@ export const BrainWithElectrode = ({
 
         // console.log(electrodeData)
         async function loadBrain() {
-            await OBJLoaderThreeJS(scene, brain, 0Xdae2e3, 1, false, animate, electrodeData);
+            OBJLoaderThreeJS(scene, brain, 0Xdae2e3, 1, false, animate, electrodeData);
 
         }
 

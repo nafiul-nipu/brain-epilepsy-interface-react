@@ -2,8 +2,11 @@ import { useRef, useEffect } from "react";
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
 import combined_paraview from '../models/combined_paraview.obj'
+import test from '../models/test.obj'
+import testmtl from '../models/test.mtl'
 
 let canvas = null;
 let renderer, scene, camera, controls;
@@ -66,8 +69,10 @@ export const Transparent = ({
         // //load lesion3
         // OBJLoaderThreeJS(scene, lesion3, 0XFF0000, 1, false, animate, false)
 
-        OBJLoaderThreeJS(scene, combined_paraview, 0X111111, 0.3, true, animate, true)
+        // OBJLoaderThreeJS(scene, combined_paraview, 0X111111, 0.3, true, animate, true)
         // scene.position.set(50, 0, 0)
+
+        OBJMTLLoaders(scene, test, testmtl)
 
 
         window.addEventListener('resize', onWindowResize);
@@ -142,4 +147,47 @@ function OBJLoaderThreeJS(
 
         animate()
     })
+}
+
+
+function OBJMTLLoaders(
+    scene,
+    objType,
+    mtlType,
+) {
+    const mtlLoader = new MTLLoader()
+    mtlLoader.load(`${mtlType}`, function (materials) {
+        materials.preload();
+
+        let objloader = new OBJLoader();
+        objloader.setMaterials(materials);
+        objloader.load(`${objType}`, function (obj) {
+            // console.log(obj)
+
+            var objBbox = new THREE.Box3().setFromObject(obj);
+
+            // Geometry vertices centering to world axis
+            // console.log(objBbox)
+            var bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
+            bboxCenter.multiplyScalar(-1);
+
+            obj.children.forEach((child) => {
+                if (child instanceof THREE.Mesh) {
+                    if (child.name === 'brain_paraview') {
+                        child.material.opacity = 0.2;
+                        child.material.transparent = true;
+                    }
+                    child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
+                }
+                // child.geometry.center()
+            });
+
+
+            objBbox.setFromObject(obj); // Update the bounding box
+
+            scene.add(obj)
+            // controls.update()
+        });
+    });
+    animate()
 }

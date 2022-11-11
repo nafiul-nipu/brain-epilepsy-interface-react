@@ -45,7 +45,7 @@ function App() {
 
   return (
     <ComponentContainer
-      electrodeData={electrodeData}
+      electrodeData={electrodeDataCsv}
       brainMesh={brainMesh}
       brain={brain}
       lesion1={lesion1_para}

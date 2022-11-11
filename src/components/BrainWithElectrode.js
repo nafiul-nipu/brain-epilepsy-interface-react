@@ -48,12 +48,13 @@ export const BrainWithElectrode = ({
         scene.add(new THREE.AmbientLight(0xffffff, .2));
 
         // light
-        const light = new THREE.PointLight(0xffffff, 1.5);
+        const light = new THREE.PointLight(0xffffff, .2);
         camera.add(light);
 
 
+        // console.log(electrodeData)
         async function loadBrain() {
-            await OBJLoaderThreeJS(scene, brain, 0X111111, 1, false, animate);
+            await OBJLoaderThreeJS(scene, brain, 0Xdae2e3, 1, false, animate, electrodeData);
 
         }
 
@@ -64,7 +65,7 @@ export const BrainWithElectrode = ({
 
         window.addEventListener('resize', onWindowResize);
 
-    }, [brain, canvasRef]);
+    }, [brain, canvasRef, electrodeData]);
 
     return (
         <Col md='6'>
@@ -108,7 +109,8 @@ function OBJLoaderThreeJS(
     color,
     opacity,
     transparency,
-    animate
+    animate,
+    electrodeData
 ) {
     // console.log(center)
     let loader = new OBJLoader()
@@ -121,17 +123,49 @@ function OBJLoaderThreeJS(
         bboxCenter.multiplyScalar(-1);
 
         obj.children.forEach((child) => {
-            let positions = child.geometry.attributes.position.array;
-            console.log(positions)
-            let count = 0
-            for (let i = 0; i < positions.length; i = i + 3) {
-                count += 1
+            if (electrodeData) {
+                let positions = child.geometry.attributes.position.array;
+                // console.log(positions)
+                let colors = []
+                for (let i = 0; i < positions.length; i = i + 3) {
+                    let match = false;
+                    for (let j = 0; j < electrodeData.length; j++) {
+
+                        // console.log(electrodeData[i])
+                        if (
+                            positions[i].toFixed(3) === electrodeData[j].newPosition[0].toFixed(3)
+                            &&
+                            positions[i + 1].toFixed(3) === electrodeData[j].newPosition[1].toFixed(3)
+                            &&
+                            positions[i + 2].toFixed(3) === electrodeData[j].newPosition[2].toFixed(3)
+                        ) {
+                            // console.log([data.position[i], data.position[i + 1], data.position[i + 2]], electrodeData[j])
+                            // console.log("true")
+                            // data.color.data.push(1.0, 0.0, 0.0)
+                            let tempcolor = new THREE.Color(0XFF0000);
+                            colors.push(tempcolor.r, tempcolor.g, tempcolor.b);
+                            match = true;
+                            // console.log("match is true")
+                            break;
+                        }
+                    }
+                    if (match === false) {
+                        let tempcolor = new THREE.Color(0XFFFFFF)
+                        colors.push(tempcolor.r, tempcolor.g, tempcolor.b);
+                        // console.log("match is false now")
+                    }
+
+                }
+                // console.log(colors)
+                child.geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3))
+
             }
-            console.log(count)
+
             if (child instanceof THREE.Mesh) {
                 child.material.color.setHex(color);
                 child.material.opacity = opacity;
-                child.material.transparent = transparency;
+                // child.material.transparent = transparency;
+                child.material.vertexColors = true;
                 // child.geometry.center();
 
                 // child.material.side = THREE.DoubleSide;

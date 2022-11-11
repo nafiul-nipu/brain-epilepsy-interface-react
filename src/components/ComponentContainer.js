@@ -1,5 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap"
 import { BrainRendering } from "./BrainRendering"
+import { BrainWithElectrode } from "./BrainWithElectrode"
 import { Transparent } from "./Transparent"
 
 export const ComponentContainer = ({
@@ -13,8 +14,12 @@ export const ComponentContainer = ({
     return (
         <Container fluid >
             <Row>
-                <BrainRendering
+                {/* <BrainRendering
                     brainMesh={brainMesh}
+                    electrodeData={electrodeData}
+                /> */}
+                <BrainWithElectrode
+                    brain={brain}
                     electrodeData={electrodeData}
                 />
                 <Transparent

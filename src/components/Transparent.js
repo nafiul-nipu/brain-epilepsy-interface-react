@@ -4,9 +4,6 @@ import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
-import combined_paraview from '../models/combined_paraview.obj'
-import test from '../models/test.obj'
-import testmtl from '../models/test.mtl'
 
 let canvas = null;
 let renderer, scene, camera, controls, bboxCenter, objBbox;

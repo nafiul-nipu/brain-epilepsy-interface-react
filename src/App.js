@@ -1,5 +1,6 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import { ComponentContainer } from './components/ComponentContainer';
 import { useOBJData } from './library/useOBJData';
@@ -9,6 +10,7 @@ import brain from "./models/brain.obj"
 import lesion1_para from './models/lesion1_para.obj';
 import lesion2_para from './models/lesion2_para.obj';
 import lesion3_para from './models/lesion3_para.obj';
+import { useOBJThreeJS } from './library/useOBJThreeJS';
 
 const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/ep187_electrodes_new.csv"
 const electrodeData = [
@@ -35,22 +37,30 @@ const electrodeData = [
 ];
 
 function App() {
-  // console.log(electrodeData)
-  // console.log(electrodeURL)
-
+  const brainOBJ = useOBJThreeJS({ objType: brain });
+  const brain2OBJ = useOBJThreeJS({ objType: brain });
   const electrodeDataCsv = useElectrodeData({ url: electrodeURL });
-  const brainMesh = useOBJData({ electrodeData: electrodeDataCsv, brain: brain });
 
-  // console.log(brainMesh);
+  // if(brainOBJ){
+
+  // }
+  const lesion1OBJ = useOBJThreeJS({ objType: lesion1_para });
+
+  const lesion2OBJ = useOBJThreeJS({ objType: lesion2_para });
+
+  const lesion3OBJ = useOBJThreeJS({ objType: lesion3_para });
+
+  // console.log(lesion1OBJ);
 
   return (
+    // <div>debugging</div>
     <ComponentContainer
       electrodeData={electrodeDataCsv}
-      brainMesh={brainMesh}
-      brain={brain}
-      lesion1={lesion1_para}
-      lesion2={lesion2_para}
-      lesion3={lesion3_para}
+      brain={brainOBJ}
+      brainCopy={brain2OBJ}
+      lesion1={lesion1OBJ}
+      lesion2={lesion2OBJ}
+      lesion3={lesion3OBJ}
     />
   );
 }

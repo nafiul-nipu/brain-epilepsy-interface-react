@@ -16,6 +16,7 @@ export const BrainWithElectrode = ({
 
     useEffect(() => {
         // console.log(canvasRef.current);
+        console.log("working brain with electrode")
         canvas = canvasRef.current
 
         renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
@@ -58,7 +59,12 @@ export const BrainWithElectrode = ({
 
         }
 
-        loadBrain();
+        console.log(brain)
+        if (brain && electrodeData) {
+            loadBrain()
+
+        }
+
 
         // OBJMTLLoaders(scene, test, testmtl)
 
@@ -105,79 +111,73 @@ function animate() {
 
 function OBJLoaderThreeJS(
     scene,
-    objType,
+    obj,
     color,
     opacity,
     transparency,
     animate,
     electrodeData
 ) {
-    // console.log(center)
-    let loader = new OBJLoader()
+    objBbox = new THREE.Box3().setFromObject(obj);
+    bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
+    bboxCenter.multiplyScalar(-1);
 
-    loader.load(`${objType}`, function (obj) {
-        // console.log(obj.children.length)
+    obj.children.forEach((child) => {
+        if (electrodeData) {
+            let positions = child.geometry.attributes.position.array;
+            // console.log(positions)
+            let colors = []
+            for (let i = 0; i < positions.length; i = i + 3) {
+                let match = false;
+                for (let j = 0; j < electrodeData.length; j++) {
 
-        objBbox = new THREE.Box3().setFromObject(obj);
-        bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
-        bboxCenter.multiplyScalar(-1);
-
-        obj.children.forEach((child) => {
-            if (electrodeData) {
-                let positions = child.geometry.attributes.position.array;
-                // console.log(positions)
-                let colors = []
-                for (let i = 0; i < positions.length; i = i + 3) {
-                    let match = false;
-                    for (let j = 0; j < electrodeData.length; j++) {
-
-                        // console.log(electrodeData[i])
-                        if (
-                            positions[i].toFixed(3) === electrodeData[j].newPosition[0].toFixed(3)
-                            &&
-                            positions[i + 1].toFixed(3) === electrodeData[j].newPosition[1].toFixed(3)
-                            &&
-                            positions[i + 2].toFixed(3) === electrodeData[j].newPosition[2].toFixed(3)
-                        ) {
-                            // console.log([data.position[i], data.position[i + 1], data.position[i + 2]], electrodeData[j])
-                            // console.log("true")
-                            // data.color.data.push(1.0, 0.0, 0.0)
-                            let tempcolor = new THREE.Color(0XFF0000);
-                            colors.push(tempcolor.r, tempcolor.g, tempcolor.b);
-                            match = true;
-                            // console.log("match is true")
-                            break;
-                        }
-                    }
-                    if (match === false) {
-                        let tempcolor = new THREE.Color(0XFFFFFF)
+                    // console.log(electrodeData[i])
+                    if (
+                        positions[i].toFixed(3) === electrodeData[j].newPosition[0].toFixed(3)
+                        &&
+                        positions[i + 1].toFixed(3) === electrodeData[j].newPosition[1].toFixed(3)
+                        &&
+                        positions[i + 2].toFixed(3) === electrodeData[j].newPosition[2].toFixed(3)
+                    ) {
+                        // console.log([data.position[i], data.position[i + 1], data.position[i + 2]], electrodeData[j])
+                        // console.log("true")
+                        // data.color.data.push(1.0, 0.0, 0.0)
+                        let tempcolor = new THREE.Color(0XFF0000);
                         colors.push(tempcolor.r, tempcolor.g, tempcolor.b);
-                        // console.log("match is false now")
+                        match = true;
+                        // console.log("match is true")
+                        break;
                     }
-
                 }
-                // console.log(colors)
-                child.geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3))
+                if (match === false) {
+                    let tempcolor = new THREE.Color(0XFFFFFF)
+                    colors.push(tempcolor.r, tempcolor.g, tempcolor.b);
+                    // console.log("match is false now")
+                }
 
             }
+            // console.log(colors)
+            child.geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3))
 
-            if (child instanceof THREE.Mesh) {
-                child.material.color.setHex(color);
-                child.material.opacity = opacity;
-                // child.material.transparent = transparency;
-                child.material.vertexColors = true;
-                // child.geometry.center();
+        }
 
-                // child.material.side = THREE.DoubleSide;
+        if (child instanceof THREE.Mesh) {
+            child.material.color.setHex(color);
+            child.material.opacity = opacity;
+            // child.material.transparent = transparency;
+            child.material.vertexColors = true;
+            // child.geometry.center();
 
-                child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
+            // child.material.side = THREE.DoubleSide;
 
-            }
-        });
-        objBbox.setFromObject(obj);
-        // obj.position.set(0, 0, 0)
-        scene.add(obj);
+            child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
 
-        animate()
-    })
+        }
+    });
+    objBbox.setFromObject(obj);
+    // obj.position.set(0, 0, 0)
+    scene.add(obj);
+
+    console.log("brain loaded")
+    animate()
 }

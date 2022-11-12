@@ -1,8 +1,6 @@
 import { useRef, useEffect } from "react";
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
 
 let canvas = null;
@@ -58,14 +56,17 @@ export const Transparent = ({
         async function loadBrain() {
             await OBJLoaderThreeJS(scene, brain, 0X111111, 0.3, true, animate, true);
             //load lesion1
-            OBJLoaderThreeJS(scene, lesion1, 0XFF0000, 1, false, animate, false)
+            await OBJLoaderThreeJS(scene, lesion1, 0XFF0000, 1, false, animate, false)
             // //load lesion2
-            OBJLoaderThreeJS(scene, lesion2, 0XFF0000, 1, false, animate, false)
+            await OBJLoaderThreeJS(scene, lesion2, 0XFF0000, 1, false, animate, false)
             // load lesion3
-            OBJLoaderThreeJS(scene, lesion3, 0XFF0000, 1, false, animate, false)
+            await OBJLoaderThreeJS(scene, lesion3, 0XFF0000, 1, false, animate, false)
+        }
+        if (brain) {
+            loadBrain();
         }
 
-        loadBrain();
+
 
         // OBJMTLLoaders(scene, test, testmtl)
 
@@ -114,100 +115,54 @@ function animate() {
 
 function OBJLoaderThreeJS(
     scene,
-    objType,
+    obj,
     color,
     opacity,
     transparency,
     animate,
     center
 ) {
-    // console.log(center)
-    let loader = new OBJLoader()
+    // console.log(obj.children.length)
+    if (center === true) {
+        console.log('true')
+        objBbox = new THREE.Box3().setFromObject(obj);
+        bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
+        bboxCenter.multiplyScalar(-1);
 
-    loader.load(`${objType}`, function (obj) {
-        // console.log(obj.children.length)
-        if (center === true) {
-            objBbox = new THREE.Box3().setFromObject(obj);
-            bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
-            bboxCenter.multiplyScalar(-1);
+        obj.children.forEach((child) => {
+            if (child instanceof THREE.Mesh) {
+                child.material.color.setHex(color);
+                child.material.opacity = opacity;
+                child.material.transparent = transparency;
+                // child.geometry.center();
 
-            obj.children.forEach((child) => {
-                if (child instanceof THREE.Mesh) {
-                    child.material.color.setHex(color);
-                    child.material.opacity = opacity;
-                    child.material.transparent = transparency;
-                    // child.geometry.center();
+                // child.material.side = THREE.DoubleSide;
 
-                    // child.material.side = THREE.DoubleSide;
+                child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
 
-                    child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
-
-                }
-            });
-            objBbox.setFromObject(obj);
-
-        } else {
-            obj.children.forEach((child) => {
-                if (child instanceof THREE.Mesh) {
-                    child.material.color.setHex(color);
-                    child.material.opacity = opacity;
-                    child.material.transparent = transparency;
-                    // child.geometry.center();
-
-                    // child.material.side = THREE.DoubleSide;
-
-                    child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
-
-                }
-            });
-
-        }
-        // obj.position.set(0, 0, 0)
-        scene.add(obj);
-
-        animate()
-    })
-}
-
-
-function OBJMTLLoaders(
-    scene,
-    objType,
-    mtlType,
-) {
-    const mtlLoader = new MTLLoader()
-    mtlLoader.load(`${mtlType}`, function (materials) {
-        materials.preload();
-
-        let objloader = new OBJLoader();
-        objloader.setMaterials(materials);
-        objloader.load(`${objType}`, function (obj) {
-            // console.log(obj)
-
-            var objBbox = new THREE.Box3().setFromObject(obj);
-
-            // Geometry vertices centering to world axis
-            // console.log(objBbox)
-            var bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
-            bboxCenter.multiplyScalar(-1);
-
-            obj.children.forEach((child) => {
-                if (child instanceof THREE.Mesh) {
-                    if (child.name === 'brain_paraview') {
-                        child.material.opacity = 0.2;
-                        child.material.transparent = true;
-                    }
-                    child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
-                }
-                // child.geometry.center()
-            });
-
-
-            objBbox.setFromObject(obj); // Update the bounding box
-
-            scene.add(obj)
-            // controls.update()
+            }
         });
-    });
+        objBbox.setFromObject(obj);
+
+    } else {
+        console.log("false")
+        obj.children.forEach((child) => {
+            if (child instanceof THREE.Mesh) {
+                child.material.color.setHex(color);
+                child.material.opacity = opacity;
+                child.material.transparent = transparency;
+                // child.geometry.center();
+
+                // child.material.side = THREE.DoubleSide;
+
+                child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
+
+            }
+        });
+
+    }
+    // obj.position.set(0, 0, 0)
+    scene.add(obj);
+
     animate()
 }

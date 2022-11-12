@@ -6,8 +6,8 @@ import { Transparent } from "./Transparent"
 
 export const ComponentContainer = ({
     electrodeData,
-    brainMesh,
     brain,
+    brainCopy,
     lesion1,
     lesion2,
     lesion3
@@ -20,7 +20,7 @@ export const ComponentContainer = ({
                     electrodeData={electrodeData}
                 /> */}
                 <BrainWithElectrode
-                    brain={brain}
+                    brain={brainCopy}
                     electrodeData={electrodeData}
                 />
                 {/* <BrainOBJRendering

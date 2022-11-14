@@ -7,7 +7,7 @@ import circle from '../models/disc.png'
 
 
 let canvas = null;
-let renderer, scene, camera, controls, bboxCenter, objBbox, previousb;
+let renderer, scene, scene2, camera, controls, bboxCenter, objBbox;
 export const BrainWithElectrode = ({
     brain,
     electrodeData
@@ -24,10 +24,12 @@ export const BrainWithElectrode = ({
         renderer.setSize(700, 400);
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setClearColor(0X000000, 1);
+        renderer.autoClear = false;
 
         renderer.outputEncoding = THREE.sRGBEncoding;
 
         scene = new THREE.Scene();
+        scene2 = new THREE.Scene();
 
         // camera
         camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 2000);
@@ -58,7 +60,7 @@ export const BrainWithElectrode = ({
         async function loadBrain() {
             await OBJLoaderThreeJS(scene, brain, 0Xffffff, 1, false, animate, electrodeData);
 
-            await loadElectrode(scene, electrodeData);
+            await loadElectrode(scene2, electrodeData);
 
         }
 
@@ -98,7 +100,13 @@ function onWindowResize() {
 
 function render() {
 
+    // renderer.render(scene, camera);
+
+
+    renderer.clear();
     renderer.render(scene, camera);
+    renderer.clearDepth();
+    renderer.render(scene2, camera);
 
 }
 
@@ -123,7 +131,7 @@ function OBJLoaderThreeJS(
 ) {
     console.log(bboxCenter)
     if (bboxCenter === undefined) {
-        console.log("changing box center")
+        console.log("changing box center");
         objBbox = new THREE.Box3().setFromObject(obj);
         bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
         bboxCenter.multiplyScalar(-1);
@@ -153,7 +161,7 @@ function OBJLoaderThreeJS(
 }
 
 function loadElectrode(scene, electrodeData) {
-    console.log(electrodeData)
+    // console.log(electrodeData)
     let vertices = []
     for (let i = 0; i < electrodeData.length; i++) {
         vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
@@ -169,13 +177,12 @@ function loadElectrode(scene, electrodeData) {
         map: sprite,
         alphaTest: 0.5,
         transparent: true,
-        side: THREE.DoubleSide,
-        renderOrder: 0
+        side: THREE.DoubleSide
     });
     material.color.setHSL(0.0, 1.0, 0.5);
     const points = new THREE.Points(pointGeometry, material);
 
-    console.log(bboxCenter)
+    // console.log(bboxCenter)
     points.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
     // console.log(points.geometry)
 

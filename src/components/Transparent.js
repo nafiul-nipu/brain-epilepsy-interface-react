@@ -124,7 +124,7 @@ function OBJLoaderThreeJS(
 ) {
     // console.log(obj.children.length)
     if (center === true) {
-        console.log('true')
+        // console.log('true')
         objBbox = new THREE.Box3().setFromObject(obj);
         bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
         bboxCenter.multiplyScalar(-1);
@@ -145,7 +145,7 @@ function OBJLoaderThreeJS(
         objBbox.setFromObject(obj);
 
     } else {
-        console.log("false")
+        // console.log("false")
         obj.children.forEach((child) => {
             if (child instanceof THREE.Mesh) {
                 child.material.color.setHex(color);

@@ -3,10 +3,11 @@ import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
+import circle from '../models/disc.png'
 
 
 let canvas = null;
-let renderer, scene, camera, controls, bboxCenter, objBbox;
+let renderer, scene, camera, controls, bboxCenter, objBbox, previousb;
 export const BrainWithElectrode = ({
     brain,
     electrodeData
@@ -55,11 +56,13 @@ export const BrainWithElectrode = ({
 
         // console.log(electrodeData)
         async function loadBrain() {
-            OBJLoaderThreeJS(scene, brain, 0Xdae2e3, 1, false, animate, electrodeData);
+            await OBJLoaderThreeJS(scene, brain, 0Xffffff, 1, false, animate, electrodeData);
+
+            await loadElectrode(scene, electrodeData);
 
         }
 
-        console.log(brain)
+        // console.log(brain)
         if (brain && electrodeData) {
             loadBrain()
 
@@ -118,66 +121,63 @@ function OBJLoaderThreeJS(
     animate,
     electrodeData
 ) {
-    objBbox = new THREE.Box3().setFromObject(obj);
-    bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
-    bboxCenter.multiplyScalar(-1);
+    console.log(bboxCenter)
+    if (bboxCenter === undefined) {
+        console.log("changing box center")
+        objBbox = new THREE.Box3().setFromObject(obj);
+        bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
+        bboxCenter.multiplyScalar(-1);
+    }
 
     obj.children.forEach((child) => {
-        if (electrodeData) {
-            let positions = child.geometry.attributes.position.array;
-            // console.log(positions)
-            let colors = []
-            for (let i = 0; i < positions.length; i = i + 3) {
-                let match = false;
-                for (let j = 0; j < electrodeData.length; j++) {
-
-                    // console.log(electrodeData[i])
-                    if (
-                        positions[i].toFixed(3) === electrodeData[j].newPosition[0].toFixed(3)
-                        &&
-                        positions[i + 1].toFixed(3) === electrodeData[j].newPosition[1].toFixed(3)
-                        &&
-                        positions[i + 2].toFixed(3) === electrodeData[j].newPosition[2].toFixed(3)
-                    ) {
-                        // console.log([data.position[i], data.position[i + 1], data.position[i + 2]], electrodeData[j])
-                        // console.log("true")
-                        // data.color.data.push(1.0, 0.0, 0.0)
-                        let tempcolor = new THREE.Color(0XFF0000);
-                        colors.push(tempcolor.r, tempcolor.g, tempcolor.b);
-                        match = true;
-                        // console.log("match is true")
-                        break;
-                    }
-                }
-                if (match === false) {
-                    let tempcolor = new THREE.Color(0XFFFFFF)
-                    colors.push(tempcolor.r, tempcolor.g, tempcolor.b);
-                    // console.log("match is false now")
-                }
-
-            }
-            // console.log(colors)
-            child.geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3))
-
-        }
 
         if (child instanceof THREE.Mesh) {
             child.material.color.setHex(color);
             child.material.opacity = opacity;
             // child.material.transparent = transparency;
-            child.material.vertexColors = true;
+            // child.material.vertexColors = true;
             // child.geometry.center();
 
             // child.material.side = THREE.DoubleSide;
 
             child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
-
         }
-    });
-    objBbox.setFromObject(obj);
-    // obj.position.set(0, 0, 0)
-    scene.add(obj);
 
-    console.log("brain loaded")
+        objBbox.setFromObject(obj);
+        // obj.position.set(0, 0, 0)
+        scene.add(obj);
+    });
+
+    console.log("brain loaded");
     animate()
+}
+
+function loadElectrode(scene, electrodeData) {
+    console.log(electrodeData)
+    let vertices = []
+    for (let i = 0; i < electrodeData.length; i++) {
+        vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
+        // vertices.push(electrodeData[i].position[0], electrodeData[i].position[1], electrodeData[i].position[2])
+    }
+    const pointGeometry = new THREE.BufferGeometry()
+    pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
+    const sprite = new THREE.TextureLoader().load(circle);
+    const material = new THREE.PointsMaterial({
+        size: 10,
+        sizeAttenuation: true,
+        map: sprite,
+        alphaTest: 0.5,
+        transparent: true,
+        side: THREE.DoubleSide,
+        renderOrder: 0
+    });
+    material.color.setHSL(0.0, 1.0, 0.5);
+    const points = new THREE.Points(pointGeometry, material);
+
+    console.log(bboxCenter)
+    points.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
+    // console.log(points.geometry)
+
+    scene.add(points);
 }

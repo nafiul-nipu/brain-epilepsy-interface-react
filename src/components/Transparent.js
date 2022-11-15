@@ -20,7 +20,7 @@ export const Transparent = ({
         canvas = canvasRef.current
 
         renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-        renderer.setSize(700, 400);
+        renderer.setSize((window.innerWidth / 2) - 10, window.innerHeight / 2);
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setClearColor(0X000000, 1);
 
@@ -85,10 +85,9 @@ export const Transparent = ({
 
 function onWindowResize() {
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize((window.innerWidth / 2) - 10, window.innerHeight / 2);
 
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+    camera.aspect = ((window.innerWidth / 2) - 10) / (window.innerHeight / 2);
 
     controls.handleResize();
 

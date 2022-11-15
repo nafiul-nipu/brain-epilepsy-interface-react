@@ -21,7 +21,7 @@ export const BrainWithElectrode = ({
         canvas = canvasRef.current
 
         renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-        renderer.setSize(700, 400);
+        renderer.setSize((window.innerWidth / 2) - 10, window.innerHeight / 2);
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setClearColor(0X000000, 1);
         renderer.autoClear = false;
@@ -32,7 +32,7 @@ export const BrainWithElectrode = ({
         scene2 = new THREE.Scene();
 
         // camera
-        camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 2000);
+        camera = new THREE.PerspectiveCamera(40, ((window.innerWidth / 2) - 10) / (window.innerHeight / 2), 1, 2000);
         camera.position.set(-250, -50, -50);
         scene.add(camera);
 
@@ -87,9 +87,9 @@ export const BrainWithElectrode = ({
 
 function onWindowResize() {
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize((window.innerWidth / 2) - 10, window.innerHeight / 2);
 
-    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = ((window.innerWidth / 2) - 10) / (window.innerHeight / 2);
     camera.updateProjectionMatrix();
 
     controls.handleResize();

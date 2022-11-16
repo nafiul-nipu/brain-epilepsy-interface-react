@@ -39,6 +39,7 @@ const electrodeData = [
 function App() {
   const brainOBJ = useOBJThreeJS({ objType: brain });
   const brain2OBJ = useOBJThreeJS({ objType: brain });
+  const brain3OBJ = useOBJThreeJS({ objType: brain });
   const electrodeDataCsv = useElectrodeData({ url: electrodeURL });
 
   // if(brainOBJ){
@@ -58,6 +59,7 @@ function App() {
       electrodeData={electrodeDataCsv}
       brain={brainOBJ}
       brainCopy={brain2OBJ}
+      brainCopy2={brain3OBJ}
       lesion1={lesion1OBJ}
       lesion2={lesion2OBJ}
       lesion3={lesion3OBJ}

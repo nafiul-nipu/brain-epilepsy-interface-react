@@ -5,6 +5,7 @@ import { Container, Row } from 'react-bootstrap';
 import { ComponentContainer } from './components/ComponentContainer';
 import { useOBJData } from './library/useOBJData';
 import { useElectrodeData } from './library/useElectrodeData';
+import { usePropagationData } from './library/usePropagationData';
 
 import brain from "./models/brain.obj"
 import lesion1_para from './models/lesion1_para.obj';
@@ -13,6 +14,7 @@ import lesion3_para from './models/lesion3_para.obj';
 import { useOBJThreeJS } from './library/useOBJThreeJS';
 
 const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/ep187_electrodes_new.csv"
+const sampleURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/newSample1.csv'
 const electrodeData = [
   [61.7397994995117, 139.014129638672, 178.866790771484],
   [57.0425949096680, 139.287994384766, 172.553298950195],
@@ -41,6 +43,7 @@ function App() {
   const brain2OBJ = useOBJThreeJS({ objType: brain });
   const brain3OBJ = useOBJThreeJS({ objType: brain });
   const electrodeDataCsv = useElectrodeData({ url: electrodeURL });
+  const sampleDataCSV = usePropagationData({ url: sampleURL });
 
   // if(brainOBJ){
 
@@ -57,6 +60,7 @@ function App() {
     // <div>debugging</div>
     <ComponentContainer
       electrodeData={electrodeDataCsv}
+      sampleData={sampleDataCSV}
       brain={brainOBJ}
       brainCopy={brain2OBJ}
       brainCopy2={brain3OBJ}

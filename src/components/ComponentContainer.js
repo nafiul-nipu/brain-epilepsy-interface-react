@@ -5,6 +5,7 @@ import { Transparent } from "./Transparent"
 
 export const ComponentContainer = ({
     electrodeData,
+    sampleData,
     brain,
     brainCopy,
     brainCopy2,
@@ -30,6 +31,7 @@ export const ComponentContainer = ({
                 <BrainNetwork 
                     brain={brainCopy2}
                     electrodeData={electrodeData}
+                    sampleData = {sampleData}
                 />
             </Row>
         </Container>

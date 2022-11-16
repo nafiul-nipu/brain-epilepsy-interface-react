@@ -7,7 +7,7 @@ import circle from '../models/disc.png'
 let canvas = null;
 let renderer, scene, scene2, camera, controls, bboxCenter, objBbox;
 
-export const BrainNetwork = ({brain, electrodeData}) => {
+export const BrainNetwork = ({brain, electrodeData, sampleData}) => {
 
     const canvasRef = useRef(null);
     canvas = canvasRef.current;
@@ -57,7 +57,7 @@ export const BrainNetwork = ({brain, electrodeData}) => {
         async function loadBrain() {
             await OBJLoaderThreeJS(scene, brain, 0Xffffff, 1, false, animate, electrodeData);
 
-            await loadElectrode(scene2, electrodeData);
+            await loadElectrode(scene2, electrodeData, sampleData);
 
         }
 
@@ -158,25 +158,15 @@ function OBJLoaderThreeJS(
     animate()
 }
 
-function loadElectrode(scene, electrodeData) {
+function loadElectrode(scene, electrodeData, sampleData) {
     // console.log(electrodeData)
     let vertices = []
     const group = new THREE.Group();
     for (let i = 0; i < electrodeData.length; i++) {
         vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
         // vertices.push(electrodeData[i].position[0], electrodeData[i].position[1], electrodeData[i].position[2])
-
-        if(i+1 !== electrodeData.length){
-            var from = new THREE.Vector3( electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
-            var to = new THREE.Vector3( electrodeData[i+1].newPosition[0], electrodeData[i+1].newPosition[1], electrodeData[i+1].newPosition[2] );
-            var direction = to.clone().sub(from);
-            var length = direction.length();
-            var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0X004D40 );
-            group.add(arrowHelper)
-
-        }
     }
-    console.log(new THREE.Vector3( electrodeData[0].newPosition))
+    // console.log(new THREE.Vector3( electrodeData[0].newPosition))
     const pointGeometry = new THREE.BufferGeometry()
     pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 
@@ -197,13 +187,14 @@ function loadElectrode(scene, electrodeData) {
 
     scene.add(points);
 
-
-    // var from = new THREE.Vector3( 138.5820007, 164.0650024, 116.2009964);
-    // var to = new THREE.Vector3( electrodeData[i+1] );
-    // var direction = to.clone().sub(from);
-    // var length = direction.length();
-    // var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0X004D40 );
-    // group.add(arrowHelper)
+    sampleData.forEach(sample => {
+        var from = new THREE.Vector3( sample.startPosition[0], sample.startPosition[1], sample.startPosition[2]);
+        var to = new THREE.Vector3( sample.endPosition[0], sample.endPosition[1], sample.endPosition[2] );
+        var direction = to.clone().sub(from);
+        var length = direction.length();
+        var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0X004D40 );
+        group.add(arrowHelper)
+    })
 
     console.log(group)
     group.position.set(bboxCenter.x, bboxCenter.y, bboxCenter.z);

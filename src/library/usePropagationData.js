@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { csv } from "d3";
 
-export const useElectrodeData = ({ url }) => {
+export const usePropagationData = ({ url }) => {
     // console.log(url)
     const [data, setData] = useState(null);
 
     useEffect(() => {
         const row = d => {
-            d.from = +d.from;
-            d.to = +d.to;
+            d.start = +d.start;
+            d.end = +d.end;
             d.frequrncy = +d.frequrncy;
+            d.startPosition = JSON.parse(d.startPosition)
+            d.endPosition = JSON.parse(d.endPosition)
             return d
         }
         csv(url, row).then(setData)

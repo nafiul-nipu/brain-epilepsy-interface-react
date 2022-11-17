@@ -14,7 +14,7 @@ import lesion3_para from './models/lesion3_para.obj';
 import { useOBJThreeJS } from './library/useOBJThreeJS';
 
 const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/ep187_electrodes_new.csv"
-const sampleURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/newSample1.csv'
+const sampleURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/newSample1RealPosition.csv'
 const electrodeData = [
   [61.7397994995117, 139.014129638672, 178.866790771484],
   [57.0425949096680, 139.287994384766, 172.553298950195],

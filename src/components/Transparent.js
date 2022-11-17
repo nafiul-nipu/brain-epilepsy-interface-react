@@ -31,6 +31,7 @@ export const Transparent = ({
         // camera
         camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 2000);
         camera.position.set(-250, -50, -50);
+        camera.up.set(0,0,1);
         scene.add(camera);
 
 

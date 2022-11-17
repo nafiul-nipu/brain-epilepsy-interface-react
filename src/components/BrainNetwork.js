@@ -30,6 +30,7 @@ export const BrainNetwork = ({brain, electrodeData, sampleData}) => {
 
         // camera
         camera = new THREE.PerspectiveCamera(40, ((window.innerWidth / 2) - 10) / (window.innerHeight / 2), 1, 2000);
+        camera.up.set(0,0,1);
         camera.position.set(-250, -50, -50);
         scene.add(camera);
 
@@ -44,6 +45,9 @@ export const BrainNetwork = ({brain, electrodeData, sampleData}) => {
         controls.zoomSpeed = 1.2;
         controls.panSpeed = 0.8;
         // controls.target.set(0, 0, 0)
+
+        // const axesHelper = new THREE.AxesHelper( 100 );
+        // scene2.add( axesHelper );
 
         // ambient
         scene.add(new THREE.AmbientLight(0xffffff, .2));
@@ -163,8 +167,8 @@ function loadElectrode(scene, electrodeData, sampleData) {
     let vertices = []
     const group = new THREE.Group();
     for (let i = 0; i < electrodeData.length; i++) {
-        vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
-        // vertices.push(electrodeData[i].position[0], electrodeData[i].position[1], electrodeData[i].position[2])
+        // vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
+        vertices.push(electrodeData[i].position[0], electrodeData[i].position[1], electrodeData[i].position[2])
     }
     // console.log(new THREE.Vector3( electrodeData[0].newPosition))
     const pointGeometry = new THREE.BufferGeometry()

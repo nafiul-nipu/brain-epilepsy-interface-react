@@ -34,6 +34,7 @@ export const BrainWithElectrode = ({
         // camera
         camera = new THREE.PerspectiveCamera(40, ((window.innerWidth / 2) - 10) / (window.innerHeight / 2), 1, 2000);
         camera.position.set(-250, -50, -50);
+        camera.up.set(0,0,1);
         scene.add(camera);
 
 
@@ -164,8 +165,8 @@ function loadElectrode(scene, electrodeData) {
     // console.log(electrodeData)
     let vertices = []
     for (let i = 0; i < electrodeData.length; i++) {
-        vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
-        // vertices.push(electrodeData[i].position[0], electrodeData[i].position[1], electrodeData[i].position[2])
+        // vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
+        vertices.push(electrodeData[i].position[0], electrodeData[i].position[1], electrodeData[i].position[2])
     }
     const pointGeometry = new THREE.BufferGeometry()
     pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));

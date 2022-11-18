@@ -4,12 +4,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { ComponentContainer } from './components/ComponentContainer';
 import { useElectrodeData } from './library/useElectrodeData';
 import { usePropagationData } from './library/usePropagationData';
+import { useOBJThreeJS } from './library/useOBJThreeJS';
 
 import brain from "./models/brain.obj"
 import lesion1_para from './models/lesion1_para.obj';
 import lesion2_para from './models/lesion2_para.obj';
 import lesion3_para from './models/lesion3_para.obj';
-import { useOBJThreeJS } from './library/useOBJThreeJS';
+
 
 const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/ep187_electrodes_new.csv"
 const sampleURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/newSample1RealPosition.csv'

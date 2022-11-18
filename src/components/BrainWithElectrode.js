@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useMemo } from "react";
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
 import {
@@ -15,12 +15,14 @@ import {
 
 
 let canvas = null;
-let renderer, scene, scene2, camera, controls, bboxCenter, objBbox;
+let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
 
 export const BrainWithElectrode = ({
     brain,
-    electrodeData
+    electrodeData,
+    bboxCenter
 }) => {
+    centerOther = bboxCenter;
     const canvasRef = useRef(null);
     canvas = canvasRef.current;
 
@@ -67,18 +69,14 @@ export const BrainWithElectrode = ({
         }
 
         // console.log(brain)
-        if (brain && electrodeData) {
-            loadBrain()
+        if (brain && electrodeData && bboxCenter) {
+            loadBrain();
 
         }
 
-
-        // OBJMTLLoaders(scene, test, testmtl)
-
-
         window.addEventListener('resize', onWindowResize);
 
-    }, [brain, canvasRef, electrodeData]);
+    }, [bboxCenter, brain, canvasRef, electrodeData]);
 
     return (
         <Col md='6'>
@@ -112,15 +110,14 @@ function OBJLoaderThreeJS({
     transparency,
     electrodeData
 }) {
-    console.log(bboxCenter)
-    if (bboxCenter === undefined) {
-        [bboxCenter, objBbox] = getbbox(obj)
+    if (centerBrain === undefined) {
+        centerBrain = getbbox(obj)
     }
+    console.log(centerBrain);
 
-    obj = objMaterialManipulation(obj, color, opacity, transparency, bboxCenter);
-    // console.log(obj)
+    obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
 
-    objBbox.setFromObject(obj);
+    // objBbox.setFromObject(obj);
     scene.add(obj);
 
     console.log("brain loaded");
@@ -129,9 +126,9 @@ function OBJLoaderThreeJS({
 
 function loadElectrode(scene, electrodeData) {
     // console.log(electrodeData)
-    const points = populateElectrodes(electrodeData, bboxCenter);
+    const points = populateElectrodes(electrodeData, centerOther);
     // console.log(bboxCenter)
-    // console.log(points.geometry)
+
 
     scene.add(points);
 }

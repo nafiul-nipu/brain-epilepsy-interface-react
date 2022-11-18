@@ -79,7 +79,9 @@ export function getbbox(obj) {
     let bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
     bboxCenter.multiplyScalar(-1);
 
-    return [bboxCenter, objBbox];
+    // return [bboxCenter, objBbox];
+    // console.log(bboxCenter)
+    return bboxCenter;
 }
 
 export function objMaterialManipulation(obj, color, opacity, transparency, bboxCenter) {

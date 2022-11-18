@@ -15,16 +15,17 @@ import {
 } from '../library/CommonUtilities'
 
 let canvas = null;
-let renderer, scene, scene2, camera, controls, bboxCenter, objBbox;
+let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
 
-export const BrainNetwork = ({ brain, electrodeData, sampleData }) => {
+export const BrainNetwork = ({ brain, electrodeData, sampleData, bboxCenter }) => {
 
     const canvasRef = useRef(null);
     canvas = canvasRef.current;
 
     useEffect(() => {
+        centerOther = bboxCenter;
         // console.log(canvasRef.current);
-        console.log("working brain with electrode")
+        console.log("working brain with network")
         canvas = canvasRef.current
 
         renderer = createRenderer(canvas)
@@ -68,7 +69,7 @@ export const BrainNetwork = ({ brain, electrodeData, sampleData }) => {
         }
 
         // console.log(brain)
-        if (brain && electrodeData) {
+        if (brain && electrodeData && bboxCenter) {
             loadBrain()
 
         }
@@ -79,7 +80,7 @@ export const BrainNetwork = ({ brain, electrodeData, sampleData }) => {
 
         window.addEventListener('resize', onWindowResize);
 
-    }, [brain, canvasRef, electrodeData]);
+    }, [bboxCenter, brain, canvasRef, electrodeData, sampleData]);
 
     return (
         <Col md='6'>
@@ -112,14 +113,14 @@ function OBJLoaderThreeJS({
     transparency,
     electrodeData
 }) {
-    console.log(bboxCenter)
-    if (bboxCenter === undefined) {
-        [bboxCenter, objBbox] = getbbox(obj)
+    if (centerBrain === undefined) {
+        // [bboxCenter, objBbox] = getbbox(obj)
+        centerBrain = getbbox(obj)
     }
 
-    obj = objMaterialManipulation(obj, color, opacity, transparency, bboxCenter);
+    obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
 
-    objBbox.setFromObject(obj);
+    // objBbox.setFromObject(obj);
     scene.add(obj);
 
     console.log("brain loaded");
@@ -128,9 +129,10 @@ function OBJLoaderThreeJS({
 
 function loadElectrode(scene, electrodeData, sampleData) {
     // console.log(electrodeData)
-    const points = populateElectrodes(electrodeData, bboxCenter);
+
+    const points = populateElectrodes(electrodeData, centerOther);
     scene.add(points);
 
-    const group = createBrainPropagation(sampleData, bboxCenter)
+    const group = createBrainPropagation(sampleData, centerOther)
     scene.add(group);
 }

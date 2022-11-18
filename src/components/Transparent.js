@@ -9,18 +9,17 @@ import {
     setOnWindowResize,
     render,
     getbbox,
-    objMaterialManipulation,
-    populateElectrodes
+    objMaterialManipulation
 } from '../library/CommonUtilities'
 
 let canvas = null;
-let renderer, scene, camera, controls, bboxCenter, objBbox;
+let renderer, scene, camera, controls, centerBrain;
 
 export const Transparent = ({
     brain,
     lesion1,
     lesion2,
-    lesion3
+    lesion3,
 }) => {
     const canvasRef = useRef(null);
     canvas = canvasRef.current;
@@ -139,17 +138,18 @@ function OBJLoaderThreeJS({
     // console.log(obj)
     if (center === true) {
         // console.log('true')
-        [bboxCenter, objBbox] = getbbox(obj)
+        // [bboxCenter, objBbox] = getbbox(obj)
+        centerBrain = getbbox(obj)
 
-        obj = objMaterialManipulation(obj, color, opacity, transparency, bboxCenter);
-        objBbox.setFromObject(obj);
+        obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
+        // objBbox.setFromObject(obj);
 
     } else {
         // console.log("false")
-        obj = objMaterialManipulation(obj, color, opacity, transparency, bboxCenter);
+
+        obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
 
     }
-    // obj.position.set(0, 0, 0)
     scene.add(obj);
 
     animate()

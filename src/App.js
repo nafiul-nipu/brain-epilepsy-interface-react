@@ -5,6 +5,7 @@ import { ComponentContainer } from './components/ComponentContainer';
 import { useElectrodeData } from './library/useElectrodeData';
 import { usePropagationData } from './library/usePropagationData';
 import { useOBJThreeJS } from './library/useOBJThreeJS';
+import { useBBoxcenter } from './library/useBBoxcenter';
 
 import brain from "./models/brain.obj"
 import lesion1_para from './models/lesion1_para.obj';
@@ -20,6 +21,10 @@ function App() {
   const brainOBJ = useOBJThreeJS({ objType: brain });
   const brain2OBJ = useOBJThreeJS({ objType: brain });
   const brain3OBJ = useOBJThreeJS({ objType: brain });
+  const brain4OBJ = useOBJThreeJS({ objType: brain });
+  const bboxCenter = useBBoxcenter({ obj: brain4OBJ })
+  console.log(bboxCenter);
+
   const electrodeDataCsv = useElectrodeData({ url: electrodeURL });
   const sampleDataCSV = usePropagationData({ url: sampleURL });
 
@@ -32,7 +37,7 @@ function App() {
 
   const lesion3OBJ = useOBJThreeJS({ objType: lesion3_para });
 
-  // console.log(lesion1OBJ);
+
 
   return (
     // <div>debugging</div>
@@ -45,6 +50,7 @@ function App() {
       lesion1={lesion1OBJ}
       lesion2={lesion2OBJ}
       lesion3={lesion3OBJ}
+      bboxCenter={bboxCenter}
     />
   );
 }

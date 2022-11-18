@@ -9,12 +9,12 @@ let aspect = width / height;
 let near = 1;
 let far = 2000;
 
-export function createRenderer(canvas) {
+export function createRenderer(canvas, autoClear = false) {
     let renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setClearColor(0X000000, 1);
-    renderer.autoClear = false;
+    renderer.autoClear = autoClear;
 
     renderer.outputEncoding = THREE.sRGBEncoding;
 
@@ -67,6 +67,8 @@ export function render(renderer, scenes, camera) {
         renderer.clearDepth();
         renderer.render(scenes[1], camera);
 
+    } else {
+        renderer.render(scenes[0], camera);
     }
 
 }

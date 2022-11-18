@@ -1,7 +1,17 @@
 import { useRef, useEffect } from "react";
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
-import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
+import {
+    createRenderer,
+    createScene,
+    createCamera,
+    createTrackballControls,
+    setOnWindowResize,
+    render,
+    getbbox,
+    objMaterialManipulation,
+    populateElectrodes
+} from '../library/CommonUtilities'
 
 let canvas = null;
 let renderer, scene, camera, controls, bboxCenter, objBbox;
@@ -19,32 +29,20 @@ export const Transparent = ({
         // console.log(canvasRef.current);
         canvas = canvasRef.current
 
-        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-        renderer.setSize((window.innerWidth / 2) - 10, window.innerHeight / 2);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setClearColor(0X000000, 1);
+        renderer = createRenderer(canvas, true)
 
-        renderer.outputEncoding = THREE.sRGBEncoding;
-
-        scene = new THREE.Scene();
+        scene = createScene();
 
         // camera
-        camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 2000);
-        camera.position.set(-250, -50, -50);
-        camera.up.set(0,0,1);
+        // camera
+        camera = createCamera()
         scene.add(camera);
 
 
         // scene.add( new THREE.AxesHelper( 1000 ) )
 
         // controls
-        controls = new TrackballControls(camera, renderer.domElement);
-        // controls.addEventListener( 'change', render );
-
-        controls.rotateSpeed = 5.0;
-        controls.zoomSpeed = 1.2;
-        controls.panSpeed = 0.8;
-        // controls.target.set(0, 0, 0)
+        controls = createTrackballControls(camera, renderer)
 
         // ambient
         scene.add(new THREE.AmbientLight(0xffffff, .2));
@@ -55,13 +53,41 @@ export const Transparent = ({
 
 
         async function loadBrain() {
-            await OBJLoaderThreeJS(scene, brain, 0X111111, 0.3, true, animate, true);
+            await OBJLoaderThreeJS({
+                scene: scene,
+                obj: brain,
+                color: 0X111111,
+                opacity: 0.3,
+                transparency: true,
+                center: true
+            });
             //load lesion1
-            await OBJLoaderThreeJS(scene, lesion1, 0XFF0000, 1, false, animate, false)
-            // //load lesion2
-            await OBJLoaderThreeJS(scene, lesion2, 0XFF0000, 1, false, animate, false)
-            // load lesion3
-            await OBJLoaderThreeJS(scene, lesion3, 0XFF0000, 1, false, animate, false)
+            await OBJLoaderThreeJS({
+                scene: scene,
+                obj: lesion1,
+                color: 0XFF0000,
+                opacity: 1,
+                transparency: false,
+                center: false
+            });
+            //load lesion2
+            await OBJLoaderThreeJS({
+                scene: scene,
+                obj: lesion2,
+                color: 0XFF0000,
+                opacity: 1,
+                transparency: false,
+                center: false
+            });
+            //load lesion3
+            await OBJLoaderThreeJS({
+                scene: scene,
+                obj: lesion3,
+                color: 0XFF0000,
+                opacity: 1,
+                transparency: false,
+                center: false
+            });
         }
         if (brain) {
             loadBrain();
@@ -86,21 +112,10 @@ export const Transparent = ({
 
 function onWindowResize() {
 
-    renderer.setSize((window.innerWidth / 2) - 10, window.innerHeight / 2);
-
-    camera.aspect = ((window.innerWidth / 2) - 10) / (window.innerHeight / 2);
-
-    controls.handleResize();
-
-    render();
+    setOnWindowResize(renderer, camera, controls, [scene]);
 
 }
 
-function render() {
-
-    renderer.render(scene, camera);
-
-}
 
 function animate() {
     requestAnimationFrame(animate)
@@ -108,57 +123,30 @@ function animate() {
     // trackball controls needs to be updated in the animation loop before it will work
     controls.update()
 
-    render()
+    render(renderer, [scene], camera)
 
 }
 
 
-function OBJLoaderThreeJS(
+function OBJLoaderThreeJS({
     scene,
     obj,
     color,
     opacity,
     transparency,
-    animate,
     center
-) {
-    // console.log(obj.children.length)
+}) {
+    // console.log(obj)
     if (center === true) {
         // console.log('true')
-        objBbox = new THREE.Box3().setFromObject(obj);
-        bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
-        bboxCenter.multiplyScalar(-1);
+        [bboxCenter, objBbox] = getbbox(obj)
 
-        obj.children.forEach((child) => {
-            if (child instanceof THREE.Mesh) {
-                child.material.color.setHex(color);
-                child.material.opacity = opacity;
-                child.material.transparent = transparency;
-                // child.geometry.center();
-
-                // child.material.side = THREE.DoubleSide;
-
-                child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
-
-            }
-        });
+        obj = objMaterialManipulation(obj, color, opacity, transparency, bboxCenter);
         objBbox.setFromObject(obj);
 
     } else {
         // console.log("false")
-        obj.children.forEach((child) => {
-            if (child instanceof THREE.Mesh) {
-                child.material.color.setHex(color);
-                child.material.opacity = opacity;
-                child.material.transparent = transparency;
-                // child.geometry.center();
-
-                // child.material.side = THREE.DoubleSide;
-
-                child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
-
-            }
-        });
+        obj = objMaterialManipulation(obj, color, opacity, transparency, bboxCenter);
 
     }
     // obj.position.set(0, 0, 0)

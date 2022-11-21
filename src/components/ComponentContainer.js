@@ -22,25 +22,26 @@ export const ComponentContainer = ({
     return (
         <Container fluid >
             <Row>
-                <BrainWithElectrode
+                {/* <BrainWithElectrode
                     brain={brainCopy}
                     electrodeData={electrodeData}
                     bboxCenter={bboxCenter}
-                />
+                /> */}
                 <Transparent
                     brain={brain}
                     lesion1={lesion11}
                     lesion2={lesion12}
                     lesion3={lesion13}
                 />
-            </Row>
-            <Row>
                 <BrainNetwork
                     brain={brainCopy2}
                     electrodeData={electrodeData}
                     sampleData={sampleData}
                     bboxCenter={bboxCenter}
                 />
+            </Row>
+            <Row>
+
                 <ElectrodeNetworkTumor
                     brain={brainCopy3}
                     lesion1={lesion21}

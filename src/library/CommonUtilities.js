@@ -103,7 +103,7 @@ export function objMaterialManipulation(obj, color, opacity, transparency, bboxC
     return obj
 }
 
-export function populateElectrodes(electrodeData, bboxCenter) {
+export function populateElectrodes(electrodeData, bboxCenter, sampleData = null) {
     let vertices = []
     for (let i = 0; i < electrodeData.length; i++) {
         // vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
@@ -128,29 +128,37 @@ export function populateElectrodes(electrodeData, bboxCenter) {
     return points
 }
 
-export function createBrainPropagation(sampleData, bboxCenter) {
-    // console.log(sampleData[0])
+export function createBrainPropagation(sampleData, bboxCenter, propagation) {
+    console.log(sampleData)
     const group = new THREE.Group();
-    // reverse sort - large to small
-    sampleData.sort((a, b) => b.frequency - a.frequency);
-    // console.log(sampleData[0])
-    // plotting top 10%
-    for (let top = 0; top < Math.round(sampleData.length * 0.1); top++) {
-        var from = new THREE.Vector3(sampleData[top].startPosition[0], sampleData[top].startPosition[1], sampleData[top].startPosition[2]);
-        var to = new THREE.Vector3(sampleData[top].endPosition[0], sampleData[top].endPosition[1], sampleData[top].endPosition[2]);
-        var direction = to.clone().sub(from);
-        var length = direction.length();
-        var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0X004D40);
-        group.add(arrowHelper)
+    if (propagation === 'top') { //top 10%
+        // reverse sort - large to small
+        sampleData.sort((a, b) => b.frequency - a.frequency);
+        // console.log(sampleData[0])
+        // plotting top 10%
+        for (let top = 0; top < Math.round(sampleData.length * 0.1); top++) {
+            var from = new THREE.Vector3(sampleData[top].startPosition[0], sampleData[top].startPosition[1], sampleData[top].startPosition[2]);
+            var to = new THREE.Vector3(sampleData[top].endPosition[0], sampleData[top].endPosition[1], sampleData[top].endPosition[2]);
+            var direction = to.clone().sub(from);
+            var length = direction.length();
+            var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0X004D40);
+            group.add(arrowHelper)
+        }
+
+    } else { // electrode wise
+        sampleData.forEach(sample => {
+            if (sample.start === propagation) {
+                var from = new THREE.Vector3(sample.startPosition[0], sample.startPosition[1], sample.startPosition[2]);
+                var to = new THREE.Vector3(sample.endPosition[0], sample.endPosition[1], sample.endPosition[2]);
+                var direction = to.clone().sub(from);
+                var length = direction.length();
+                var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0X004D40);
+                group.add(arrowHelper)
+
+            }
+        })
+
     }
-    // sampleData.forEach(sample => {
-    //     var from = new THREE.Vector3(sample.startPosition[0], sample.startPosition[1], sample.startPosition[2]);
-    //     var to = new THREE.Vector3(sample.endPosition[0], sample.endPosition[1], sample.endPosition[2]);
-    //     var direction = to.clone().sub(from);
-    //     var length = direction.length();
-    //     var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0X004D40);
-    //     group.add(arrowHelper)
-    // })
 
     // console.log(group)
     group.position.set(bboxCenter.x, bboxCenter.y, bboxCenter.z);

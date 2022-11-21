@@ -133,6 +133,6 @@ function loadElectrode(scene, electrodeData, sampleData) {
     const points = populateElectrodes(electrodeData, centerOther);
     scene.add(points);
 
-    const group = createBrainPropagation(sampleData, centerOther)
+    const group = createBrainPropagation(sampleData, centerOther, 'top')
     scene.add(group);
 }

@@ -29,67 +29,71 @@ export const ElectrodeNetworkTumor = ({
     canvas = canvasRef.current;
 
     useEffect(() => {
+        centerOther = bboxCenter;
         // console.log(canvasRef.current);
+        console.log("working brain with network")
         canvas = canvasRef.current
 
-        centerOther = bboxCenter;
-
-        renderer = createRenderer(canvas, true)
+        renderer = createRenderer(canvas)
 
         scene = createScene();
         scene2 = createScene();
 
         // camera
-        // camera
         camera = createCamera()
         scene.add(camera);
-
 
         // scene.add( new THREE.AxesHelper( 1000 ) )
 
         // controls
         controls = createTrackballControls(camera, renderer)
 
+        // const axesHelper = new THREE.AxesHelper( 100 );
+        // scene2.add( axesHelper );
+
         // ambient
         scene.add(new THREE.AmbientLight(0xffffff, .2));
 
         // light
-        const light = new THREE.PointLight(0xffffff, 1.5);
+        const light = new THREE.PointLight(0xffffff, .2);
         camera.add(light);
 
 
+        // console.log(electrodeData)
         async function loadBrain() {
             await OBJLoaderThreeJS({
                 scene: scene,
                 obj: brain,
-                color: 0Xf4a582,
-                opacity: 0.3,
-                transparency: true,
-                center: true
+                color: 0X111111,
+                opacity: 0.5,
+                transparency: true
             });
+
             //load lesion1
             await OBJLoaderThreeJS({
                 scene: scene,
                 obj: lesion1,
-                color: 0XFF0000,
+                color: 0Xf4a582,
                 opacity: 1,
                 transparency: false,
                 center: false
             });
+
             //load lesion2
             await OBJLoaderThreeJS({
                 scene: scene,
                 obj: lesion2,
-                color: 0XFF0000,
+                color: 0Xf4a582,
                 opacity: 1,
                 transparency: false,
                 center: false
             });
+
             //load lesion3
             await OBJLoaderThreeJS({
                 scene: scene,
                 obj: lesion3,
-                color: 0XFF0000,
+                color: 0Xf4a582,
                 opacity: 1,
                 transparency: false,
                 center: false
@@ -97,10 +101,12 @@ export const ElectrodeNetworkTumor = ({
 
             await loadElectrode(scene2, electrodeData, sampleData);
         }
-        if (brain && electrodeData && bboxCenter) {
-            loadBrain();
-        }
 
+        // console.log(brain)
+        if (brain && electrodeData && bboxCenter) {
+            loadBrain()
+
+        }
 
 
         // OBJMTLLoaders(scene, test, testmtl)
@@ -109,11 +115,11 @@ export const ElectrodeNetworkTumor = ({
         window.addEventListener('resize', onWindowResize);
 
     }, [bboxCenter, brain, canvasRef, electrodeData, lesion1, lesion2, lesion3, sampleData]);
+
     return (
         <Col md='6'>
             <canvas ref={el => { canvasRef.current = el; }}></canvas>
         </Col>
-
     )
 }
 
@@ -121,9 +127,7 @@ export const ElectrodeNetworkTumor = ({
 function onWindowResize() {
 
     setOnWindowResize(renderer, camera, controls, [scene, scene2]);
-
 }
-
 
 function animate() {
     requestAnimationFrame(animate)
@@ -135,32 +139,24 @@ function animate() {
 
 }
 
-
 function OBJLoaderThreeJS({
     scene,
     obj,
     color,
     opacity,
-    transparency,
-    center
+    transparency
 }) {
-    // console.log(obj)
-    if (center === true) {
-        // console.log('true')
+    if (centerBrain === undefined) {
         // [bboxCenter, objBbox] = getbbox(obj)
         centerBrain = getbbox(obj)
-
-        obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
-        // objBbox.setFromObject(obj);
-
-    } else {
-        // console.log("false")
-
-        obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
-
     }
+
+    obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
+
+    // objBbox.setFromObject(obj);
     scene.add(obj);
 
+    console.log("brain loaded");
     animate()
 }
 

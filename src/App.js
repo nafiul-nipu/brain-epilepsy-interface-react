@@ -22,8 +22,9 @@ function App() {
   const brain2OBJ = useOBJThreeJS({ objType: brain });
   const brain3OBJ = useOBJThreeJS({ objType: brain });
   const brain4OBJ = useOBJThreeJS({ objType: brain });
+  const brain5OBJ = useOBJThreeJS({ objType: brain });
   const bboxCenter = useBBoxcenter({ obj: brain4OBJ })
-  console.log(bboxCenter);
+  // console.log(bboxCenter);
 
   const electrodeDataCsv = useElectrodeData({ url: electrodeURL });
   const sampleDataCSV = usePropagationData({ url: sampleURL });
@@ -32,10 +33,12 @@ function App() {
 
   // }
   const lesion1OBJ = useOBJThreeJS({ objType: lesion1_para });
-
   const lesion2OBJ = useOBJThreeJS({ objType: lesion2_para });
-
   const lesion3OBJ = useOBJThreeJS({ objType: lesion3_para });
+
+  const lesion1OBJ2 = useOBJThreeJS({ objType: lesion1_para });
+  const lesion2OBJ2 = useOBJThreeJS({ objType: lesion2_para });
+  const lesion3OBJ2 = useOBJThreeJS({ objType: lesion3_para });
 
 
 
@@ -47,9 +50,13 @@ function App() {
       brain={brainOBJ}
       brainCopy={brain2OBJ}
       brainCopy2={brain3OBJ}
-      lesion1={lesion1OBJ}
-      lesion2={lesion2OBJ}
-      lesion3={lesion3OBJ}
+      brainCopy3={brain5OBJ}
+      lesion11={lesion1OBJ}
+      lesion12={lesion2OBJ}
+      lesion13={lesion3OBJ}
+      lesion21={lesion1OBJ2}
+      lesion22={lesion2OBJ2}
+      lesion23={lesion3OBJ2}
       bboxCenter={bboxCenter}
     />
   );

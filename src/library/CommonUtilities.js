@@ -129,15 +129,28 @@ export function populateElectrodes(electrodeData, bboxCenter) {
 }
 
 export function createBrainPropagation(sampleData, bboxCenter) {
+    // console.log(sampleData[0])
     const group = new THREE.Group();
-    sampleData.forEach(sample => {
-        var from = new THREE.Vector3(sample.startPosition[0], sample.startPosition[1], sample.startPosition[2]);
-        var to = new THREE.Vector3(sample.endPosition[0], sample.endPosition[1], sample.endPosition[2]);
+    // reverse sort - large to small
+    sampleData.sort((a, b) => b.frequency - a.frequency);
+    // console.log(sampleData[0])
+    // plotting top 10%
+    for (let top = 0; top < Math.round(sampleData.length * 0.1); top++) {
+        var from = new THREE.Vector3(sampleData[top].startPosition[0], sampleData[top].startPosition[1], sampleData[top].startPosition[2]);
+        var to = new THREE.Vector3(sampleData[top].endPosition[0], sampleData[top].endPosition[1], sampleData[top].endPosition[2]);
         var direction = to.clone().sub(from);
         var length = direction.length();
         var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0X004D40);
         group.add(arrowHelper)
-    })
+    }
+    // sampleData.forEach(sample => {
+    //     var from = new THREE.Vector3(sample.startPosition[0], sample.startPosition[1], sample.startPosition[2]);
+    //     var to = new THREE.Vector3(sample.endPosition[0], sample.endPosition[1], sample.endPosition[2]);
+    //     var direction = to.clone().sub(from);
+    //     var length = direction.length();
+    //     var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0X004D40);
+    //     group.add(arrowHelper)
+    // })
 
     // console.log(group)
     group.position.set(bboxCenter.x, bboxCenter.y, bboxCenter.z);

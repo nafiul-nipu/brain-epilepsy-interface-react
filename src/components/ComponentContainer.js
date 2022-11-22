@@ -31,7 +31,7 @@ export const ComponentContainer = ({
                     </Row>
                     <Row>
                         <Col md='12'>
-                            {/* <ElectrodeNetworkTumor
+                            <ElectrodeNetworkTumor
                                 brain={brainCopy3}
                                 lesion1={lesion21}
                                 lesion2={lesion22}
@@ -39,7 +39,7 @@ export const ComponentContainer = ({
                                 electrodeData={electrodeData}
                                 sampleData={sampleData}
                                 bboxCenter={bboxCenter}
-                            /> */}
+                            />
                         </Col>
                     </Row>
 
@@ -47,12 +47,12 @@ export const ComponentContainer = ({
                 <Col md='6'>
                     <Row>
                         <Col md='12'>
-                            <Transparent
+                            {/* <Transparent
                                 brain={brain}
                                 lesion1={lesion11}
                                 lesion2={lesion12}
                                 lesion3={lesion13}
-                            />                
+                            />                 */}
                         </Col>
                     </Row>
                     <Row>
@@ -68,12 +68,21 @@ export const ComponentContainer = ({
                                 sampleData={sampleData}
                                 bboxCenter={bboxCenter}
                             /> */}
-                            <Transparent
+                            {/* <Transparent
                                 brain={brainCopy2}
                                 lesion1={lesion21}
                                 lesion2={lesion22}
                                 lesion3={lesion23}
-                            />  
+                            />   */}
+                            <ElectrodeNetworkTumor
+                                brain={brainCopy2}
+                                lesion1={lesion11}
+                                lesion2={lesion12}
+                                lesion3={lesion13}
+                                electrodeData={electrodeData}
+                                sampleData={sampleData}
+                                bboxCenter={bboxCenter}
+                            />
                         </Col>
                     </Row>
                 </Col>

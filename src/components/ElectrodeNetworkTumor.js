@@ -15,7 +15,7 @@ import {
 } from '../library/CommonUtilities'
 
 let canvas = null;
-let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
+// let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
 let HEIGTH;
 export const ElectrodeNetworkTumor = ({
     brain,
@@ -30,25 +30,26 @@ export const ElectrodeNetworkTumor = ({
     canvas = canvasRef.current;
 
     useEffect(() => {
-        centerOther = bboxCenter;
+        let centerBrain;
+        let centerOther = bboxCenter;
         // console.log(canvasRef.current);
         console.log("working brain with network")
         canvas = canvasRef.current
 
         HEIGTH = canvasRef.current.parentElement.offsetHeight;
-        renderer = createRenderer(canvas)
+        let renderer = createRenderer(canvas)
 
-        scene = createScene();
-        scene2 = createScene();
+        let scene = createScene();
+        let scene2 = createScene();
 
         // camera
-        camera = createCamera()
+        let camera = createCamera()
         scene.add(camera);
 
         // scene.add( new THREE.AxesHelper( 1000 ) )
 
         // controls
-        controls = createTrackballControls(camera, renderer)
+        let controls = createTrackballControls(camera, renderer)
 
         // const axesHelper = new THREE.AxesHelper( 100 );
         // scene2.add( axesHelper );
@@ -116,6 +117,53 @@ export const ElectrodeNetworkTumor = ({
 
         window.addEventListener('resize', onWindowResize);
 
+        function onWindowResize() {
+
+            setOnWindowResize(renderer, camera, controls, [scene, scene2]);
+        }
+        
+        function animate() {
+            requestAnimationFrame(animate)
+        
+            // trackball controls needs to be updated in the animation loop before it will work
+            controls.update()
+        
+            render(renderer, [scene, scene2], camera)
+        
+        }
+        
+        function OBJLoaderThreeJS({
+            scene,
+            obj,
+            color,
+            opacity,
+            transparency
+        }) {
+            if (centerBrain === undefined) {
+                // [bboxCenter, objBbox] = getbbox(obj)
+                centerBrain = getbbox(obj)
+            }
+        
+            obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
+        
+            // objBbox.setFromObject(obj);
+            scene.add(obj);
+        
+            console.log("brain loaded");
+            animate()
+        }
+        
+        function loadElectrode(scene, electrodeData, sampleData) {
+            // console.log(electrodeData)
+        
+            const points = populateElectrodes(electrodeData, centerOther);
+            scene.add(points);
+        
+            const group = createBrainPropagation(sampleData, centerOther, 11)
+            scene.add(group);
+        }
+
+
     }, [bboxCenter, brain, canvasRef, electrodeData, lesion1, lesion2, lesion3, sampleData]);
 
     return (
@@ -126,48 +174,48 @@ export const ElectrodeNetworkTumor = ({
 }
 
 
-function onWindowResize() {
+// function onWindowResize() {
 
-    setOnWindowResize(renderer, camera, controls, [scene, scene2]);
-}
+//     setOnWindowResize(renderer, camera, controls, [scene, scene2]);
+// }
 
-function animate() {
-    requestAnimationFrame(animate)
+// function animate() {
+//     requestAnimationFrame(animate)
 
-    // trackball controls needs to be updated in the animation loop before it will work
-    controls.update()
+//     // trackball controls needs to be updated in the animation loop before it will work
+//     controls.update()
 
-    render(renderer, [scene, scene2], camera)
+//     render(renderer, [scene, scene2], camera)
 
-}
+// }
 
-function OBJLoaderThreeJS({
-    scene,
-    obj,
-    color,
-    opacity,
-    transparency
-}) {
-    if (centerBrain === undefined) {
-        // [bboxCenter, objBbox] = getbbox(obj)
-        centerBrain = getbbox(obj)
-    }
+// function OBJLoaderThreeJS({
+//     scene,
+//     obj,
+//     color,
+//     opacity,
+//     transparency
+// }) {
+//     if (centerBrain === undefined) {
+//         // [bboxCenter, objBbox] = getbbox(obj)
+//         centerBrain = getbbox(obj)
+//     }
 
-    obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
+//     obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
 
-    // objBbox.setFromObject(obj);
-    scene.add(obj);
+//     // objBbox.setFromObject(obj);
+//     scene.add(obj);
 
-    console.log("brain loaded");
-    animate()
-}
+//     console.log("brain loaded");
+//     animate()
+// }
 
-function loadElectrode(scene, electrodeData, sampleData) {
-    // console.log(electrodeData)
+// function loadElectrode(scene, electrodeData, sampleData) {
+//     // console.log(electrodeData)
 
-    const points = populateElectrodes(electrodeData, centerOther);
-    scene.add(points);
+//     const points = populateElectrodes(electrodeData, centerOther);
+//     scene.add(points);
 
-    const group = createBrainPropagation(sampleData, centerOther, 11)
-    scene.add(group);
-}
+//     const group = createBrainPropagation(sampleData, centerOther, 11)
+//     scene.add(group);
+// }

@@ -1,6 +1,7 @@
 import { Container, Row, Col } from "react-bootstrap"
 import { BrainNetwork } from "./BrainNetwork"
 import { BrainWithElectrode } from "./BrainWithElectrode"
+import { ElectrodeDropDown } from "./ElectrodeDropDown"
 import { ElectrodeNetworkTumor } from "./ElectrodeNetworkTumor"
 import { Transparent } from "./Transparent"
 
@@ -22,35 +23,60 @@ export const ComponentContainer = ({
     return (
         <Container fluid >
             <Row>
-                {/* <BrainWithElectrode
-                    brain={brainCopy}
-                    electrodeData={electrodeData}
-                    bboxCenter={bboxCenter}
-                /> */}
-                <Transparent
-                    brain={brain}
-                    lesion1={lesion11}
-                    lesion2={lesion12}
-                    lesion3={lesion13}
-                />
-                <BrainNetwork
-                    brain={brainCopy2}
-                    electrodeData={electrodeData}
-                    sampleData={sampleData}
-                    bboxCenter={bboxCenter}
-                />
-            </Row>
-            <Row>
+                <Col md='6'>
+                    <Row>
+                        <Col md='12' style={{height: '25vh'}}>
+                            <ElectrodeDropDown />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md='12'>
+                            <ElectrodeNetworkTumor
+                                brain={brainCopy3}
+                                lesion1={lesion21}
+                                lesion2={lesion22}
+                                lesion3={lesion23}
+                                electrodeData={electrodeData}
+                                sampleData={sampleData}
+                                bboxCenter={bboxCenter}
+                            />
+                        </Col>
+                    </Row>
 
-                <ElectrodeNetworkTumor
-                    brain={brainCopy3}
-                    lesion1={lesion21}
-                    lesion2={lesion22}
-                    lesion3={lesion23}
-                    electrodeData={electrodeData}
-                    sampleData={sampleData}
-                    bboxCenter={bboxCenter}
-                />
+                </Col>
+                <Col md='6'>
+                    <Row>
+                        <Col md='12'>
+                            <Transparent
+                                brain={brain}
+                                lesion1={lesion11}
+                                lesion2={lesion12}
+                                lesion3={lesion13}
+                            />                
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md='12'>
+                            <BrainWithElectrode
+                                brain={brainCopy}
+                                electrodeData={electrodeData}
+                                bboxCenter={bboxCenter}
+                            />
+                            {/* <BrainNetwork
+                                brain={brainCopy2}
+                                electrodeData={electrodeData}
+                                sampleData={sampleData}
+                                bboxCenter={bboxCenter}
+                            /> */}
+                            {/* <Transparent
+                                brain={brainCopy2}
+                                lesion1={lesion21}
+                                lesion2={lesion22}
+                                lesion3={lesion23}
+                            />   */}
+                        </Col>
+                    </Row>
+                </Col>
             </Row>
         </Container>
     )

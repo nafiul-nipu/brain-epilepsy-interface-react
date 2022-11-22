@@ -16,6 +16,7 @@ import {
 
 let canvas = null;
 let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
+let HEIGTH;
 export const ElectrodeNetworkTumor = ({
     brain,
     lesion1,
@@ -34,6 +35,7 @@ export const ElectrodeNetworkTumor = ({
         console.log("working brain with network")
         canvas = canvasRef.current
 
+        HEIGTH = canvasRef.current.parentElement.offsetHeight;
         renderer = createRenderer(canvas)
 
         scene = createScene();

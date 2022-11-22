@@ -13,7 +13,6 @@ import {
 } from '../library/CommonUtilities'
 
 let canvas = null;
-let renderer, scene, camera, controls, centerBrain;
 
 export const Transparent = ({
     brain,
@@ -26,22 +25,23 @@ export const Transparent = ({
 
     useEffect(() => {
         // console.log(canvasRef.current);
+        let centerBrain;
         canvas = canvasRef.current
 
-        renderer = createRenderer(canvas, true)
+        let renderer = createRenderer(canvas, true)
 
-        scene = createScene();
+        let scene = createScene();
 
         // camera
         // camera
-        camera = createCamera()
+        let camera = createCamera()
         scene.add(camera);
 
 
         // scene.add( new THREE.AxesHelper( 1000 ) )
 
         // controls
-        controls = createTrackballControls(camera, renderer)
+        let controls = createTrackballControls(camera, renderer)
 
         // ambient
         scene.add(new THREE.AmbientLight(0xffffff, .2));
@@ -99,6 +99,53 @@ export const Transparent = ({
 
         window.addEventListener('resize', onWindowResize);
 
+
+        function onWindowResize() {
+
+            setOnWindowResize(renderer, camera, controls, [scene]);
+        
+        }
+        
+        
+        function animate() {
+            requestAnimationFrame(animate)
+        
+            // trackball controls needs to be updated in the animation loop before it will work
+            controls.update()
+        
+            render(renderer, [scene], camera)
+        
+        }
+        
+        
+        function OBJLoaderThreeJS({
+            scene,
+            obj,
+            color,
+            opacity,
+            transparency,
+            center
+        }) {
+            // console.log(obj)
+            if (center === true) {
+                // console.log('true')
+                // [bboxCenter, objBbox] = getbbox(obj)
+                centerBrain = getbbox(obj)
+        
+                obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
+                // objBbox.setFromObject(obj);
+        
+            } else {
+                // console.log("false")
+        
+                obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
+        
+            }
+            scene.add(obj);
+        
+            animate()
+        }
+
     }, [brain, canvasRef, lesion1, lesion2, lesion3]);
 
     return (
@@ -109,48 +156,48 @@ export const Transparent = ({
 }
 
 
-function onWindowResize() {
+// function onWindowResize() {
 
-    setOnWindowResize(renderer, camera, controls, [scene]);
+//     setOnWindowResize(renderer, camera, controls, [scene]);
 
-}
-
-
-function animate() {
-    requestAnimationFrame(animate)
-
-    // trackball controls needs to be updated in the animation loop before it will work
-    controls.update()
-
-    render(renderer, [scene], camera)
-
-}
+// }
 
 
-function OBJLoaderThreeJS({
-    scene,
-    obj,
-    color,
-    opacity,
-    transparency,
-    center
-}) {
-    // console.log(obj)
-    if (center === true) {
-        // console.log('true')
-        // [bboxCenter, objBbox] = getbbox(obj)
-        centerBrain = getbbox(obj)
+// function animate() {
+//     requestAnimationFrame(animate)
 
-        obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
-        // objBbox.setFromObject(obj);
+//     // trackball controls needs to be updated in the animation loop before it will work
+//     controls.update()
 
-    } else {
-        // console.log("false")
+//     render(renderer, [scene], camera)
 
-        obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
+// }
 
-    }
-    scene.add(obj);
 
-    animate()
-}
+// function OBJLoaderThreeJS({
+//     scene,
+//     obj,
+//     color,
+//     opacity,
+//     transparency,
+//     center
+// }) {
+//     // console.log(obj)
+//     if (center === true) {
+//         // console.log('true')
+//         // [bboxCenter, objBbox] = getbbox(obj)
+//         centerBrain = getbbox(obj)
+
+//         obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
+//         // objBbox.setFromObject(obj);
+
+//     } else {
+//         // console.log("false")
+
+//         obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
+
+//     }
+//     scene.add(obj);
+
+//     animate()
+// }

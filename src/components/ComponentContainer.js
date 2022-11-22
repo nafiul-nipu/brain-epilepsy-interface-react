@@ -31,7 +31,7 @@ export const ComponentContainer = ({
                     </Row>
                     <Row>
                         <Col md='12'>
-                            <ElectrodeNetworkTumor
+                            {/* <ElectrodeNetworkTumor
                                 brain={brainCopy3}
                                 lesion1={lesion21}
                                 lesion2={lesion22}
@@ -39,7 +39,7 @@ export const ComponentContainer = ({
                                 electrodeData={electrodeData}
                                 sampleData={sampleData}
                                 bboxCenter={bboxCenter}
-                            />
+                            /> */}
                         </Col>
                     </Row>
 
@@ -57,23 +57,23 @@ export const ComponentContainer = ({
                     </Row>
                     <Row>
                         <Col md='12'>
-                            <BrainWithElectrode
+                            {/* <BrainWithElectrode
                                 brain={brainCopy}
                                 electrodeData={electrodeData}
                                 bboxCenter={bboxCenter}
-                            />
+                            /> */}
                             {/* <BrainNetwork
                                 brain={brainCopy2}
                                 electrodeData={electrodeData}
                                 sampleData={sampleData}
                                 bboxCenter={bboxCenter}
                             /> */}
-                            {/* <Transparent
+                            <Transparent
                                 brain={brainCopy2}
                                 lesion1={lesion21}
                                 lesion2={lesion22}
                                 lesion3={lesion23}
-                            />   */}
+                            />  
                         </Col>
                     </Row>
                 </Col>

@@ -2,8 +2,8 @@ import * as THREE from 'three';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
 import circle from '../models/disc.png'
 
-let width = (window.innerWidth / 2) - 10;
-let height = window.innerHeight / 2;
+let width = (window.innerWidth / 3) - 10;
+let height = window.innerHeight / 2 - 10;
 let angle = 40;
 let aspect = width / height;
 let near = 1;
@@ -129,7 +129,7 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null)
 }
 
 export function createBrainPropagation(sampleData, bboxCenter, propagation) {
-    console.log(sampleData)
+    // console.log(sampleData)
     const group = new THREE.Group();
     if (propagation === 'top') { //top 10%
         // reverse sort - large to small

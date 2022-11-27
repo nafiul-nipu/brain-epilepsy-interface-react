@@ -30,6 +30,7 @@ export const ElectrodeNetworkTumor = ({
     canvas = canvasRef.current;
 
     useEffect(() => {
+        // console.log("bboxcenter", bboxCenter)
         let centerBrain;
         let centerOther = bboxCenter;
         // console.log(canvasRef.current);
@@ -121,17 +122,17 @@ export const ElectrodeNetworkTumor = ({
 
             setOnWindowResize(renderer, camera, controls, [scene, scene2]);
         }
-        
+
         function animate() {
             requestAnimationFrame(animate)
-        
+
             // trackball controls needs to be updated in the animation loop before it will work
             controls.update()
-        
+
             render(renderer, [scene, scene2], camera)
-        
+
         }
-        
+
         function OBJLoaderThreeJS({
             scene,
             obj,
@@ -143,23 +144,24 @@ export const ElectrodeNetworkTumor = ({
                 // [bboxCenter, objBbox] = getbbox(obj)
                 centerBrain = getbbox(obj)
             }
-        
+
+            // console.log("centerbrain", centerBrain)
             obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
-        
+
             // objBbox.setFromObject(obj);
             scene.add(obj);
-        
+
             console.log("brain loaded");
             animate()
         }
-        
+
         function loadElectrode(scene, electrodeData, sampleData) {
-            // console.log(electrodeData)
-        
+            // console.log("CenterOther", centerOther)
+
             const points = populateElectrodes(electrodeData, centerOther);
             scene.add(points);
-        
-            const group = createBrainPropagation(sampleData, centerOther, 11)
+
+            const group = createBrainPropagation(sampleData, centerOther, 11);
             scene.add(group);
         }
 
@@ -174,48 +176,3 @@ export const ElectrodeNetworkTumor = ({
 }
 
 
-// function onWindowResize() {
-
-//     setOnWindowResize(renderer, camera, controls, [scene, scene2]);
-// }
-
-// function animate() {
-//     requestAnimationFrame(animate)
-
-//     // trackball controls needs to be updated in the animation loop before it will work
-//     controls.update()
-
-//     render(renderer, [scene, scene2], camera)
-
-// }
-
-// function OBJLoaderThreeJS({
-//     scene,
-//     obj,
-//     color,
-//     opacity,
-//     transparency
-// }) {
-//     if (centerBrain === undefined) {
-//         // [bboxCenter, objBbox] = getbbox(obj)
-//         centerBrain = getbbox(obj)
-//     }
-
-//     obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
-
-//     // objBbox.setFromObject(obj);
-//     scene.add(obj);
-
-//     console.log("brain loaded");
-//     animate()
-// }
-
-// function loadElectrode(scene, electrodeData, sampleData) {
-//     // console.log(electrodeData)
-
-//     const points = populateElectrodes(electrodeData, centerOther);
-//     scene.add(points);
-
-//     const group = createBrainPropagation(sampleData, centerOther, 11)
-//     scene.add(group);
-// }

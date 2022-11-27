@@ -8,83 +8,62 @@ import { Transparent } from "./Transparent"
 export const ComponentContainer = ({
     electrodeData,
     sampleData,
-    brain,
-    brainCopy,
-    brainCopy2,
-    brainCopy3,
-    lesion11,
-    lesion12,
-    lesion13,
-    lesion21,
-    lesion22,
-    lesion23,
+    multiBrain,
+    multiLesion1,
+    multiLesion2,
+    multiLesion3,
     bboxCenter
 }) => {
     return (
         <Container fluid >
             <Row>
-                <Col md='6'>
+                <Col md='12'>
                     <Row>
-                        <Col md='12' style={{height: '25vh'}}>
+                        <Col md='12' style={{ height: '25vh' }}>
                             <ElectrodeDropDown />
                         </Col>
                     </Row>
-                    <Row>
+                    {/* <Row>
                         <Col md='12'>
-                            <ElectrodeNetworkTumor
-                                brain={brainCopy3}
-                                lesion1={lesion21}
-                                lesion2={lesion22}
-                                lesion3={lesion23}
-                                electrodeData={electrodeData}
-                                sampleData={sampleData}
-                                bboxCenter={bboxCenter}
-                            />
+                            
                         </Col>
-                    </Row>
+                    </Row> */}
 
                 </Col>
-                <Col md='6'>
-                    <Row>
-                        <Col md='12'>
-                            {/* <Transparent
-                                brain={brain}
-                                lesion1={lesion11}
-                                lesion2={lesion12}
-                                lesion3={lesion13}
-                            />                 */}
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md='12'>
-                            {/* <BrainWithElectrode
-                                brain={brainCopy}
-                                electrodeData={electrodeData}
-                                bboxCenter={bboxCenter}
-                            /> */}
-                            {/* <BrainNetwork
-                                brain={brainCopy2}
-                                electrodeData={electrodeData}
-                                sampleData={sampleData}
-                                bboxCenter={bboxCenter}
-                            /> */}
-                            {/* <Transparent
-                                brain={brainCopy2}
-                                lesion1={lesion21}
-                                lesion2={lesion22}
-                                lesion3={lesion23}
-                            />   */}
-                            <ElectrodeNetworkTumor
-                                brain={brainCopy2}
-                                lesion1={lesion11}
-                                lesion2={lesion12}
-                                lesion3={lesion13}
-                                electrodeData={electrodeData}
-                                sampleData={sampleData}
-                                bboxCenter={bboxCenter}
-                            />
-                        </Col>
-                    </Row>
+            </Row>
+            <Row>
+                <Col md='4'>
+                    <ElectrodeNetworkTumor
+                        brain={multiBrain.obj1}
+                        lesion1={multiLesion1.obj1}
+                        lesion2={multiLesion2.obj1}
+                        lesion3={multiLesion3.obj1}
+                        electrodeData={electrodeData}
+                        sampleData={sampleData}
+                        bboxCenter={bboxCenter}
+                    />
+                </Col>
+                <Col md='4'>
+                    <ElectrodeNetworkTumor
+                        brain={multiBrain.obj2}
+                        lesion1={multiLesion1.obj2}
+                        lesion2={multiLesion2.obj2}
+                        lesion3={multiLesion3.obj2}
+                        electrodeData={electrodeData}
+                        sampleData={sampleData}
+                        bboxCenter={bboxCenter}
+                    />
+                </Col>
+                <Col md='4'>
+                    <ElectrodeNetworkTumor
+                        brain={multiBrain.obj3}
+                        lesion1={multiLesion1.obj3}
+                        lesion2={multiLesion2.obj3}
+                        lesion3={multiLesion3.obj3}
+                        electrodeData={electrodeData}
+                        sampleData={sampleData}
+                        bboxCenter={bboxCenter}
+                    />
                 </Col>
             </Row>
         </Container>

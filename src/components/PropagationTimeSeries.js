@@ -14,6 +14,11 @@ export const PropagationTimeSeries = ({
         let electrodeList3 = [...new Set(sample3.map((item) => item.start))]
         // console.log(sample1)
         // console.log(domain)
+        console.log([sample1.forEach((item) => {
+            if (item.start === electrodeList[0]) {
+                return item
+            }
+        })])
         console.log(electrodeList)
         console.log(electrodeList2)
         console.log(electrodeList3)

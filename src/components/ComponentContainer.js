@@ -1,13 +1,13 @@
 import { Container, Row, Col } from "react-bootstrap"
-import { BrainNetwork } from "./BrainNetwork"
-import { BrainWithElectrode } from "./BrainWithElectrode"
 import { ElectrodeDropDown } from "./ElectrodeDropDown"
 import { ElectrodeNetworkTumor } from "./ElectrodeNetworkTumor"
-import { Transparent } from "./Transparent"
+import { PropagationTimeSeries } from "./PropagationTimeSeries"
 
 export const ComponentContainer = ({
     electrodeData,
     sampleData,
+    sampleData2,
+    sampleData3,
     multiBrain,
     multiLesion1,
     multiLesion2,
@@ -17,18 +17,17 @@ export const ComponentContainer = ({
     return (
         <Container fluid >
             <Row>
-                <Col md='12'>
-                    <Row>
-                        <Col md='12' style={{ height: '25vh' }}>
-                            <ElectrodeDropDown />
-                        </Col>
-                    </Row>
-                    {/* <Row>
-                        <Col md='12'>
-                            
-                        </Col>
-                    </Row> */}
-
+                <Col md='12' style={{ height: '10vh' }}>
+                    <ElectrodeDropDown />
+                </Col>
+            </Row>
+            <Row>
+                <Col md='12' style={{ height: '40vh' }}>
+                    <PropagationTimeSeries
+                        sample1={sampleData}
+                        sample2={sampleData2}
+                        sample3={sampleData3}
+                    />
                 </Col>
             </Row>
             <Row>
@@ -50,7 +49,7 @@ export const ComponentContainer = ({
                         lesion2={multiLesion2.obj2}
                         lesion3={multiLesion3.obj2}
                         electrodeData={electrodeData}
-                        sampleData={sampleData}
+                        sampleData={sampleData2}
                         bboxCenter={bboxCenter}
                     />
                 </Col>
@@ -61,7 +60,7 @@ export const ComponentContainer = ({
                         lesion2={multiLesion2.obj3}
                         lesion3={multiLesion3.obj3}
                         electrodeData={electrodeData}
-                        sampleData={sampleData}
+                        sampleData={sampleData3}
                         bboxCenter={bboxCenter}
                     />
                 </Col>

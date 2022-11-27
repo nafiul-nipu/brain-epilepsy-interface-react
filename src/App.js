@@ -16,6 +16,8 @@ import { useOBJThreeStates } from './library/useOBJThreeStates';
 
 const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/ep187_electrodes_new.csv"
 const sampleURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/newSample1RealPosition.csv'
+const sampleURL2 = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/newSample2RealPosition.csv'
+const sampleURL3 = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/newSample3RealPosition.csv'
 
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
 
   const electrodeDataCsv = useElectrodeData({ url: electrodeURL });
   const sampleDataCSV = usePropagationData({ url: sampleURL });
+  const sampleDataCSV2 = usePropagationData({ url: sampleURL2 });
+  const sampleDataCSV3 = usePropagationData({ url: sampleURL3 });
 
 
   return (
@@ -36,6 +40,8 @@ function App() {
     <ComponentContainer
       electrodeData={electrodeDataCsv}
       sampleData={sampleDataCSV}
+      sampleData2={sampleDataCSV2}
+      sampleData3={sampleDataCSV3}
       multiBrain={multiBrain}
       multiLesion1={multiLesion1}
       multiLesion2={multiLesion2}

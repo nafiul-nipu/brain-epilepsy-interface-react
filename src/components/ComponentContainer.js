@@ -30,7 +30,7 @@ export const ComponentContainer = ({
                     />
                 </Col>
             </Row>
-            <Row>
+            {/* <Row>
                 <Col md='4'>
                     <ElectrodeNetworkTumor
                         brain={multiBrain.obj1}
@@ -64,7 +64,7 @@ export const ComponentContainer = ({
                         bboxCenter={bboxCenter}
                     />
                 </Col>
-            </Row>
+            </Row> */}
         </Container>
     )
 }

@@ -17,12 +17,12 @@ export const ComponentContainer = ({
     return (
         <Container fluid >
             <Row>
-                <Col md='12' style={{ height: '10vh' }}>
+                <Col md='12' style={{ height: '5vh' }}>
                     <ElectrodeDropDown />
                 </Col>
             </Row>
             <Row>
-                <Col md='12' style={{ height: '40vh' }}>
+                <Col md='12' style={{ height: '45vh' }}>
                     <PropagationTimeSeries
                         sample1={sampleData}
                         sample2={sampleData2}
@@ -30,7 +30,7 @@ export const ComponentContainer = ({
                     />
                 </Col>
             </Row>
-            {/* <Row>
+            <Row>
                 <Col md='4'>
                     <ElectrodeNetworkTumor
                         brain={multiBrain.obj1}
@@ -64,7 +64,7 @@ export const ComponentContainer = ({
                         bboxCenter={bboxCenter}
                     />
                 </Col>
-            </Row> */}
+            </Row>
         </Container>
     )
 }

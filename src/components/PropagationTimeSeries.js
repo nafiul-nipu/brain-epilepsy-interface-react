@@ -81,6 +81,7 @@ export const PropagationTimeSeries = ({
                                     yLineScale={yLineScale}
                                     yAxisScale={yAxisScale}
                                     each={each}
+                                    scaleOffset={scaleOffset}
                                 />
                             )
                         })

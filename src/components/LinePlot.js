@@ -5,13 +5,14 @@ export const LinePlot = ({
     xScale,
     yLineScale,
     yAxisScale,
-    each
+    each,
+    scaleOffset
 }) => {
     // console.log("in line plot")
     // console.log(data)
     // console.log(yAxisScale)
     return (
-        <g transform={`translate(0, ${yAxisScale(each)})`}>
+        <g transform={`translate(0, ${yAxisScale(each) + scaleOffset})`}>
             <path
                 id="line-plot"
                 fill="none"

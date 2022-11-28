@@ -1,13 +1,28 @@
-import '../App.css';
-export const AxisBottom = ({ xScale, innerHeight }) => xScale.ticks().map(tickeValue => (
-    <g className="tick" key={tickeValue} transform={`translate(${xScale(tickeValue)},0)`}>
-        <line
-            y2={innerHeight}
-        />
-        <text
-            y={innerHeight + 5}
-            dy={"0.71em"}
-            style={{ textAnchor: 'middle' }}
-        >{tickeValue}</text>
-    </g>
-));
+import React from "react";
+
+export const AxisBottom = ({ xScale, yScale, scaleOffset, innerHeight }) => {
+    const [xStart, xEnd] = xScale.range();
+    const [, yEnd] = yScale.range();
+    const ticks = xScale.ticks();
+    return (
+        <g>
+            <line className='axisLine' x1={xStart} x2={xEnd} y1={yEnd} y2={yEnd} />
+            <g className="ticks">
+                {ticks.map((t, i) => {
+                    const x = xScale(t);
+                    return (
+                        <React.Fragment key={i}>
+                            <line x1={x} x2={x} y1={yEnd} y2={yEnd + scaleOffset} />
+                            <text
+                                x={x}
+                                y={yEnd + scaleOffset * 5}
+                            >
+                                {t}
+                            </text>
+                        </React.Fragment>
+                    );
+                })}
+            </g>
+        </g>
+    );
+};

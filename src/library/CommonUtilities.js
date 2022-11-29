@@ -141,8 +141,8 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null)
 
 // creating brain network using axedhelper
 export function createBrainPropagation(sampleData, bboxCenter, propagation) {
-    console.log(sampleData)
-    console.log(propagation)
+    // console.log(sampleData)
+    // console.log(propagation)
     const group = new THREE.Group();
     if (propagation[0] === 'TopPercentile') { //top 10%
         // reverse sort - large to small

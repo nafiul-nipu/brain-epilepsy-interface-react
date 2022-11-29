@@ -38,11 +38,11 @@ function App() {
   const sampleDataCSV2 = usePropagationData({ url: sampleURL2 });
   const sampleDataCSV3 = usePropagationData({ url: sampleURL3 });
 
-  const [electrodeNetworkValue, setElectrodeVal] = useState(['ElectrodePair', 11])
+  const [electrodeNetworkValue, setElectrodeVal] = useState(["TopPercentile", "5"])
 
   function setElectrodeNetworkValue(val){
     setElectrodeVal(val)
-    console.log(electrodeNetworkValue)
+    // console.log(electrodeNetworkValue)
   }
 
 // console.log(electrodeDataCsv)

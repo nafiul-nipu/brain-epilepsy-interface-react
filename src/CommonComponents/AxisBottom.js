@@ -4,7 +4,7 @@ export const AxisBottom = ({ xScale, yScale, scaleOffset, innerHeight }) => {
     const [xStart, xEnd] = xScale.range();
     const [, yEnd] = yScale.range();
     const ticks = xScale.ticks();
-    console.log(ticks)
+    // console.log(ticks)
     return (
         <g>
             <line className='axisLine' x1={xStart} x2={xEnd} y1={yEnd} y2={yEnd} />
@@ -30,7 +30,7 @@ export const AxisBottom = ({ xScale, yScale, scaleOffset, innerHeight }) => {
                     if(t % 10 === 0){
                         const x = xScale(t);
                         return (
-                            <line x1={x} x2={x} y1={0} y2={innerHeight} className='timeLine'/>
+                            <line key={i} x1={x} x2={x} y1={0} y2={innerHeight} className='timeLine'/>
                         );                        
                     }
                 })}

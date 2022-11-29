@@ -13,6 +13,7 @@ import brain from "./models/brain.obj"
 import lesion1_para from './models/lesion1_para.obj';
 import lesion2_para from './models/lesion2_para.obj';
 import lesion3_para from './models/lesion3_para.obj';
+import { useState } from 'react';
 
 // data URLS
 const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/ep187_electrodes_new.csv"
@@ -37,6 +38,13 @@ function App() {
   const sampleDataCSV2 = usePropagationData({ url: sampleURL2 });
   const sampleDataCSV3 = usePropagationData({ url: sampleURL3 });
 
+  const [electrodeNetworkValue, setElectrodeVal] = useState(['ElectrodePair', 11])
+
+  function setElectrodeNetworkValue(val){
+    setElectrodeVal(val)
+    console.log(electrodeNetworkValue)
+  }
+
 // console.log(electrodeDataCsv)
 
   return (
@@ -52,6 +60,8 @@ function App() {
       multiLesion2={multiLesion2} //lesion2 objs
       multiLesion3={multiLesion3} // lesion3 objs
       bboxCenter={bboxCenter} //box center
+      electrodeNetworkValue={electrodeNetworkValue}
+      setElectrodeNetworkValue={setElectrodeNetworkValue}
     />
   );
 }

@@ -141,16 +141,20 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null)
 
 // creating brain network using axedhelper
 export function createBrainPropagation(sampleData, bboxCenter, propagation) {
-    // console.log(sampleData)
+    console.log(sampleData)
+    console.log(propagation)
     const group = new THREE.Group();
-    if (propagation === 'top') { //top 10%
+    if (propagation[0] === 'TopPercentile') { //top 10%
         // reverse sort - large to small
-        sampleData.sort((a, b) => b.frequency - a.frequency);
-        // console.log(sampleData[0])
-        // plotting top 10%
-        for (let top = 0; top < Math.round(sampleData.length * 0.1); top++) {
-            var from = new THREE.Vector3(sampleData[top].startPosition[0], sampleData[top].startPosition[1], sampleData[top].startPosition[2]);
-            var to = new THREE.Vector3(sampleData[top].endPosition[0], sampleData[top].endPosition[1], sampleData[top].endPosition[2]);
+        let sortedData = structuredClone(sampleData) //
+        sortedData.sort((a, b) => b.frequency - a.frequency);
+        console.log(sortedData)
+        // plotting top %
+        let percent = propagation[1] / 100;
+        console.log(sortedData.length * percent)
+        for (let top = 0; top < Math.round(sortedData.length * percent); top++) {
+            var from = new THREE.Vector3(sortedData[top].startPosition[0], sortedData[top].startPosition[1], sortedData[top].startPosition[2]);
+            var to = new THREE.Vector3(sortedData[top].endPosition[0], sortedData[top].endPosition[1], sortedData[top].endPosition[2]);
             var direction = to.clone().sub(from);
             var length = direction.length();
             var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0X004D40);
@@ -159,7 +163,7 @@ export function createBrainPropagation(sampleData, bboxCenter, propagation) {
 
     } else { // electrode wise
         sampleData.forEach(sample => {
-            if (sample.start === propagation) {
+            if (sample.start === +propagation[1]) {
                 var from = new THREE.Vector3(sample.startPosition[0], sample.startPosition[1], sample.startPosition[2]);
                 var to = new THREE.Vector3(sample.endPosition[0], sample.endPosition[1], sample.endPosition[2]);
                 var direction = to.clone().sub(from);

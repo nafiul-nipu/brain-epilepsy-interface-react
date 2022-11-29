@@ -12,14 +12,19 @@ export const ComponentContainer = ({
     multiLesion1,
     multiLesion2,
     multiLesion3,
-    bboxCenter
+    bboxCenter,
+    electrodeNetworkValue,
+    setElectrodeNetworkValue
 }) => {
     return (
         <Container fluid >
             <Row>
                 <Col md='12' style={{ height: '5vh' }}>
                     {/* dropdown menues */}
-                    <ElectrodeDropDown />
+                    <ElectrodeDropDown 
+                        electrodeData={electrodeData}
+                        setElectrodeNetworkValue={setElectrodeNetworkValue}
+                    />
                 </Col>
             </Row>
             <Row>
@@ -31,7 +36,7 @@ export const ComponentContainer = ({
                 />
             </Row>
             {/* three brain model with propagation and  network and tumors*/}
-            {/* <Row>
+            <Row>
                 <Col md='4'>
                     <ElectrodeNetworkTumor
                         brain={multiBrain.obj1}
@@ -41,6 +46,7 @@ export const ComponentContainer = ({
                         electrodeData={electrodeData}
                         sampleData={sampleData}
                         bboxCenter={bboxCenter}
+                        electrodeNetworkValue={electrodeNetworkValue}
                     />
                 </Col>
                 <Col md='4'>
@@ -52,6 +58,7 @@ export const ComponentContainer = ({
                         electrodeData={electrodeData}
                         sampleData={sampleData2}
                         bboxCenter={bboxCenter}
+                        electrodeNetworkValue={electrodeNetworkValue}
                     />
                 </Col>
                 <Col md='4'>
@@ -63,9 +70,10 @@ export const ComponentContainer = ({
                         electrodeData={electrodeData}
                         sampleData={sampleData3}
                         bboxCenter={bboxCenter}
+                        electrodeNetworkValue={electrodeNetworkValue}
                     />
                 </Col>
-            </Row> */}
+            </Row>
         </Container>
     )
 }

@@ -25,7 +25,8 @@ export const ElectrodeNetworkTumor = ({
     lesion3,
     electrodeData,
     sampleData,
-    bboxCenter
+    bboxCenter,
+    electrodeNetworkValue
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -173,7 +174,7 @@ export const ElectrodeNetworkTumor = ({
             scene.add(points);
 
             // create network
-            const group = createBrainPropagation(sampleData, centerOther, 11);
+            const group = createBrainPropagation(sampleData, centerOther, electrodeNetworkValue);
             scene.add(group);
         }
 

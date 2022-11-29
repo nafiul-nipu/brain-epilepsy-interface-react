@@ -3,10 +3,20 @@ import Form from 'react-bootstrap/Form'
 // slider module to create time slider
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import { useRef, useState } from 'react';
 export const ElectrodeDropDown = ({
-
-
+    electrodeData,
+    setElectrodeNetworkValue
 }) => {
+    const propaRef = useRef()
+    let percentile = [5, 10, 15, 20]
+    let electrodeList
+    if(electrodeData){
+        // console.log(electrodeData)
+        electrodeList = [...new Set(electrodeData.map((item) => item.electrode_number))]
+        // console.log(electrodeList)
+    }
+    const [data, setData] = useState(percentile)
     return (
         <Row>
             <Col md='3'>
@@ -25,7 +35,7 @@ export const ElectrodeDropDown = ({
                 <Form.Group as={Row} className='mb-3' controlId="formHorizontal">
                     <Form.Label column sm={4}>Propagation:</Form.Label>
                     <Col sm={8}>
-                        <Form.Select defaultValue="TopPercentile">
+                        <Form.Select defaultValue="TopPercentile" onChange={propagationOnChange} ref={propaRef}>
                             <option value='TopPercentile'> Top Percentile </option>
                             <option value='ElectrodePair'> Elcetrode Pair </option>
                         </Form.Select>
@@ -34,12 +44,17 @@ export const ElectrodeDropDown = ({
             </Col>
             <Col md='3'>
                 {/* electrode dropdown */}
-                <Form.Group as={Row} className='mb-3' controlId="formHorizontal">
+                <Form.Group as={Row} className='mb-3' controlId="formHorizontal" >
                     <Form.Label column sm={4}>Electrodes:</Form.Label>
                     <Col sm={8}>
-                        <Form.Select defaultValue="5">
-                            <option value='5'> 5%</option>
-                            <option value='10'> 10% </option>
+                        <Form.Select defaultValue="5" onChange={electrodOnChange}>
+                            {
+                                data.map(d =>{
+                                    return(
+                                        <option value={d} >{d}</option>
+                                    )
+                                })
+                            }
                         </Form.Select>
                     </Col>
                 </Form.Group>
@@ -51,8 +66,27 @@ export const ElectrodeDropDown = ({
             </Col>
         </Row>
     )
+
+
+    function propagationOnChange(event){
+        // console.log(event.target.value)
+        let val = event.target.value;
+        if(val === 'TopPercentile'){
+            setData(percentile)
+        }else{
+            setData(electrodeList)
+        }
+    }
+
+    function electrodOnChange(event){
+        let propagation = propaRef.current.value
+        let electorde = event.target.value;
+        setElectrodeNetworkValue([propagation, electorde])
+        // console.log(propaRef.current.value)
+    }
 }
 
 function onSliderChange(value) {
     console.log(value)
 }
+

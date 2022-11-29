@@ -30,8 +30,8 @@ export const ComponentContainer = ({
                     sample3={sampleData3}
                 />
             </Row>
+            {/* three brain model with propagation and  network and tumors*/}
             <Row>
-                {/* three brain model with propagation and  network and tumors*/}
                 <Col md='4'>
                     <ElectrodeNetworkTumor
                         brain={multiBrain.obj1}

@@ -9,18 +9,20 @@ export const AxisBottom = ({ xScale, yScale, scaleOffset, innerHeight }) => {
             <line className='axisLine' x1={xStart} x2={xEnd} y1={yEnd} y2={yEnd} />
             <g className="ticks">
                 {ticks.map((t, i) => {
-                    const x = xScale(t);
-                    return (
-                        <React.Fragment key={i}>
-                            <line x1={x} x2={x} y1={yEnd} y2={yEnd + scaleOffset} />
-                            <text
-                                x={x}
-                                y={yEnd + scaleOffset * 5}
-                            >
-                                {t}
-                            </text>
-                        </React.Fragment>
-                    );
+                    if(i % 3 === 0){
+                        const x = xScale(t);
+                        return (
+                            <React.Fragment key={i}>
+                                <line x1={x} x2={x} y1={yEnd} y2={yEnd + scaleOffset} />
+                                <text
+                                    x={x}
+                                    y={yEnd + scaleOffset * 5}
+                                >
+                                    {t}
+                                </text>
+                            </React.Fragment>
+                        );                        
+                    }
                 })}
             </g>
         </g>

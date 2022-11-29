@@ -1,7 +1,5 @@
-import * as d3 from 'd3'
-import { AxisBottom } from './AxisBottom'
-import { AxisLeft } from './AxisLeft'
-import { LinePlot } from './LinePlot'
+import { Col } from 'react-bootstrap'
+import { CreateTimePlot } from './CreateTimePlots'
 
 const margin = { top: 20, right: 30, bottom: 65, left: 40 }
 const scaleOffset = 5
@@ -11,86 +9,68 @@ export const PropagationTimeSeries = ({
     sample3
 }) => {
 
-    const width = window.innerWidth / 5.2
-    const height = window.innerHeight / 2
-
-    const innerHeight = height - margin.top - margin.bottom
-    const innerWidth = width - margin.right - margin.left
-
     if (sample1 && sample2 && sample3) {
 
         let electrodeList = [...new Set(sample1.map((item) => item.start))]
         let electrodeList2 = [...new Set(sample2.map((item) => item.start))]
         let electrodeList3 = [...new Set(sample3.map((item) => item.start))]
 
-        let domain1 = [...new Set(sample1.map((item) => item.frequency))]
-        console.log(domain1)
+        // let domain1 = [...new Set(sample1.map((item) => item.frequency))]
+        // console.log(domain1)
         const uniques = [...new Set(electrodeList.concat(electrodeList2, electrodeList3))]
+            .sort(function (a, b) { return a - b })
         // console.log(electrodeList)
         // console.log(sample1)
 
-        const half = Math.ceil(uniques.length / 4);
+        // console.log(uniques.length / 2)
+        let half = uniques.length / 2
         const firstHalf = uniques.slice(0, half)
         const secondHalf = uniques.slice(half)
 
-        const xAxisScale = d3.scaleLinear()
-            .domain([0, 10])
-            .range([0, innerWidth])
+        const first = firstHalf.slice(0, firstHalf.length / 2)
+        const second = firstHalf.slice(firstHalf.length / 2)
+        const third = secondHalf.slice(0, secondHalf.length / 2)
+        const fourth = secondHalf.slice(secondHalf.length / 2)
 
-
-        const yAxisScale = d3.scaleBand()
-            .domain(firstHalf)
-            .range([0, innerHeight])
+        // console.log(first.length, second.length, third.length, fourth.length)
 
         return (
-            <svg width={width} height={height}>
-                <g transform={`translate(${margin.left}, ${margin.top})`}>
-                    <AxisBottom
-                        xScale={xAxisScale}
-                        yScale={yAxisScale}
+            <>
+                <Col md='3' style={{ height: '45vh' }}>
+                    <CreateTimePlot
+                        margin={margin}
                         scaleOffset={scaleOffset}
-                        innerHeight={innerHeight}
+                        electrodeListData={first}
+                        electrodeData={sample1}
                     />
-                    <AxisLeft
-                        yScale={yAxisScale}
+                </Col>
+                <Col md='3' style={{ height: '45vh' }}>
+                    <CreateTimePlot
+                        margin={margin}
+                        scaleOffset={scaleOffset}
+                        electrodeListData={second}
+                        electrodeData={sample1}
                     />
-                    {
-                        firstHalf.map((each, i) => {
-                            // console.log(each, i);
-                            var result = sample1.filter(obj => {
-                                return obj.start === each;
-                            });
-                            if (result[0].start === 58) {
-                                console.log(result)
-                            }
-                            // console.log(each, yAxisScale(each), (yAxisScale.bandwidth() + yAxisScale(each)))
-                            let domain = [...new Set(result.map((item) => item.frequency))]
-
-                            let yLineScale = d3.scaleLinear()
-                                .domain([0, d3.max(domain)])
-                                .range([(yAxisScale.bandwidth() / 2), 0])
-
-                            let xLineScale = d3.scaleLinear()
-                                .range([0, innerWidth])
-                                .domain([0, result.length])
-
-                            return (
-                                <LinePlot
-                                    data={result}
-                                    xScale={xLineScale}
-                                    yLineScale={yLineScale}
-                                    yAxisScale={yAxisScale}
-                                    each={each}
-                                    scaleOffset={scaleOffset}
-                                />
-                            )
-                        })
-                    }
-                    {/* <LinePlot
-                    /> */}
-                </g>
-            </svg>
+                </Col>
+                <Col md='3' style={{ height: '45vh' }}>
+                    <CreateTimePlot
+                        margin={margin}
+                        scaleOffset={scaleOffset}
+                        electrodeListData={third}
+                        electrodeData={sample1}
+                    />
+                </Col>
+                <Col md='3' style={{ height: '45vh' }}>
+                    <CreateTimePlot
+                        margin={margin}
+                        scaleOffset={scaleOffset}
+                        electrodeListData={fourth}
+                        electrodeData={sample1}
+                    />
+                </Col>
+            </>
         )
+
     } else {
         return (
             <div>loading</div>

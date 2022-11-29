@@ -21,14 +21,13 @@ export const ComponentContainer = ({
                     <ElectrodeDropDown />
                 </Col>
             </Row>
+
             <Row>
-                <Col md='12' style={{ height: '45vh' }}>
-                    <PropagationTimeSeries
-                        sample1={sampleData}
-                        sample2={sampleData2}
-                        sample3={sampleData3}
-                    />
-                </Col>
+                <PropagationTimeSeries
+                    sample1={sampleData}
+                    sample2={sampleData2}
+                    sample3={sampleData3}
+                />
             </Row>
             <Row>
                 <Col md='4'>

@@ -179,7 +179,7 @@ export const ElectrodeNetworkTumor = ({
         }
 
 
-    }, [bboxCenter, brain, canvasRef, electrodeData, lesion1, lesion2, lesion3, sampleData]);
+    }, [bboxCenter, brain, canvasRef, electrodeData, lesion1, lesion2, lesion3, sampleData, electrodeNetworkValue]);
 
     return (
         <Col md='6'>

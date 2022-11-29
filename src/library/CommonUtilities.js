@@ -153,23 +153,30 @@ export function createBrainPropagation(sampleData, bboxCenter, propagation) {
         let percent = propagation[1] / 100;
         console.log(sortedData.length * percent)
         for (let top = 0; top < Math.round(sortedData.length * percent); top++) {
-            var from = new THREE.Vector3(sortedData[top].startPosition[0], sortedData[top].startPosition[1], sortedData[top].startPosition[2]);
-            var to = new THREE.Vector3(sortedData[top].endPosition[0], sortedData[top].endPosition[1], sortedData[top].endPosition[2]);
-            var direction = to.clone().sub(from);
-            var length = direction.length();
-            var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0X004D40);
-            group.add(arrowHelper)
+            let vertices = []
+            vertices.push(new THREE.Vector3(sortedData[top].startPosition[0], sortedData[top].startPosition[1], sortedData[top].startPosition[2])); //x, y, z
+            vertices.push(new THREE.Vector3(sortedData[top].endPosition[0], sortedData[top].endPosition[1], sortedData[top].endPosition[2]));
+
+            const geometry = new THREE.BufferGeometry().setFromPoints( vertices );
+
+            let material = new THREE.LineBasicMaterial( { color: 0X004D40} );
+            let line = new THREE.Line(geometry, material);
+            group.add(line);
+
         }
 
     } else { // electrode wise
         sampleData.forEach(sample => {
             if (sample.start === +propagation[1]) {
-                var from = new THREE.Vector3(sample.startPosition[0], sample.startPosition[1], sample.startPosition[2]);
-                var to = new THREE.Vector3(sample.endPosition[0], sample.endPosition[1], sample.endPosition[2]);
-                var direction = to.clone().sub(from);
-                var length = direction.length();
-                var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0X004D40);
-                group.add(arrowHelper)
+                let vertices = []
+                vertices.push(new THREE.Vector3(sample.startPosition[0], sample.startPosition[1], sample.startPosition[2])); //x, y, z
+                vertices.push(new THREE.Vector3(sample.endPosition[0], sample.endPosition[1], sample.endPosition[2]));
+
+                const geometry = new THREE.BufferGeometry().setFromPoints( vertices );
+
+                let material = new THREE.LineBasicMaterial( { color: 0X004D40} );
+                let line = new THREE.Line(geometry, material);
+                group.add(line);
 
             }
         })

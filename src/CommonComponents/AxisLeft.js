@@ -1,5 +1,5 @@
 export const AxisLeft = ({ yScale }) => yScale.domain().map(tickeValue => (
-    <g className='tick'>
+    <g className='tick' key={tickeValue}>
         <text
             key={tickeValue}
             // y={yScale(tickeValue) + yScale.bandwidth() / 2}
@@ -7,6 +7,6 @@ export const AxisLeft = ({ yScale }) => yScale.domain().map(tickeValue => (
             // x={-3}
             dy={'0.32em'}
             transform={`translate(-3, ${yScale(tickeValue) + yScale.bandwidth() / 2})`}
-        >{tickeValue}</text>
+        >{`E${tickeValue}`}</text>
     </g>
 ));

@@ -37,6 +37,7 @@ function App() {
   const sampleDataCSV2 = usePropagationData({ url: sampleURL2 });
   const sampleDataCSV3 = usePropagationData({ url: sampleURL3 });
 
+// console.log(electrodeDataCsv)
 
   return (
     // <div>debugging</div>

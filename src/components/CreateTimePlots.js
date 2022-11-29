@@ -9,7 +9,7 @@ export const CreateTimePlot = ({
     electrodeListData,
     electrodeData
 }) => {
-    console.log(electrodeData)
+    // console.log(electrodeData)
     // defining width, height, innerwidth and inner height
     const width = window.innerWidth / 5.2
     const height = window.innerHeight / 2
@@ -47,6 +47,7 @@ export const CreateTimePlot = ({
                     yAxisScale={yAxisScale}
                     xlineRange={[0, innerWidth/3]}
                     scaleOffset={scaleOffset}
+                    keyNumber={1}
                  />
 
                 <MultiLineCreation
@@ -55,6 +56,7 @@ export const CreateTimePlot = ({
                     yAxisScale={yAxisScale}
                     xlineRange={[innerWidth/3, innerWidth/1.5]}
                     scaleOffset={scaleOffset}
+                    keyNumber={2}
                  />
 
                 <MultiLineCreation
@@ -63,6 +65,7 @@ export const CreateTimePlot = ({
                     yAxisScale={yAxisScale}
                     xlineRange={[innerWidth/1.5, innerWidth]}
                     scaleOffset={scaleOffset}
+                    keyNumber={3}
                  />
                 
             </g>

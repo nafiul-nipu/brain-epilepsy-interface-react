@@ -6,9 +6,10 @@ export const MultiLineCreation = ({
     electrodeData,
     yAxisScale,
     xlineRange,
-    scaleOffset    
+    scaleOffset,
+    keyNumber    
 }) =>{ 
-    console.log(electrodeData)
+    // console.log(electrodeData)
     // for each electrode creating one line plot
     return (electrodeListData.map((each, i) => {
         // console.log(each, i);
@@ -36,12 +37,14 @@ export const MultiLineCreation = ({
 
         return (
             <LinePlot
+                key={each}
                 data={result}
                 xScale={xLineScale}
                 yLineScale={yLineScale}
                 yAxisScale={yAxisScale}
                 each={each}
                 scaleOffset={scaleOffset}
+                keyNumber={keyNumber}
             />
         )
     }))

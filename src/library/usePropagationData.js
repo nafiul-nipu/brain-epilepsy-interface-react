@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { csv } from "d3";
 
+// loading and saving the propagation data
 export const usePropagationData = ({ url }) => {
     // console.log(url)
     const [data, setData] = useState(null);

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { csv } from "d3";
 
+// loading and saving electrode data
 export const useElectrodeData = ({ url }) => {
     // console.log(url)
     const [data, setData] = useState(null);

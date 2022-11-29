@@ -1,8 +1,13 @@
+//importing react callbacks
 import { useState, useEffect } from "react";
+//three js object loader
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+
 export const useOBJThreeStates = ({
-    objType
+    objType //type of object (e.g., brain, lesions)
 }) => {
+    // configure data state
+    // three OBJ for three view another for bbox
     const [data, setData] = useState({
         obj1: null,
         obj2: null,
@@ -11,8 +16,10 @@ export const useOBJThreeStates = ({
     });
 
     useEffect(() => {
+        // three js OBJ loader
         let loader = new OBJLoader();
 
+        // loading the OBJ and save as state
         loader.load(`${objType}`, function (obj) {
             setData({
                 obj1: obj.clone(),

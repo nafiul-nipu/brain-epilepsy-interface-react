@@ -1,3 +1,5 @@
+// component renders the brain, tumors, electrodes, electrode network
+
 import { useRef, useEffect } from 'react';
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
@@ -16,7 +18,6 @@ import {
 
 let canvas = null;
 // let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
-let HEIGTH;
 export const ElectrodeNetworkTumor = ({
     brain,
     lesion1,
@@ -26,20 +27,25 @@ export const ElectrodeNetworkTumor = ({
     sampleData,
     bboxCenter
 }) => {
+    // creating canvas reference
     const canvasRef = useRef(null);
     canvas = canvasRef.current;
 
     useEffect(() => {
-        // console.log("bboxcenter", bboxCenter)
+        // brain center - for brain and lesions will calculate later
+        // for others take the center from parent
         let centerBrain;
         let centerOther = bboxCenter;
         // console.log(canvasRef.current);
         console.log("working brain with network")
+
+        // getting the canvas reference
         canvas = canvasRef.current
 
-        HEIGTH = canvasRef.current.parentElement.offsetHeight;
+        // creating renderer
         let renderer = createRenderer(canvas)
 
+        // scenes - two to map the electordes onto the brain and can be viewed from any angle
         let scene = createScene();
         let scene2 = createScene();
 
@@ -65,6 +71,7 @@ export const ElectrodeNetworkTumor = ({
 
         // console.log(electrodeData)
         async function loadBrain() {
+            // load brain
             await OBJLoaderThreeJS({
                 scene: scene,
                 obj: brain,
@@ -103,19 +110,18 @@ export const ElectrodeNetworkTumor = ({
                 center: false
             });
 
+            // load electrode and electrode network
             await loadElectrode(scene2, electrodeData, sampleData);
         }
 
         // console.log(brain)
         if (brain && electrodeData && bboxCenter) {
+            // if data is found load everything
             loadBrain()
 
         }
 
-
-        // OBJMTLLoaders(scene, test, testmtl)
-
-
+        // window resize handler
         window.addEventListener('resize', onWindowResize);
 
         function onWindowResize() {
@@ -123,6 +129,7 @@ export const ElectrodeNetworkTumor = ({
             setOnWindowResize(renderer, camera, controls, [scene, scene2]);
         }
 
+        // animation and mouse movement 
         function animate() {
             requestAnimationFrame(animate)
 
@@ -133,6 +140,7 @@ export const ElectrodeNetworkTumor = ({
 
         }
 
+        // loading threeD objects
         function OBJLoaderThreeJS({
             scene,
             obj,
@@ -142,10 +150,11 @@ export const ElectrodeNetworkTumor = ({
         }) {
             if (centerBrain === undefined) {
                 // [bboxCenter, objBbox] = getbbox(obj)
+                // get bboxcenter
                 centerBrain = getbbox(obj)
             }
 
-            // console.log("centerbrain", centerBrain)
+            // material manipulation
             obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
 
             // objBbox.setFromObject(obj);
@@ -155,12 +164,15 @@ export const ElectrodeNetworkTumor = ({
             animate()
         }
 
+        // load electrode
         function loadElectrode(scene, electrodeData, sampleData) {
             // console.log("CenterOther", centerOther)
 
+            // create points
             const points = populateElectrodes(electrodeData, centerOther);
             scene.add(points);
 
+            // create network
             const group = createBrainPropagation(sampleData, centerOther, 11);
             scene.add(group);
         }

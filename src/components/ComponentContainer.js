@@ -18,11 +18,12 @@ export const ComponentContainer = ({
         <Container fluid >
             <Row>
                 <Col md='12' style={{ height: '5vh' }}>
+                    {/* dropdown menues */}
                     <ElectrodeDropDown />
                 </Col>
             </Row>
-
             <Row>
+                {/* propagation time series */}
                 <PropagationTimeSeries
                     sample1={sampleData}
                     sample2={sampleData2}
@@ -30,6 +31,7 @@ export const ComponentContainer = ({
                 />
             </Row>
             <Row>
+                {/* three brain model with propagation and  network and tumors*/}
                 <Col md='4'>
                     <ElectrodeNetworkTumor
                         brain={multiBrain.obj1}

@@ -1,3 +1,5 @@
+// module that has common functions
+
 import * as THREE from 'three';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
 import circle from '../models/disc.png'
@@ -9,6 +11,7 @@ let aspect = width / height;
 let near = 1;
 let far = 2000;
 
+// creating renderer
 export function createRenderer(canvas, autoClear = false) {
     let renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
     renderer.setSize(width, height);
@@ -21,10 +24,12 @@ export function createRenderer(canvas, autoClear = false) {
     return renderer
 }
 
+// creating scene
 export function createScene() {
     return new THREE.Scene();
 }
 
+// creating camera
 export function createCamera() {
     let camera = new THREE.PerspectiveCamera(angle, aspect, near, far);
     camera.position.set(-250, -50, -50);
@@ -33,6 +38,7 @@ export function createCamera() {
     return camera;
 }
 
+// create controls
 export function createTrackballControls(camera, renderer) {
     let controls = new TrackballControls(camera, renderer.domElement);
     // controls.addEventListener( 'change', render );
@@ -44,6 +50,7 @@ export function createTrackballControls(camera, renderer) {
     return controls;
 }
 
+// window resize handler
 export function setOnWindowResize(renderer, camera, controls, scenes) {
 
     renderer.setSize((window.innerWidth / 2) - 10, window.innerHeight / 2);
@@ -57,6 +64,7 @@ export function setOnWindowResize(renderer, camera, controls, scenes) {
 
 }
 
+// render function
 export function render(renderer, scenes, camera) {
 
     // renderer.render(scene, camera);
@@ -73,6 +81,7 @@ export function render(renderer, scenes, camera) {
 
 }
 
+// return bboxcenter
 export function getbbox(obj) {
     console.log("changing box center");
     let objBbox = new THREE.Box3().setFromObject(obj);
@@ -84,6 +93,7 @@ export function getbbox(obj) {
     return bboxCenter;
 }
 
+// change material's trancparency, color etc
 export function objMaterialManipulation(obj, color, opacity, transparency, bboxCenter) {
     // console.log(obj)
     obj.children.forEach((child) => {
@@ -103,6 +113,7 @@ export function objMaterialManipulation(obj, color, opacity, transparency, bboxC
     return obj
 }
 
+// create electrodes using point material and sprite
 export function populateElectrodes(electrodeData, bboxCenter, sampleData = null) {
     let vertices = []
     for (let i = 0; i < electrodeData.length; i++) {
@@ -128,6 +139,7 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null)
     return points
 }
 
+// creating brain network using axedhelper
 export function createBrainPropagation(sampleData, bboxCenter, propagation) {
     // console.log(sampleData)
     const group = new THREE.Group();

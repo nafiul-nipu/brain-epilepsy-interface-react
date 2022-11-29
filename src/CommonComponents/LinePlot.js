@@ -1,5 +1,6 @@
-import { curveNatural, line } from "d3";
+import { line } from "d3";
 
+// creating the line
 export const LinePlot = ({
     data,
     xScale,

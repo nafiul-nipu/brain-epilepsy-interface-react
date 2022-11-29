@@ -3,7 +3,7 @@ import { Col } from 'react-bootstrap'
 import { CreateTimePlot } from './CreateTimePlots'
 
 // margin for SVG
-const margin = { top: 0, right: 30, bottom: 75, left: 40 }
+const margin = { top: 0, right: 30, bottom: 100, left: 40 }
 // offset variable to placement
 const scaleOffset = 5
 

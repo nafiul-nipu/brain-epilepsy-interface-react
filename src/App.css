@@ -21,4 +21,39 @@
     
 }
 
+#titleBrain1 {
+  position: absolute;
+  top: 51%;
+  right: 92%;
+  width: 7%;
+  text-align: center;
+  z-index: 100;
+  display: block;
+  color: white;
+}
+
+#titleBrain2 {
+  position: absolute;
+  top: 51%;
+  right: 59%;
+  width: 7%;
+  text-align: center;
+  z-index: 100;
+  display: block;
+  color: white;
+}
+
+
+#titleBrain3 {
+  position: absolute;
+  top: 51%;
+  right: 25%;
+  width: 7%;
+  text-align: center;
+  z-index: 100;
+  display: block;
+  color: white;
+}
+
+
 

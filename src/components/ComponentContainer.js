@@ -38,6 +38,7 @@ export const ComponentContainer = ({
             {/* three brain model with propagation and  network and tumors*/}
             <Row>
                 <Col md='4'>
+                    <div id="titleBrain1">0 min - 10 min</div>
                     <ElectrodeNetworkTumor
                         brain={multiBrain.obj1}
                         lesion1={multiLesion1.obj1}
@@ -50,6 +51,7 @@ export const ComponentContainer = ({
                     />
                 </Col>
                 <Col md='4'>
+                    <div id="titleBrain2">10 min - 20 min</div>
                     <ElectrodeNetworkTumor
                         brain={multiBrain.obj2}
                         lesion1={multiLesion1.obj2}
@@ -62,6 +64,7 @@ export const ComponentContainer = ({
                     />
                 </Col>
                 <Col md='4'>
+                    <div id="titleBrain3">20 min - 30 min</div>
                     <ElectrodeNetworkTumor
                         brain={multiBrain.obj3}
                         lesion1={multiLesion1.obj3}

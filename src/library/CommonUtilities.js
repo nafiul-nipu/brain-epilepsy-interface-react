@@ -115,6 +115,8 @@ export function objMaterialManipulation(obj, color, opacity, transparency, bboxC
 
 // create electrodes using point material and sprite
 export function populateElectrodes(electrodeData, bboxCenter, sampleData = null) {
+    console.log(sampleData)
+    console.log(electrodeData)
     let vertices = []
     for (let i = 0; i < electrodeData.length; i++) {
         // vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
@@ -148,10 +150,10 @@ export function createBrainPropagation(sampleData, bboxCenter, propagation) {
         // reverse sort - large to small
         let sortedData = structuredClone(sampleData) //
         sortedData.sort((a, b) => b.frequency - a.frequency);
-        console.log(sortedData)
+        // console.log(sortedData)
         // plotting top %
         let percent = propagation[1] / 100;
-        console.log(sortedData.length * percent)
+        // console.log(sortedData.length * percent)
         for (let top = 0; top < Math.round(sortedData.length * percent); top++) {
             let vertices = []
             vertices.push(new THREE.Vector3(sortedData[top].startPosition[0], sortedData[top].startPosition[1], sortedData[top].startPosition[2])); //x, y, z

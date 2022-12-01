@@ -41,6 +41,7 @@ function App() {
   const [electrodeNetworkValue, setElectrodeVal] = useState(["TopPercentile", "5"])
 
   function setElectrodeNetworkValue(val){
+    console.log(val)
     setElectrodeVal(val)
     // console.log(electrodeNetworkValue)
   }

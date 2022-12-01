@@ -9,14 +9,18 @@ export const ElectrodeDropDown = ({
     setElectrodeNetworkValue
 }) => {
     const propaRef = useRef()
-    let percentile = [5, 10, 15, 20]
+    const eRef = useRef()
     let electrodeList
     if(electrodeData){
         // console.log(electrodeData)
         electrodeList = [...new Set(electrodeData.map((item) => item.electrode_number))]
         // console.log(electrodeList)
     }
-    const [data, setData] = useState(percentile)
+    let data = [
+        {name: 'TopPercentile', values: [5, 10, 15, 20]},
+        {name: 'ElectrodePair', values: electrodeList}
+    ]
+    const [propagation, selectedPropagation] = useState('TopPercentile')
     return (
         <Row>
             <Col md='3'>
@@ -35,7 +39,7 @@ export const ElectrodeDropDown = ({
                 <Form.Group as={Row} className='mb-3' controlId="formHorizontal">
                     <Form.Label column sm={4}>Propagation:</Form.Label>
                     <Col sm={8}>
-                        <Form.Select defaultValue="TopPercentile" onChange={propagationOnChange} ref={propaRef}>
+                        <Form.Select value={propagation} onChange={propagationOnChange} ref={propaRef}>
                             <option value='TopPercentile'> Top Percentile </option>
                             <option value='ElectrodePair'> Elcetrode Pair </option>
                         </Form.Select>
@@ -47,11 +51,13 @@ export const ElectrodeDropDown = ({
                 <Form.Group as={Row} className='mb-3' controlId="formHorizontal" >
                     <Form.Label column sm={4}>Electrodes:</Form.Label>
                     <Col sm={8}>
-                        <Form.Select defaultValue="5" onChange={electrodOnChange}>
+                        <Form.Select onChange={electrodOnChange} ref={eRef}>
                             {
-                                data.map(d =>{
+                                data.filter(d => {
+                                    return d.name === propagation;
+                                })[0].values.map((d,i) =>{
                                     return(
-                                        <option value={d} >{d}</option>
+                                        <option value={d} key={i}>{d}</option>
                                     )
                                 })
                             }
@@ -71,18 +77,50 @@ export const ElectrodeDropDown = ({
     function propagationOnChange(event){
         // console.log(event.target.value)
         let val = event.target.value;
+        // console.log(val)
         if(val === 'TopPercentile'){
-            setData(percentile)
+            let evalue = +eRef.current.value;
+            // console.log(evalue)
+            let index
+            // console.log(data[1].values)
+            if(data[1].values.includes(evalue)){
+                index = data[1].values.indexOf(evalue)
+            }else{
+                index = 0;
+            }
+
+            if (index >= data[0].values.length){
+                index = 0;
+            }
+            // console.log(index)
+            let electrode = data[0].values[index]
+            // console.log(electrode)
+            setElectrodeNetworkValue(['TopPercentile', electrode])
+            
+
+            selectedPropagation(event.target.value)
+            // setData(percentile)
         }else{
-            setData(electrodeList)
+            let val = +eRef.current.value;
+            let index
+            if(data[0].values.includes(val)){
+                index = data[0].values.indexOf(val)
+            }else{
+                index = 0;
+            }
+            let electrode = data[1].values[index]
+            setElectrodeNetworkValue(['ElectrodePair', electrode])
+            // // setData(electrodeList)
+            // console.log(propaRef.current.value)
+            selectedPropagation(event.target.value)
         }
     }
 
     function electrodOnChange(event){
         let propagation = propaRef.current.value
-        let electorde = event.target.value;
-        setElectrodeNetworkValue([propagation, electorde])
-        // console.log(propaRef.current.value)
+        let electrode = event.target.value;
+        setElectrodeNetworkValue([propagation, electrode])
+        console.log(propaRef.current.value)
     }
 }
 

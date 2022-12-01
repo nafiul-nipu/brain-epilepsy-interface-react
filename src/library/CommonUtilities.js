@@ -115,8 +115,8 @@ export function objMaterialManipulation(obj, color, opacity, transparency, bboxC
 
 // create electrodes using point material and sprite
 export function populateElectrodes(electrodeData, bboxCenter, sampleData = null) {
-    console.log(sampleData)
-    console.log(electrodeData)
+    // console.log(sampleData)
+    // console.log(electrodeData)
     let vertices = []
     for (let i = 0; i < electrodeData.length; i++) {
         // vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);

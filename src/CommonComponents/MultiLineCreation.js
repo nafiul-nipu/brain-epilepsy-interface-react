@@ -17,7 +17,7 @@ export const MultiLineCreation = ({
         var result = electrodeData.filter(obj => {
             return obj.start === each;
         });
-        // if (result[0].start === 58) {
+        // if (result[0].start === 11) {
         //     console.log(result)
         // }
         // console.log(each, yAxisScale(each), (yAxisScale.bandwidth() + yAxisScale(each)))
@@ -33,7 +33,9 @@ export const MultiLineCreation = ({
         // line x scale
         let xLineScale = d3.scaleLinear()
             .range(xlineRange)
-            .domain([0, result.length])
+            .domain([0, result.length - 1])
+
+        // console.log(xLineScale.domain(), xLineScale.range(), xLineScale(9))
 
         return (
             <LinePlot

@@ -170,7 +170,7 @@ export const ElectrodeNetworkTumor = ({
             // console.log("CenterOther", centerOther)
 
             // create points
-            const points = populateElectrodes(electrodeData, centerOther, sampleData);
+            const points = populateElectrodes(electrodeData, centerOther, sampleData, electrodeNetworkValue);
             scene.add(points);
 
             // create network

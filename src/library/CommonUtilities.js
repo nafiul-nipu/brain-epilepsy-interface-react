@@ -114,16 +114,58 @@ export function objMaterialManipulation(obj, color, opacity, transparency, bboxC
 }
 
 // create electrodes using point material and sprite
-export function populateElectrodes(electrodeData, bboxCenter, sampleData = null) {
+export function populateElectrodes(electrodeData, bboxCenter, sampleData = null, propagation) {
     // console.log(sampleData)
-    // console.log(electrodeData)
+    console.log(electrodeData)
     let vertices = []
-    for (let i = 0; i < electrodeData.length; i++) {
-        // vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
-        vertices.push(electrodeData[i].position[0], electrodeData[i].position[1], electrodeData[i].position[2])
+    let colors = []
+    const color = new THREE.Color();
+    let pointGeometry = new THREE.BufferGeometry();
+    if(propagation[0] === 'TopPercentile'){
+        // do nothing
+        for (let i = 0; i < electrodeData.length; i++) {
+            // vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
+            vertices.push(electrodeData[i].position[0], electrodeData[i].position[1], electrodeData[i].position[2])
+        }
+        
+        pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    }else{
+        var result = sampleData.filter(obj => {
+            return obj.start === +propagation[1];
+        });
+        // console.log(result)
+        let electrodeList = [...new Set(result.map((item) => item.end))]
+        // console.log(electrodeList)
+        for (let i = 0; i < electrodeData.length; i++) {
+            // vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
+            vertices.push(electrodeData[i].position[0], electrodeData[i].position[1], electrodeData[i].position[2]);
+            if(electrodeData[i].electrode_number === +propagation[1]){
+                // console.log("start")
+                color.setRGB( 217/255 ,95/255 ,2/255 );
+                // console.log(color.r, color.g, color.b)
+                colors.push( color.r, color.g, color.b );
+            }else if (electrodeList.includes(electrodeData[i].electrode_number)){
+                // console.log('ends')
+                color.setRGB( 27/255 ,158/255 , 119/255);
+                colors.push( color.r, color.g, color.b );
+            }else{
+                color.setRGB( 215/255 , 25/255 , 28/255);
+                colors.push( color.r, color.g, color.b );
+            }
+        }
+
+        // let pointGeometry = new THREE.BufferGeometry()
+    // pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    pointGeometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+    pointGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+
     }
-    const pointGeometry = new THREE.BufferGeometry()
-    pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    
+    // const pointGeometry = new THREE.BufferGeometry()
+    // // pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    // pointGeometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+    // pointGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+
 
     const sprite = new THREE.TextureLoader().load(circle);
     const material = new THREE.PointsMaterial({
@@ -132,9 +174,10 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null)
         map: sprite,
         alphaTest: 0.5,
         transparent: true,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
+        vertexColors: true
     });
-    material.color.setHSL(0.0, 1.0, 0.5);
+    // material.color.setHSL(0.0, 1.0, 0.5);
     const points = new THREE.Points(pointGeometry, material);
     points.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
 
@@ -152,7 +195,7 @@ export function createBrainPropagation(sampleData, bboxCenter, propagation) {
         sortedData.sort((a, b) => b.frequency - a.frequency);
         // console.log(sortedData)
         // plotting top %
-        let percent = propagation[1] / 100;
+        let percent = +propagation[1] / 100;
         // console.log(sortedData.length * percent)
         for (let top = 0; top < Math.round(sortedData.length * percent); top++) {
             let vertices = []

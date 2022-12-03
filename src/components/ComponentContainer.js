@@ -36,7 +36,7 @@ export const ComponentContainer = ({
                 />
             </Row>
             {/* three brain model with propagation and  network and tumors*/}
-            {/* <Row>
+            <Row>
                 <Col md='4'>
                     <div id="titleBrain1">0 min - 10 min</div>
                     <ElectrodeNetworkTumor
@@ -76,7 +76,7 @@ export const ComponentContainer = ({
                         electrodeNetworkValue={electrodeNetworkValue}
                     />
                 </Col>
-            </Row> */}
+            </Row>
         </Container>
     )
 }

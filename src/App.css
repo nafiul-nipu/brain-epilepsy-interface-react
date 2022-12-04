@@ -24,19 +24,20 @@
 #titleBrain1 {
   position: absolute;
   top: 51%;
-  right: 92%;
+  right: 92.5%;
   width: 7%;
   text-align: center;
   z-index: 100;
   display: block;
   color: white;
+  font-size: 0.9em;
 }
 
 #titleBrain2 {
   position: absolute;
   top: 51%;
-  right: 59%;
-  width: 7%;
+  right: 58%;
+  width: 8%;
   text-align: center;
   z-index: 100;
   display: block;
@@ -47,8 +48,8 @@
 #titleBrain3 {
   position: absolute;
   top: 51%;
-  right: 25%;
-  width: 7%;
+  right: 24.5%;
+  width: 8%;
   text-align: center;
   z-index: 100;
   display: block;

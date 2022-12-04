@@ -116,19 +116,52 @@ export function objMaterialManipulation(obj, color, opacity, transparency, bboxC
 // create electrodes using point material and sprite
 export function populateElectrodes(electrodeData, bboxCenter, sampleData = null, propagation) {
     // console.log(sampleData)
-    console.log(electrodeData)
+    // console.log(electrodeData)
     let vertices = []
     let colors = []
     const color = new THREE.Color();
     let pointGeometry = new THREE.BufferGeometry();
+    // 55,126,184
     if(propagation[0] === 'TopPercentile'){
         // do nothing
-        for (let i = 0; i < electrodeData.length; i++) {
+        let sortedData = structuredClone(sampleData) //
+        sortedData.sort((a, b) => b.frequency - a.frequency);
+        let percent = +propagation[1] / 100;
+
+        let startElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.start))]
+
+        let endElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.end))]
+        // console.log(sortedData)
+        for (let top = 0; top < electrodeData.length; top++) {
             // vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
-            vertices.push(electrodeData[i].position[0], electrodeData[i].position[1], electrodeData[i].position[2])
+            // console.log(top)
+            vertices.push(electrodeData[top].position[0], electrodeData[top].position[1], electrodeData[top].position[2])
+            if(startElec.includes(electrodeData[top].electrode_number) && endElec.includes(electrodeData[top].electrode_number)){
+                // both start and end 
+                // console.log('both')
+                color.setRGB( 255/255 ,255/255 , 51/255);
+                colors.push( color.r, color.g, color.b );
+            }
+            else if(startElec.includes(electrodeData[top].electrode_number)){
+                // start electrodes
+                // console.log("start")
+                color.setRGB( 217/255 ,95/255 ,2/255 );
+                // console.log(color.r, color.g, color.b)
+                colors.push( color.r, color.g, color.b );
+            }else if (endElec.includes(electrodeData[top].electrode_number)){
+                //  end electrodes
+                // console.log('ends')
+                color.setRGB( 27/255 ,158/255 , 119/255);
+                colors.push( color.r, color.g, color.b );
+            }else{
+                // rest electrodes
+                color.setRGB( 215/255 , 25/255 , 28/255);
+                colors.push( color.r, color.g, color.b );
+            }
         }
         
         pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+        pointGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
     }else{
         var result = sampleData.filter(obj => {
             return obj.start === +propagation[1];
@@ -160,11 +193,6 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null,
     pointGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
 
     }
-    
-    // const pointGeometry = new THREE.BufferGeometry()
-    // // pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    // pointGeometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
-    // pointGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
 
 
     const sprite = new THREE.TextureLoader().load(circle);

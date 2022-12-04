@@ -169,13 +169,13 @@ export const ElectrodeNetworkTumor = ({
         function loadElectrode(scene, electrodeData, sampleData) {
             // console.log("CenterOther", centerOther)
 
-            // create points
-            const points = populateElectrodes(electrodeData, centerOther, sampleData, electrodeNetworkValue);
-            scene.add(points);
-
             // create network
             const group = createBrainPropagation(sampleData, centerOther, electrodeNetworkValue);
             scene.add(group);
+
+            // create points
+            const points = populateElectrodes(electrodeData, centerOther, sampleData, electrodeNetworkValue);
+            scene.add(points);
         }
 
 

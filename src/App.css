@@ -61,5 +61,8 @@
   height: 94%;
 }
 
+#container{
+  overflow: hidden;
+}
 
 

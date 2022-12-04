@@ -17,11 +17,11 @@ export const ComponentContainer = ({
     setElectrodeNetworkValue
 }) => {
     return (
-        <Container fluid >
+        <Container fluid id="container">
             <Row>
                 <Col md='12' style={{ height: '5vh' }}>
                     {/* dropdown menues */}
-                    <ElectrodeDropDown 
+                    <ElectrodeDropDown
                         electrodeData={electrodeData}
                         setElectrodeNetworkValue={setElectrodeNetworkValue}
                     />

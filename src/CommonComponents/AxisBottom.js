@@ -10,7 +10,7 @@ export const AxisBottom = ({ xScale, yScale, scaleOffset, innerHeight }) => {
             <line className='axisLine' x1={xStart} x2={xEnd} y1={yEnd} y2={yEnd} />
             <g className="ticks">
                 {ticks.map((t, i) => {
-                    if(i % 3 === 0){
+                    if (i % 3 === 0) {
                         const x = xScale(t);
                         return (
                             <React.Fragment key={i}>
@@ -20,18 +20,18 @@ export const AxisBottom = ({ xScale, yScale, scaleOffset, innerHeight }) => {
                                     x={x}
                                     y={yEnd + scaleOffset * 5}
                                 >
-                                    {t}
+                                    {t}min
                                 </text>
                             </React.Fragment>
-                        );                        
+                        );
                     }
                 })}
                 {ticks.map((t, i) => {
-                    if(t % 10 === 0){
+                    if (t % 10 === 0) {
                         const x = xScale(t);
                         return (
-                            <line key={i} x1={x} x2={x} y1={0} y2={innerHeight} className='timeLine'/>
-                        );                        
+                            <line key={i} x1={x} x2={x} y1={0} y2={innerHeight} className='timeLine' />
+                        );
                     }
                 })}
             </g>

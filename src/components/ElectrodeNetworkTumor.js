@@ -85,7 +85,7 @@ export const ElectrodeNetworkTumor = ({
             await OBJLoaderThreeJS({
                 scene: scene,
                 obj: lesion1,
-                color: 0Xf4a582,
+                color: 0Xf7680f,
                 opacity: 1,
                 transparency: false,
                 center: false
@@ -95,7 +95,7 @@ export const ElectrodeNetworkTumor = ({
             await OBJLoaderThreeJS({
                 scene: scene,
                 obj: lesion2,
-                color: 0Xf4a582,
+                color: 0Xf7680f,
                 opacity: 1,
                 transparency: false,
                 center: false
@@ -105,14 +105,14 @@ export const ElectrodeNetworkTumor = ({
             await OBJLoaderThreeJS({
                 scene: scene,
                 obj: lesion3,
-                color: 0Xf4a582,
+                color: 0Xf7680f,
                 opacity: 1,
                 transparency: false,
                 center: false
             });
 
             // load electrode and electrode network
-            await loadElectrode(scene2, electrodeData, sampleData);
+            await loadElectrode([scene, scene2], electrodeData, sampleData);
         }
 
         // console.log(brain)
@@ -171,11 +171,11 @@ export const ElectrodeNetworkTumor = ({
 
             // create network
             const group = createBrainPropagation(sampleData, centerOther, electrodeNetworkValue);
-            scene.add(group);
+            scene[0].add(group);
 
             // create points
             const points = populateElectrodes(electrodeData, centerOther, sampleData, electrodeNetworkValue);
-            scene.add(points);
+            scene[1].add(points);
         }
 
 

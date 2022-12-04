@@ -16,7 +16,7 @@ export function createRenderer(canvas, autoClear = false) {
     let renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setClearColor(0X000000, 1);
+    renderer.setClearColor(0Xfafbfc, 1);
     renderer.autoClear = autoClear;
 
     renderer.outputEncoding = THREE.sRGBEncoding;
@@ -122,7 +122,7 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null,
     const color = new THREE.Color();
     let pointGeometry = new THREE.BufferGeometry();
     // 55,126,184
-    if(propagation[0] === 'TopPercentile'){
+    if (propagation[0] === 'TopPercentile') {
         // do nothing
         let sortedData = structuredClone(sampleData) //
         sortedData.sort((a, b) => b.frequency - a.frequency);
@@ -136,33 +136,33 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null,
             // vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
             // console.log(top)
             vertices.push(electrodeData[top].position[0], electrodeData[top].position[1], electrodeData[top].position[2])
-            if(startElec.includes(electrodeData[top].electrode_number) && endElec.includes(electrodeData[top].electrode_number)){
+            if (startElec.includes(electrodeData[top].electrode_number) && endElec.includes(electrodeData[top].electrode_number)) {
                 // both start and end 
                 // console.log('both')
-                color.setRGB( 255/255 ,255/255 , 51/255);
-                colors.push( color.r, color.g, color.b );
+                color.setRGB(255 / 255, 255 / 255, 51 / 255);
+                colors.push(color.r, color.g, color.b);
             }
-            else if(startElec.includes(electrodeData[top].electrode_number)){
+            else if (startElec.includes(electrodeData[top].electrode_number)) {
                 // start electrodes
                 // console.log("start")
-                color.setRGB( 217/255 ,95/255 ,2/255 );
+                color.setRGB(217 / 255, 95 / 255, 2 / 255);
                 // console.log(color.r, color.g, color.b)
-                colors.push( color.r, color.g, color.b );
-            }else if (endElec.includes(electrodeData[top].electrode_number)){
+                colors.push(color.r, color.g, color.b);
+            } else if (endElec.includes(electrodeData[top].electrode_number)) {
                 //  end electrodes
                 // console.log('ends')
-                color.setRGB( 27/255 ,158/255 , 119/255);
-                colors.push( color.r, color.g, color.b );
-            }else{
+                color.setRGB(27 / 255, 158 / 255, 119 / 255);
+                colors.push(color.r, color.g, color.b);
+            } else {
                 // rest electrodes
-                color.setRGB( 215/255 , 25/255 , 28/255);
-                colors.push( color.r, color.g, color.b );
+                color.setRGB(215 / 255, 25 / 255, 28 / 255);
+                colors.push(color.r, color.g, color.b);
             }
         }
-        
+
         pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-        pointGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
-    }else{
+        pointGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    } else {
         var result = sampleData.filter(obj => {
             return obj.start === +propagation[1];
         });
@@ -172,25 +172,25 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null,
         for (let i = 0; i < electrodeData.length; i++) {
             // vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
             vertices.push(electrodeData[i].position[0], electrodeData[i].position[1], electrodeData[i].position[2]);
-            if(electrodeData[i].electrode_number === +propagation[1]){
+            if (electrodeData[i].electrode_number === +propagation[1]) {
                 // console.log("start")
-                color.setRGB( 217/255 ,95/255 ,2/255 );
+                color.setRGB(217 / 255, 95 / 255, 2 / 255);
                 // console.log(color.r, color.g, color.b)
-                colors.push( color.r, color.g, color.b );
-            }else if (electrodeList.includes(electrodeData[i].electrode_number)){
+                colors.push(color.r, color.g, color.b);
+            } else if (electrodeList.includes(electrodeData[i].electrode_number)) {
                 // console.log('ends')
-                color.setRGB( 27/255 ,158/255 , 119/255);
-                colors.push( color.r, color.g, color.b );
-            }else{
-                color.setRGB( 215/255 , 25/255 , 28/255);
-                colors.push( color.r, color.g, color.b );
+                color.setRGB(27 / 255, 158 / 255, 119 / 255);
+                colors.push(color.r, color.g, color.b);
+            } else {
+                color.setRGB(215 / 255, 25 / 255, 28 / 255);
+                colors.push(color.r, color.g, color.b);
             }
         }
 
         // let pointGeometry = new THREE.BufferGeometry()
-    // pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    pointGeometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
-    pointGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+        // pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+        pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+        pointGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
     }
 
@@ -230,9 +230,9 @@ export function createBrainPropagation(sampleData, bboxCenter, propagation) {
             vertices.push(new THREE.Vector3(sortedData[top].startPosition[0], sortedData[top].startPosition[1], sortedData[top].startPosition[2])); //x, y, z
             vertices.push(new THREE.Vector3(sortedData[top].endPosition[0], sortedData[top].endPosition[1], sortedData[top].endPosition[2]));
 
-            const geometry = new THREE.BufferGeometry().setFromPoints( vertices );
+            const geometry = new THREE.BufferGeometry().setFromPoints(vertices);
 
-            let material = new THREE.LineBasicMaterial( { color: 0X004D40} );
+            let material = new THREE.LineBasicMaterial({ color: 0X004D40 });
             let line = new THREE.Line(geometry, material);
             group.add(line);
 
@@ -245,9 +245,9 @@ export function createBrainPropagation(sampleData, bboxCenter, propagation) {
                 vertices.push(new THREE.Vector3(sample.startPosition[0], sample.startPosition[1], sample.startPosition[2])); //x, y, z
                 vertices.push(new THREE.Vector3(sample.endPosition[0], sample.endPosition[1], sample.endPosition[2]));
 
-                const geometry = new THREE.BufferGeometry().setFromPoints( vertices );
+                const geometry = new THREE.BufferGeometry().setFromPoints(vertices);
 
-                let material = new THREE.LineBasicMaterial( { color: 0X004D40} );
+                let material = new THREE.LineBasicMaterial({ color: 0X004D40 });
                 let line = new THREE.Line(geometry, material);
                 group.add(line);
 

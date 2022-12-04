@@ -65,11 +65,11 @@ export const ElectrodeDropDown = ({
                     </Col>
                 </Form.Group>
             </Col>
-            <Col md='3'>
-                {/* time slider */}
+            {/* time slider */}
+            {/* <Col md='3'>
                 Time:
                 <Slider min={10} max={30} defaultValue={10} marks={{ 10: 10, 20: 20, 30: 30 }} step={null} onChange={onSliderChange} />
-            </Col>
+            </Col> */}
         </Row>
     )
 

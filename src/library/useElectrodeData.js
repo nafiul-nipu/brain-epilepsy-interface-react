@@ -10,7 +10,7 @@ export const useElectrodeData = ({ url }) => {
         const row = d => {
             d.electrode_number = +d.electrode_number;
             d.position = JSON.parse(d.position)
-            d.newPosition = JSON.parse(d.newPosition)
+            // d.newPosition = JSON.parse(d.newPosition)
             return d
         }
         csv(url, row).then(setData)

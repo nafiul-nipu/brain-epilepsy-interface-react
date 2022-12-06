@@ -155,7 +155,7 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null,
                 colors.push(color.r, color.g, color.b);
             } else {
                 // rest electrodes
-                color.setRGB(215 / 255, 25 / 255, 28 / 255);
+                color.setRGB(160 / 255, 160 / 255, 160 / 255);
                 colors.push(color.r, color.g, color.b);
             }
         }

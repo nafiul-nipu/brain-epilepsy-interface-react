@@ -128,6 +128,7 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null,
         sortedData.sort((a, b) => b.frequency - a.frequency);
         let percent = +propagation[1] / 100;
 
+        console.log(Math.round(sortedData.length * percent))
         let startElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.start))]
 
         let endElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.end))]

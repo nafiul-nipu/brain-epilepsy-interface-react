@@ -125,6 +125,7 @@ export const ElectrodeNetworkTumor = ({
         // window resize handler
         window.addEventListener('resize', onWindowResize);
 
+
         function onWindowResize() {
 
             setOnWindowResize(renderer, camera, controls, [scene, scene2]);
@@ -133,6 +134,7 @@ export const ElectrodeNetworkTumor = ({
         // animation and mouse movement 
         function animate() {
             requestAnimationFrame(animate)
+
 
             // trackball controls needs to be updated in the animation loop before it will work
             controls.update()
@@ -174,8 +176,8 @@ export const ElectrodeNetworkTumor = ({
             // scene[0].add(group);
 
             // create points
-            const points = populateElectrodes(electrodeData, centerOther, sampleData, electrodeNetworkValue);
-            scene[1].add(points);
+            // const points = populateElectrodes(electrodeData, centerOther, sampleData, electrodeNetworkValue);
+            // scene[1].add(points);
         }
 
 

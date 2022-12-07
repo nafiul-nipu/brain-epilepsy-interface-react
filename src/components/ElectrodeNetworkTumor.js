@@ -218,13 +218,16 @@ export const ElectrodeNetworkTumor = ({
                     for (let top = 0; top < electrodeData.length; top++) {
                         if (percentileData[eachPercent].start === electrodeData[top]) {
                             // start electrode
-                            eachColor.push(0.9, 0.5, 0.2)
+                            color.setRGB(217 / 255, 95 / 255, 2 / 255);
+                            eachColor.push(color.r, color.g, color.b)
                         } else if (percentileData[eachPercent].end === electrodeData[top]) {
                             // end electrode
-                            eachColor.push(1, 0.7, 0);
+                            color.setRGB(27 / 255, 158 / 255, 119 / 255);
+                            eachColor.push(color.r, color.g, color.b);
                         } else {
                             // rest electrode
-                            eachColor.push(0.7, 0.7, 0.7);
+                            color.setRGB(160 / 255, 160 / 255, 160 / 255);
+                            eachColor.push(color.r, color.g, color.b);
                         }
                     }
                     colors.push(eachColor)
@@ -290,8 +293,9 @@ export const ElectrodeNetworkTumor = ({
                 colIdx = (colIdx + 1) % 5;;
                 // material.uniforms.color.value.copy(colors[colIdx]);
                 points.geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors[colIdx], 3));
+                // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
                 points.geometry.colorsNeedUpdate = true;
-                animate()
+                render(renderer, [scene[0], scene[1]], camera)
             }, 1000);
 
 

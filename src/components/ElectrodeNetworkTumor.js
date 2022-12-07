@@ -194,10 +194,10 @@ export const ElectrodeNetworkTumor = ({
                 sortedData.sort((a, b) => b.frequency - a.frequency);
                 let percent = +electrodeNetworkValue[1] / 100;
 
-                console.log(Math.round(sortedData.length * percent))
+                // console.log(Math.round(sortedData.length * percent))
 
                 let percentileData = sortedData.slice(0, Math.round(sortedData.length * percent))
-                console.log(percentileData)
+                // console.log(percentileData)
 
                 // add the vertices, need to loop once as positio will be same 
                 for (let top = 0; top < electrodeData.length; top++) {
@@ -212,17 +212,20 @@ export const ElectrodeNetworkTumor = ({
 
                 // let endElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.end))]
 
+                // console.log(percentileData[0])
+                // console.log(electrodeData[0])
                 for (let eachPercent = 0; eachPercent < percentileData.length; eachPercent++) {
                     // loop through the data 
                     let eachColor = []
                     for (let top = 0; top < electrodeData.length; top++) {
-                        if (percentileData[eachPercent].start === electrodeData[top]) {
+                        if (percentileData[eachPercent].start === electrodeData[top].electrode_number) {
                             // start electrode
-                            color.setRGB(217 / 255, 95 / 255, 2 / 255);
+                            // console.log('start')
+                            color.setRGB(2 / 255, 65 / 255, 166 / 255);
                             eachColor.push(color.r, color.g, color.b)
-                        } else if (percentileData[eachPercent].end === electrodeData[top]) {
+                        } else if (percentileData[eachPercent].end === electrodeData[top].electrode_number) {
                             // end electrode
-                            color.setRGB(27 / 255, 158 / 255, 119 / 255);
+                            color.setRGB(10 / 255, 166 / 255, 2 / 255);
                             eachColor.push(color.r, color.g, color.b);
                         } else {
                             // rest electrode
@@ -280,21 +283,29 @@ export const ElectrodeNetworkTumor = ({
                 vertexColors: true
             });
             // material.color.setHSL(0.0, 1.0, 0.5);
-            const points = new THREE.Points(pointGeometry, material);
+            let points = new THREE.Points(pointGeometry, material);
             points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
 
             scene[1].add(points);
 
 
-            console.log(points)
+            // console.log(points)
             // change the colours, one a second
             setInterval(function () {
-                console.log("inter")
-                colIdx = (colIdx + 1) % 5;;
-                // material.uniforms.color.value.copy(colors[colIdx]);
-                points.geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors[colIdx], 3));
+                scene[1].remove(points)
+                // console.log("inter")
+                colIdx = (colIdx + 1) % colors.length;;
+                // console.log(colors[colIdx])
+                let geometry = new THREE.BufferGeometry();
+                geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors[colIdx], 3));
                 // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
                 points.geometry.colorsNeedUpdate = true;
+                points = new THREE.Points(geometry, material);
+                points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
+
+                scene[1].add(points);
+
                 render(renderer, [scene[0], scene[1]], camera)
             }, 1000);
 

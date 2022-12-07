@@ -13,7 +13,7 @@ let far = 2000;
 
 // creating renderer
 export function createRenderer(canvas, autoClear = false) {
-    let renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+    let renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setClearColor(0Xfafbfc, 1);
@@ -51,7 +51,7 @@ export function createTrackballControls(camera, renderer) {
 }
 
 // window resize handler
-export function setOnWindowResize(renderer, camera, controls, scenes) {
+export function setOnWindowResize(renderer, camera, controls, scenes, clock, mixer) {
 
     renderer.setSize((window.innerWidth / 2) - 10, window.innerHeight / 2);
 
@@ -60,14 +60,12 @@ export function setOnWindowResize(renderer, camera, controls, scenes) {
 
     controls.handleResize();
 
-    render(renderer, scenes, camera);
+    render(renderer, scenes, camera, clock, mixer);
 
 }
 
 // render function
 export function render(renderer, scenes, camera) {
-
-    // renderer.render(scene, camera);
 
     if (scenes.length === 2) {
         renderer.clear();

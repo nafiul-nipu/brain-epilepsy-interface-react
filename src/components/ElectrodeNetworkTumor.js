@@ -187,6 +187,14 @@ export const ElectrodeNetworkTumor = ({
             const color = new THREE.Color();
             let firstColor = []
             let pointGeometry = new THREE.BufferGeometry();
+            // add the vertices, need to loop once as positio will be same 
+            for (let top = 0; top < electrodeData.length; top++) {
+                vertices.push(electrodeData[top].position[0], electrodeData[top].position[1], electrodeData[top].position[2])
+                color.setRGB(160 / 255, 160 / 255, 160 / 255);
+                firstColor.push(color.r, color.g, color.b);
+
+            }
+
             // 55,126,184
             if (electrodeNetworkValue[0] === 'TopPercentile') {
                 // do nothing
@@ -198,14 +206,6 @@ export const ElectrodeNetworkTumor = ({
 
                 let percentileData = sortedData.slice(0, Math.round(sortedData.length * percent))
                 // console.log(percentileData)
-
-                // add the vertices, need to loop once as positio will be same 
-                for (let top = 0; top < electrodeData.length; top++) {
-                    vertices.push(electrodeData[top].position[0], electrodeData[top].position[1], electrodeData[top].position[2])
-                    color.setRGB(160 / 255, 160 / 255, 160 / 255);
-                    firstColor.push(color.r, color.g, color.b);
-
-                }
 
                 // list of 
                 // let startElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.start))]
@@ -235,41 +235,38 @@ export const ElectrodeNetworkTumor = ({
                     }
                     colors.push(eachColor)
                 }
-
-                pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                pointGeometry.setAttribute('color', new THREE.Float32BufferAttribute(firstColor, 3));
             }
-            // else {
-            //     var result = sampleData.filter(obj => {
-            //         return obj.start === +electrodeNetworkValue[1];
-            //     });
-            //     // console.log(result)
-            //     let electrodeList = [...new Set(result.map((item) => item.end))]
-            //     // console.log(electrodeList)
-            //     for (let i = 0; i < electrodeData.length; i++) {
-            //         // vertices.push(electrodeData[i].newPosition[0], electrodeData[i].newPosition[1], electrodeData[i].newPosition[2]);
-            //         vertices.push(electrodeData[i].position[0], electrodeData[i].position[1], electrodeData[i].position[2]);
-            //         if (electrodeData[i].electrode_number === +electrodeNetworkValue[1]) {
-            //             // console.log("start")
-            //             color.setRGB(217 / 255, 95 / 255, 2 / 255);
-            //             // console.log(color.r, color.g, color.b)
-            //             colors.push(color.r, color.g, color.b);
-            //         } else if (electrodeList.includes(electrodeData[i].electrode_number)) {
-            //             // console.log('ends')
-            //             color.setRGB(27 / 255, 158 / 255, 119 / 255);
-            //             colors.push(color.r, color.g, color.b);
-            //         } else {
-            //             color.setRGB(215 / 255, 25 / 255, 28 / 255);
-            //             colors.push(color.r, color.g, color.b);
-            //         }
-            //     }
+            else {
+                var pairData = sampleData.filter(obj => {
+                    return obj.start === +electrodeNetworkValue[1];
+                });
+                // console.log(result)
+                // console.log(electrodeList)
+                for (let pair = 0; pair < pairData.length; pair++) {
+                    let eachColor = []
+                    for (let i = 0; i < electrodeData.length; i++) {
+                        if (electrodeData[i].electrode_number === +electrodeNetworkValue[1]) {
+                            // console.log("start")
+                            color.setRGB(2 / 255, 65 / 255, 166 / 255);
+                            // console.log(color.r, color.g, color.b)
+                            eachColor.push(color.r, color.g, color.b);
+                        } else if (electrodeData[i].electrode_number === pairData[pair].end) {
+                            // console.log('ends')
+                            color.setRGB(10 / 255, 166 / 255, 2 / 255);
+                            eachColor.push(color.r, color.g, color.b);
+                        } else {
+                            color.setRGB(160 / 255, 160 / 255, 160 / 255);
+                            eachColor.push(color.r, color.g, color.b);
+                        }
+                    }
+                    colors.push(eachColor)
 
-            //     // let pointGeometry = new THREE.BufferGeometry()
-            //     // pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-            //     pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-            //     pointGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+                }
 
-            // }
+            }
+
+            pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            pointGeometry.setAttribute('color', new THREE.Float32BufferAttribute(firstColor, 3));
 
 
             const sprite = new THREE.TextureLoader().load(circle);

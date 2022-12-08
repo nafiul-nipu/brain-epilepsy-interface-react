@@ -185,6 +185,7 @@ export const ElectrodeNetworkTumor = ({
                 firstColor.push(color.r, color.g, color.b);
 
             }
+            colors.push(firstColor)
 
             // 55,126,184
             if (electrodeNetworkValue[0] === 'TopPercentile') {
@@ -208,7 +209,8 @@ export const ElectrodeNetworkTumor = ({
                             eachColor.push(color.r, color.g, color.b)
                         } else if (percentileData[eachPercent].end === electrodeData[top].electrode_number) {
                             // end electrode
-                            color.setRGB(10 / 255, 166 / 255, 2 / 255);
+                            // color.setRGB(10 / 255, 166 / 255, 2 / 255);
+                            color.setRGB(2 / 255, 65 / 255, 166 / 255);
                             eachColor.push(color.r, color.g, color.b);
                         } else {
                             // rest electrode

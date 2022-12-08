@@ -28,15 +28,31 @@ export const ComponentContainer = ({
                 </Col>
             </Row>
             <Row>
-                {/* propagation time series */}
-                <PropagationTimeSeries
-                    sample1={sampleData}
-                    sample2={sampleData2}
-                    sample3={sampleData3}
-                />
+                <Col md='8'>
+                    {/* propagation time series */}
+                    <PropagationTimeSeries
+                        sample1={sampleData}
+                        sample2={sampleData2}
+                        sample3={sampleData3}
+                    />
+                </Col>
+                <Col md='4'>
+                    <div id="titleBrain1">Propagation Over Time</div>
+                    <ElectrodeNetworkTumor
+                        brain={multiBrain.obj1}
+                        lesion1={multiLesion1.obj1}
+                        lesion2={multiLesion2.obj1}
+                        lesion3={multiLesion3.obj1}
+                        electrodeData={electrodeData}
+                        sampleData={sampleData}
+                        bboxCenter={bboxCenter}
+                        electrodeNetworkValue={electrodeNetworkValue}
+                    />
+                </Col>
+
             </Row>
             {/* three brain model with propagation and  network and tumors*/}
-            <Row>
+            {/* <Row>
                 <Col md='4'>
                     <div id="titleBrain1">0 min - 10 min</div>
                     <ElectrodeNetworkTumor
@@ -76,7 +92,7 @@ export const ComponentContainer = ({
                         electrodeNetworkValue={electrodeNetworkValue}
                     />
                 </Col>
-            </Row>
+            </Row> */}
         </Container>
     )
 }

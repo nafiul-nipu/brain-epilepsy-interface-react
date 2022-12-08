@@ -12,8 +12,8 @@ export const CreateTimePlot = ({
 }) => {
     // console.log(electrodeData)
     // defining width, height, innerwidth and inner height
-    const width = window.innerWidth / 4.15
-    const height = window.innerHeight / 2
+    const width = window.innerWidth / 3
+    const height = window.innerHeight
 
     const innerHeight = height - margin.top - margin.bottom
     const innerWidth = width - margin.right - margin.left

@@ -23,9 +23,9 @@ export const useOBJThreeStates = ({
         loader.load(`${objType}`, function (obj) {
             setData({
                 obj1: obj.clone(),
-                obj2: obj.clone(),
-                obj3: obj.clone(),
-                obj4: obj.clone()
+                // obj2: obj.clone(),
+                // obj3: obj.clone(),
+                // obj4: obj.clone()
             });
         })
     }, [objType])

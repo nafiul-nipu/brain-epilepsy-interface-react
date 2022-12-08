@@ -1,5 +1,5 @@
 // creating line plots for propagations
-import { Col } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import { CreateTimePlot } from './CreateTimePlots'
 import * as d3 from 'd3'
 
@@ -47,26 +47,26 @@ export const PropagationTimeSeries = ({
         const fourth = secondHalf.slice(secondHalf.length / 2)
 
         return (
-            <>
-                <Col md='3' style={{ height: '45vh' }}>
+            <Row>
+                <Col md='6' style={{ height: '95vh' }}>
                     <CreateTimePlot
                         margin={margin}
                         scaleOffset={scaleOffset}
-                        electrodeListData={first}
+                        electrodeListData={firstHalf}
                         electrodeData={[sample1, sample2, sample3]}
                         domain={domain}
                     />
                 </Col>
-                <Col md='3' style={{ height: '45vh' }}>
+                <Col md='6' style={{ height: '95vh' }}>
                     <CreateTimePlot
                         margin={margin}
                         scaleOffset={scaleOffset}
-                        electrodeListData={second}
+                        electrodeListData={secondHalf}
                         electrodeData={[sample1, sample2, sample3]}
                         domain={domain}
                     />
                 </Col>
-                <Col md='3' style={{ height: '45vh' }}>
+                {/* <Col md='3' style={{ height: '45vh' }}>
                     <CreateTimePlot
                         margin={margin}
                         scaleOffset={scaleOffset}
@@ -83,8 +83,8 @@ export const PropagationTimeSeries = ({
                         electrodeData={[sample1, sample2, sample3]}
                         domain={domain}
                     />
-                </Col>
-            </>
+                </Col> */}
+            </Row>
         )
 
     } else {

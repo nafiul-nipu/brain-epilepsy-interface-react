@@ -171,15 +171,6 @@ export const ElectrodeNetworkTumor = ({
 
         // load electrode
         function loadElectrode(scene, electrodeData, sampleData) {
-            // console.log("CenterOther", centerOther)
-
-            // create network
-            // const group = createBrainPropagation(sampleData, centerOther, electrodeNetworkValue);
-            // scene[0].add(group);
-
-            // create points
-            // const points = populateElectrodes(electrodeData, centerOther, sampleData, electrodeNetworkValue);
-            // scene[1].add(points);
 
             let vertices = []
             let colors = []
@@ -205,15 +196,7 @@ export const ElectrodeNetworkTumor = ({
                 // console.log(Math.round(sortedData.length * percent))
 
                 let percentileData = sortedData.slice(0, Math.round(sortedData.length * percent))
-                // console.log(percentileData)
 
-                // list of 
-                // let startElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.start))]
-
-                // let endElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.end))]
-
-                // console.log(percentileData[0])
-                // console.log(electrodeData[0])
                 for (let eachPercent = 0; eachPercent < percentileData.length; eachPercent++) {
                     // loop through the data 
                     let eachColor = []

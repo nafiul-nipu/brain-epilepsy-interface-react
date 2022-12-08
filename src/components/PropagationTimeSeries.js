@@ -1,6 +1,7 @@
 // creating line plots for propagations
 import { Col } from 'react-bootstrap'
 import { CreateTimePlot } from './CreateTimePlots'
+import * as d3 from 'd3'
 
 // margin for SVG
 const margin = { top: 0, right: 30, bottom: 100, left: 40 }
@@ -22,7 +23,16 @@ export const PropagationTimeSeries = ({
         // ccreating the list of electrodes with unique values, sorting smaller to larger
         const uniques = [...new Set(electrodeList.concat(electrodeList2, electrodeList3))]
             .sort(function (a, b) { return a - b })
-       
+
+        // getting frequency values
+        let dom1 = d3.extent([...new Set(sample1.map((item) => item.frequency))])
+        let dom2 = d3.extent([...new Set(sample2.map((item) => item.frequency))])
+        let dom3 = d3.extent([...new Set(sample3.map((item) => item.frequency))])
+
+        let domains = [...dom1, ...dom2, ...dom3]
+        // console.log(domains)
+        // gettign the domain
+        let domain = d3.extent(domains)
 
         // dividing the array into four sub arrays
         // first divide the array into two
@@ -44,6 +54,7 @@ export const PropagationTimeSeries = ({
                         scaleOffset={scaleOffset}
                         electrodeListData={first}
                         electrodeData={[sample1, sample2, sample3]}
+                        domain={domain}
                     />
                 </Col>
                 <Col md='3' style={{ height: '45vh' }}>
@@ -52,6 +63,7 @@ export const PropagationTimeSeries = ({
                         scaleOffset={scaleOffset}
                         electrodeListData={second}
                         electrodeData={[sample1, sample2, sample3]}
+                        domain={domain}
                     />
                 </Col>
                 <Col md='3' style={{ height: '45vh' }}>
@@ -60,6 +72,7 @@ export const PropagationTimeSeries = ({
                         scaleOffset={scaleOffset}
                         electrodeListData={third}
                         electrodeData={[sample1, sample2, sample3]}
+                        domain={domain}
                     />
                 </Col>
                 <Col md='3' style={{ height: '45vh' }}>
@@ -68,6 +81,7 @@ export const PropagationTimeSeries = ({
                         scaleOffset={scaleOffset}
                         electrodeListData={fourth}
                         electrodeData={[sample1, sample2, sample3]}
+                        domain={domain}
                     />
                 </Col>
             </>

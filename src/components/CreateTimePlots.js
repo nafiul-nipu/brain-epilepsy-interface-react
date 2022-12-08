@@ -7,7 +7,8 @@ export const CreateTimePlot = ({
     margin,
     scaleOffset,
     electrodeListData,
-    electrodeData
+    electrodeData,
+    domain
 }) => {
     // console.log(electrodeData)
     // defining width, height, innerwidth and inner height
@@ -25,6 +26,7 @@ export const CreateTimePlot = ({
     const yAxisScale = d3.scaleBand()
         .domain(electrodeListData)
         .range([0, innerHeight])
+
 
     return (
         <svg width={width} height={height}>
@@ -45,29 +47,32 @@ export const CreateTimePlot = ({
                     electrodeListData={electrodeListData}
                     electrodeData={electrodeData[0]}
                     yAxisScale={yAxisScale}
-                    xlineRange={[0, innerWidth/3]}
+                    xlineRange={[0, innerWidth / 3]}
                     scaleOffset={scaleOffset}
                     keyNumber={1}
-                 />
+                    domain={domain}
+                />
 
                 <MultiLineCreation
                     electrodeListData={electrodeListData}
                     electrodeData={electrodeData[1]}
                     yAxisScale={yAxisScale}
-                    xlineRange={[innerWidth/3, innerWidth/1.5]}
+                    xlineRange={[innerWidth / 3, innerWidth / 1.5]}
                     scaleOffset={scaleOffset}
                     keyNumber={2}
-                 />
+                    domain={domain}
+                />
 
                 <MultiLineCreation
                     electrodeListData={electrodeListData}
                     electrodeData={electrodeData[2]}
                     yAxisScale={yAxisScale}
-                    xlineRange={[innerWidth/1.5, innerWidth]}
+                    xlineRange={[innerWidth / 1.5, innerWidth]}
                     scaleOffset={scaleOffset}
                     keyNumber={3}
-                 />
-                
+                    domain={domain}
+                />
+
             </g>
         </svg>
     )

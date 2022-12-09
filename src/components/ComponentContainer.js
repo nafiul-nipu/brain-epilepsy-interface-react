@@ -44,7 +44,7 @@ export const ComponentContainer = ({
                         lesion2={multiLesion2.obj1}
                         lesion3={multiLesion3.obj1}
                         electrodeData={electrodeData}
-                        sampleData={sampleData}
+                        sampleData={[sampleData, sampleData2, sampleData3]}
                         bboxCenter={bboxCenter}
                         electrodeNetworkValue={electrodeNetworkValue}
                     />

@@ -189,25 +189,26 @@ export const ElectrodeNetworkTumor = ({
 
             // 55,126,184
             if (electrodeNetworkValue[0] === 'TopPercentile') {
-                // do nothing
-                let sortedData = structuredClone(sampleData) //
-                sortedData.sort((a, b) => b.frequency - a.frequency);
-                let percent = +electrodeNetworkValue[1] / 100;
+                sampleData.forEach(data => {
+                    // do nothing
+                    let sortedData = structuredClone(data) //
+                    sortedData.sort((a, b) => b.frequency - a.frequency);
+                    let percent = +electrodeNetworkValue[1] / 100;
 
-                // console.log(Math.round(sortedData.length * percent))
+                    // console.log(Math.round(sortedData.length * percent))
+                    let startElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.start))]
 
-                let percentileData = sortedData.slice(0, Math.round(sortedData.length * percent))
+                    let endElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.end))]
 
-                for (let eachPercent = 0; eachPercent < percentileData.length; eachPercent++) {
                     // loop through the data 
                     let eachColor = []
                     for (let top = 0; top < electrodeData.length; top++) {
-                        if (percentileData[eachPercent].start === electrodeData[top].electrode_number) {
+                        if (startElec.includes(electrodeData[top].electrode_number)) {
                             // start electrode
                             // console.log('start')
                             color.setRGB(2 / 255, 65 / 255, 166 / 255);
                             eachColor.push(color.r, color.g, color.b)
-                        } else if (percentileData[eachPercent].end === electrodeData[top].electrode_number) {
+                        } else if (endElec.includes(electrodeData[top].electrode_number)) {
                             // end electrode
                             // color.setRGB(10 / 255, 166 / 255, 2 / 255);
                             color.setRGB(2 / 255, 65 / 255, 166 / 255);
@@ -219,15 +220,17 @@ export const ElectrodeNetworkTumor = ({
                         }
                     }
                     colors.push(eachColor)
-                }
+
+                })
             }
             else {
-                var pairData = sampleData.filter(obj => {
-                    return obj.start === +electrodeNetworkValue[1];
-                });
-                // console.log(result)
-                // console.log(electrodeList)
-                for (let pair = 0; pair < pairData.length; pair++) {
+
+                sampleData.forEach(data => {
+                    var pairData = data.filter(obj => {
+                        return obj.start === +electrodeNetworkValue[1];
+                    });
+                    let electrodeList = [...new Set(pairData.map((item) => item.end))]
+
                     let eachColor = []
                     for (let i = 0; i < electrodeData.length; i++) {
                         if (electrodeData[i].electrode_number === +electrodeNetworkValue[1]) {
@@ -235,9 +238,10 @@ export const ElectrodeNetworkTumor = ({
                             color.setRGB(2 / 255, 65 / 255, 166 / 255);
                             // console.log(color.r, color.g, color.b)
                             eachColor.push(color.r, color.g, color.b);
-                        } else if (electrodeData[i].electrode_number === pairData[pair].end) {
+                        } else if (electrodeList.includes(electrodeData[i].electrode_number)) {
                             // console.log('ends')
                             color.setRGB(10 / 255, 166 / 255, 2 / 255);
+                            // color.setRGB(2 / 255, 65 / 255, 166 / 255);
                             eachColor.push(color.r, color.g, color.b);
                         } else {
                             color.setRGB(160 / 255, 160 / 255, 160 / 255);
@@ -246,7 +250,7 @@ export const ElectrodeNetworkTumor = ({
                     }
                     colors.push(eachColor)
 
-                }
+                })
 
             }
 

@@ -181,7 +181,8 @@ export const ElectrodeNetworkTumor = ({
             // add the vertices, need to loop once as positio will be same 
             for (let top = 0; top < electrodeData.length; top++) {
                 vertices.push(electrodeData[top].position[0], electrodeData[top].position[1], electrodeData[top].position[2])
-                color.setRGB(160 / 255, 160 / 255, 160 / 255);
+                color.setRGB(10 / 255, 10 / 255, 10 / 255);
+                // color.setRGB(253 / 255, 180 / 255, 98 / 255);
                 firstColor.push(color.r, color.g, color.b);
 
             }
@@ -206,16 +207,17 @@ export const ElectrodeNetworkTumor = ({
                         if (startElec.includes(electrodeData[top].electrode_number)) {
                             // start electrode
                             // console.log('start')
-                            color.setRGB(2 / 255, 65 / 255, 166 / 255);
+                            color.setRGB(3 / 255, 218 / 255, 197 / 255);
                             eachColor.push(color.r, color.g, color.b)
                         } else if (endElec.includes(electrodeData[top].electrode_number)) {
                             // end electrode
                             // color.setRGB(10 / 255, 166 / 255, 2 / 255);
-                            color.setRGB(2 / 255, 65 / 255, 166 / 255);
+                            color.setRGB(3 / 255, 218 / 255, 197 / 255);
                             eachColor.push(color.r, color.g, color.b);
                         } else {
                             // rest electrode
-                            color.setRGB(160 / 255, 160 / 255, 160 / 255);
+                            // color.setRGB(253 / 255, 180 / 255, 98 / 255);
+                            color.setRGB(10 / 255, 10 / 255, 10 / 255);
                             eachColor.push(color.r, color.g, color.b);
                         }
                     }
@@ -235,16 +237,17 @@ export const ElectrodeNetworkTumor = ({
                     for (let i = 0; i < electrodeData.length; i++) {
                         if (electrodeData[i].electrode_number === +electrodeNetworkValue[1]) {
                             // console.log("start")
-                            color.setRGB(2 / 255, 65 / 255, 166 / 255);
+                            color.setRGB(255 / 255, 111 / 255, 97 / 255);
                             // console.log(color.r, color.g, color.b)
                             eachColor.push(color.r, color.g, color.b);
                         } else if (electrodeList.includes(electrodeData[i].electrode_number)) {
                             // console.log('ends')
-                            color.setRGB(10 / 255, 166 / 255, 2 / 255);
+                            // color.setRGB(249 / 255, 251 / 255, 178 / 255);
+                            color.setRGB(3 / 255, 218 / 255, 197 / 255);
                             // color.setRGB(2 / 255, 65 / 255, 166 / 255);
                             eachColor.push(color.r, color.g, color.b);
                         } else {
-                            color.setRGB(160 / 255, 160 / 255, 160 / 255);
+                            color.setRGB(10 / 255, 10 / 255, 10 / 255);
                             eachColor.push(color.r, color.g, color.b);
                         }
                     }

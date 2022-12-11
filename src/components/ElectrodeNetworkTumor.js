@@ -174,11 +174,35 @@ export const ElectrodeNetworkTumor = ({
         // load electrode
         function loadElectrode(scene, electrodeData, sampleData) {
 
+            let uniforms = {
+
+                pointTexture: { value: new THREE.TextureLoader().load(circle) }
+
+            };
+
+            const shaderMaterial = new THREE.ShaderMaterial({
+
+                uniforms: uniforms,
+                vertexShader: vertexShader,
+                fragmentShader: fragmentShader,
+                // blending: THREE.AdditiveBlending,
+                depthTest: false,
+                transparent: true,
+                vertexColors: true,
+                alphaTest: 0.5,
+                side: THREE.DoubleSide,
+
+            });
+
+
             let vertices = []
             let colors = []
+            let sizes = []
             let colIdx = 0;
+            let sizeIdx = 0;
             const color = new THREE.Color();
             let firstColor = []
+            let firstSize = []
             let pointGeometry = new THREE.BufferGeometry();
             // add the vertices, need to loop once as positio will be same 
             for (let top = 0; top < electrodeData.length; top++) {
@@ -186,9 +210,12 @@ export const ElectrodeNetworkTumor = ({
                 color.setRGB(10 / 255, 10 / 255, 10 / 255);
                 // color.setRGB(253 / 255, 180 / 255, 98 / 255);
                 firstColor.push(color.r, color.g, color.b);
+                firstSize.push(5);
 
             }
             colors.push(firstColor)
+            sizes.push(firstSize)
+            // 10 * (1 + Math.sin(0.1 * top + 1))
 
             // 55,126,184
             if (electrodeNetworkValue[0] === 'TopPercentile') {
@@ -205,25 +232,30 @@ export const ElectrodeNetworkTumor = ({
 
                     // loop through the data 
                     let eachColor = []
+                    let eachSize = []
                     for (let top = 0; top < electrodeData.length; top++) {
                         if (startElec.includes(electrodeData[top].electrode_number)) {
                             // start electrode
                             // console.log('start')
                             color.setRGB(3 / 255, 218 / 255, 197 / 255);
                             eachColor.push(color.r, color.g, color.b)
+                            eachSize.push(10 * (1 + Math.sin(0.1 * top + 1)))
                         } else if (endElec.includes(electrodeData[top].electrode_number)) {
                             // end electrode
                             // color.setRGB(10 / 255, 166 / 255, 2 / 255);
                             color.setRGB(3 / 255, 218 / 255, 197 / 255);
                             eachColor.push(color.r, color.g, color.b);
+                            eachSize.push(10 * (1 + Math.sin(0.1 * top + 1)))
                         } else {
                             // rest electrode
                             // color.setRGB(253 / 255, 180 / 255, 98 / 255);
                             color.setRGB(10 / 255, 10 / 255, 10 / 255);
                             eachColor.push(color.r, color.g, color.b);
+                            eachSize.push(5);
                         }
                     }
                     colors.push(eachColor)
+                    sizes.push(eachSize)
 
                 })
             }
@@ -236,24 +268,29 @@ export const ElectrodeNetworkTumor = ({
                     let electrodeList = [...new Set(pairData.map((item) => item.end))]
 
                     let eachColor = []
+                    let eachSize = []
                     for (let i = 0; i < electrodeData.length; i++) {
                         if (electrodeData[i].electrode_number === +electrodeNetworkValue[1]) {
                             // console.log("start")
                             color.setRGB(255 / 255, 111 / 255, 97 / 255);
                             // console.log(color.r, color.g, color.b)
                             eachColor.push(color.r, color.g, color.b);
+                            eachSize.push(10 * (1 + Math.sin(0.1 * i + 1)))
                         } else if (electrodeList.includes(electrodeData[i].electrode_number)) {
                             // console.log('ends')
                             // color.setRGB(249 / 255, 251 / 255, 178 / 255);
                             color.setRGB(3 / 255, 218 / 255, 197 / 255);
                             // color.setRGB(2 / 255, 65 / 255, 166 / 255);
                             eachColor.push(color.r, color.g, color.b);
+                            eachSize.push(10 * (1 + Math.sin(0.1 * i + 1)))
                         } else {
                             color.setRGB(10 / 255, 10 / 255, 10 / 255);
                             eachColor.push(color.r, color.g, color.b);
+                            eachSize.push(5);
                         }
                     }
                     colors.push(eachColor)
+                    sizes.push(eachSize)
 
                 })
 
@@ -261,20 +298,25 @@ export const ElectrodeNetworkTumor = ({
 
             pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
             pointGeometry.setAttribute('color', new THREE.Float32BufferAttribute(firstColor, 3));
+            pointGeometry.setAttribute('size', new THREE.Float32BufferAttribute(firstSize, 1).setUsage(THREE.DynamicDrawUsage));
 
 
-            const sprite = new THREE.TextureLoader().load(circle);
-            const material = new THREE.PointsMaterial({
-                size: 10,
-                sizeAttenuation: true,
-                map: sprite,
-                alphaTest: 0.5,
-                transparent: true,
-                side: THREE.DoubleSide,
-                vertexColors: true
-            });
-            // material.color.setHSL(0.0, 1.0, 0.5);
-            let points = new THREE.Points(pointGeometry, material);
+            // const sprite = new THREE.TextureLoader().load(circle);
+
+            // const material = new THREE.PointsMaterial({
+            //     size: 10,
+            //     sizeAttenuation: true,
+            //     map: sprite,
+            //     alphaTest: 0.5,
+            //     transparent: true,
+            //     side: THREE.DoubleSide,
+            //     vertexColors: true
+            // });
+            // // material.color.setHSL(0.0, 1.0, 0.5);
+            // let points = new THREE.Points(pointGeometry, material);
+            // points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
+
+            let points = new THREE.Points(pointGeometry, shaderMaterial);
             points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
 
             scene[1].add(points);
@@ -285,14 +327,17 @@ export const ElectrodeNetworkTumor = ({
             setInterval(function () {
                 scene[1].remove(points)
                 // console.log("inter")
-                colIdx = (colIdx + 1) % colors.length;;
-                // console.log(colors[colIdx])
+                colIdx = (colIdx + 1) % colors.length;
+
+                // console.log(sizes[colIdx])
                 let geometry = new THREE.BufferGeometry();
                 geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
                 geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors[colIdx], 3));
                 // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
+                geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes[colIdx], 1).setUsage(THREE.DynamicDrawUsage));
+
+                points = new THREE.Points(geometry, shaderMaterial);
                 points.geometry.colorsNeedUpdate = true;
-                points = new THREE.Points(geometry, material);
                 points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
 
                 scene[1].add(points);

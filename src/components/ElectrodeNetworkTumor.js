@@ -17,6 +17,8 @@ import {
     createBrainPropagation
 } from '../library/CommonUtilities'
 
+import { vertexShader, fragmentShader } from '../library/shadersrc'
+
 let canvas = null;
 // let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
 export const ElectrodeNetworkTumor = ({

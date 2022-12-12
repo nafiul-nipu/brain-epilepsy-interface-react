@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react';
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
+import * as d3 from 'd3';
 import circle from '../models/disc.png'
 import {
     createRenderer,
@@ -42,6 +43,11 @@ export const ElectrodeNetworkTumor = ({
         let centerOther = bboxCenter;
         // console.log(canvasRef.current);
         console.log("working brain with network")
+
+        // size scale for brain network
+        let sizeScale = d3.scaleLinear()
+            .domain([1, 121]) //this is now customly added
+            .range([5, 15])
 
         // getting the canvas reference
         canvas = canvasRef.current
@@ -218,6 +224,7 @@ export const ElectrodeNetworkTumor = ({
             // 10 * (1 + Math.sin(0.1 * top + 1))
 
             // 55,126,184
+
             if (electrodeNetworkValue[0] === 'TopPercentile') {
                 sampleData.forEach(data => {
                     // do nothing
@@ -233,19 +240,25 @@ export const ElectrodeNetworkTumor = ({
                     // loop through the data 
                     let eachColor = []
                     let eachSize = []
+
                     for (let top = 0; top < electrodeData.length; top++) {
                         if (startElec.includes(electrodeData[top].electrode_number)) {
                             // start electrode
                             // console.log('start')
                             color.setRGB(3 / 255, 218 / 255, 197 / 255);
                             eachColor.push(color.r, color.g, color.b)
-                            eachSize.push(10 * (1 + Math.sin(0.1 * top + 1)))
+
+                            const arr = sortedData.find(p => p.start === electrodeData[top].electrode_number);
+                            eachSize.push(sizeScale(arr.frequency))
+
                         } else if (endElec.includes(electrodeData[top].electrode_number)) {
                             // end electrode
                             // color.setRGB(10 / 255, 166 / 255, 2 / 255);
                             color.setRGB(3 / 255, 218 / 255, 197 / 255);
                             eachColor.push(color.r, color.g, color.b);
-                            eachSize.push(10 * (1 + Math.sin(0.1 * top + 1)))
+
+                            const arr = sortedData.find(p => p.end === electrodeData[top].electrode_number);
+                            eachSize.push(sizeScale(arr.frequency))
                         } else {
                             // rest electrode
                             // color.setRGB(253 / 255, 180 / 255, 98 / 255);
@@ -275,14 +288,18 @@ export const ElectrodeNetworkTumor = ({
                             color.setRGB(255 / 255, 111 / 255, 97 / 255);
                             // console.log(color.r, color.g, color.b)
                             eachColor.push(color.r, color.g, color.b);
-                            eachSize.push(10 * (1 + Math.sin(0.1 * i + 1)))
+
+                            const arr = pairData.find(p => p.start === electrodeData[i].electrode_number);
+                            eachSize.push(sizeScale(arr.frequency))
                         } else if (electrodeList.includes(electrodeData[i].electrode_number)) {
                             // console.log('ends')
                             // color.setRGB(249 / 255, 251 / 255, 178 / 255);
                             color.setRGB(3 / 255, 218 / 255, 197 / 255);
                             // color.setRGB(2 / 255, 65 / 255, 166 / 255);
                             eachColor.push(color.r, color.g, color.b);
-                            eachSize.push(10 * (1 + Math.sin(0.1 * i + 1)))
+
+                            const arr = pairData.find(p => p.end === electrodeData[i].electrode_number);
+                            eachSize.push(sizeScale(arr.frequency))
                         } else {
                             color.setRGB(10 / 255, 10 / 255, 10 / 255);
                             eachColor.push(color.r, color.g, color.b);
@@ -296,6 +313,7 @@ export const ElectrodeNetworkTumor = ({
 
             }
 
+            console.log(sizes)
             pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
             pointGeometry.setAttribute('color', new THREE.Float32BufferAttribute(firstColor, 3));
             pointGeometry.setAttribute('size', new THREE.Float32BufferAttribute(firstSize, 1).setUsage(THREE.DynamicDrawUsage));

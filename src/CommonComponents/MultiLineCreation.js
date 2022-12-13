@@ -8,7 +8,8 @@ export const MultiLineCreation = ({
     xlineRange,
     scaleOffset,
     keyNumber,
-    domain
+    domain,
+    innerHeight
 }) => {
     // console.log(electrodeData)
     // for each electrode creating one line plot
@@ -39,16 +40,19 @@ export const MultiLineCreation = ({
         // console.log(xLineScale.domain(), xLineScale.range(), xLineScale(9))
 
         return (
-            <LinePlot
-                key={each}
-                data={result}
-                xScale={xLineScale}
-                yLineScale={yLineScale}
-                yAxisScale={yAxisScale}
-                each={each}
-                scaleOffset={scaleOffset}
-                keyNumber={keyNumber}
-            />
+            <g>
+
+                <LinePlot
+                    key={each}
+                    data={result}
+                    xScale={xLineScale}
+                    yLineScale={yLineScale}
+                    yAxisScale={yAxisScale}
+                    each={each}
+                    scaleOffset={scaleOffset}
+                    keyNumber={keyNumber}
+                />
+            </g>
         )
     }))
 }

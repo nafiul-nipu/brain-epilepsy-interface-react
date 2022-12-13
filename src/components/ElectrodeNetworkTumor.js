@@ -347,6 +347,11 @@ export const ElectrodeNetworkTumor = ({
                 // console.log("inter")
                 colIdx = (colIdx + 1) % colors.length;
 
+                d3.selectAll('.highlightRect').style('opacity', '0')
+                if (colIdx !== 0) {
+                    d3.selectAll(`#high${colIdx}`).style('opacity', '0.5')
+                }
+
                 // console.log(sizes[colIdx])
                 let geometry = new THREE.BufferGeometry();
                 geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));

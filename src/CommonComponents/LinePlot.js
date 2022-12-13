@@ -16,6 +16,7 @@ export const LinePlot = ({
     // console.log(`${keyNumber}_${each}`)
     return (
         <g key={`${keyNumber}_${each}`} transform={`translate(0, ${yAxisScale(each) + scaleOffset})`}>
+
             <path
                 id="line-plot"
                 fill="none"
@@ -35,6 +36,7 @@ export const LinePlot = ({
                     // .curve(curveNatural)
                     (data)}
             />
+
         </g>
     )
 };

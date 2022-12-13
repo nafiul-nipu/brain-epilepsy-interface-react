@@ -51,6 +51,7 @@ export const CreateTimePlot = ({
                     scaleOffset={scaleOffset}
                     keyNumber={1}
                     domain={domain}
+                    innerHeight={innerHeight}
                 />
 
                 <MultiLineCreation
@@ -61,6 +62,7 @@ export const CreateTimePlot = ({
                     scaleOffset={scaleOffset}
                     keyNumber={2}
                     domain={domain}
+                    innerHeight={innerHeight}
                 />
 
                 <MultiLineCreation
@@ -71,7 +73,41 @@ export const CreateTimePlot = ({
                     scaleOffset={scaleOffset}
                     keyNumber={3}
                     domain={domain}
+                    innerHeight={innerHeight}
                 />
+
+                <rect
+                    className='highlightRect'
+                    id='high1'
+                    x={0}
+                    width={innerWidth / 3}
+                    height={innerHeight}
+                    opacity={0}
+                    fill={'grey'}
+                >
+                </rect>
+
+                <rect
+                    className='highlightRect'
+                    id='high2'
+                    x={innerWidth / 3}
+                    width={innerWidth / 3}
+                    height={innerHeight}
+                    opacity={0}
+                    fill={'grey'}
+                >
+                </rect>
+
+                <rect
+                    className='highlightRect'
+                    id='high3'
+                    x={innerWidth / 1.5}
+                    width={innerWidth / 3}
+                    height={innerHeight}
+                    opacity={0}
+                    fill={'grey'}
+                >
+                </rect>
 
             </g>
         </svg>

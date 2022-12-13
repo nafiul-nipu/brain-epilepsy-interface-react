@@ -38,7 +38,9 @@ export const ElectrodeNetworkTumor = ({
     const canvasRef = useRef(null);
     canvas = canvasRef.current;
 
+
     useEffect(() => {
+        // clearInterval(inter)
         // brain center - for brain and lesions will calculate later
         // for others take the center from parent
         let centerBrain;
@@ -315,7 +317,7 @@ export const ElectrodeNetworkTumor = ({
 
             }
 
-            console.log(sizes)
+            // console.log(sizes)
             pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
             pointGeometry.setAttribute('color', new THREE.Float32BufferAttribute(firstColor, 3));
             pointGeometry.setAttribute('size', new THREE.Float32BufferAttribute(firstSize, 1).setUsage(THREE.DynamicDrawUsage));
@@ -377,6 +379,7 @@ export const ElectrodeNetworkTumor = ({
 
                 }
             }, 1000);
+
 
 
         }

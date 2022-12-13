@@ -41,6 +41,7 @@ export const ElectrodeNetworkTumor = ({
 
     useEffect(() => {
         // clearInterval(inter)
+        let inter;
         // brain center - for brain and lesions will calculate later
         // for others take the center from parent
         let centerBrain;
@@ -346,7 +347,7 @@ export const ElectrodeNetworkTumor = ({
 
             // console.log(points)
             // change the colours, one a second
-            setInterval(function () {
+            inter = setInterval(function () {
 
                 let value = d3.select('#play-pause-btn').property('value')
 
@@ -380,8 +381,11 @@ export const ElectrodeNetworkTumor = ({
                 }
             }, 1000);
 
+        }
 
-
+        return () => {
+            console.log('cleaning')
+            clearInterval(inter)
         }
 
 

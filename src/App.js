@@ -58,7 +58,7 @@ function App() {
     })
 
   function setElectrodeNetworkValue(val) {
-    console.log(val)
+    // console.log(val)
     setElectrodeVal(val)
     // console.log(electrodeNetworkValue)
   }

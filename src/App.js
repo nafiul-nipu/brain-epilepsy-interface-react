@@ -47,12 +47,12 @@ function App() {
   let sliderObj = sliderHorizontal()
     .min(0)
     .max(30)
-    .default(0)
+    .default([0, 0]) //for one slider 0
     .ticks(4)
     .tickValues(tickValues)
     .step(10)
     .tickPadding(0)
-
+    .fill('#2196f3')
     .on('onchange', function () {
 
     })

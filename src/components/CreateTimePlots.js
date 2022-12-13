@@ -79,8 +79,8 @@ export const CreateTimePlot = ({
                 <rect
                     className='highlightRect'
                     id='high1'
-                    x={0}
-                    width={innerWidth / 3}
+                    x={0 + (scaleOffset / 2)}
+                    width={innerWidth / 3 - scaleOffset}
                     height={innerHeight}
                     opacity={0}
                     fill={'grey'}
@@ -90,8 +90,8 @@ export const CreateTimePlot = ({
                 <rect
                     className='highlightRect'
                     id='high2'
-                    x={innerWidth / 3}
-                    width={innerWidth / 3}
+                    x={innerWidth / 3 + (scaleOffset / 2)}
+                    width={innerWidth / 3 - scaleOffset}
                     height={innerHeight}
                     opacity={0}
                     fill={'grey'}
@@ -101,8 +101,8 @@ export const CreateTimePlot = ({
                 <rect
                     className='highlightRect'
                     id='high3'
-                    x={innerWidth / 1.5}
-                    width={innerWidth / 3}
+                    x={innerWidth / 1.5 + (scaleOffset / 2)}
+                    width={innerWidth / 3 - scaleOffset}
                     height={innerHeight}
                     opacity={0}
                     fill={'grey'}

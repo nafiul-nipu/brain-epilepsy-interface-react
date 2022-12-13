@@ -361,7 +361,16 @@ export const ElectrodeNetworkTumor = ({
                         d3.selectAll(`#high${colIdx}`).style('opacity', '0.5')
                     }
 
-                    sliderObj.value(tickValues[colIdx]);
+                    if (colIdx === 0) {
+                        sliderObj.value([0, 0]);
+                    } else if (colIdx === 1) {
+                        sliderObj.value([0, 10]);
+                    } else if (colIdx === 2) {
+                        sliderObj.value([10, 20]);
+                    } else if (colIdx === 3) {
+                        sliderObj.value([20, 30]);
+                    }
+
 
                     // console.log(sizes[colIdx])
                     let geometry = new THREE.BufferGeometry();
@@ -379,7 +388,7 @@ export const ElectrodeNetworkTumor = ({
                     render(renderer, [scene[0], scene[1]], camera)
 
                 }
-            }, 1000);
+            }, 3500);
 
         }
 

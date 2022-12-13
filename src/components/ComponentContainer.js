@@ -37,17 +37,31 @@ export const ComponentContainer = ({
                     />
                 </Col>
                 <Col md='4'>
-                    <div id="titleBrain1">Propagation Over Time</div>
-                    <ElectrodeNetworkTumor
-                        brain={multiBrain.obj1}
-                        lesion1={multiLesion1.obj1}
-                        lesion2={multiLesion2.obj1}
-                        lesion3={multiLesion3.obj1}
-                        electrodeData={electrodeData}
-                        sampleData={[sampleData, sampleData2, sampleData3]}
-                        bboxCenter={bboxCenter}
-                        electrodeNetworkValue={electrodeNetworkValue}
-                    />
+                    <Row>
+                        <Col md='12' style={{ height: '5vh' }}>
+                            time slider
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                         <Row>
+                            <Col id="titleBrain1">Propagation Over Time</Col>
+                         </Row>
+                         <Row>
+                         <ElectrodeNetworkTumor
+                            brain={multiBrain.obj1}
+                            lesion1={multiLesion1.obj1}
+                            lesion2={multiLesion2.obj1}
+                            lesion3={multiLesion3.obj1}
+                            electrodeData={electrodeData}
+                            sampleData={[sampleData, sampleData2, sampleData3]}
+                            bboxCenter={bboxCenter}
+                            electrodeNetworkValue={electrodeNetworkValue}
+                        />
+                         </Row>
+                        </Col>
+                    </Row>
+                    
                 </Col>
 
             </Row>

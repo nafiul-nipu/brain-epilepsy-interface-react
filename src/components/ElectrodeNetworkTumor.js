@@ -370,7 +370,7 @@ export const ElectrodeNetworkTumor = ({
     }, [bboxCenter, brain, canvasRef, electrodeData, lesion1, lesion2, lesion3, sampleData, electrodeNetworkValue]);
 
     return (
-        <Col md='6'>
+        <Col md='12'>
             <canvas ref={el => { canvasRef.current = el; }}></canvas>
         </Col>
     )

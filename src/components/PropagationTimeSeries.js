@@ -33,7 +33,7 @@ export const PropagationTimeSeries = ({
         // console.log(domains)
         // gettign the domain
         let domain = d3.extent(domains)
-        console.log(d3.extent(domains))
+        // console.log(d3.extent(domains))
 
         // dividing the array into four sub arrays
         // first divide the array into two

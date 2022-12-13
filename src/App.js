@@ -1,6 +1,8 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { sliderHorizontal } from 'd3-simple-slider'
+
 // importing components
 import { ComponentContainer } from './components/ComponentContainer';
 import { useElectrodeData } from './library/useElectrodeData';
@@ -40,13 +42,28 @@ function App() {
 
   const [electrodeNetworkValue, setElectrodeVal] = useState(["TopPercentile", "5"])
 
-  function setElectrodeNetworkValue(val){
+  let tickValues = [0, 10, 20, 30]
+
+  let sliderObj = sliderHorizontal()
+    .min(0)
+    .max(30)
+    .default(0)
+    .ticks(4)
+    .tickValues(tickValues)
+    .step(10)
+    .tickPadding(0)
+
+    .on('onchange', function () {
+
+    })
+
+  function setElectrodeNetworkValue(val) {
     console.log(val)
     setElectrodeVal(val)
     // console.log(electrodeNetworkValue)
   }
 
-// console.log(electrodeDataCsv)
+  // console.log(electrodeDataCsv)
 
   return (
     // <div>debugging</div>
@@ -63,6 +80,8 @@ function App() {
       bboxCenter={bboxCenter} //box center
       electrodeNetworkValue={electrodeNetworkValue}
       setElectrodeNetworkValue={setElectrodeNetworkValue}
+      sliderObj={sliderObj}
+      tickValues={tickValues}
     />
   );
 }

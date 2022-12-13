@@ -30,7 +30,9 @@ export const ElectrodeNetworkTumor = ({
     electrodeData,
     sampleData,
     bboxCenter,
-    electrodeNetworkValue
+    electrodeNetworkValue,
+    sliderObj,
+    tickValues
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -343,29 +345,37 @@ export const ElectrodeNetworkTumor = ({
             // console.log(points)
             // change the colours, one a second
             setInterval(function () {
-                scene[1].remove(points)
-                // console.log("inter")
-                colIdx = (colIdx + 1) % colors.length;
 
-                d3.selectAll('.highlightRect').style('opacity', '0')
-                if (colIdx !== 0) {
-                    d3.selectAll(`#high${colIdx}`).style('opacity', '0.5')
+                let value = d3.select('#play-pause-btn').property('value')
+
+                if (value === 'pause') {
+                    scene[1].remove(points)
+                    // console.log("inter")
+                    colIdx = (colIdx + 1) % colors.length;
+
+                    d3.selectAll('.highlightRect').style('opacity', '0')
+                    if (colIdx !== 0) {
+                        d3.selectAll(`#high${colIdx}`).style('opacity', '0.5')
+                    }
+
+                    sliderObj.value(tickValues[colIdx]);
+
+                    // console.log(sizes[colIdx])
+                    let geometry = new THREE.BufferGeometry();
+                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors[colIdx], 3));
+                    // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
+                    geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes[colIdx], 1).setUsage(THREE.DynamicDrawUsage));
+
+                    points = new THREE.Points(geometry, shaderMaterial);
+                    points.geometry.colorsNeedUpdate = true;
+                    points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
+
+                    scene[1].add(points);
+
+                    render(renderer, [scene[0], scene[1]], camera)
+
                 }
-
-                // console.log(sizes[colIdx])
-                let geometry = new THREE.BufferGeometry();
-                geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors[colIdx], 3));
-                // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
-                geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes[colIdx], 1).setUsage(THREE.DynamicDrawUsage));
-
-                points = new THREE.Points(geometry, shaderMaterial);
-                points.geometry.colorsNeedUpdate = true;
-                points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
-
-                scene[1].add(points);
-
-                render(renderer, [scene[0], scene[1]], camera)
             }, 1000);
 
 

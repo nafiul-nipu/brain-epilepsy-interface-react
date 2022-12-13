@@ -2,6 +2,7 @@ import { Container, Row, Col } from "react-bootstrap"
 import { ElectrodeDropDown } from "./ElectrodeDropDown"
 import { ElectrodeNetworkTumor } from "./ElectrodeNetworkTumor"
 import { PropagationTimeSeries } from "./PropagationTimeSeries"
+import { TimeSliderButton } from "./TimeSliderButton"
 
 export const ComponentContainer = ({
     electrodeData,
@@ -14,7 +15,9 @@ export const ComponentContainer = ({
     multiLesion3,
     bboxCenter,
     electrodeNetworkValue,
-    setElectrodeNetworkValue
+    setElectrodeNetworkValue,
+    sliderObj,
+    tickValues
 }) => {
     return (
         <Container fluid id="container">
@@ -38,30 +41,33 @@ export const ComponentContainer = ({
                 </Col>
                 <Col md='4'>
                     <Row>
-                        <Col md='12' style={{ height: '5vh' }}>
-                            time slider
-                        </Col>
+                        <TimeSliderButton
+                            sliderObj={sliderObj}
+                            tickValues={tickValues}
+                        />
                     </Row>
                     <Row>
                         <Col>
-                         <Row>
-                            <Col id="titleBrain1">Propagation Over Time</Col>
-                         </Row>
-                         <Row>
-                         <ElectrodeNetworkTumor
-                            brain={multiBrain.obj1}
-                            lesion1={multiLesion1.obj1}
-                            lesion2={multiLesion2.obj1}
-                            lesion3={multiLesion3.obj1}
-                            electrodeData={electrodeData}
-                            sampleData={[sampleData, sampleData2, sampleData3]}
-                            bboxCenter={bboxCenter}
-                            electrodeNetworkValue={electrodeNetworkValue}
-                        />
-                         </Row>
+                            <Row>
+                                <Col id="titleBrain1">Propagation Over Time</Col>
+                            </Row>
+                            <Row>
+                                <ElectrodeNetworkTumor
+                                    brain={multiBrain.obj1}
+                                    lesion1={multiLesion1.obj1}
+                                    lesion2={multiLesion2.obj1}
+                                    lesion3={multiLesion3.obj1}
+                                    electrodeData={electrodeData}
+                                    sampleData={[sampleData, sampleData2, sampleData3]}
+                                    bboxCenter={bboxCenter}
+                                    electrodeNetworkValue={electrodeNetworkValue}
+                                    sliderObj={sliderObj}
+                                    tickValues={tickValues}
+                                />
+                            </Row>
                         </Col>
                     </Row>
-                    
+
                 </Col>
 
             </Row>

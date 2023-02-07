@@ -31,15 +31,15 @@ export const ComponentContainer = ({
                 </Col>
             </Row>
             <Row>
-                <Col md='8'>
+                <Col md='4'>
                     {/* propagation time series */}
-                    <PropagationTimeSeries
+                    {/* <PropagationTimeSeries
                         sample1={sampleData}
                         sample2={sampleData2}
                         sample3={sampleData3}
-                    />
+                    /> */}
                 </Col>
-                <Col md='4'>
+                <Col md='8'>
                     <Row>
                         <TimeSliderButton
                             sliderObj={sliderObj}

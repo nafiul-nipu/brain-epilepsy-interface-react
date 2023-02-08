@@ -9,6 +9,7 @@ import { useElectrodeData } from './library/useElectrodeData';
 import { usePropagationData } from './library/usePropagationData';
 import { useBBoxcenter } from './library/useBBoxcenter';
 import { useOBJThreeStates } from './library/useOBJThreeStates';
+import { useSamples } from './library/useSamples';
 
 // importing objfiles
 import brain from "./models/brain.obj"
@@ -16,6 +17,7 @@ import lesion1_para from './models/lesion1_para.obj';
 import lesion2_para from './models/lesion2_para.obj';
 import lesion3_para from './models/lesion3_para.obj';
 import { useState } from 'react';
+
 
 // data URLS
 const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/colorAnimation/src/data/electrodes/ep187_electrodes_new.csv"
@@ -86,6 +88,9 @@ const sample3URL20 = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilep
 
 
 function App() {
+
+  const testPromise = useSamples({ sampleName: [sample1URL1, sample1URL1, sample1URL1, sample1URL1] })
+  console.log(testPromise)
   // loading brain and lesions
   const multiBrain = useOBJThreeStates({ objType: brain });
   const multiLesion1 = useOBJThreeStates({ objType: lesion1_para });
@@ -118,7 +123,7 @@ function App() {
   const sample1CSV19 = usePropagationData({ url: sample1URL19 });
   const sample1CSV20 = usePropagationData({ url: sample1URL20 });
 
-
+  console.log(sample1CSV)
   const sample2CSV = usePropagationData({ url: sample2URL1 });
   const sample2CSV2 = usePropagationData({ url: sample2URL2 });
   const sample2CSV3 = usePropagationData({ url: sample2URL3 });
@@ -163,13 +168,13 @@ function App() {
   const sample3CSV20 = usePropagationData({ url: sample3URL20 });
 
 
-const lists1 = [sample1CSV, sample1CSV2, sample1CSV3, sample1CSV4, sample1CSV5, sample1CSV6, sample1CSV7, sample1CSV8, sample1CSV9, sample1CSV10, sample1CSV11, sample1CSV12, sample1CSV13, sample1CSV14, sample1CSV15, sample1CSV16, sample1CSV17, sample1CSV18, sample1CSV19, sample1CSV20]
+  const lists1 = [sample1CSV, sample1CSV2, sample1CSV3, sample1CSV4, sample1CSV5, sample1CSV6, sample1CSV7, sample1CSV8, sample1CSV9, sample1CSV10, sample1CSV11, sample1CSV12, sample1CSV13, sample1CSV14, sample1CSV15, sample1CSV16, sample1CSV17, sample1CSV18, sample1CSV19, sample1CSV20]
 
-const lists2 = [sample2CSV, sample2CSV2, sample2CSV3, sample2CSV4, sample2CSV5, sample2CSV6, sample2CSV7, sample2CSV8, sample2CSV9, sample2CSV10, sample2CSV11, sample2CSV12, sample2CSV13, sample2CSV14, sample2CSV15, sample2CSV16, sample2CSV17, sample2CSV18, sample2CSV19, sample2CSV20]
+  const lists2 = [sample2CSV, sample2CSV2, sample2CSV3, sample2CSV4, sample2CSV5, sample2CSV6, sample2CSV7, sample2CSV8, sample2CSV9, sample2CSV10, sample2CSV11, sample2CSV12, sample2CSV13, sample2CSV14, sample2CSV15, sample2CSV16, sample2CSV17, sample2CSV18, sample2CSV19, sample2CSV20]
 
-const lists3 = [sample3CSV, sample3CSV2, sample3CSV3, sample3CSV4, sample3CSV5, sample3CSV6, sample3CSV7, sample3CSV8, sample3CSV9, sample3CSV10, sample3CSV11, sample3CSV12, sample3CSV13, sample3CSV14, sample3CSV15, sample3CSV16, sample3CSV17, sample3CSV18, sample3CSV19, sample3CSV20]
+  const lists3 = [sample3CSV, sample3CSV2, sample3CSV3, sample3CSV4, sample3CSV5, sample3CSV6, sample3CSV7, sample3CSV8, sample3CSV9, sample3CSV10, sample3CSV11, sample3CSV12, sample3CSV13, sample3CSV14, sample3CSV15, sample3CSV16, sample3CSV17, sample3CSV18, sample3CSV19, sample3CSV20]
 
-const [electrodeNetworkValue, setElectrodeVal] = useState(["TopPercentile", "100"])
+  const [electrodeNetworkValue, setElectrodeVal] = useState(["TopPercentile", "100"])
 
   let tickValues = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300,
     330, 360, 390, 420, 450, 480, 510, 540, 570, 600]
@@ -212,9 +217,9 @@ const [electrodeNetworkValue, setElectrodeVal] = useState(["TopPercentile", "100
       setElectrodeNetworkValue={setElectrodeNetworkValue}
       sliderObj={sliderObj}
       tickValues={tickValues}
-      sampledataList1 = {lists1}
-      sampledataList2 = {lists2}
-      sampledataList3 = {lists3}
+      sampledataList1={lists1}
+      sampledataList2={lists2}
+      sampledataList3={lists3}
     />
   );
 }

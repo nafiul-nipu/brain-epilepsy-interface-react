@@ -17,7 +17,10 @@ export const ComponentContainer = ({
     electrodeNetworkValue,
     setElectrodeNetworkValue,
     sliderObj,
-    tickValues
+    tickValues,
+    sampledataList1,
+    sampledataList2,
+    sampledataList3
 }) => {
     return (
         <Container fluid id="container">
@@ -58,7 +61,7 @@ export const ComponentContainer = ({
                                     lesion2={multiLesion2.obj1}
                                     lesion3={multiLesion3.obj1}
                                     electrodeData={electrodeData}
-                                    sampleData={[sampleData, sampleData2, sampleData3]}
+                                    sampleData={sampledataList1}
                                     bboxCenter={bboxCenter}
                                     electrodeNetworkValue={electrodeNetworkValue}
                                     sliderObj={sliderObj}

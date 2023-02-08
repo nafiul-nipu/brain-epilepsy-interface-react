@@ -364,11 +364,49 @@ export const ElectrodeNetworkTumor = ({
                     if (colIdx === 0) {
                         sliderObj.value([0, 0]);
                     } else if (colIdx === 1) {
-                        sliderObj.value([0, 10]);
+                        sliderObj.value([0, 30]);
                     } else if (colIdx === 2) {
-                        sliderObj.value([10, 20]);
+                        sliderObj.value([30, 60]);
                     } else if (colIdx === 3) {
-                        sliderObj.value([20, 30]);
+                        sliderObj.value([60, 90]);
+                    }
+                    else if (colIdx === 4) {
+                        sliderObj.value([90, 120]);
+                    } else if (colIdx === 5) {
+                        sliderObj.value([120, 150]);
+                    } else if (colIdx === 6) {
+                        sliderObj.value([150, 180]);
+                    }
+                    else if (colIdx === 7) {
+                        sliderObj.value([180, 210]);
+                    } else if (colIdx === 8) {
+                        sliderObj.value([210, 240]);
+                    } else if (colIdx === 9) {
+                        sliderObj.value([240, 270]);
+                    }
+                    else if (colIdx === 10) {
+                        sliderObj.value([270, 300]);
+                    } else if (colIdx === 11) {
+                        sliderObj.value([300, 330]);
+                    } else if (colIdx === 12) {
+                        sliderObj.value([330, 360]);
+                    } else if (colIdx === 13) {
+                        sliderObj.value([360, 390]);
+                    } else if (colIdx === 14) {
+                        sliderObj.value([390, 420]);
+                    } else if (colIdx === 15) {
+                        sliderObj.value([420, 450]);
+                    } else if (colIdx === 16) {
+                        sliderObj.value([450, 480]);
+                    } else if (colIdx === 17) {
+                        sliderObj.value([480, 510]);
+                    } else if (colIdx === 18) {
+                        sliderObj.value([510, 540]);
+                    }
+                    else if (colIdx === 19) {
+                        sliderObj.value([540, 570]);
+                    }else if (colIdx === 20) {
+                        sliderObj.value([570, 600]);
                     }
 
 
@@ -388,7 +426,7 @@ export const ElectrodeNetworkTumor = ({
                     render(renderer, [scene[0], scene[1]], camera)
 
                 }
-            }, 3500);
+            }, 2500);
 
         }
 

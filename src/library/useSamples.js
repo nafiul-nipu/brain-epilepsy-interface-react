@@ -1,21 +1,28 @@
 import { useState, useEffect } from "react";
-import { csv } from "d3";
+import { json } from "d3";
 
-export const useSamples = ({ sampleName }) => {
+export const useSamples = ({
+    patientID,
+    sampleName
+}) => {
     // console.log(sampleName)
+    const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/colorAnimation/src/data/electrodes/${patientID}/${sampleName}/${sampleName}.json`
     const [data, setData] = useState(null);
-    let promises = []
-    sampleName.forEach(element => {
-        promises.push(csv(element))
-    });
 
     useEffect(() => {
-        console.log(promises)
-        Promise.all(promises).then(function (values) {
-            // console.log(values)
-            setData(values)
+        // const row = d => {
+        //     d.start = +d.start;
+        //     // d.end = +d.end;
+        //     d.frequency = +d.frequency;
+        //     // d.startPosition = JSON.parse(d.startPosition);
+        //     // d.endPosition = JSON.parse(d.endPosition);
+        //     d.startPosition = JSON.parse(d.startPosition);
+        //     return d;
+        // }
+        json(url).then(jdata => {
+            setData(jdata)
         });
-    }, [promises.length])
+    }, [url])
 
     return data
 

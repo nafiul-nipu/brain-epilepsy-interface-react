@@ -60,7 +60,7 @@ function App() {
     .max(600)
     .default([0, 0]) //for one slider 0
     .ticks(4)
-    .tickValues(tickValues)
+    // .tickValues(tickValues)
     // .step(30)
     .tickPadding(0)
     .fill('#2196f3')

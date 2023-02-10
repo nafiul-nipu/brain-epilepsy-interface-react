@@ -30,7 +30,6 @@ export const ElectrodeNetworkTumor = ({
     electrodeData,
     sampleData,
     bboxCenter,
-    electrodeNetworkValue,
     sliderObj,
     tickValues
 }) => {
@@ -229,94 +228,51 @@ export const ElectrodeNetworkTumor = ({
             // 10 * (1 + Math.sin(0.1 * top + 1))
 
             // 55,126,184
+            sampleData.forEach(data => {
+                // do nothing
+                let sortedData = structuredClone(data) //
+                sortedData.sort((a, b) => b.frequency - a.frequency);
 
-            if (electrodeNetworkValue[0] === 'TopPercentile') {
-                sampleData.forEach(data => {
-                    // do nothing
-                    let sortedData = structuredClone(data) //
-                    sortedData.sort((a, b) => b.frequency - a.frequency);
-                    let percent = +electrodeNetworkValue[1] / 100;
+                // console.log(Math.round(sortedData.length * percent))
+                let startElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length)).map(item => item.start))]
 
-                    // console.log(Math.round(sortedData.length * percent))
-                    let startElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.start))]
+                let endElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length)).map(item => item.end))]
 
-                    let endElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.end))]
+                // loop through the data 
+                let eachColor = []
+                let eachSize = []
 
-                    // loop through the data 
-                    let eachColor = []
-                    let eachSize = []
+                for (let top = 0; top < electrodeData.length; top++) {
+                    if (startElec.includes(electrodeData[top].electrode_number)) {
+                        // start electrode
+                        // console.log('start')
+                        color.setRGB(3 / 255, 218 / 255, 197 / 255);
+                        eachColor.push(color.r, color.g, color.b)
 
-                    for (let top = 0; top < electrodeData.length; top++) {
-                        if (startElec.includes(electrodeData[top].electrode_number)) {
-                            // start electrode
-                            // console.log('start')
-                            color.setRGB(3 / 255, 218 / 255, 197 / 255);
-                            eachColor.push(color.r, color.g, color.b)
+                        const arr = sortedData.find(p => p.start === electrodeData[top].electrode_number);
+                        eachSize.push(sizeScale(arr.frequency))
 
-                            const arr = sortedData.find(p => p.start === electrodeData[top].electrode_number);
-                            eachSize.push(sizeScale(arr.frequency))
+                    } else if (endElec.includes(electrodeData[top].electrode_number)) {
+                        // end electrode
+                        // color.setRGB(10 / 255, 166 / 255, 2 / 255);
+                        color.setRGB(3 / 255, 218 / 255, 197 / 255);
+                        eachColor.push(color.r, color.g, color.b);
 
-                        } else if (endElec.includes(electrodeData[top].electrode_number)) {
-                            // end electrode
-                            // color.setRGB(10 / 255, 166 / 255, 2 / 255);
-                            color.setRGB(3 / 255, 218 / 255, 197 / 255);
-                            eachColor.push(color.r, color.g, color.b);
-
-                            const arr = sortedData.find(p => p.end === electrodeData[top].electrode_number);
-                            eachSize.push(sizeScale(arr.frequency))
-                        } else {
-                            // rest electrode
-                            // color.setRGB(253 / 255, 180 / 255, 98 / 255);
-                            color.setRGB(10 / 255, 10 / 255, 10 / 255);
-                            eachColor.push(color.r, color.g, color.b);
-                            eachSize.push(5);
-                        }
+                        const arr = sortedData.find(p => p.end === electrodeData[top].electrode_number);
+                        eachSize.push(sizeScale(arr.frequency))
+                    } else {
+                        // rest electrode
+                        // color.setRGB(253 / 255, 180 / 255, 98 / 255);
+                        color.setRGB(10 / 255, 10 / 255, 10 / 255);
+                        eachColor.push(color.r, color.g, color.b);
+                        eachSize.push(5);
                     }
-                    colors.push(eachColor)
-                    sizes.push(eachSize)
+                }
+                colors.push(eachColor)
+                sizes.push(eachSize)
 
-                })
-            }
-            else {
+            })
 
-                sampleData.forEach(data => {
-                    var pairData = data.filter(obj => {
-                        return obj.start === +electrodeNetworkValue[1];
-                    });
-                    let electrodeList = [...new Set(pairData.map((item) => item.end))]
-
-                    let eachColor = []
-                    let eachSize = []
-                    for (let i = 0; i < electrodeData.length; i++) {
-                        if (electrodeData[i].electrode_number === +electrodeNetworkValue[1]) {
-                            // console.log("start")
-                            color.setRGB(255 / 255, 111 / 255, 97 / 255);
-                            // console.log(color.r, color.g, color.b)
-                            eachColor.push(color.r, color.g, color.b);
-
-                            const arr = pairData.find(p => p.start === electrodeData[i].electrode_number);
-                            eachSize.push(sizeScale(arr.frequency))
-                        } else if (electrodeList.includes(electrodeData[i].electrode_number)) {
-                            // console.log('ends')
-                            // color.setRGB(249 / 255, 251 / 255, 178 / 255);
-                            color.setRGB(3 / 255, 218 / 255, 197 / 255);
-                            // color.setRGB(2 / 255, 65 / 255, 166 / 255);
-                            eachColor.push(color.r, color.g, color.b);
-
-                            const arr = pairData.find(p => p.end === electrodeData[i].electrode_number);
-                            eachSize.push(sizeScale(arr.frequency))
-                        } else {
-                            color.setRGB(10 / 255, 10 / 255, 10 / 255);
-                            eachColor.push(color.r, color.g, color.b);
-                            eachSize.push(5);
-                        }
-                    }
-                    colors.push(eachColor)
-                    sizes.push(eachSize)
-
-                })
-
-            }
 
             // console.log(sizes)
             pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
@@ -394,7 +350,7 @@ export const ElectrodeNetworkTumor = ({
         }
 
 
-    }, [bboxCenter, brain, canvasRef, electrodeData, lesion1, lesion2, lesion3, sampleData, electrodeNetworkValue]);
+    }, [bboxCenter, brain, canvasRef, electrodeData, lesion1, lesion2, lesion3, sampleData, sliderObj]);
 
     return (
         <Col md='12'>

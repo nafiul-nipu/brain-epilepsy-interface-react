@@ -37,8 +37,6 @@ function App() {
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
 
-  const [electrodeNetworkValue, setElectrodeVal] = useState(["TopPercentile", "100"])
-
   let tickValues = Array.from({ length: 600 / 2 + 1 }, (_, i) => i * 2);
 
   let sliderObj = sliderHorizontal()
@@ -71,7 +69,6 @@ function App() {
       multiLesion2={multiLesion2} //lesion2 objs
       multiLesion3={multiLesion3} // lesion3 objs
       bboxCenter={bboxCenter} //box center
-      electrodeNetworkValue={electrodeNetworkValue}
       setNewPatientInfo={setNewPatientInfo}
       sliderObj={sliderObj}
       tickValues={tickValues}

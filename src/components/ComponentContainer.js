@@ -12,7 +12,6 @@ export const ComponentContainer = ({
     multiLesion2,
     multiLesion3,
     bboxCenter,
-    electrodeNetworkValue,
     setNewPatientInfo,
     sliderObj,
     tickValues
@@ -20,29 +19,35 @@ export const ComponentContainer = ({
     return (
         <Container fluid id="container">
             <Row>
-                <Col md='12' style={{ height: '5vh' }}>
+                <Col md='6' style={{ height: '5vh' }}>
                     {/* dropdown menues */}
                     <ElectrodeDropDown
                         setNewPatientInfo={setNewPatientInfo}
                     />
                 </Col>
+                <Col md='6' style={{ height: '5vh' }}>
+                    <TimeSliderButton
+                        sliderObj={sliderObj}
+                        tickValues={tickValues}
+                    />
+                </Col>
             </Row>
             <Row>
-                {/* <Col md='4'> */}
-                {/* propagation time series */}
-                {/* <PropagationTimeSeries
+                <Col md='8'>
+                    {/* propagation time series */}
+                    {/* <PropagationTimeSeries
                         sample1={sampleData}
                         sample2={sampleData2}
                         sample3={sampleData3}
                     /> */}
-                {/* </Col> */}
-                <Col md='12'>
-                    <Row>
+                </Col>
+                <Col md='4'>
+                    {/* <Row>
                         <TimeSliderButton
                             sliderObj={sliderObj}
                             tickValues={tickValues}
                         />
-                    </Row>
+                    </Row> */}
                     <Row>
                         <Col>
                             <Row>
@@ -57,7 +62,6 @@ export const ComponentContainer = ({
                                     electrodeData={electrodeData}
                                     sampleData={sampleData}
                                     bboxCenter={bboxCenter}
-                                    electrodeNetworkValue={electrodeNetworkValue}
                                     sliderObj={sliderObj}
                                     tickValues={tickValues}
                                 />

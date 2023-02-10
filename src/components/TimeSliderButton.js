@@ -39,7 +39,7 @@ export const TimeSliderButton = ({
 
         // console.log(d3.select(slider).node().clientWidth)
 
-        sliderObj.width(d3.select(slider).node().clientWidth - 100)
+        sliderObj.width(d3.select(slider).node().clientWidth - 70)
 
         d3.select(slider).append('svg')
             .attr('class', 'slider-svg')
@@ -53,9 +53,9 @@ export const TimeSliderButton = ({
     return (
         <Col md='12' style={{ height: '5vh' }}>
             <Row>
-                <Col md='1' ref={el => { buttoneRef.current = el; }}></Col>
+                <Col md='2' ref={el => { buttoneRef.current = el; }}></Col>
                 <Col md='1'>Time</Col>
-                <Col md='10' ref={el => { sliderRef.current = el; }}></Col>
+                <Col md='9' ref={el => { sliderRef.current = el; }}></Col>
             </Row>
         </Col>
     )

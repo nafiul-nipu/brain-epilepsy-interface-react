@@ -14,20 +14,20 @@ export const ElectrodeDropDown = ({
     const [patient, selectedPatient] = useState('ep187')
     return (
         <Row>
-            <Col md='3'>
+            <Col md='6'>
                 {/* Patient dropdown */}
-                <Form.Group as={Row} className='mb-3' controlId="formHorizontal">
-                    <Form.Label column sm={4} id='selectPosition'>Select Patient:</Form.Label>
-                    <Col sm={8}>
+                <Form.Group as={Row} className='mb-4' controlId="formHorizontal">
+                    <Form.Label column sm={5} id='selectPosition'>Select Patient:</Form.Label>
+                    <Col sm={7}>
                         <Form.Select value={patient} id='selectPosition' ref={patientRef} onChange={onPatientChange}>
                             <option value='ep187'> EP187 </option>
                         </Form.Select>
                     </Col>
                 </Form.Group>
             </Col>
-            <Col md='3'>
+            <Col md='6'>
                 {/* propagation dropdown */}
-                <Form.Group as={Row} className='mb-3' controlId="formHorizontal">
+                <Form.Group as={Row} className='mb-4' controlId="formHorizontal">
                     <Form.Label column sm={4} id='selectPosition'>Sample:</Form.Label>
                     <Col sm={8}>
                         <Form.Select value={sample} onChange={onSampleChange} ref={sampleRef} id='selectPosition'>

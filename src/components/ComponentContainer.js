@@ -1,26 +1,21 @@
 import { Container, Row, Col } from "react-bootstrap"
 import { ElectrodeDropDown } from "./ElectrodeDropDown"
 import { ElectrodeNetworkTumor } from "./ElectrodeNetworkTumor"
-import { PropagationTimeSeries } from "./PropagationTimeSeries"
+// import { PropagationTimeSeries } from "./PropagationTimeSeries"
 import { TimeSliderButton } from "./TimeSliderButton"
 
 export const ComponentContainer = ({
     electrodeData,
     sampleData,
-    sampleData2,
-    sampleData3,
     multiBrain,
     multiLesion1,
     multiLesion2,
     multiLesion3,
     bboxCenter,
     electrodeNetworkValue,
-    setElectrodeNetworkValue,
+    setNewPatientInfo,
     sliderObj,
-    tickValues,
-    sampledataList1,
-    sampledataList2,
-    sampledataList3
+    tickValues
 }) => {
     return (
         <Container fluid id="container">
@@ -28,8 +23,7 @@ export const ComponentContainer = ({
                 <Col md='12' style={{ height: '5vh' }}>
                     {/* dropdown menues */}
                     <ElectrodeDropDown
-                        electrodeData={electrodeData}
-                        setElectrodeNetworkValue={setElectrodeNetworkValue}
+                        setNewPatientInfo={setNewPatientInfo}
                     />
                 </Col>
             </Row>
@@ -61,7 +55,7 @@ export const ComponentContainer = ({
                                     lesion2={multiLesion2.obj1}
                                     lesion3={multiLesion3.obj1}
                                     electrodeData={electrodeData}
-                                    sampleData={sampledataList1}
+                                    sampleData={sampleData}
                                     bboxCenter={bboxCenter}
                                     electrodeNetworkValue={electrodeNetworkValue}
                                     sliderObj={sliderObj}

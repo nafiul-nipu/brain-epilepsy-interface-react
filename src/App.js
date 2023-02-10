@@ -6,7 +6,6 @@ import { sliderHorizontal } from 'd3-simple-slider'
 // importing components
 import { ComponentContainer } from './components/ComponentContainer';
 import { useElectrodeData } from './library/useElectrodeData';
-import { usePropagationData } from './library/usePropagationData';
 import { useBBoxcenter } from './library/useBBoxcenter';
 import { useOBJThreeStates } from './library/useOBJThreeStates';
 import { useSamples } from './library/useSamples';
@@ -19,22 +18,11 @@ import lesion3_para from './models/lesion3_para.obj';
 import { useState } from 'react';
 
 function App() {
-  const [patient, setPatient] = useState('ep187')
-  const [sample, setSample] = useState('sample1')
+  const [patientInfo, setPatientInfo] = useState({ id: 'ep187', sample: 'sample1' })
 
-  const sample1 = useSamples({
-    patientID: 'ep187',
-    sampleName: 'sample1'
-  })
-
-  const sample2 = useSamples({
-    patientID: 'ep187',
-    sampleName: 'sample2'
-  })
-
-  const sample3 = useSamples({
-    patientID: 'ep187',
-    sampleName: 'sample3'
+  const sampleData = useSamples({
+    patientID: patientInfo.id,
+    sampleName: patientInfo.sample
   })
 
   // loading brain and lesions
@@ -47,7 +35,7 @@ function App() {
   const bboxCenter = useBBoxcenter({ objType: brain });
 
   // loading the data
-  const electrodeDataCsv = useElectrodeData({ id: patient });
+  const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
 
   const [electrodeNetworkValue, setElectrodeVal] = useState(["TopPercentile", "100"])
 
@@ -66,34 +54,27 @@ function App() {
 
     })
 
-  function setElectrodeNetworkValue(val) {
-    // console.log(val)
-    setElectrodeVal(val)
-    // console.log(electrodeNetworkValue)
+  function setNewPatientInfo(val) {
+    setPatientInfo({ id: val.id, sample: val.sample })
   }
 
-  console.log(electrodeDataCsv)
+  // console.log(electrodeDataCsv)
 
   return (
     // <div>debugging</div>
     // component container
     <ComponentContainer
       electrodeData={electrodeDataCsv} //electrode data set
-      sampleData={sample1} // propagation sample first 10 minutes
-      sampleData2={sample2} // propagation sample second 10 minutes
-      sampleData3={sample3} // propagation sample third 10 minutes
+      sampleData={sampleData} // propagation sample 10 minutes
       multiBrain={multiBrain} //brain objs
       multiLesion1={multiLesion1} //lesion1 objs
       multiLesion2={multiLesion2} //lesion2 objs
       multiLesion3={multiLesion3} // lesion3 objs
       bboxCenter={bboxCenter} //box center
       electrodeNetworkValue={electrodeNetworkValue}
-      setElectrodeNetworkValue={setElectrodeNetworkValue}
+      setNewPatientInfo={setNewPatientInfo}
       sliderObj={sliderObj}
       tickValues={tickValues}
-      sampledataList1={sample1}
-      sampledataList2={sample2}
-      sampledataList3={sample3}
     />
   );
 }

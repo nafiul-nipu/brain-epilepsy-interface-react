@@ -18,11 +18,9 @@ import lesion2_para from './models/lesion2_para.obj';
 import lesion3_para from './models/lesion3_para.obj';
 import { useState } from 'react';
 
-
-// data URLS
-const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/colorAnimation/src/data/electrodes/ep187_electrodes_new.csv"
-
 function App() {
+  const [patient, setPatient] = useState('ep187')
+  const [sample, setSample] = useState('sample1')
 
   const sample1 = useSamples({
     patientID: 'ep187',
@@ -49,7 +47,7 @@ function App() {
   const bboxCenter = useBBoxcenter({ objType: brain });
 
   // loading the data
-  const electrodeDataCsv = useElectrodeData({ url: electrodeURL });
+  const electrodeDataCsv = useElectrodeData({ id: patient });
 
   const [electrodeNetworkValue, setElectrodeVal] = useState(["TopPercentile", "100"])
 
@@ -74,7 +72,7 @@ function App() {
     // console.log(electrodeNetworkValue)
   }
 
-  // console.log(electrodeDataCsv)
+  console.log(electrodeDataCsv)
 
   return (
     // <div>debugging</div>

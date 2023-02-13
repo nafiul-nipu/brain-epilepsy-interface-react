@@ -11,10 +11,10 @@ import { useOBJThreeStates } from './library/useOBJThreeStates';
 import { useSamples } from './library/useSamples';
 
 // importing objfiles
-import brain from "./models/brain.obj"
-import lesion1_para from './models/lesion1_para.obj';
-import lesion2_para from './models/lesion2_para.obj';
-import lesion3_para from './models/lesion3_para.obj';
+// import brain from "./models/brain.obj"
+// import lesion1_para from './models/lesion1_para.obj';
+// import lesion2_para from './models/lesion2_para.obj';
+// import lesion3_para from './models/lesion3_para.obj';
 import { useState } from 'react';
 
 function App() {
@@ -26,13 +26,13 @@ function App() {
   })
 
   // loading brain and lesions
-  const multiBrain = useOBJThreeStates({ objType: 'brain.obj' });
-  const multiLesion1 = useOBJThreeStates({ objType: 'lesion1_para.obj' });
-  const multiLesion2 = useOBJThreeStates({ objType: 'lesion2_para.obj' });
-  const multiLesion3 = useOBJThreeStates({ objType: 'lesion3_para.obj' });
+  const multiBrain = useOBJThreeStates({ patient: patientInfo.id, objType: 'brain.obj' });
+  const multiLesion1 = useOBJThreeStates({ patient: patientInfo.id, objType: 'lesion1.obj' });
+  const multiLesion2 = useOBJThreeStates({ patient: patientInfo.id, objType: 'lesion2.obj' });
+  const multiLesion3 = useOBJThreeStates({ patient: patientInfo.id, objType: 'lesion3.obj' });
 
   // getting the center of the objtects
-  const bboxCenter = useBBoxcenter({ objType: 'brain.obj' });
+  const bboxCenter = useBBoxcenter({ patient: patientInfo.id, objType: 'brain.obj' });
 
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });

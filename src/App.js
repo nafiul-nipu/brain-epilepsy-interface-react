@@ -26,10 +26,10 @@ function App() {
   })
 
   // loading brain and lesions
-  const multiBrain = useOBJThreeStates({ objType: brain });
-  const multiLesion1 = useOBJThreeStates({ objType: lesion1_para });
-  const multiLesion2 = useOBJThreeStates({ objType: lesion2_para });
-  const multiLesion3 = useOBJThreeStates({ objType: lesion3_para });
+  const multiBrain = useOBJThreeStates({ objType: 'brain.obj' });
+  const multiLesion1 = useOBJThreeStates({ objType: 'lesion1_para.obj' });
+  const multiLesion2 = useOBJThreeStates({ objType: 'lesion2_para.obj' });
+  const multiLesion3 = useOBJThreeStates({ objType: 'lesion3_para.obj' });
 
   // getting the center of the objtects
   const bboxCenter = useBBoxcenter({ objType: brain });

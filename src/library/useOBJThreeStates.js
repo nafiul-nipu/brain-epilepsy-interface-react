@@ -18,6 +18,7 @@ export const useOBJThreeStates = ({
     useEffect(() => {
         // three js OBJ loader
         let loader = new OBJLoader();
+        loader.path = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/models/'
 
         // loading the OBJ and save as state
         loader.load(`${objType}`, function (obj) {

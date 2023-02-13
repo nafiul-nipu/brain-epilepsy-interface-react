@@ -23,13 +23,19 @@ export const useOBJThreeStates = ({
 
         // loading the OBJ and save as state
         loader.load(`${patient}_${objType}`, function (obj) {
+            console.log(obj)
             setData({
                 obj1: obj.clone(),
                 // obj2: obj.clone(),
                 // obj3: obj.clone(),
                 // obj4: obj.clone()
             });
-        })
+        },
+            function (error) {
+                setData({
+                    obj1: null
+                })
+            })
     }, [objType, patient])
 
     return data;

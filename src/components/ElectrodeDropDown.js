@@ -21,6 +21,7 @@ export const ElectrodeDropDown = ({
                     <Col sm={7}>
                         <Form.Select value={patient} id='selectPosition' ref={patientRef} onChange={onPatientChange}>
                             <option value='ep187'> EP187 </option>
+                            <option value='ep129'> EP129 </option>
                         </Form.Select>
                     </Col>
                 </Form.Group>

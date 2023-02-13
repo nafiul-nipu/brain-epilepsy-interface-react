@@ -10,6 +10,7 @@ export const useBBoxcenter = ({
 
     useEffect(() => {
         let loader = new OBJLoader();
+        loader.path = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/models/'
 
         // load the OBJ
         loader.load(`${objType}`, function (obj) {

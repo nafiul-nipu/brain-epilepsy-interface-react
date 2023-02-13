@@ -32,7 +32,7 @@ function App() {
   const multiLesion3 = useOBJThreeStates({ objType: 'lesion3_para.obj' });
 
   // getting the center of the objtects
-  const bboxCenter = useBBoxcenter({ objType: brain });
+  const bboxCenter = useBBoxcenter({ objType: 'brain.obj' });
 
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });

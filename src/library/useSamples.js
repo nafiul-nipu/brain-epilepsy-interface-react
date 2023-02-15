@@ -11,7 +11,7 @@ export const useSamples = ({
 
     useEffect(() => {
         if (patientID && sampleName) {
-            const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${patientID}/${sampleName}_${range}.json`
+            const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${patientID}/${sampleName}/${sampleName}_${range}.json`
             json(url).then(jdata => {
                 setData(jdata)
             });

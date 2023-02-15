@@ -23,7 +23,7 @@ export const useOBJThreeStates = ({
 
         // loading the OBJ and save as state
         loader.load(`${patient}_${objType}`, function (obj) {
-            console.log(obj)
+            // console.log(obj)
             setData({
                 obj1: obj.clone(),
                 // obj2: obj.clone(),

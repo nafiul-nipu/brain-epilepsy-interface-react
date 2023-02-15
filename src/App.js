@@ -20,7 +20,7 @@ import { useState } from 'react';
 import dataRegistry from './data/dataRegistry.json'
 
 function App() {
-  console.log(dataRegistry)
+  // console.log(dataRegistry)
   const [patientInfo, setPatientInfo] = useState({ id: 'ep187', sample: 'sample1' })
   const [timeRange, setTimeRange] = useState(1000)
 
@@ -42,7 +42,7 @@ function App() {
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
 
-  console.log(dataRegistry['ep129'])
+  // console.log(dataRegistry['ep129'])
 
   let sliderObj = sliderHorizontal()
     .min(0)

@@ -9,12 +9,14 @@ export const ElectrodeDropDown = ({
 }) => {
     const sampleRef = useRef()
     const patientRef = useRef()
+    const timeRef = useRef()
 
     const [sample, selectedSample] = useState('sample1')
     const [patient, selectedPatient] = useState('ep187')
+    const [timerange, selectTimeRange] = useState(1000)
     return (
         <Row>
-            <Col md='6'>
+            <Col md='4'>
                 {/* Patient dropdown */}
                 <Form.Group as={Row} className='mb-4' controlId="formHorizontal">
                     <Form.Label column sm={5} id='selectPosition'>Select Patient:</Form.Label>
@@ -26,7 +28,7 @@ export const ElectrodeDropDown = ({
                     </Col>
                 </Form.Group>
             </Col>
-            <Col md='6'>
+            <Col md='4'>
                 {/* propagation dropdown */}
                 <Form.Group as={Row} className='mb-4' controlId="formHorizontal">
                     <Form.Label column sm={4} id='selectPosition'>Sample:</Form.Label>
@@ -35,6 +37,22 @@ export const ElectrodeDropDown = ({
                             <option value='sample1'> Sample 1</option>
                             <option value='sample2'> Sample 2 </option>
                             <option value='sample3'> Sample 3 </option>
+                        </Form.Select>
+                    </Col>
+                </Form.Group>
+            </Col>
+
+            <Col md='4'>
+                {/* propagation dropdown */}
+                <Form.Group as={Row} className='mb-4' controlId="formHorizontal">
+                    <Form.Label column sm={4} id='selectPosition'>Range:</Form.Label>
+                    <Col sm={8}>
+                        <Form.Select value={timerange} onChange={ontimerangeUpdate} ref={timeRef} id='selectPosition'>
+                            <option value='50'> 50 ms</option>
+                            <option value='100'> 100 ms </option>
+                            <option value='200'> 200 ms </option>
+                            <option value='500'> 500 ms </option>
+                            <option value='1000'> 1000 ms </option>
                         </Form.Select>
                     </Col>
                 </Form.Group>
@@ -50,7 +68,8 @@ export const ElectrodeDropDown = ({
         let patient = patientRef.current.value;
         selectedSample(event.target.value)
 
-        setNewPatientInfo({ id: patient, sample: sampleName })
+        let time = timeRef.current.value;
+        setNewPatientInfo({ id: patient, sample: sampleName, range: time })
     }
 
     function onPatientChange(event) {
@@ -59,7 +78,18 @@ export const ElectrodeDropDown = ({
         let sampleName = sampleRef.current.value;
         selectedPatient(event.target.value)
 
-        setNewPatientInfo({ id: patient, sample: sampleName })
+        let time = timeRef.current.value;
+        setNewPatientInfo({ id: patient, sample: sampleName, range: time })
+    }
+
+    function ontimerangeUpdate(event) {
+        let time = event.target.value;
+        selectTimeRange(event.target.value);
+
+        let sampleName = sampleRef.current.value;
+        let patient = patientRef.current.value;
+        setNewPatientInfo({ id: patient, sample: sampleName, range: time })
+
     }
 }
 

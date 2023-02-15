@@ -22,10 +22,12 @@ import dataRegistry from './data/dataRegistry.json'
 function App() {
   console.log(dataRegistry)
   const [patientInfo, setPatientInfo] = useState({ id: 'ep187', sample: 'sample1' })
+  const [timeRange, setTimeRange] = useState(1000)
 
   const sampleData = useSamples({
     patientID: patientInfo.id,
-    sampleName: patientInfo.sample
+    sampleName: patientInfo.sample,
+    range: timeRange
   })
 
   // loading brain and lesions
@@ -56,7 +58,8 @@ function App() {
     })
 
   function setNewPatientInfo(val) {
-    setPatientInfo({ id: val.id, sample: val.sample })
+    setPatientInfo({ id: val.id, sample: val.sample });
+    setTimeRange(val.range);
   }
 
   // console.log(electrodeDataCsv)
@@ -74,6 +77,7 @@ function App() {
       bboxCenter={bboxCenter} //box center
       setNewPatientInfo={setNewPatientInfo}
       sliderObj={sliderObj}
+      timeRange={timeRange}
     />
   );
 }

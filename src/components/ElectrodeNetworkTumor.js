@@ -14,9 +14,9 @@ import {
     render,
     getbbox,
     objMaterialManipulation,
-    populateElectrodes,
-    createBrainPropagation
 } from '../library/CommonUtilities'
+
+import dataRegistry from '../data/dataRegistry.json'
 
 import { vertexShader, fragmentShader } from '../library/shadersrc'
 
@@ -31,7 +31,7 @@ export const ElectrodeNetworkTumor = ({
     sampleData,
     bboxCenter,
     sliderObj,
-    tickValues
+    timeRange
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -50,7 +50,7 @@ export const ElectrodeNetworkTumor = ({
 
         // size scale for brain network
         let sizeScale = d3.scaleLinear()
-            .domain([1, 5]) //this is now customly added
+            .domain([0, dataRegistry.maxSize]) //this is now customly added
             .range([5, 10])
 
         // getting the canvas reference
@@ -320,7 +320,7 @@ export const ElectrodeNetworkTumor = ({
                     if (colIdx === 0) {
                         sliderObj.value([0, 0]);
                     } else {
-                        sliderObj.value([(colIdx - 1) * 2, colIdx * 2]);
+                        sliderObj.value([(colIdx - 1) * timeRange, colIdx * timeRange]);
                     }
 
 

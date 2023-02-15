@@ -14,7 +14,7 @@ export const ComponentContainer = ({
     bboxCenter,
     setNewPatientInfo,
     sliderObj,
-    tickValues
+    timeRange
 }) => {
     return (
         <Container fluid id="container">
@@ -62,7 +62,7 @@ export const ComponentContainer = ({
                                     sampleData={sampleData}
                                     bboxCenter={bboxCenter}
                                     sliderObj={sliderObj}
-                                    tickValues={tickValues}
+                                    timeRange={timeRange}
                                 />
                             </Row>
                         </Col>

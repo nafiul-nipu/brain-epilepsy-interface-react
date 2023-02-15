@@ -28,7 +28,6 @@ export const ComponentContainer = ({
                 <Col md='6' style={{ height: '5vh' }}>
                     <TimeSliderButton
                         sliderObj={sliderObj}
-                        tickValues={tickValues}
                     />
                 </Col>
             </Row>

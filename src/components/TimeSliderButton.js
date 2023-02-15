@@ -5,8 +5,7 @@ import * as d3 from 'd3'
 
 let button, slider
 export const TimeSliderButton = ({
-    sliderObj,
-    tickValues
+    sliderObj
 }) => {
     const buttoneRef = useRef(null)
     const sliderRef = useRef(null)

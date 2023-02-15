@@ -17,7 +17,10 @@ import { useSamples } from './library/useSamples';
 // import lesion3_para from './models/lesion3_para.obj';
 import { useState } from 'react';
 
+import dataRegistry from './data/dataRegistry.json'
+
 function App() {
+  console.log(dataRegistry)
   const [patientInfo, setPatientInfo] = useState({ id: 'ep187', sample: 'sample1' })
 
   const sampleData = useSamples({
@@ -37,11 +40,11 @@ function App() {
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
 
-  let tickValues = Array.from({ length: 600 / 2 + 1 }, (_, i) => i * 2);
+  console.log(dataRegistry['ep129'])
 
   let sliderObj = sliderHorizontal()
     .min(0)
-    .max(600)
+    .max(dataRegistry[patientInfo.id].time)
     .default([0, 0]) //for one slider 0
     .ticks(4)
     // .tickValues(tickValues)
@@ -71,7 +74,6 @@ function App() {
       bboxCenter={bboxCenter} //box center
       setNewPatientInfo={setNewPatientInfo}
       sliderObj={sliderObj}
-      tickValues={tickValues}
     />
   );
 }

@@ -10,6 +10,8 @@ import { useBBoxcenter } from './library/useBBoxcenter';
 import { useOBJThreeStates } from './library/useOBJThreeStates';
 import { useSamples } from './library/useSamples';
 
+import { useLesionData } from './library/useLesionData';
+
 // importing objfiles
 // import brain from "./models/brain.obj"
 // import lesion1_para from './models/lesion1_para.obj';
@@ -32,9 +34,9 @@ function App() {
 
   // loading brain and lesions
   const multiBrain = useOBJThreeStates({ patient: patientInfo.id, objType: 'brain.obj' });
-  const multiLesion1 = useOBJThreeStates({ patient: patientInfo.id, objType: 'lesion1.obj' });
-  const multiLesion2 = useOBJThreeStates({ patient: patientInfo.id, objType: 'lesion2.obj' });
-  const multiLesion3 = useOBJThreeStates({ patient: patientInfo.id, objType: 'lesion3.obj' });
+  const lesions = useLesionData({ patient: patientInfo.id })
+
+  // console.log(lesions)
 
   // getting the center of the objtects
   const bboxCenter = useBBoxcenter({ patient: patientInfo.id, objType: 'brain.obj' });
@@ -71,13 +73,11 @@ function App() {
       electrodeData={electrodeDataCsv} //electrode data set
       sampleData={sampleData} // propagation sample 10 minutes
       multiBrain={multiBrain} //brain objs
-      multiLesion1={multiLesion1} //lesion1 objs
-      multiLesion2={multiLesion2} //lesion2 objs
-      multiLesion3={multiLesion3} // lesion3 objs
       bboxCenter={bboxCenter} //box center
       setNewPatientInfo={setNewPatientInfo}
       sliderObj={sliderObj}
       timeRange={timeRange}
+      lesions={lesions}
     />
   );
 }

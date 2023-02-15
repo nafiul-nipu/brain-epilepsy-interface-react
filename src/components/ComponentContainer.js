@@ -8,13 +8,11 @@ export const ComponentContainer = ({
     electrodeData,
     sampleData,
     multiBrain,
-    multiLesion1,
-    multiLesion2,
-    multiLesion3,
     bboxCenter,
     setNewPatientInfo,
     sliderObj,
-    timeRange
+    timeRange,
+    lesions
 }) => {
     return (
         <Container fluid id="container">
@@ -55,14 +53,12 @@ export const ComponentContainer = ({
                             <Row>
                                 <ElectrodeNetworkTumor
                                     brain={multiBrain.obj1}
-                                    lesion1={multiLesion1.obj1}
-                                    lesion2={multiLesion2.obj1}
-                                    lesion3={multiLesion3.obj1}
                                     electrodeData={electrodeData}
                                     sampleData={sampleData}
                                     bboxCenter={bboxCenter}
                                     sliderObj={sliderObj}
                                     timeRange={timeRange}
+                                    lesions={lesions}
                                 />
                             </Row>
                         </Col>

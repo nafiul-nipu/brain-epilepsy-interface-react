@@ -24,14 +24,12 @@ let canvas = null;
 // let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
 export const ElectrodeNetworkTumor = ({
     brain,
-    lesion1,
-    lesion2,
-    lesion3,
     electrodeData,
     sampleData,
     bboxCenter,
     sliderObj,
-    timeRange
+    timeRange,
+    lesions
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -94,35 +92,19 @@ export const ElectrodeNetworkTumor = ({
                 transparency: true
             });
 
-            //load lesion1
-            await OBJLoaderThreeJS({
-                scene: scene,
-                obj: lesion1,
-                color: 0Xf7680f,
-                opacity: 1,
-                transparency: false,
-                center: false
-            });
+            for (let lesion of lesions) {
+                // console.log(lesion);
+                //load lesion
+                await OBJLoaderThreeJS({
+                    scene: scene,
+                    obj: lesion,
+                    color: 0Xf7680f,
+                    opacity: 1,
+                    transparency: false,
+                    center: false
+                });
 
-            //load lesion2
-            await OBJLoaderThreeJS({
-                scene: scene,
-                obj: lesion2,
-                color: 0Xf7680f,
-                opacity: 1,
-                transparency: false,
-                center: false
-            });
-
-            //load lesion3
-            await OBJLoaderThreeJS({
-                scene: scene,
-                obj: lesion3,
-                color: 0Xf7680f,
-                opacity: 1,
-                transparency: false,
-                center: false
-            });
+            }
 
             // load electrode and electrode network
             await loadElectrode([scene, scene2], electrodeData, sampleData);
@@ -209,7 +191,6 @@ export const ElectrodeNetworkTumor = ({
             let colors = []
             let sizes = []
             let colIdx = 0;
-            let sizeIdx = 0;
             const color = new THREE.Color();
             let firstColor = []
             let firstSize = []
@@ -350,7 +331,7 @@ export const ElectrodeNetworkTumor = ({
         }
 
 
-    }, [bboxCenter, brain, canvasRef, electrodeData, lesion1, lesion2, lesion3, sampleData, sliderObj]);
+    }, [bboxCenter, brain, canvasRef, electrodeData, lesions, sampleData, sliderObj, timeRange]);
 
     return (
         <Col md='12'>

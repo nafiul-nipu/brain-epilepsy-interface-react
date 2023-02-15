@@ -50,8 +50,8 @@ export const ElectrodeNetworkTumor = ({
 
         // size scale for brain network
         let sizeScale = d3.scaleLinear()
-            .domain([1, 121]) //this is now customly added
-            .range([5, 20])
+            .domain([1, 5]) //this is now customly added
+            .range([5, 10])
 
         // getting the canvas reference
         canvas = canvasRef.current

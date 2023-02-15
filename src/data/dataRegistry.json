@@ -1,12 +1,12 @@
 {
     "ep187": {
-        "size": [],
+        "size": 2,
         "lesions": 3,
         "time": 600000
 
     },
     "ep129":{
-        "size": [],
+        "size": 4,
         "lesions": 2,
         "time": 121000
     }

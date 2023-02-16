@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>D3.js Circle Bar Chart</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+      .bar {
+        fill: steelblue;
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="500" height="300"></svg>
+    <script>
+      // Sample data
+      const data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+      const width = 500;
+      const height = 300;
+      const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+      const chartWidth = width - margin.left - margin.right;
+      const chartHeight = height - margin.top - margin.bottom;
+
+      // Create SVG element
+      const svg = d3.select("svg");
+
+      // Create scales
+      const xScale = d3
+        .scaleBand()
+        .domain(d3.range(data.length))
+        .range([margin.left, width - margin.right])
+        .padding(0.2);
+
+      const yScale = d3
+        .scaleLinear()
+        .domain([0, d3.max(data)])
+        .range([height - margin.bottom, margin.top]);
+
+      // Draw circles
+      svg
+        .selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", (d, i) => xScale(i) + xScale.bandwidth() / 2)
+        .attr("cy", (d) => yScale(d))
+        .attr("r", (d) => Math.min(xScale.bandwidth(), yScale(d) - margin.top))
+        .attr("fill", "steelblue");
+
+      // Draw x-axis
+      svg
+        .append("g")
+        .attr("transform", `translate(0, ${height - margin.bottom})`)
+        .call(d3.axisBottom(xScale));
+
+      // Draw y-axis
+      svg
+        .append("g")
+        .attr("transform", `translate(${margin.left}, 0)`)
+        .call(d3.axisLeft(yScale));
+    </script>
+  </body>
+</html>

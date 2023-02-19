@@ -33,14 +33,8 @@ export const ComponentContainer = ({
                 </Col>
             </Row>
             {/* vis */}
-            <Row style={{ height: '95vh' }}>
-                <Col md='4' style={{ height: '95vh' }}>
-                    <Row>
-                        <EventViewer
-                            data={eventData}
-                        />
-                    </Row>
-                </Col>
+            <Row style={{ height: '50vh' }}>
+                <Col md='4'></Col>
                 <Col md='4'></Col>
                 <Col md='4'>
                     {/* top view - electrode and brain 3D model */}
@@ -63,6 +57,15 @@ export const ComponentContainer = ({
                         </Col>
                     </Row>
 
+                </Col>
+            </Row>
+            <Row>
+                <Col md='12' style={{ height: '45vh' }}>
+                    <Row>
+                        <EventViewer
+                            data={eventData}
+                        />
+                    </Row>
                 </Col>
             </Row>
         </Container>

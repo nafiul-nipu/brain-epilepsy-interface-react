@@ -16,7 +16,8 @@ export const useEventData = ({
 
             json(url).then(jData => {
                 const filteredData = jData.filter((item) => item.count > 1)
-                setData(filteredData);
+                // setData(filteredData);
+                setData(jData);
             })
 
         }

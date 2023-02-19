@@ -6,7 +6,7 @@ import { AxisBottom } from "../CommonComponents/AxisBottom";
 import { LinePlot } from "../CommonComponents/LinePlot";
 
 // margin for SVG
-const margin = { top: 10, right: 30, bottom: 60, left: 40 }
+const margin = { top: 10, right: 40, bottom: 60, left: 40 }
 // offset variable to placement
 const scaleOffset = 5
 
@@ -20,14 +20,15 @@ export const EventViewer = ({
     }
     // console.log(data)
     const yMax = Math.max(...data.map(item => item.count))
+
     // console.log(yMax)
     const length = data.length
     const xd = Array.from({ length }, (_, i) => i);
     // console.log(xd)
 
     // defining width, height, innerwidth and inner height
-    const width = window.innerWidth / 3
-    const height = window.innerHeight - 10
+    const width = window.innerWidth
+    const height = window.innerHeight / 2 - 10
 
     const innerHeight = height - margin.top - margin.bottom
     const innerWidth = width - margin.right - margin.left
@@ -36,30 +37,22 @@ export const EventViewer = ({
     // const xScale = d3.scaleBand()
     //     .range([0, innerWidth])
     //     .domain(xd)
-    //     .padding(0.1);
-
-    // const yAxisScale = d3.scaleLinear()
-    //     .domain([0, yMax])
-    //     .range([innerHeight, 0])
-
-    // const xAxisScale = d3.scaleLinear()
-    //     .range([0, innerWidth])
-    //     .domain([0, data.length]);
-
+    //     .padding(0.1)
+    //     ;
     const xScale = d3.scaleLinear()
         .range([0, innerWidth])
+        .domain([0, data[data.length - 1].index])
+        .nice()
+        ;
+
+    const yScale = d3.scaleLinear()
         .domain([0, yMax])
-
-    const yScale = d3.scaleBand()
         .range([innerHeight, 0])
-        .domain(xd)
-        .padding(0.8)
+        .nice()
 
-    const yAxisScale = d3.scaleLinear()
-        .range([innerHeight, 0])
-        .domain([0, data.length])
-
-    console.log(yScale.bandwidth())
+    const xAxisScale = d3.scaleLinear()
+        .range([0, innerWidth])
+        .domain([0, data[data.length - 1].index]).nice();
 
 
     return (
@@ -68,7 +61,7 @@ export const EventViewer = ({
                 <g transform={`translate(${margin.left}, ${margin.top})`}>
                     {/* creating bottom axis */}
                     <AxisBottom
-                        xScale={xScale}
+                        xScale={xAxisScale}
                         yScale={yScale}
                         scaleOffset={scaleOffset}
                         innerHeight={innerHeight}
@@ -76,7 +69,7 @@ export const EventViewer = ({
                     {/* creating left axis */}
                     <AxisLeft
                         xScale={xScale}
-                        yScale={yAxisScale}
+                        yScale={yScale}
                         scaleOffset={scaleOffset}
                     />
 
@@ -86,21 +79,25 @@ export const EventViewer = ({
                                 // console.log(d)
                                 return (
                                     <g>
-                                        <rect
-                                            x={xScale(0)}
-                                            y={yScale(d.index)}
-                                            width={xScale(d.count)}
-                                            height={yScale.bandwidth()}
+                                        {/* <rect
+                                            x={xScale(i)}
+                                            y={yScale(d.count)}
+                                            width={xScale.bandwidth()}
+                                            height={innerHeight - yScale(d.count)}
                                             fill={'red'}
                                         >
-                                        </rect>
+                                            <title>{`
+                                                        Event Id : ${d.index}
+                                                        \nCount : ${d.count}
+                                                        `}</title>
+                                        </rect> */}
                                         {
                                             d.electrode.map((value, index) => {
                                                 // console.log(index)
                                                 return (
                                                     <circle
-                                                        cx={xScale(index)}
-                                                        cy={yScale(d.index)}
+                                                        cx={xScale(i)}
+                                                        cy={yScale(index)}
                                                         r={3}
                                                         fill={'green'}
                                                     >

@@ -19,8 +19,6 @@ export const EventViewer = ({
         )
     }
     // console.log(data)
-    const filteredData = data.filter((item) => item.count > 1)
-
     const yMax = Math.max(...data.map(item => item.count))
     // console.log(yMax)
     const length = data.length
@@ -84,7 +82,7 @@ export const EventViewer = ({
 
                     <g>
                         {
-                            filteredData.map((d, i) => {
+                            data.map((d, i) => {
                                 // console.log(d)
                                 return (
                                     <g>
@@ -122,7 +120,7 @@ export const EventViewer = ({
 
                     {/* <LinePlot
                         data={data}
-                        xScale={xAxisScale}
+                        xScale={xScale}
                         yLineScale={yAxisScale}
                     /> */}
 

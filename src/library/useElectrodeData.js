@@ -8,7 +8,9 @@ export const useElectrodeData = ({ id }) => {
     const [data, setData] = useState(null);
 
     useEffect(() => {
+        // console.log('before', id)
         if (id) {
+            // console.log('after', id)
             const electrodeURL = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${id}/${id}_electrodes_new.csv`
             const row = d => {
                 d.electrode_number = +d.electrode_number;

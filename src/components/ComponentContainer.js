@@ -1,6 +1,7 @@
 import { Container, Row, Col } from "react-bootstrap"
 import { ElectrodeDropDown } from "./ElectrodeDropDown"
 import { ElectrodeNetworkTumor } from "./ElectrodeNetworkTumor"
+import { EventViewer } from "./EventViewer"
 // import { PropagationTimeSeries } from "./PropagationTimeSeries"
 import { TimeSliderButton } from "./TimeSliderButton"
 
@@ -12,7 +13,8 @@ export const ComponentContainer = ({
     setNewPatientInfo,
     sliderObj,
     timeRange,
-    lesions
+    lesions,
+    eventData
 }) => {
     return (
         <Container fluid id="container">
@@ -33,12 +35,12 @@ export const ComponentContainer = ({
             {/* vis */}
             <Row>
                 <Col md='8'>
-                    {/* propagation time series */}
-                    {/* <PropagationTimeSeries
-                        sample1={sampleData}
-                        sample2={sampleData2}
-                        sample3={sampleData3}
-                    /> */}
+                    <Row>
+                        <EventViewer
+                            data={eventData}
+                        />
+                    </Row>
+                    <Row></Row>
                 </Col>
                 <Col md='4'>
                     {/* top view - electrode and brain 3D model */}

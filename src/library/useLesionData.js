@@ -13,6 +13,7 @@ export const useLesionData = ({
     const [data, setData] = useState(null);
 
     useEffect(() => {
+        // console.log('lesion patient', patient)
         function loadLesions(callback) {
             return new Promise((resolve) => {
                 let lesions = []

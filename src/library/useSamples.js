@@ -10,7 +10,9 @@ export const useSamples = ({
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        if (patientID && sampleName) {
+        // console.log('useSample', patientID, sampleName, range)
+        if (patientID && sampleName && range) {
+            // console.log("inside", patientID, sampleName, range)
             const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${patientID}/${sampleName}/${sampleName}_${range}.json`
             // console.log(url)
             json(url).then(jdata => {

@@ -20,30 +20,37 @@ import { useEventData } from './library/useEventData';
 function App() {
   // console.log(dataRegistry)
   const [patientInfo, setPatientInfo] = useState({ id: 'ep187', sample: 'sample1' })
+  // console.log('patient', patientInfo)
   const [timeRange, setTimeRange] = useState(1000)
+  // console.log('time', timeRange)
 
   const sampleData = useSamples({
     patientID: patientInfo.id,
     sampleName: patientInfo.sample,
     range: timeRange
   })
+  // console.log('sampledata', sampleData)
 
   const eventData = useEventData({
     patientID: patientInfo.id,
     sample: patientInfo.sample
   })
 
-  console.log(eventData)
+  // console.log('eventdata', eventData)
 
   // loading brain and lesions
   const multiBrain = useOBJThreeStates({ patient: patientInfo.id, objType: 'brain.obj' });
+  // console.log('brain', multiBrain)
   const lesions = useLesionData({ patient: patientInfo.id })
+  // console.log('lesions', lesions)
 
   // getting the center of the objtects
   const bboxCenter = useBBoxcenter({ patient: patientInfo.id, objType: 'brain.obj' });
+  // console.log('bbox', bboxCenter)
 
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
+  // console.log('electrodcsv', electrodeDataCsv)
 
   // console.log(dataRegistry['ep129'])
 
@@ -61,7 +68,9 @@ function App() {
     })
 
   function setNewPatientInfo(val) {
+    // console.log("setting patient info")
     setPatientInfo({ id: val.id, sample: val.sample });
+    // console.log('setting time range')
     setTimeRange(val.range);
   }
 
@@ -72,13 +81,14 @@ function App() {
     // component container
     <ComponentContainer
       electrodeData={electrodeDataCsv} //electrode data set
-      sampleData={sampleData} // propagation sample 10 minutes
+      sampleData={sampleData} // propagation samples
       multiBrain={multiBrain} //brain objs
       bboxCenter={bboxCenter} //box center
       setNewPatientInfo={setNewPatientInfo}
       sliderObj={sliderObj}
-      timeRange={timeRange}
-      lesions={lesions}
+      timeRange={timeRange} //which time range are we showing
+      lesions={lesions} // all lesions
+      eventData={eventData} //event data 
     />
   );
 }

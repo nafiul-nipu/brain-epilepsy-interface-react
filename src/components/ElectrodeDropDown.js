@@ -16,7 +16,7 @@ export const ElectrodeDropDown = ({
     const [timerange, selectTimeRange] = useState(1000)
     return (
         <Row>
-            <Col md='4'>
+            <Col md='5'>
                 {/* Patient dropdown */}
                 <Form.Group as={Row} className='mb-4' controlId="formHorizontal">
                     <Form.Label column sm={5} id='selectPosition'>Select Patient:</Form.Label>
@@ -28,7 +28,7 @@ export const ElectrodeDropDown = ({
                     </Col>
                 </Form.Group>
             </Col>
-            <Col md='4'>
+            <Col md='3'>
                 {/* propagation dropdown */}
                 <Form.Group as={Row} className='mb-4' controlId="formHorizontal">
                     <Form.Label column sm={4} id='selectPosition'>Sample:</Form.Label>

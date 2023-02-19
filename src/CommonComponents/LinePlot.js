@@ -1,21 +1,17 @@
-import { line } from "d3";
+import { line, curveCatmullRom } from "d3";
 
 // creating the line
 export const LinePlot = ({
     data,
     xScale,
-    yLineScale,
-    yAxisScale,
-    each,
-    scaleOffset,
-    keyNumber
+    yLineScale
 }) => {
     // console.log("in line plot")
     // console.log(data)
     // console.log(yAxisScale)
     // console.log(`${keyNumber}_${each}`)
     return (
-        <g key={`${keyNumber}_${each}`} transform={`translate(0, ${yAxisScale(each) + scaleOffset})`}>
+        <g>
 
             <path
                 id="line-plot"
@@ -31,9 +27,9 @@ export const LinePlot = ({
                     .y((d, i) => {
                         // console.log("line plot i")
                         // console.log(time[i])
-                        return yLineScale(d.frequency)
+                        return yLineScale(d.count)
                     })
-                    // .curve(curveNatural)
+                    .curve(curveCatmullRom)
                     (data)}
             />
 

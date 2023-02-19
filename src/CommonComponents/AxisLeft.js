@@ -5,7 +5,7 @@ export const AxisLeft = ({ xScale, yScale, scaleOffset }) => {
     const [xStart,] = xScale.range();
     const [yStart, yEnd] = yScale.range();
     const ticks = yScale.ticks();
-    console.log(ticks)
+    // console.log(ticks)
     return (
         <>
             <line className={'axisLine'} x1={xStart} x2={xStart} y1={yEnd} y2={yStart} />

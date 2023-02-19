@@ -6,7 +6,7 @@ import { AxisBottom } from "../CommonComponents/AxisBottom";
 import { LinePlot } from "../CommonComponents/LinePlot";
 
 // margin for SVG
-const margin = { top: 10, right: 40, bottom: 70, left: 40 }
+const margin = { top: 10, right: 40, bottom: 70, left: 45 }
 // offset variable to placement
 const scaleOffset = 5
 
@@ -66,12 +66,24 @@ export const EventViewer = ({
                         scaleOffset={scaleOffset}
                         innerHeight={innerHeight}
                     />
+                    <text
+                        className='axis-label'
+                        textAnchor='middle'
+                        transform={`translate(${innerWidth / 2}, ${innerHeight + 30} )`}
+                    >{'Event ID'}</text>
+
                     {/* creating left axis */}
                     <AxisLeft
                         xScale={xScale}
                         yScale={yScale}
                         scaleOffset={scaleOffset}
                     />
+
+                    <text
+                        className='axis-label'
+                        textAnchor='middle'
+                        transform={`translate(${-33}, ${innerHeight / 2} )rotate(-90)`}
+                    >{'Count'}</text>
 
                     <g>
                         {

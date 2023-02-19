@@ -12,14 +12,10 @@ import { useSamples } from './library/useSamples';
 
 import { useLesionData } from './library/useLesionData';
 
-// importing objfiles
-// import brain from "./models/brain.obj"
-// import lesion1_para from './models/lesion1_para.obj';
-// import lesion2_para from './models/lesion2_para.obj';
-// import lesion3_para from './models/lesion3_para.obj';
 import { useState } from 'react';
 
 import dataRegistry from './data/dataRegistry.json'
+import { useEventData } from './library/useEventData';
 
 function App() {
   // console.log(dataRegistry)
@@ -32,11 +28,16 @@ function App() {
     range: timeRange
   })
 
+  const eventData = useEventData({
+    patientID: patientInfo.id,
+    sample: patientInfo.sample
+  })
+
+  console.log(eventData)
+
   // loading brain and lesions
   const multiBrain = useOBJThreeStates({ patient: patientInfo.id, objType: 'brain.obj' });
   const lesions = useLesionData({ patient: patientInfo.id })
-
-  // console.log(lesions)
 
   // getting the center of the objtects
   const bboxCenter = useBBoxcenter({ patient: patientInfo.id, objType: 'brain.obj' });

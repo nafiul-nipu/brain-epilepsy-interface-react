@@ -19,7 +19,7 @@ export const ComponentContainer = ({
     return (
         <Container fluid id="container">
             {/* nav bar */}
-            <Row>
+            <Row style={{ height: '5vh' }}>
                 <Col md='6' style={{ height: '5vh' }}>
                     {/* dropdown menues */}
                     <ElectrodeDropDown
@@ -33,15 +33,15 @@ export const ComponentContainer = ({
                 </Col>
             </Row>
             {/* vis */}
-            <Row>
-                <Col md='8'>
+            <Row style={{ height: '95vh' }}>
+                <Col md='4' style={{ height: '95vh' }}>
                     <Row>
                         <EventViewer
                             data={eventData}
                         />
                     </Row>
-                    <Row></Row>
                 </Col>
+                <Col md='4'></Col>
                 <Col md='4'>
                     {/* top view - electrode and brain 3D model */}
                     <Row>

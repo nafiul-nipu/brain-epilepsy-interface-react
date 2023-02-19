@@ -6,7 +6,7 @@ import { AxisBottom } from "../CommonComponents/AxisBottom";
 import { LinePlot } from "../CommonComponents/LinePlot";
 
 // margin for SVG
-const margin = { top: 0, right: 30, bottom: 100, left: 40 }
+const margin = { top: 10, right: 30, bottom: 60, left: 40 }
 // offset variable to placement
 const scaleOffset = 5
 
@@ -19,6 +19,8 @@ export const EventViewer = ({
         )
     }
     // console.log(data)
+    const filteredData = data.filter((item) => item.count > 1)
+
     const yMax = Math.max(...data.map(item => item.count))
     // console.log(yMax)
     const length = data.length
@@ -26,58 +28,81 @@ export const EventViewer = ({
     // console.log(xd)
 
     // defining width, height, innerwidth and inner height
-    const width = window.innerWidth / 1.5
-    const height = window.innerHeight / 2 - 10
+    const width = window.innerWidth / 3
+    const height = window.innerHeight - 10
 
     const innerHeight = height - margin.top - margin.bottom
     const innerWidth = width - margin.right - margin.left
 
     // scale for xAxis and yAxis
-    const xScale = d3.scaleBand()
+    // const xScale = d3.scaleBand()
+    //     .range([0, innerWidth])
+    //     .domain(xd)
+    //     .padding(0.1);
+
+    // const yAxisScale = d3.scaleLinear()
+    //     .domain([0, yMax])
+    //     .range([innerHeight, 0])
+
+    // const xAxisScale = d3.scaleLinear()
+    //     .range([0, innerWidth])
+    //     .domain([0, data.length]);
+
+    const xScale = d3.scaleLinear()
         .range([0, innerWidth])
+        .domain([0, yMax])
+
+    const yScale = d3.scaleBand()
+        .range([innerHeight, 0])
         .domain(xd)
-        .padding(0.1);
+        .padding(0.8)
 
     const yAxisScale = d3.scaleLinear()
-        .domain([0, yMax])
         .range([innerHeight, 0])
+        .domain([0, data.length])
 
-    const xAxisScale = d3.scaleLinear()
-        .range([0, innerWidth])
-        .domain([0, data.length]);
+    console.log(yScale.bandwidth())
 
 
     return (
-        <Col md='12' style={{ height: '50vh' }}>
+        <Col md='12' style={{ height: '95vh' }}>
             <svg width={width} height={height}>
                 <g transform={`translate(${margin.left}, ${margin.top})`}>
                     {/* creating bottom axis */}
                     <AxisBottom
-                        xScale={xAxisScale}
-                        yScale={yAxisScale}
+                        xScale={xScale}
+                        yScale={yScale}
                         scaleOffset={scaleOffset}
                         innerHeight={innerHeight}
                     />
                     {/* creating left axis */}
                     <AxisLeft
-                        xScale={xAxisScale}
+                        xScale={xScale}
                         yScale={yAxisScale}
                         scaleOffset={scaleOffset}
                     />
 
                     <g>
                         {
-                            data.map((d, i) => {
+                            filteredData.map((d, i) => {
                                 // console.log(d)
                                 return (
                                     <g>
+                                        <rect
+                                            x={xScale(0)}
+                                            y={yScale(d.index)}
+                                            width={xScale(d.count)}
+                                            height={yScale.bandwidth()}
+                                            fill={'red'}
+                                        >
+                                        </rect>
                                         {
                                             d.electrode.map((value, index) => {
                                                 // console.log(index)
                                                 return (
                                                     <circle
-                                                        cx={xScale(i)}
-                                                        cy={yAxisScale(index)}
+                                                        cx={xScale(index)}
+                                                        cy={yScale(d.index)}
                                                         r={3}
                                                         fill={'green'}
                                                     >

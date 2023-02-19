@@ -6,7 +6,7 @@ import { AxisBottom } from "../CommonComponents/AxisBottom";
 import { LinePlot } from "../CommonComponents/LinePlot";
 
 // margin for SVG
-const margin = { top: 10, right: 40, bottom: 60, left: 40 }
+const margin = { top: 10, right: 40, bottom: 70, left: 40 }
 // offset variable to placement
 const scaleOffset = 5
 

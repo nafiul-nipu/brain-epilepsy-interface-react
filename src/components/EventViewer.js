@@ -63,6 +63,9 @@ export const EventViewer = ({
 
         d3.select('.referenceCircle').attr('id', `${index}`)
 
+        d3.selectAll('.eventCircle').attr('fill', 'green')
+        d3.selectAll(`#ev_${values.index}`).attr('fill', 'red')
+
         d3.select(`#play-pause-btn`).attr('value', 'play')
             .text('Play')
 
@@ -111,6 +114,8 @@ export const EventViewer = ({
                                                 // console.log(index)
                                                 return (
                                                     <circle
+                                                        className="eventCircle"
+                                                        id={`ev_${d.index}`}
                                                         cx={xScale(i)}
                                                         cy={yScale(index)}
                                                         r={3}

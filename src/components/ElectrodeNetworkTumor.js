@@ -261,22 +261,6 @@ export const ElectrodeNetworkTumor = ({
             pointGeometry.setAttribute('color', new THREE.Float32BufferAttribute(firstColor, 3));
             pointGeometry.setAttribute('size', new THREE.Float32BufferAttribute(firstSize, 1).setUsage(THREE.DynamicDrawUsage));
 
-
-            // const sprite = new THREE.TextureLoader().load(circle);
-
-            // const material = new THREE.PointsMaterial({
-            //     size: 10,
-            //     sizeAttenuation: true,
-            //     map: sprite,
-            //     alphaTest: 0.5,
-            //     transparent: true,
-            //     side: THREE.DoubleSide,
-            //     vertexColors: true
-            // });
-            // // material.color.setHSL(0.0, 1.0, 0.5);
-            // let points = new THREE.Points(pointGeometry, material);
-            // points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
-
             let points = new THREE.Points(pointGeometry, shaderMaterial);
             points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
 
@@ -380,7 +364,7 @@ export const ElectrodeNetworkTumor = ({
         }
 
 
-    }, [bboxCenter, brain, canvasRef, electrodeData, lesions, sampleData, sliderObj, timeRange]);
+    }, [bboxCenter, brain, canvasRef, electrodeData, eventData, lesions, sampleData, sliderObj, timeRange]);
 
     return (
         <Col md='12'>

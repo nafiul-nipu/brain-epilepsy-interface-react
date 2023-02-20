@@ -29,7 +29,8 @@ export const ElectrodeNetworkTumor = ({
     bboxCenter,
     sliderObj,
     timeRange,
-    lesions
+    lesions,
+    eventData
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -49,7 +50,7 @@ export const ElectrodeNetworkTumor = ({
         // size scale for brain network
         let sizeScale = d3.scaleLinear()
             .domain([0, dataRegistry.maxSize]) //this is now customly added
-            .range([5, 10])
+            .range([6, 10])
 
         // getting the canvas reference
         canvas = canvasRef.current
@@ -201,7 +202,7 @@ export const ElectrodeNetworkTumor = ({
                 color.setRGB(10 / 255, 10 / 255, 10 / 255);
                 // color.setRGB(253 / 255, 180 / 255, 98 / 255);
                 firstColor.push(color.r, color.g, color.b);
-                firstSize.push(5);
+                firstSize.push(6);
 
             }
             colors.push(firstColor)
@@ -246,7 +247,7 @@ export const ElectrodeNetworkTumor = ({
                         // color.setRGB(253 / 255, 180 / 255, 98 / 255);
                         color.setRGB(10 / 255, 10 / 255, 10 / 255);
                         eachColor.push(color.r, color.g, color.b);
-                        eachSize.push(5);
+                        eachSize.push(6);
                     }
                 }
                 colors.push(eachColor)
@@ -320,6 +321,54 @@ export const ElectrodeNetworkTumor = ({
 
                     render(renderer, [scene[0], scene[1]], camera)
 
+                } else if (value === 'play' && document.getElementsByClassName('referenceCircle')[0].id !== 'null') {
+                    const element = document.getElementsByClassName('referenceCircle')
+                    // console.log(element[0].id)
+                    let i = +element[0].id;
+                    scene[1].remove(points)
+
+                    // console.log(electrodeData)
+                    // console.log(eventData)
+
+                    let EEachColor = []
+                    let EEachSize = []
+                    for (let top = 0; top < electrodeData.length; top++) {
+                        if (eventData[i].electrode.includes(electrodeData[top].electrode_number)) {
+                            // start electrode
+                            console.log('start')
+                            color.setRGB(3 / 255, 218 / 255, 197 / 255);
+                            EEachColor.push(color.r, color.g, color.b)
+                            EEachSize.push(6)
+
+                        } else {
+                            // rest electrode
+                            color.setRGB(10 / 255, 10 / 255, 10 / 255);
+                            EEachColor.push(color.r, color.g, color.b);
+                            EEachSize.push(6);
+                        }
+                    }
+
+
+
+                    // console.log(sizes[colIdx])
+                    console.log(EEachColor)
+                    console.log(colors)
+                    let geometry = new THREE.BufferGeometry();
+                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                    geometry.setAttribute('color', new THREE.Float32BufferAttribute(EEachColor, 3));
+                    // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
+                    geometry.setAttribute('size', new THREE.Float32BufferAttribute(EEachSize, 1).setUsage(THREE.DynamicDrawUsage));
+
+                    points = new THREE.Points(geometry, shaderMaterial);
+                    points.geometry.colorsNeedUpdate = true;
+                    points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
+
+                    scene[1].add(points);
+
+                    render(renderer, [scene[0], scene[1]], camera)
+
+
+                    element[0].id = 'null';
                 }
             }, 2500);
 

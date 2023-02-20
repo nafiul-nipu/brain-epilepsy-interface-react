@@ -28,7 +28,7 @@ export const ElectrodeDropDown = ({
                     </Col>
                 </Form.Group>
             </Col>
-            <Col md='3'>
+            <Col md='4'>
                 {/* propagation dropdown */}
                 <Form.Group as={Row} className='mb-4' controlId="formHorizontal">
                     <Form.Label column sm={4} id='selectPosition'>Sample:</Form.Label>
@@ -42,11 +42,11 @@ export const ElectrodeDropDown = ({
                 </Form.Group>
             </Col>
 
-            <Col md='4'>
+            <Col md='3'>
                 {/* propagation dropdown */}
                 <Form.Group as={Row} className='mb-4' controlId="formHorizontal">
-                    <Form.Label column sm={4} id='selectPosition'>Range:</Form.Label>
-                    <Col sm={8}>
+                    <Form.Label column sm={3} id='selectPosition'>Range:</Form.Label>
+                    <Col sm={9}>
                         <Form.Select value={timerange} onChange={ontimerangeUpdate} ref={timeRef} id='selectPosition'>
                             <option value='50'> 50 ms</option>
                             <option value='100'> 100 ms </option>

@@ -52,6 +52,7 @@ export const ComponentContainer = ({
                                     sliderObj={sliderObj}
                                     timeRange={timeRange}
                                     lesions={lesions}
+                                    eventData={eventData}
                                 />
                             </Row>
                         </Col>
@@ -64,6 +65,7 @@ export const ComponentContainer = ({
                     <Row>
                         <EventViewer
                             data={eventData}
+                            sliderObj={sliderObj}
                         />
                     </Row>
                 </Col>

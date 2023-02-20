@@ -11,7 +11,8 @@ const margin = { top: 10, right: 40, bottom: 70, left: 45 }
 const scaleOffset = 5
 
 export const EventViewer = ({
-    data
+    data,
+    sliderObj
 }) => {
     if (!data) {
         return (
@@ -22,8 +23,8 @@ export const EventViewer = ({
     const yMax = Math.max(...data.map(item => item.count))
 
     // console.log(yMax)
-    const length = data.length
-    const xd = Array.from({ length }, (_, i) => i);
+    // const length = data.length
+    // const xd = Array.from({ length }, (_, i) => i);
     // console.log(xd)
 
     // defining width, height, innerwidth and inner height
@@ -53,6 +54,20 @@ export const EventViewer = ({
     const xAxisScale = d3.scaleLinear()
         .range([0, innerWidth])
         .domain([0, data[data.length - 1].index]).nice();
+
+    const circleOnClick = (values) => {
+        let startTime = values.time[0]
+        let endTime = values.time[values.time.length - 1]
+
+        let index = data.findIndex(x => x.index === values.index);
+
+        d3.select('.referenceCircle').attr('id', `${index}`)
+
+        d3.select(`#play-pause-btn`).attr('value', 'play')
+            .text('Play')
+
+        sliderObj.value([startTime, endTime]);
+    }
 
 
     return (
@@ -91,18 +106,6 @@ export const EventViewer = ({
                                 // console.log(d)
                                 return (
                                     <g>
-                                        {/* <rect
-                                            x={xScale(i)}
-                                            y={yScale(d.count)}
-                                            width={xScale.bandwidth()}
-                                            height={innerHeight - yScale(d.count)}
-                                            fill={'red'}
-                                        >
-                                            <title>{`
-                                                        Event Id : ${d.index}
-                                                        \nCount : ${d.count}
-                                                        `}</title>
-                                        </rect> */}
                                         {
                                             d.electrode.map((value, index) => {
                                                 // console.log(index)
@@ -112,6 +115,7 @@ export const EventViewer = ({
                                                         cy={yScale(index)}
                                                         r={3}
                                                         fill={'green'}
+                                                        onClick={() => circleOnClick(d)}
                                                     >
                                                         <title>{`
                                                         Event Id : ${d.index}\nElectrode: ${value}\n Timepoint : ${d.time[index]} ms
@@ -124,7 +128,16 @@ export const EventViewer = ({
                                     </g>
                                 )
                             })
+
                         }
+                        <circle
+                            className="referenceCircle"
+                            id="null"
+                            cx={innerWidth}
+                            cy={innerHeight}
+                            r={0}
+                            fill={'red'}
+                        ></circle>
                     </g>
 
                     {/* <LinePlot

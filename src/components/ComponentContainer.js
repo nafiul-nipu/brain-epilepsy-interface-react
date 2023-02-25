@@ -1,4 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap"
+import { ElectrodeChord } from "./ElectrodeChord"
 import { ElectrodeDropDown } from "./ElectrodeDropDown"
 import { ElectrodeNetworkTumor } from "./ElectrodeNetworkTumor"
 import { EventViewer } from "./EventViewer"
@@ -34,7 +35,9 @@ export const ComponentContainer = ({
             </Row>
             {/* vis */}
             <Row style={{ height: '50vh' }}>
-                <Col md='4'></Col>
+                <Col md='4'>
+                    <ElectrodeChord />
+                </Col>
                 <Col md='4'></Col>
                 <Col md='4'>
                     {/* top view - electrode and brain 3D model */}
@@ -44,7 +47,7 @@ export const ComponentContainer = ({
                                 <Col id="titleBrain1">Propagation Over Time</Col>
                             </Row>
                             <Row>
-                                <ElectrodeNetworkTumor
+                                {/* <ElectrodeNetworkTumor
                                     brain={multiBrain.obj1}
                                     electrodeData={electrodeData}
                                     sampleData={sampleData}
@@ -53,7 +56,7 @@ export const ComponentContainer = ({
                                     timeRange={timeRange}
                                     lesions={lesions}
                                     eventData={eventData}
-                                />
+                                /> */}
                             </Row>
                         </Col>
                     </Row>

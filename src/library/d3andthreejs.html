@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>D3.js + Three.js Example</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://threejs.org/build/three.min.js"></script>
+  </head>
+  <body>
+    <script>
+      // Create a D3.js visualization
+      const svg = d3
+        .select("body")
+        .append("svg")
+        .attr("width", 400)
+        .attr("height", 400);
+
+      svg
+        .append("circle")
+        .attr("cx", 200)
+        .attr("cy", 200)
+        .attr("r", 100)
+        .attr("fill", "red");
+
+      // Convert the SVG to an image
+      const serializer = new XMLSerializer();
+      const svgString = serializer.serializeToString(svg.node());
+      const blob = new Blob([svgString], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+
+      // Create a Three.js texture from the image
+      const texture = new THREE.TextureLoader().load(url);
+
+      // Create a Three.js mesh and apply the texture
+      const geometry = new THREE.PlaneGeometry(400, 400);
+      const material = new THREE.MeshBasicMaterial({ map: texture });
+      const mesh = new THREE.Mesh(geometry, material);
+
+      // Create a Three.js scene and camera
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.z = 5;
+
+      // Add the mesh to the scene
+      scene.add(mesh);
+
+      // Create a Three.js renderer and append it to the DOM
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Render the scene
+      function animate() {
+        requestAnimationFrame(animate);
+        mesh.rotation.x += 0.01;
+        mesh.rotation.y += 0.01;
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+  </body>
+</html>

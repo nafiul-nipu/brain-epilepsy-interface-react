@@ -25,7 +25,7 @@ export const ElectrodeChord = () => {
             groupColors={["#000000", "#FFDD89", "#957244", "#F26223"]}
             groupOnClick={(idx) => alert('Clicked group: ' + idx)}
             ribbonOnClick={(idx) => alert('Clicked ribbon: ' + idx)}
-            disableRibbonHover={true}
+            disableRibbonHover={false}
             blurOnHover={true}
             ribbonOpacity={'0.8'}
             ribbonBlurOpacity={'0.2'}

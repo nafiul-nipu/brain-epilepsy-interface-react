@@ -22,6 +22,11 @@ import { vertexShader, fragmentShader } from '../library/shadersrc'
 
 let canvas = null;
 // let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
+
+const colorD3 = d3.scaleOrdinal()
+    .domain([101, 301, 300, 100, 400, 401, 201, 501])
+    .range(['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf'])
+
 export const ElectrodeNetworkTumor = ({
     brain,
     electrodeData,
@@ -199,9 +204,12 @@ export const ElectrodeNetworkTumor = ({
             // add the vertices, need to loop once as positio will be same 
             for (let top = 0; top < electrodeData.length; top++) {
                 vertices.push(electrodeData[top].position[0], electrodeData[top].position[1], electrodeData[top].position[2])
+                let c = colorD3(electrodeData[top].label)
+                let d = new THREE.Color(c)
                 color.setRGB(10 / 255, 10 / 255, 10 / 255);
                 // color.setRGB(253 / 255, 180 / 255, 98 / 255);
-                firstColor.push(color.r, color.g, color.b);
+                // firstColor.push(color.r, color.g, color.b);
+                firstColor.push(d.r, d.g, d.b);
                 firstSize.push(6);
 
             }

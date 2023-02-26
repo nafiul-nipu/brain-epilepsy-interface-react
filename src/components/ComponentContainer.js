@@ -1,5 +1,4 @@
 import { Container, Row, Col } from "react-bootstrap"
-import { ElectrodeChord } from "./ElectrodeChord"
 import { ElectrodeDropDown } from "./ElectrodeDropDown"
 import { ElectrodeNetworkTumor } from "./ElectrodeNetworkTumor"
 import { EventViewer } from "./EventViewer"
@@ -36,7 +35,6 @@ export const ComponentContainer = ({
             {/* vis */}
             <Row style={{ height: '50vh' }}>
                 <Col md='4'>
-                    <ElectrodeChord />
                 </Col>
                 <Col md='4'></Col>
                 <Col md='4'>

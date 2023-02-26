@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react';
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
+import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
 import * as d3 from 'd3';
 import circle from '../models/disc.png'
 import {
@@ -171,6 +172,115 @@ export const ElectrodeNetworkTumor = ({
 
         // load electrode
         function loadElectrode(scene, electrodeData, sampleData) {
+            console.log("load electrode")
+
+            // svgload
+            let svgDataController = {
+                currentURL: `<svg height="100" width="100">
+                <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
+                Sorry, your browser does not support inline SVG.  
+              </svg> `,
+                drawFillShapes: true,
+                drawStrokes: true,
+                fillShapesWireframe: false,
+                strokesWireframe: false
+
+            }
+
+            const addSVG = new SVGLoader()
+            const svgData = addSVG.parse(svgDataController.currentURL)
+            console.log("loading svg")
+            console.log(svgData)
+            const paths = svgData.paths;
+
+            const group = new THREE.Group();
+            group.scale.multiplyScalar(0.25);
+            group.position.x = -100;
+            group.position.y = 70;
+            group.position.z = 1
+            group.rotation.x = 2
+            group.scale.y *= -1;
+
+            for (let i = 0; i < paths.length; i++) {
+                const path = paths[i];
+
+                const fillColor = path.userData.style.fill;
+                if (
+                    svgDataController.drawFillShapes &&
+                    fillColor !== undefined &&
+                    fillColor !== "none"
+                ) {
+                    const material = new THREE.MeshBasicMaterial({
+                        color: new THREE.Color()
+                            .setStyle(fillColor)
+                            .convertSRGBToLinear(),
+                        opacity: path.userData.style.fillOpacity,
+                        transparent: true,
+                        side: THREE.DoubleSide,
+                        depthWrite: false,
+                        wireframe: svgDataController.fillShapesWireframe,
+                    });
+
+                    const shapes = SVGLoader.createShapes(path);
+
+                    for (let j = 0; j < shapes.length; j++) {
+                        const shape = shapes[j];
+
+                        const geometry = new THREE.ShapeGeometry(shape);
+                        const mesh = new THREE.Mesh(geometry, material);
+
+                        group.add(mesh);
+                    }
+                }
+
+                const strokeColor = path.userData.style.stroke;
+
+                if (
+                    svgDataController.drawStrokes &&
+                    strokeColor !== undefined &&
+                    strokeColor !== "none"
+                ) {
+                    const material = new THREE.MeshBasicMaterial({
+                        color: new THREE.Color()
+                            .setStyle(strokeColor)
+                            .convertSRGBToLinear(),
+                        opacity: path.userData.style.strokeOpacity,
+                        transparent: true,
+                        side: THREE.DoubleSide,
+                        depthWrite: false,
+                        wireframe: svgDataController.strokesWireframe,
+                    });
+
+                    for (let j = 0, jl = path.subPaths.length; j < jl; j++) {
+                        const subPath = path.subPaths[j];
+
+                        const geometry = SVGLoader.pointsToStroke(
+                            subPath.getPoints(),
+                            path.userData.style
+                        );
+
+                        if (geometry) {
+                            const mesh = new THREE.Mesh(geometry, material);
+
+                            group.add(mesh);
+                        }
+                    }
+                }
+            }
+
+            scene[1].add(group)
+
+            // render(renderer, [scene[0], scene[1]], camera)
+
+
+
+
+
+
+
+
+
+
 
             let uniforms = {
 

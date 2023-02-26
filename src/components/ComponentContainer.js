@@ -47,7 +47,7 @@ export const ComponentContainer = ({
                                 <Col id="titleBrain1">Propagation Over Time</Col>
                             </Row>
                             <Row>
-                                {/* <ElectrodeNetworkTumor
+                                <ElectrodeNetworkTumor
                                     brain={multiBrain.obj1}
                                     electrodeData={electrodeData}
                                     sampleData={sampleData}
@@ -56,7 +56,7 @@ export const ComponentContainer = ({
                                     timeRange={timeRange}
                                     lesions={lesions}
                                     eventData={eventData}
-                                /> */}
+                                />
                             </Row>
                         </Col>
                     </Row>

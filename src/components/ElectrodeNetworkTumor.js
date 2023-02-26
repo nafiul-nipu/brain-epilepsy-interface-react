@@ -1,6 +1,7 @@
 // component renders the brain, tumors, electrodes, electrode network
 
 import { useRef, useEffect } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
@@ -15,6 +16,7 @@ import {
     render,
     getbbox,
     objMaterialManipulation,
+    ChordContainer
 } from '../library/CommonUtilities'
 
 import dataRegistry from '../data/dataRegistry.json'
@@ -175,11 +177,11 @@ export const ElectrodeNetworkTumor = ({
             console.log("load electrode")
 
             // svgload
+
+            console.log("loading svg")
+
             let svgDataController = {
-                currentURL: `<svg height="100" width="100">
-                <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
-                Sorry, your browser does not support inline SVG.  
-              </svg> `,
+                currentURL: ReactDOMServer.renderToString(<ChordContainer />), //convert the react element to SVG
                 drawFillShapes: true,
                 drawStrokes: true,
                 fillShapesWireframe: false,
@@ -189,17 +191,17 @@ export const ElectrodeNetworkTumor = ({
 
             const addSVG = new SVGLoader()
             const svgData = addSVG.parse(svgDataController.currentURL)
-            console.log("loading svg")
+
             console.log(svgData)
             const paths = svgData.paths;
 
             const group = new THREE.Group();
             group.scale.multiplyScalar(0.25);
-            group.position.x = -100;
-            group.position.y = 70;
-            group.position.z = 1
-            group.rotation.x = 2
-            group.scale.y *= -1;
+            group.position.x = -40;
+            group.position.y = 90;
+            group.position.z = 70
+            group.scale.y *= - 1
+            group.rotation.y = 20
 
             for (let i = 0; i < paths.length; i++) {
                 const path = paths[i];
@@ -267,6 +269,19 @@ export const ElectrodeNetworkTumor = ({
                     }
                 }
             }
+
+            const box = new THREE.Box3().setFromObject(group);
+            const boxSize = new THREE.Vector3();
+            box.getSize(boxSize);
+
+            const yOffset = boxSize.y / -2;
+            const xOffset = boxSize.x / -2;
+
+            // Offset all of group's elements, to center them
+            group.children.forEach(item => {
+                item.position.x = xOffset;
+                item.position.y = yOffset;
+            });
 
             scene[1].add(group)
 

@@ -16,7 +16,8 @@ import {
     render,
     getbbox,
     objMaterialManipulation,
-    ChordContainer
+    ChordContainer,
+    MultipleChordContainer
 } from '../library/CommonUtilities'
 
 import dataRegistry from '../data/dataRegistry.json'
@@ -181,7 +182,7 @@ export const ElectrodeNetworkTumor = ({
             console.log("loading svg")
 
             let svgDataController = {
-                currentURL: ReactDOMServer.renderToString(<ChordContainer />), //convert the react element to SVG
+                currentURL: ReactDOMServer.renderToString(<MultipleChordContainer />), //convert the react element to SVG
                 drawFillShapes: true,
                 drawStrokes: true,
                 fillShapesWireframe: false,

@@ -66232,6 +66232,169 @@
                 "source": 300,
                 "target": 201
             }
-        ]
+        ],
+        "roiWithCount": [
+            {
+                "source": 301,
+                "target": 201,
+                "count": 183
+            },
+            {
+                "source": 101,
+                "target": 201,
+                "count": 1465
+            },
+            {
+                "source": 201,
+                "target": 101,
+                "count": 1771
+            },
+            {
+                "source": 101,
+                "target": 301,
+                "count": 111
+            },
+            {
+                "source": 201,
+                "target": 301,
+                "count": 226
+            },
+            {
+                "source": 301,
+                "target": 101,
+                "count": 125
+            },
+            {
+                "source": 401,
+                "target": 101,
+                "count": 2
+            },
+            {
+                "source": 401,
+                "target": 201,
+                "count": 3
+            },
+            {
+                "source": 201,
+                "target": 400,
+                "count": 12
+            },
+            {
+                "source": 300,
+                "target": 101,
+                "count": 31
+            },
+            {
+                "source": 300,
+                "target": 400,
+                "count": 2
+            },
+            {
+                "source": 101,
+                "target": 400,
+                "count": 21
+            },
+            {
+                "source": 101,
+                "target": 300,
+                "count": 24
+            },
+            {
+                "source": 201,
+                "target": 300,
+                "count": 16
+            },
+            {
+                "source": 300,
+                "target": 201,
+                "count": 22
+            },
+            {
+                "source": 400,
+                "target": 300,
+                "count": 1
+            },
+            {
+                "source": 300,
+                "target": 301,
+                "count": 7
+            },
+            {
+                "source": 301,
+                "target": 300,
+                "count": 4
+            },
+            {
+                "source": 400,
+                "target": 301,
+                "count": 2
+            },
+            {
+                "source": 301,
+                "target": 400,
+                "count": 4
+            },
+            {
+                "source": 400,
+                "target": 201,
+                "count": 7
+            },
+            {
+                "source": 101,
+                "target": 401,
+                "count": 8
+            },
+            {
+                "source": 201,
+                "target": 401,
+                "count": 7
+            },
+            {
+                "source": 301,
+                "target": 401,
+                "count": 3
+            },
+            {
+                "source": 401,
+                "target": 301,
+                "count": 1
+            },
+            {
+                "source": 400,
+                "target": 101,
+                "count": 1
+            },
+            {
+                "source": 501,
+                "target": 101,
+                "count": 23
+            },
+            {
+                "source": 501,
+                "target": 201,
+                "count": 4
+            },
+            {
+                "source": 501,
+                "target": 301,
+                "count": 1
+            },
+            {
+                "source": 101,
+                "target": 501,
+                "count": 8
+            },
+            {
+                "source": 201,
+                "target": 501,
+                "count": 1
+            },
+            {
+                "source": 301,
+                "target": 501,
+                "count": 1
+            }
+        ],
+        "maxCount": 1771
     }
 ]

@@ -348,9 +348,10 @@ export const ChordContainer = () => {
 
 
 export const MultipleChordContainer = () => {
+
     const rois = [100, 101, 201, 300, 301, 400, 401, 501]
 
-    console.log(networkdata)
+    // console.log(networkdata)
     const colorList = ["#c4c4c4", "#69b40f", "#ec1d25", "#c8125c", "#008fc8", "#10218b", "#134b24", "#737373"]
 
     const height = 350;
@@ -377,8 +378,21 @@ export const MultipleChordContainer = () => {
     const base = width / 2
     const hB = height / 2
     // console.log(base, hB)
-    const x = [base + (base * 3), base + 260, base + 280, base - 30, base + 650, base + 450, base + 100, base - 20]
-    const y = [hB, hB, hB + 300, hB + 300, hB + 300, hB + 600, hB + 600, hB + 50]
+    /*
+    100	R. Frontal Lobe 0 okay
+    101	L. Frontal Lobe 1 okay
+    201	L. Parietal Lobe 2 okay
+    300	R. Temporal Lobe 3 okay
+    301	L. Temporal Lobe 4 okay
+    400	R. Occipital Lobe 5 okay
+    401	L. Occipital Lobe 6 okay
+    501	L. Insula 7 okay
+*/
+    //              0 RFL  1LFL   2LPL    3RTL      4LTL           5ROL       6LOL       7LI
+    const x = [base - 200, base, base, base + 250, base + 350, base + 200, base + 350, base + 120]
+    //          0       1           2           3           4           5       6       7
+    const y = [hB + 250, hB + 100, hB + 550, hB, hB + 250, hB + 700, hB + 500, hB + 350]
+
 
     return (
         <svg width={window.innerWidth} height={window.innerHeight} className='top-svg'>
@@ -394,7 +408,7 @@ export const MultipleChordContainer = () => {
                         const color = d3.scaleOrdinal(names, colors)
                         return (
                             // <svg width={width} height={height}>
-                            <g transform={`translate(${x[i]}, ${y[i]})`}>
+                            <g transform={`translate(${x[i]}, ${y[i]})`} id={`roi_${nd.roi}`}>
                                 {chords.groups.map((each) => {
                                     // console.log(each)
                                     let textTransform = chordArc.centroid(each);
@@ -461,7 +475,7 @@ export const MultipleChordContainer = () => {
 
                         return (
                             // <svg width={width} height={height}>
-                            <g transform={`translate(${x[i]}, ${y[i]})`}>
+                            <g transform={`translate(${x[i]}, ${y[i]})`} id={`roi_${nd.roi}`}>
                                 {data_ready.map((each, i) => {
                                     // console.log(each)
                                     let textTransform = donArc.centroid(each);
@@ -489,10 +503,19 @@ export const MultipleChordContainer = () => {
                             // </svg>
                         )
                     } else {
-                        console.log(nd)
+                        const uniqueNames = [...new Set(nd.roiWithCount.map(item => item.count))];
+                        uniqueNames.sort((a, b) => a - b);
+                        // console.log(uniqueNames)
+                        const strokeRange = Array.from({ length: uniqueNames.length }, (_, i) => 1 + i * 0.5);
+                        // console.log(strokeRange)
+                        const strokeWidthScale = d3.scaleOrdinal()
+                            .domain(uniqueNames)
+                            .range(strokeRange)
+
+                        // console.log(d3.select(`#roi_100`).node().getBBox());
                         return (
-                            nd['roi-network'].map((each) => {
-                                // console.log(each)
+                            nd['roiWithCount'].map((each) => {
+                                // console.log(d3.select(`#roi_${each.source}`).node().getBBox())
                                 let source = rois.indexOf(each.source)
                                 let target = rois.indexOf(each.target)
                                 return (
@@ -506,8 +529,9 @@ export const MultipleChordContainer = () => {
                                                 refY="3"
                                                 orient="auto"
                                                 markerUnits="strokeWidth"
+
                                             >
-                                                <path d="M0,0 L0,6 L9,3 z" fill="black" />
+                                                <path d="M0,0 L0,6 L9,3 z" fill="black" opacity={0.5} />
                                             </marker>
                                         </defs>
                                         <line
@@ -515,8 +539,8 @@ export const MultipleChordContainer = () => {
                                             y1={y[source]}
                                             x2={x[target]}
                                             y2={y[target]}
-                                            stroke="black" strokeWidth="2" markerEnd="url(#arrow)"
-                                        ></line>
+                                            stroke="black" strokeWidth={strokeWidthScale(each.count)} markerEnd="url(#arrow)" strokeOpacity={0.4}
+                                        ></line><title>{`${+each.source} -> ${+each.target} = ${+each.count}`}</title>
                                     </g>
                                 )
                             })

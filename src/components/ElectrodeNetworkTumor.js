@@ -193,7 +193,7 @@ export const ElectrodeNetworkTumor = ({
             const addSVG = new SVGLoader()
             const svgData = addSVG.parse(svgDataController.currentURL)
 
-            console.log(svgData)
+            // console.log(svgData)
             const paths = svgData.paths;
 
             const group = new THREE.Group();
@@ -469,8 +469,8 @@ export const ElectrodeNetworkTumor = ({
 
 
                     // console.log(sizes[colIdx])
-                    console.log(EEachColor)
-                    console.log(colors)
+                    // console.log(EEachColor)
+                    // console.log(colors)
                     let geometry = new THREE.BufferGeometry();
                     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
                     geometry.setAttribute('color', new THREE.Float32BufferAttribute(EEachColor, 3));

@@ -55,7 +55,7 @@ export const EventViewer = ({
         .range([0, innerWidth])
         .domain([0, data[data.length - 1].index]).nice();
 
-    const circleOnClick = (values) => {
+    function circleOnClick(values) {
         let startTime = values.time[0]
         let endTime = values.time[values.time.length - 1]
 
@@ -65,6 +65,10 @@ export const EventViewer = ({
 
         d3.selectAll('.eventCircle').attr('fill', 'green')
         d3.selectAll(`#ev_${values.index}`).attr('fill', 'red')
+        // d3.selectAll(`#ev_${values.index}`).raise()
+        // console.log(d3.select(`#ev_${values.index}`).node().parentNode)
+        d3.select(d3.select(`#ev_${values.index}`).node().parentNode).raise()
+
 
         d3.select(`#play-pause-btn`).attr('value', 'play')
             .text('Play')

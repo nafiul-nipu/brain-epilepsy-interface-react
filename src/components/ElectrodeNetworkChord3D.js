@@ -28,7 +28,7 @@ export const ElectrodeNetworkChord3D = ({
     brain,
     electrodeData,
     sampleData,
-    // bboxCenter,
+    bboxCenter,
     sliderObj,
     timeRange,
     // lesions,
@@ -44,7 +44,7 @@ export const ElectrodeNetworkChord3D = ({
         let inter;
         // brain center - for brain and lesions will calculate later
         // for others take the center from parent
-        let centerBrain;
+        let centerBrain = bboxCenter;
         // let centerOther = bboxCenter;
         // console.log(canvasRef.current);
         console.log("working brain with network")
@@ -150,11 +150,13 @@ export const ElectrodeNetworkChord3D = ({
             opacity,
             transparency
         }) {
-            if (centerBrain === undefined) {
-                // [bboxCenter, objBbox] = getbbox(obj)
-                // get bboxcenter
-                centerBrain = getbbox(obj)
-            }
+            console.log("loading the chord brain")
+            // if (centerBrain === undefined) {
+            //     // [bboxCenter, objBbox] = getbbox(obj)
+            //     // get bboxcenter
+            //     centerBrain = getbbox(obj)
+            // }
+            console.log("chord", centerBrain)
 
             // material manipulation
             obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);

@@ -11,7 +11,7 @@ export const useOBJThreeStates = ({
     // three OBJ for three view another for bbox
     const [data, setData] = useState({
         obj1: null,
-        // obj2: null,
+        obj2: null,
         // obj3: null,
         // obj4: null
     });

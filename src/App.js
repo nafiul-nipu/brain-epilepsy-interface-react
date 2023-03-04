@@ -24,7 +24,7 @@ function App() {
   const [timeRange, setTimeRange] = useState(1000)
   // console.log('time', timeRange)
 
-  const [eegEL, setEEGEL] = useState([92])
+  const [eegEL, setEEGEL] = useState({ id: 0, value: [92] })
 
   const sampleData = useSamples({
     patientID: patientInfo.id,
@@ -42,8 +42,8 @@ function App() {
   // console.log(eegdata)
 
   function onEventsClicked(value) {
-    value.sort((a, b) => a - b);
-    setEEGEL(value)
+    let values = value.electrode.sort((a, b) => a - b);
+    setEEGEL({ id: value.index, value: values })
   }
 
   // console.log('eventdata', eventData)
@@ -101,6 +101,7 @@ function App() {
       eventData={eventData} //event data 
       onEventsClicked={onEventsClicked}
       eegEL={eegEL}
+      patientInfo={patientInfo}
     />
   );
 }

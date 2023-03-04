@@ -76,7 +76,7 @@ export const EventViewer = ({
             .text('Play')
 
         sliderObj.value([startTime, endTime]);
-        onEventsClicked(values.electrode)
+        onEventsClicked(values)
     }
 
 

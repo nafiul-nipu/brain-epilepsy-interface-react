@@ -28,10 +28,10 @@ export const ElectrodeNetworkChord3D = ({
     brain,
     electrodeData,
     sampleData,
-    bboxCenter,
+    // bboxCenter,
     sliderObj,
     timeRange,
-    lesions,
+    // lesions,
     eventData
 }) => {
     // creating canvas reference
@@ -114,7 +114,7 @@ export const ElectrodeNetworkChord3D = ({
         }
 
         // console.log(brain)
-        if (brain && electrodeData && bboxCenter) {
+        if (brain && electrodeData) {
             // if data is found load everything
             loadBrain()
 
@@ -297,7 +297,7 @@ export const ElectrodeNetworkChord3D = ({
         }
 
 
-    }, [bboxCenter, brain, canvasRef, electrodeData, eventData, lesions, sampleData, sliderObj, timeRange]);
+    }, [brain, canvasRef, electrodeData, eventData, sampleData, sliderObj, timeRange]);
 
     return (
         <Col md='12'>

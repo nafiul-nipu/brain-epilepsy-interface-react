@@ -18,7 +18,8 @@ export const ComponentContainer = ({
     lesions,
     eventData,
     onEventsClicked,
-    eegEL
+    eegEL,
+    patientInfo
 }) => {
     return (
         <Container fluid id="container">
@@ -41,6 +42,7 @@ export const ComponentContainer = ({
                 <Col md='4'>
                     <EEGDataViewer
                         eegEL={eegEL}
+                        patientInfo={patientInfo}
                     />
                 </Col>
                 <Col md='4'>
@@ -53,10 +55,10 @@ export const ComponentContainer = ({
                                 brain={multiBrain.obj2}
                                 electrodeData={electrodeData}
                                 sampleData={sampleData}
-                                bboxCenter={bboxCenter}
+                                // bboxCenter={bboxCenter}
                                 sliderObj={sliderObj}
                                 timeRange={timeRange}
-                                lesions={lesions}
+                                // lesions={lesions}
                                 eventData={eventData}
                             />
                         </Row>

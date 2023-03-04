@@ -2,10 +2,10 @@
 
 import { useRef, useEffect } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
+import * as d3 from 'd3';
 import {
     createRenderer,
     createScene,
@@ -20,12 +20,6 @@ import {
 
 // import dataRegistry from '../data/dataRegistry.json'
 
-let width = (window.innerWidth / 3) - 10;
-let height = window.innerHeight / 2 - 10;
-let angle = 40;
-let aspect = width / height;
-let near = 1;
-let far = 2000;
 
 let canvas = null;
 // let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
@@ -34,7 +28,7 @@ export const ElectrodeNetworkChord3D = ({
     brain,
     electrodeData,
     sampleData,
-    bboxCenter,
+    // bboxCenter,
     sliderObj,
     timeRange,
     // lesions,
@@ -64,33 +58,20 @@ export const ElectrodeNetworkChord3D = ({
         canvas = canvasRef.current
 
         // creating renderer
-        let renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-        renderer.setSize(width, height);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setClearColor(0Xfafbfc, 1);
-        renderer.autoClear = false;
-        renderer.outputEncoding = THREE.sRGBEncoding;
+        let renderer = createRenderer(canvas)
 
         // scenes - two to map the electordes onto the brain and can be viewed from any angle
-        let scene = new THREE.Scene();
-        let scene2 = new THREE.Scene();
+        let scene = createScene();
+        let scene2 = createScene();
 
         // camera
-        let camera = new THREE.PerspectiveCamera(angle, aspect, near, far);
-        camera.position.set(-250, -50, -50);
-        camera.up.set(0, 0, 1);
-
+        let camera = createCamera()
         scene.add(camera);
 
         // scene.add( new THREE.AxesHelper( 1000 ) )
 
         // controls
-        let controls = new TrackballControls(camera, renderer.domElement);
-        // controls.addEventListener( 'change', render );
-
-        controls.rotateSpeed = 5.0;
-        controls.zoomSpeed = 1.2;
-        controls.panSpeed = 0.8;
+        let controls = createTrackballControls(camera, renderer)
 
         // const axesHelper = new THREE.AxesHelper( 100 );
         // scene2.add( axesHelper );
@@ -145,14 +126,7 @@ export const ElectrodeNetworkChord3D = ({
 
         function onWindowResize() {
 
-            renderer.setSize((window.innerWidth / 2) - 10, window.innerHeight / 2);
-
-            camera.aspect = ((window.innerWidth / 2) - 10) / (window.innerHeight / 2);
-            camera.updateProjectionMatrix();
-
-            controls.handleResize();
-
-            render();
+            setOnWindowResize(renderer, camera, controls, [scene, scene2]);
         }
 
         // animation and mouse movement 
@@ -164,17 +138,8 @@ export const ElectrodeNetworkChord3D = ({
             // trackball controls needs to be updated in the animation loop before it will work
             controls.update()
 
+            render(renderer, [scene, scene2], camera)
 
-            render()
-
-
-        }
-
-        function render() {
-            renderer.clear();
-            renderer.render(scene, camera);
-            renderer.clearDepth();
-            renderer.render(scene2, camera);
         }
 
         // loading threeD objects
@@ -185,22 +150,14 @@ export const ElectrodeNetworkChord3D = ({
             opacity,
             transparency
         }) {
-
+            if (centerBrain === undefined) {
+                // [bboxCenter, objBbox] = getbbox(obj)
+                // get bboxcenter
+                centerBrain = getbbox(obj)
+            }
 
             // material manipulation
-            obj.children.forEach((child) => {
-
-                if (child instanceof THREE.Mesh) {
-                    child.material.color.setHex(color);
-                    child.material.opacity = opacity;
-                    child.material.transparent = transparency;
-                    // child.material.vertexColors = true;
-                    // child.geometry.center();
-                    // child.material.side = THREE.DoubleSide;
-
-                    child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
-                }
-            });
+            obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
 
             // objBbox.setFromObject(obj);
             scene.add(obj);

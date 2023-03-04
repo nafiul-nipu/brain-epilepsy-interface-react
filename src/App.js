@@ -108,6 +108,7 @@ function App() {
       eventData={eventData} //event data 
       onEventsClicked={onEventsClicked}
       eegdata={eegdata}
+      eegEL={eegEL}
     />
   );
 }

@@ -17,7 +17,8 @@ export const ComponentContainer = ({
     lesions,
     eventData,
     onEventsClicked,
-    eegdata
+    eegdata,
+    eegEL
 }) => {
     return (
         <Container fluid id="container">
@@ -40,6 +41,7 @@ export const ComponentContainer = ({
                 <Col md='4'>
                     <EEGDataViewer
                         eegdata={eegdata}
+                        eegEL={eegEL}
                     />
                 </Col>
                 <Col md='4'></Col>

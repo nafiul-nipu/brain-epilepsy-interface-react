@@ -17,7 +17,6 @@ export const ComponentContainer = ({
     lesions,
     eventData,
     onEventsClicked,
-    eegdata,
     eegEL
 }) => {
     return (
@@ -40,7 +39,6 @@ export const ComponentContainer = ({
             <Row style={{ height: '50vh' }}>
                 <Col md='4'>
                     <EEGDataViewer
-                        eegdata={eegdata}
                         eegEL={eegEL}
                     />
                 </Col>

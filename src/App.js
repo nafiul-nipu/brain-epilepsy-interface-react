@@ -16,7 +16,6 @@ import { useState } from 'react';
 
 import dataRegistry from './data/dataRegistry.json'
 import { useEventData } from './library/useEventData';
-import { useEEGData } from './library/useEEGData';
 
 function App() {
   // console.log(dataRegistry)
@@ -39,12 +38,6 @@ function App() {
     sample: patientInfo.sample
   })
   // console.log(eventData)
-
-  const eegdata = useEEGData({
-    patient: patientInfo.id,
-    sample: patientInfo.sample,
-    electrodes: eegEL
-  })
 
   // console.log(eegdata)
 
@@ -107,7 +100,6 @@ function App() {
       lesions={lesions} // all lesions
       eventData={eventData} //event data 
       onEventsClicked={onEventsClicked}
-      eegdata={eegdata}
       eegEL={eegEL}
     />
   );

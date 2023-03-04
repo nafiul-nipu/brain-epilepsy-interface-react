@@ -1,6 +1,7 @@
 import { Container, Row, Col } from "react-bootstrap"
 import { EEGDataViewer } from "./EEGDataViewer"
 import { ElectrodeDropDown } from "./ElectrodeDropDown"
+import { ElectrodeNetworkChord3D } from "./ElectrodeNetworkChord3D"
 import { ElectrodeNetworkTumor } from "./ElectrodeNetworkTumor"
 import { EventViewer } from "./EventViewer"
 // import { PropagationTimeSeries } from "./PropagationTimeSeries"
@@ -42,7 +43,25 @@ export const ComponentContainer = ({
                         eegEL={eegEL}
                     />
                 </Col>
-                <Col md='4'></Col>
+                <Col md='4'>
+                    <Col>
+                        <Row>
+                            <Col id="titleBrain1">Propagation Over Time</Col>
+                        </Row>
+                        <Row>
+                            <ElectrodeNetworkChord3D
+                                brain={multiBrain.obj2}
+                                electrodeData={electrodeData}
+                                sampleData={sampleData}
+                                bboxCenter={bboxCenter}
+                                sliderObj={sliderObj}
+                                timeRange={timeRange}
+                                lesions={lesions}
+                                eventData={eventData}
+                            />
+                        </Row>
+                    </Col>
+                </Col>
                 <Col md='4'>
                     {/* top view - electrode and brain 3D model */}
                     <Row>

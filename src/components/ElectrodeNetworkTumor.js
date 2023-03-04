@@ -1,10 +1,8 @@
 // component renders the brain, tumors, electrodes, electrode network
 
 import { useRef, useEffect } from 'react';
-import ReactDOMServer from 'react-dom/server';
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
-import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
 import * as d3 from 'd3';
 import circle from '../models/disc.png'
 import {
@@ -16,8 +14,6 @@ import {
     render,
     getbbox,
     objMaterialManipulation,
-    ChordContainer,
-    MultipleChordContainer
 } from '../library/CommonUtilities'
 
 import dataRegistry from '../data/dataRegistry.json'
@@ -27,9 +23,9 @@ import { vertexShader, fragmentShader } from '../library/shadersrc'
 let canvas = null;
 // let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
 
-const colorD3 = d3.scaleOrdinal()
-    .domain([101, 301, 300, 100, 400, 401, 201, 501])
-    .range(['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf'])
+// const colorD3 = d3.scaleOrdinal()
+//     .domain([101, 301, 300, 100, 400, 401, 201, 501])
+//     .range(['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf'])
 
 export const ElectrodeNetworkTumor = ({
     brain,
@@ -177,127 +173,6 @@ export const ElectrodeNetworkTumor = ({
         function loadElectrode(scene, electrodeData, sampleData) {
             console.log("load electrode")
 
-            // svgload
-
-            console.log("loading svg")
-
-            let svgDataController = {
-                currentURL: ReactDOMServer.renderToString(<MultipleChordContainer />), //convert the react element to SVG
-                drawFillShapes: true,
-                drawStrokes: true,
-                fillShapesWireframe: false,
-                strokesWireframe: false
-
-            }
-
-            const addSVG = new SVGLoader()
-            const svgData = addSVG.parse(svgDataController.currentURL)
-
-            // console.log(svgData)
-            const paths = svgData.paths;
-
-            const group = new THREE.Group();
-            group.scale.multiplyScalar(0.25);
-            group.position.x = -40;
-            group.position.y = 90;
-            group.position.z = 70
-            group.scale.y *= - 1
-            group.rotation.y = 20
-
-            for (let i = 0; i < paths.length; i++) {
-                const path = paths[i];
-
-                const fillColor = path.userData.style.fill;
-                if (
-                    svgDataController.drawFillShapes &&
-                    fillColor !== undefined &&
-                    fillColor !== "none"
-                ) {
-                    const material = new THREE.MeshBasicMaterial({
-                        color: new THREE.Color()
-                            .setStyle(fillColor)
-                            .convertSRGBToLinear(),
-                        opacity: path.userData.style.fillOpacity,
-                        transparent: true,
-                        side: THREE.DoubleSide,
-                        depthWrite: false,
-                        wireframe: svgDataController.fillShapesWireframe,
-                    });
-
-                    const shapes = SVGLoader.createShapes(path);
-
-                    for (let j = 0; j < shapes.length; j++) {
-                        const shape = shapes[j];
-
-                        const geometry = new THREE.ShapeGeometry(shape);
-                        const mesh = new THREE.Mesh(geometry, material);
-
-                        group.add(mesh);
-                    }
-                }
-
-                const strokeColor = path.userData.style.stroke;
-
-                if (
-                    svgDataController.drawStrokes &&
-                    strokeColor !== undefined &&
-                    strokeColor !== "none"
-                ) {
-                    const material = new THREE.MeshBasicMaterial({
-                        color: new THREE.Color()
-                            .setStyle(strokeColor)
-                            .convertSRGBToLinear(),
-                        opacity: path.userData.style.strokeOpacity,
-                        transparent: true,
-                        side: THREE.DoubleSide,
-                        depthWrite: false,
-                        wireframe: svgDataController.strokesWireframe,
-                    });
-
-                    for (let j = 0, jl = path.subPaths.length; j < jl; j++) {
-                        const subPath = path.subPaths[j];
-
-                        const geometry = SVGLoader.pointsToStroke(
-                            subPath.getPoints(),
-                            path.userData.style
-                        );
-
-                        if (geometry) {
-                            const mesh = new THREE.Mesh(geometry, material);
-
-                            group.add(mesh);
-                        }
-                    }
-                }
-            }
-
-            const box = new THREE.Box3().setFromObject(group);
-            const boxSize = new THREE.Vector3();
-            box.getSize(boxSize);
-
-            const yOffset = boxSize.y / -2;
-            const xOffset = boxSize.x / -2;
-
-            // Offset all of group's elements, to center them
-            group.children.forEach(item => {
-                item.position.x = xOffset;
-                item.position.y = yOffset;
-            });
-
-            scene[1].add(group)
-
-            // render(renderer, [scene[0], scene[1]], camera)
-
-
-
-
-
-
-
-
-
-
-
             let uniforms = {
 
                 pointTexture: { value: new THREE.TextureLoader().load(circle) }
@@ -330,12 +205,12 @@ export const ElectrodeNetworkTumor = ({
             // add the vertices, need to loop once as positio will be same 
             for (let top = 0; top < electrodeData.length; top++) {
                 vertices.push(electrodeData[top].position[0], electrodeData[top].position[1], electrodeData[top].position[2])
-                let c = colorD3(electrodeData[top].label)
-                let d = new THREE.Color(c)
+                // let c = colorD3(electrodeData[top].label)
+                // let d = new THREE.Color(c)
                 color.setRGB(10 / 255, 10 / 255, 10 / 255);
                 // color.setRGB(253 / 255, 180 / 255, 98 / 255);
                 // firstColor.push(color.r, color.g, color.b);
-                firstColor.push(d.r, d.g, d.b);
+                // firstColor.push(d.r, d.g, d.b);
                 firstSize.push(6);
 
             }

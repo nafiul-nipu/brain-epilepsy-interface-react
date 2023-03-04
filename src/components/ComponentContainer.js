@@ -1,4 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap"
+import { EEGDataViewer } from "./EEGDataViewer"
 import { ElectrodeDropDown } from "./ElectrodeDropDown"
 import { ElectrodeNetworkTumor } from "./ElectrodeNetworkTumor"
 import { EventViewer } from "./EventViewer"
@@ -14,7 +15,9 @@ export const ComponentContainer = ({
     sliderObj,
     timeRange,
     lesions,
-    eventData
+    eventData,
+    onEventsClicked,
+    eegdata
 }) => {
     return (
         <Container fluid id="container">
@@ -35,6 +38,9 @@ export const ComponentContainer = ({
             {/* vis */}
             <Row style={{ height: '50vh' }}>
                 <Col md='4'>
+                    <EEGDataViewer
+                        eegdata={eegdata}
+                    />
                 </Col>
                 <Col md='4'></Col>
                 <Col md='4'>
@@ -67,6 +73,7 @@ export const ComponentContainer = ({
                         <EventViewer
                             data={eventData}
                             sliderObj={sliderObj}
+                            onEventsClicked={onEventsClicked}
                         />
                     </Row>
                 </Col>

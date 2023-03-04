@@ -453,7 +453,7 @@ export const ElectrodeNetworkTumor = ({
                     for (let top = 0; top < electrodeData.length; top++) {
                         if (eventData[i].electrode.includes(electrodeData[top].electrode_number)) {
                             // start electrode
-                            console.log('start')
+                            // console.log('start')
                             color.setRGB(3 / 255, 218 / 255, 197 / 255);
                             EEachColor.push(color.r, color.g, color.b)
                             EEachSize.push(6)

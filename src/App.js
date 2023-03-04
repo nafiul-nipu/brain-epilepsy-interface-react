@@ -16,6 +16,7 @@ import { useState } from 'react';
 
 import dataRegistry from './data/dataRegistry.json'
 import { useEventData } from './library/useEventData';
+import { useEEGData } from './library/useEEGData';
 
 function App() {
   // console.log(dataRegistry)
@@ -23,6 +24,8 @@ function App() {
   // console.log('patient', patientInfo)
   const [timeRange, setTimeRange] = useState(1000)
   // console.log('time', timeRange)
+
+  const [eegEL, setEEGEL] = useState([92])
 
   const sampleData = useSamples({
     patientID: patientInfo.id,
@@ -35,6 +38,20 @@ function App() {
     patientID: patientInfo.id,
     sample: patientInfo.sample
   })
+  // console.log(eventData)
+
+  const eegdata = useEEGData({
+    patient: patientInfo.id,
+    sample: patientInfo.sample,
+    electrodes: eegEL
+  })
+
+  // console.log(eegdata)
+
+  function onEventsClicked(value) {
+    value.sort((a, b) => a - b);
+    setEEGEL(value)
+  }
 
   // console.log('eventdata', eventData)
 
@@ -89,6 +106,8 @@ function App() {
       timeRange={timeRange} //which time range are we showing
       lesions={lesions} // all lesions
       eventData={eventData} //event data 
+      onEventsClicked={onEventsClicked}
+      eegdata={eegdata}
     />
   );
 }

@@ -5,11 +5,7 @@ import { sliderHorizontal } from 'd3-simple-slider'
 
 // importing components
 import { useElectrodeData } from './library/useElectrodeData';
-import { useBBoxcenter } from './library/useBBoxcenter';
-import { useOBJThreeStates } from './library/useOBJThreeStates';
 import { useSamples } from './library/useSamples';
-
-import { useLesionData } from './library/useLesionData';
 
 import { useState } from 'react';
 
@@ -20,8 +16,7 @@ import { Container, Row, Col } from "react-bootstrap"
 
 import { EEGDataViewer } from "./components/EEGDataViewer"
 import { ElectrodeDropDown } from "./components/ElectrodeDropDown"
-import { ElectrodeNetworkChord3D } from "./components/ElectrodeNetworkChord3D"
-import { ElectrodeNetworkTumor } from "./components/ElectrodeNetworkTumor"
+
 import { EventViewer } from "./components/EventViewer"
 // import { PropagationTimeSeries } from "./components/PropagationTimeSeries"
 import { TimeSliderButton } from "./components/TimeSliderButton"

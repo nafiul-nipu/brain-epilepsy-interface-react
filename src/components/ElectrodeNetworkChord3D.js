@@ -37,7 +37,6 @@ export const ElectrodeNetworkChord3D = ({
 
     useEffect(() => {
         // clearInterval(inter)
-        let inter;
         // brain center - for brain and lesions will calculate later
         // for others take the center from parent
         let centerBrain = bboxCenter;
@@ -289,10 +288,6 @@ export const ElectrodeNetworkChord3D = ({
 
         }
 
-        return () => {
-            console.log('cleaning chord')
-            clearInterval(inter)
-        }
 
 
     }, [bboxCenter, brain, canvasRef, electrodeData, sampleData]);

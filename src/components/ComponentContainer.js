@@ -47,7 +47,7 @@ export const ComponentContainer = ({
                 </Col>
                 <Col md='4'>
                     <Col>
-                        <Row>
+                        {/* <Row>
                             <Col id="titleBrain1">Propagation Over Time</Col>
                         </Row>
                         <Row>
@@ -61,7 +61,7 @@ export const ComponentContainer = ({
                                 // lesions={lesions}
                                 eventData={eventData}
                             />
-                        </Row>
+                        </Row> */}
                     </Col>
                 </Col>
                 <Col md='4'>

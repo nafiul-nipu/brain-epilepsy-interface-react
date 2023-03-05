@@ -30,7 +30,7 @@ let canvas = null;
 //     .domain([101, 301, 300, 100, 400, 401, 201, 501])
 //     .range(['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf'])
 
-export const ElectrodeNetworkTumor = React.memo(({
+export const ElectrodeNetworkTumor = ({
     brain,
     electrodeData,
     sampleData,
@@ -383,4 +383,4 @@ export const ElectrodeNetworkTumor = React.memo(({
             <canvas ref={el => { canvasRef.current = el; }}></canvas>
         </Col>
     )
-});
+};

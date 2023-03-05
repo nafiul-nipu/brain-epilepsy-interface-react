@@ -11,8 +11,14 @@ export const useElectrodeData = ({ id }) => {
         // console.log('before', id)
         if (id) {
             // console.log('after', id)
-            // const electrodeURL = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${id}/${id}_electrodes_new.csv`
-            const electrodeURL = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${id}/${id}_rois.csv`
+            let electrodeURL;
+            if (id === 'ep187') {
+                electrodeURL = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${id}/${id}_rois.csv`
+
+            } else {
+                electrodeURL = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${id}/${id}_electrodes_new.csv`
+            }
+            console.log(electrodeURL)
             const row = d => {
                 d.electrode_number = +d.electrode_number;
                 d.position = JSON.parse(d.position)

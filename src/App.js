@@ -25,6 +25,8 @@ import { ElectrodeNetworkTumor } from "./components/ElectrodeNetworkTumor"
 import { EventViewer } from "./components/EventViewer"
 // import { PropagationTimeSeries } from "./components/PropagationTimeSeries"
 import { TimeSliderButton } from "./components/TimeSliderButton"
+import { ENTContainer } from './components/ENTContainer';
+import { ENChordContainer } from './components/ENChordContainer';
 
 
 function App() {
@@ -47,21 +49,8 @@ function App() {
     patientID: patientInfo.id,
     sample: patientInfo.sample
   })
-  // console.log(eventData)
 
-  // console.log(eegdata)
 
-  // console.log('eventdata', eventData)
-
-  // loading brain and lesions
-  const multiBrain = useOBJThreeStates({ patient: patientInfo.id, objType: 'brain.obj' });
-  // console.log('brain', multiBrain)
-  const lesions = useLesionData({ patient: patientInfo.id })
-  // console.log('lesions', lesions)
-
-  // getting the center of the objtects
-  const bboxCenter = useBBoxcenter({ patient: patientInfo.id, objType: 'brain.obj' });
-  // console.log('bbox', bboxCenter)
 
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
@@ -125,44 +114,23 @@ function App() {
           />
         </Col>
         <Col md='4'>
-          <Col>
-            <Row>
-              <Col id="titleBrain1">Electrode network</Col>
-            </Row>
-            <Row>
-              <ElectrodeNetworkChord3D
-                brain={multiBrain.obj2}
-                electrodeData={electrodeDataCsv}
-                sampleData={sampleData}
-                bboxCenter={bboxCenter}
-                sliderObj={sliderObj}
-                timeRange={timeRange}
-                // lesions={lesions}
-                eventData={eventData}
-              />
-            </Row>
-          </Col>
+          <ENChordContainer
+            epatient={patientInfo}
+            samples={sampleData}
+            electrodes={electrodeDataCsv}
+          />
         </Col>
         <Col md='4'>
           {/* top view - electrode and brain 3D model */}
           <Row>
-            <Col>
-              <Row>
-                <Col id="titleBrain1">Propagation Over Time</Col>
-              </Row>
-              <Row>
-                <ElectrodeNetworkTumor
-                  brain={multiBrain.obj1}
-                  electrodeData={electrodeDataCsv}
-                  sampleData={sampleData}
-                  bboxCenter={bboxCenter}
-                  sliderObj={sliderObj}
-                  timeRange={timeRange}
-                  lesions={lesions}
-                  eventData={eventData}
-                />
-              </Row>
-            </Col>
+            <ENTContainer
+              patientInformation={patientInfo}
+              electrodeData={electrodeDataCsv}
+              sample={sampleData}
+              slider={sliderObj}
+              time={timeRange}
+              events={eventData}
+            />
           </Row>
 
         </Col>

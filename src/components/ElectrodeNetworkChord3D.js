@@ -29,10 +29,6 @@ export const ElectrodeNetworkChord3D = ({
     electrodeData,
     sampleData,
     bboxCenter,
-    sliderObj,
-    timeRange,
-    // lesions,
-    eventData
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -299,7 +295,7 @@ export const ElectrodeNetworkChord3D = ({
         }
 
 
-    }, [bboxCenter, brain, canvasRef, electrodeData, eventData, sampleData, sliderObj, timeRange]);
+    }, [bboxCenter, brain, canvasRef, electrodeData, sampleData]);
 
     return (
         <Col md='12'>

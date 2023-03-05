@@ -11,7 +11,7 @@ export const useOBJThreeStates = ({
     // three OBJ for three view another for bbox
     const [data, setData] = useState({
         obj1: null,
-        obj2: null,
+        // obj2: null,
         // obj3: null,
         // obj4: null
     });
@@ -27,7 +27,7 @@ export const useOBJThreeStates = ({
             // console.log(obj)
             setData({
                 obj1: obj.clone(),
-                obj2: obj.clone(),
+                // obj2: obj.clone(),
                 // obj3: obj.clone(),
                 // obj4: obj.clone()
             });
@@ -35,7 +35,7 @@ export const useOBJThreeStates = ({
             function (error) {
                 setData({
                     obj1: null,
-                    obj2: null
+                    // obj2: null
                 })
             })
     }, [objType, patient])

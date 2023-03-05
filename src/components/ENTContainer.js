@@ -29,13 +29,13 @@ export const ENTContainer = ({
             </Row>
             <Row>
                 <ElectrodeNetworkTumor
-                    brain={multiBrain.obj1}
-                    electrodeData={electrodeData}
-                    sampleData={sample}
-                    bboxCenter={bboxCenter}
+                    brain={multiBrain.obj1} //ok
+                    electrodeData={electrodeData} //ok
+                    sampleData={sample} //ok
+                    bboxCenter={bboxCenter} //ok
                     sliderObj={slider}
                     timeRange={time}
-                    lesions={lesions}
+                    lesions={lesions} //ok
                     eventData={events}
                 />
             </Row>

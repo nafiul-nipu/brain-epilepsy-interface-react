@@ -36,8 +36,6 @@ function App() {
   const [timeRange, setTimeRange] = useState(1000)
   // console.log('time', timeRange)
 
-
-
   const sampleData = useSamples({
     patientID: patientInfo.id,
     sampleName: patientInfo.sample,

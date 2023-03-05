@@ -121,7 +121,7 @@ function App() {
         <Col md='4'>
           <EEGDataViewer
             eegEL={eegEL}
-          // patientInfo={patientInfo}
+            patientInfo={patientInfo}
           />
         </Col>
         <Col md='4'>

@@ -1,7 +1,7 @@
 import * as d3 from 'd3'
 import React from "react";
 
-export const EEGDataViewer = ({ eegEL, /*patientInfo*/ }) => {
+export const EEGDataViewer = ({ eegEL, patientInfo }) => {
     if (!eegEL) {
         return (<div>EEG Data Loading</div>)
     }
@@ -11,8 +11,8 @@ export const EEGDataViewer = ({ eegEL, /*patientInfo*/ }) => {
             <div style={{ position: 'fixed' }}>Event Id -{eegEL.id}</div>
             {
                 eegEL.value.map((eeg) => {
-                    // const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images/${patientInfo.id}/${patientInfo.sample}/E${eeg}.png`
-                    const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images/ep187/sample1/E${eeg}.png`
+                    const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images/${patientInfo.id}/${patientInfo.sample}/E${eeg}.png`
+                    // const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images/ep187/sample1/E${eeg}.png`
 
                     return (
                         <img

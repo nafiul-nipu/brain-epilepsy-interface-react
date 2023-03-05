@@ -57,6 +57,7 @@ export const EventViewer = ({
         .domain([0, data[data.length - 1].index]).nice();
 
     function circleOnClick(values) {
+        console.log("circle clicked")
         // console.log(values)
         let startTime = values.time[0]
         let endTime = values.time[values.time.length - 1]
@@ -76,7 +77,9 @@ export const EventViewer = ({
             .text('Play')
 
         sliderObj.value([startTime, endTime]);
+
         onEventsClicked(values)
+
     }
 
 

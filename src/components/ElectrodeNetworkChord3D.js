@@ -156,7 +156,7 @@ export const ElectrodeNetworkChord3D = ({
             //     // get bboxcenter
             //     centerBrain = getbbox(obj)
             // }
-            console.log("chord", centerBrain)
+            // console.log("chord", centerBrain)
 
             // material manipulation
             obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
@@ -294,12 +294,12 @@ export const ElectrodeNetworkChord3D = ({
         }
 
         return () => {
-            console.log('cleaning')
+            console.log('cleaning chord')
             clearInterval(inter)
         }
 
 
-    }, [brain, canvasRef, electrodeData, eventData, sampleData, sliderObj, timeRange]);
+    }, [bboxCenter, brain, canvasRef, electrodeData, eventData, sampleData, sliderObj, timeRange]);
 
     return (
         <Col md='12'>

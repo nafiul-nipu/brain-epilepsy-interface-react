@@ -4,7 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { sliderHorizontal } from 'd3-simple-slider'
 
 // importing components
-import { ComponentContainer } from './components/ComponentContainer';
 import { useElectrodeData } from './library/useElectrodeData';
 import { useBBoxcenter } from './library/useBBoxcenter';
 import { useOBJThreeStates } from './library/useOBJThreeStates';
@@ -17,6 +16,17 @@ import { useState } from 'react';
 import dataRegistry from './data/dataRegistry.json'
 import { useEventData } from './library/useEventData';
 
+import { Container, Row, Col } from "react-bootstrap"
+
+import { EEGDataViewer } from "./components/EEGDataViewer"
+import { ElectrodeDropDown } from "./components/ElectrodeDropDown"
+import { ElectrodeNetworkChord3D } from "./components/ElectrodeNetworkChord3D"
+import { ElectrodeNetworkTumor } from "./components/ElectrodeNetworkTumor"
+import { EventViewer } from "./components/EventViewer"
+// import { PropagationTimeSeries } from "./components/PropagationTimeSeries"
+import { TimeSliderButton } from "./components/TimeSliderButton"
+
+
 function App() {
   // console.log(dataRegistry)
   const [patientInfo, setPatientInfo] = useState({ id: 'ep187', sample: 'sample1' })
@@ -24,7 +34,7 @@ function App() {
   const [timeRange, setTimeRange] = useState(1000)
   // console.log('time', timeRange)
 
-  const [eegEL, setEEGEL] = useState({ id: 0, value: [92] })
+
 
   const sampleData = useSamples({
     patientID: patientInfo.id,
@@ -40,11 +50,6 @@ function App() {
   // console.log(eventData)
 
   // console.log(eegdata)
-
-  function onEventsClicked(value) {
-    let values = value.electrode.sort((a, b) => a - b);
-    setEEGEL({ id: value.index, value: values })
-  }
 
   // console.log('eventdata', eventData)
 
@@ -78,31 +83,102 @@ function App() {
     })
 
   function setNewPatientInfo(val) {
-    // console.log("setting patient info")
+    console.log("setting patient info")
     setPatientInfo({ id: val.id, sample: val.sample });
-    // console.log('setting time range')
+    console.log('setting time range')
     setTimeRange(val.range);
   }
 
   // console.log(electrodeDataCsv)
 
+  const [eegEL, setEEGEL] = useState({ id: 0, value: [92] })
+
+  function onEventsClicked(value) {
+    let values = value.electrode.sort((a, b) => a - b);
+    setEEGEL({ id: value.index, value: values })
+  }
+
   return (
     // <div>debugging</div>
     // component container
-    <ComponentContainer
-      electrodeData={electrodeDataCsv} //electrode data set
-      sampleData={sampleData} // propagation samples
-      multiBrain={multiBrain} //brain objs
-      bboxCenter={bboxCenter} //box center
-      setNewPatientInfo={setNewPatientInfo}
-      sliderObj={sliderObj}
-      timeRange={timeRange} //which time range are we showing
-      lesions={lesions} // all lesions
-      eventData={eventData} //event data 
-      onEventsClicked={onEventsClicked}
-      eegEL={eegEL}
-      patientInfo={patientInfo}
-    />
+    <Container fluid id="container">
+      {/* nav bar */}
+      <Row style={{ height: '5vh' }}>
+        <Col md='6' style={{ height: '5vh' }}>
+          {/* dropdown menues */}
+          <ElectrodeDropDown
+            setNewPatientInfo={setNewPatientInfo}
+          />
+        </Col>
+        <Col md='6' style={{ height: '5vh' }}>
+          <TimeSliderButton
+            sliderObj={sliderObj}
+          />
+        </Col>
+      </Row>
+      {/* vis */}
+      <Row style={{ height: '50vh' }}>
+        <Col md='4'>
+          <EEGDataViewer
+            eegEL={eegEL}
+          // patientInfo={patientInfo}
+          />
+        </Col>
+        <Col md='4'>
+          <Col>
+            <Row>
+              <Col id="titleBrain1">Electrode network</Col>
+            </Row>
+            <Row>
+              <ElectrodeNetworkChord3D
+                brain={multiBrain.obj2}
+                electrodeData={electrodeDataCsv}
+                sampleData={sampleData}
+                bboxCenter={bboxCenter}
+                sliderObj={sliderObj}
+                timeRange={timeRange}
+                // lesions={lesions}
+                eventData={eventData}
+              />
+            </Row>
+          </Col>
+        </Col>
+        <Col md='4'>
+          {/* top view - electrode and brain 3D model */}
+          <Row>
+            <Col>
+              <Row>
+                <Col id="titleBrain1">Propagation Over Time</Col>
+              </Row>
+              <Row>
+                <ElectrodeNetworkTumor
+                  brain={multiBrain.obj1}
+                  electrodeData={electrodeDataCsv}
+                  sampleData={sampleData}
+                  bboxCenter={bboxCenter}
+                  sliderObj={sliderObj}
+                  timeRange={timeRange}
+                  lesions={lesions}
+                  eventData={eventData}
+                />
+              </Row>
+            </Col>
+          </Row>
+
+        </Col>
+      </Row>
+      <Row>
+        <Col md='12' style={{ height: '45vh' }}>
+          <Row>
+            <EventViewer
+              data={eventData}
+              sliderObj={sliderObj}
+              onEventsClicked={onEventsClicked}
+            />
+          </Row>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

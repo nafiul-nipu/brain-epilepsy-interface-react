@@ -3,7 +3,6 @@ import * as d3 from 'd3';
 
 import { AxisLeft } from "../CommonComponents/AxisLeft";
 import { AxisBottom } from "../CommonComponents/AxisBottom";
-import { LinePlot } from "../CommonComponents/LinePlot";
 
 // margin for SVG
 const margin = { top: 10, right: 40, bottom: 70, left: 45 }

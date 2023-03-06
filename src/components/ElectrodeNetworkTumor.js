@@ -1,8 +1,6 @@
 // component renders the brain, tumors, electrodes, electrode network
 import React from 'react';
 import { useRef, useEffect } from 'react';
-import ReactDOMServer from 'react-dom/server';
-import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
 import * as d3 from 'd3';
@@ -15,8 +13,7 @@ import {
     setOnWindowResize,
     render,
     getbbox,
-    objMaterialManipulation,
-    MultipleChordContainer
+    objMaterialManipulation
 } from '../library/CommonUtilities'
 
 import dataRegistry from '../data/dataRegistry.json'

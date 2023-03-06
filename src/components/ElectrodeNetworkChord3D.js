@@ -5,7 +5,6 @@ import ReactDOMServer from 'react-dom/server';
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
-import * as d3 from 'd3';
 import {
     createRenderer,
     createScene,
@@ -39,7 +38,7 @@ export const ElectrodeNetworkChord3D = ({
         // clearInterval(inter)
         // brain center - for brain and lesions will calculate later
         // for others take the center from parent
-        let centerBrain = bboxCenter;
+        let centerBrain;
         // let centerOther = bboxCenter;
         // console.log(canvasRef.current);
         console.log("working brain with network")
@@ -146,11 +145,11 @@ export const ElectrodeNetworkChord3D = ({
             transparency
         }) {
             console.log("loading the chord brain")
-            // if (centerBrain === undefined) {
-            //     // [bboxCenter, objBbox] = getbbox(obj)
-            //     // get bboxcenter
-            //     centerBrain = getbbox(obj)
-            // }
+            if (centerBrain === undefined) {
+                // [bboxCenter, objBbox] = getbbox(obj)
+                // get bboxcenter
+                centerBrain = getbbox(obj)
+            }
             // console.log("chord", centerBrain)
 
             // material manipulation

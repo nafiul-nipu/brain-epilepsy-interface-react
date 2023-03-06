@@ -12,10 +12,10 @@ export const TimeSliderButton = ({
 
     useEffect(() => {
         button = buttoneRef.current;
-        slider = sliderRef.current;
+
 
         d3.select(button).select('#play-pause-btn').remove();
-        d3.select(slider).select('svg').remove()
+
         console.log('button creation');
 
         d3.select(button).append('button')
@@ -36,7 +36,13 @@ export const TimeSliderButton = ({
                 }
             })
 
+    }, [])
+
+    useEffect(() => {
         // console.log(d3.select(slider).node().clientWidth)
+        d3.select(slider).select('svg').remove()
+
+        slider = sliderRef.current;
 
         sliderObj.width(d3.select(slider).node().clientWidth - 70)
 
@@ -47,7 +53,6 @@ export const TimeSliderButton = ({
             .append('g')
             .attr('transform', 'translate(15, 10)')
             .call(sliderObj)
-
     }, [sliderObj])
     return (
         <Col md='12' style={{ height: '5vh' }}>

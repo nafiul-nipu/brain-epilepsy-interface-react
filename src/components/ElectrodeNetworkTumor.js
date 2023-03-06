@@ -363,6 +363,8 @@ export const ElectrodeNetworkTumor = ({
 
                     render(renderer, [scene[0], scene[1]], camera)
 
+                    // console.log(eventData[i])
+                    sliderObj.value([eventData[i].time[0], eventData[i].time[eventData[i].time.length - 1]]);
 
                     element[0].id = 'null';
                 }

@@ -226,9 +226,7 @@ export const ElectrodeNetworkTumor = ({
 
                 // console.log(Math.round(sortedData.length * percent))
                 let startElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length)).map(item => item.start))]
-
-                let endElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length)).map(item => item.end))]
-
+                
                 // loop through the data 
                 let eachColor = []
                 let eachSize = []
@@ -243,14 +241,6 @@ export const ElectrodeNetworkTumor = ({
                         const arr = sortedData.find(p => p.start === electrodeData[top].electrode_number);
                         eachSize.push(sizeScale(arr.frequency))
 
-                    } else if (endElec.includes(electrodeData[top].electrode_number)) {
-                        // end electrode
-                        // color.setRGB(10 / 255, 166 / 255, 2 / 255);
-                        color.setRGB(3 / 255, 218 / 255, 197 / 255);
-                        eachColor.push(color.r, color.g, color.b);
-
-                        const arr = sortedData.find(p => p.end === electrodeData[top].electrode_number);
-                        eachSize.push(sizeScale(arr.frequency))
                     } else {
                         // rest electrode
                         // color.setRGB(253 / 255, 180 / 255, 98 / 255);

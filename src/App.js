@@ -23,6 +23,9 @@ import { TimeSliderButton } from "./components/TimeSliderButton"
 import { ENTContainer } from './components/ENTContainer';
 import { ENChordContainer } from './components/ENChordContainer';
 
+import { useFullNetwork } from './library/useFullNetwork';
+import { useFullNetworkPerEvent } from './library/useFullNetworkPerEvent';
+
 
 function App() {
   // console.log(dataRegistry)
@@ -42,6 +45,21 @@ function App() {
     patientID: patientInfo.id,
     sample: patientInfo.sample
   })
+
+  const fullNetwork = useFullNetwork({
+    patientID: patientInfo.id,
+    sample: patientInfo.sample
+  })
+
+  const fullEventNetwork = useFullNetworkPerEvent({
+    patientID: patientInfo.id,
+    sample: patientInfo.sample
+  })
+
+  console.log(eventData)
+
+  // console.log(fullNetwork)
+  // console.log(fullEventNetwork)
 
 
 
@@ -111,6 +129,8 @@ function App() {
             epatient={patientInfo}
             samples={sampleData}
             electrodes={electrodeDataCsv}
+            allnetworks={fullNetwork}
+            allnetworksWithEvent={fullEventNetwork}
           />
         </Col>
         <Col md='4'>

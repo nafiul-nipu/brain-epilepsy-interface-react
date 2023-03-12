@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
 import circle from '../models/disc.png'
 import * as d3 from 'd3'
-import networkdata from '../data/electrodes/ep187/ep187_full_network.json'
+// import networkdata from '../data/electrodes/ep187/ep187_full_network.json'
 
 let width = (window.innerWidth / 3) - 10;
 let height = window.innerHeight / 2 - 10;
@@ -347,7 +347,7 @@ export const ChordContainer = () => {
 }
 
 
-export const MultipleChordContainer = () => {
+export const MultipleChordContainer = ({ networkdata }) => {
 
     const rois = [100, 101, 201, 300, 301, 400, 401, 501]
 

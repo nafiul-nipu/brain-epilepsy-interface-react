@@ -5,6 +5,7 @@ import ReactDOMServer from 'react-dom/server';
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
+import * as d3 from 'd3';
 import {
     createRenderer,
     createScene,
@@ -28,6 +29,8 @@ export const ElectrodeNetworkChord3D = ({
     electrodeData,
     sampleData,
     bboxCenter,
+    allnetwork,
+    allnetworkWithEvent
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -36,6 +39,8 @@ export const ElectrodeNetworkChord3D = ({
 
     useEffect(() => {
         // clearInterval(inter)
+        let inter;
+
         // brain center - for brain and lesions will calculate later
         // for others take the center from parent
         let centerBrain;
@@ -165,13 +170,15 @@ export const ElectrodeNetworkChord3D = ({
         // load electrode
         function loadElectrode(scene, electrodeData, sampleData) {
             console.log("load electrode")
-
             // svgload
+            // scene[1].remove.apply(scene[1], scene[1].children);
+            console.log(allnetwork)
+            console.log(allnetworkWithEvent)
 
             console.log("loading svg")
 
             let svgDataController = {
-                currentURL: ReactDOMServer.renderToString(<MultipleChordContainer />), //convert the react element to SVG
+                currentURL: ReactDOMServer.renderToString(<MultipleChordContainer networkdata={allnetwork} />), //convert the react element to SVG
                 drawFillShapes: true,
                 drawStrokes: true,
                 fillShapesWireframe: false,
@@ -186,6 +193,7 @@ export const ElectrodeNetworkChord3D = ({
             const paths = svgData.paths;
 
             const group = new THREE.Group();
+            group.uuid = 'chord'
             group.scale.multiplyScalar(0.25);
             group.position.x = -40;
             group.position.y = 90;
@@ -273,6 +281,12 @@ export const ElectrodeNetworkChord3D = ({
                 item.position.y = yOffset;
             });
 
+            const groupCheck = scene[1].getObjectById('chord')
+
+            if (groupCheck) {
+                scene[1].remove(group)
+            }
+
             scene[1].add(group)
 
             // render(renderer, [scene[0], scene[1]], camera)
@@ -280,16 +294,27 @@ export const ElectrodeNetworkChord3D = ({
 
             // console.log(points)
             // change the colours, one a second
-            // inter = setInterval(function () {
+            inter = setInterval(function () {
+                let value = d3.select('#play-pause-btn').property('value')
+                if (value === 'play' && document.getElementsByClassName('referenceCircle')[0].id !== 'null') {
+                    const element = document.getElementsByClassName('referenceCircle')
+                    // console.log(element[0].id)
+                    let i = +element[0].id;
 
+                    console.log(allnetworkWithEvent[i])
+                }
+            }, 2500);
 
-            // }, 2500);
+        }
 
+        return () => {
+            console.log('cleaning chord')
+            clearInterval(inter)
         }
 
 
 
-    }, [bboxCenter, brain, canvasRef, electrodeData, sampleData]);
+    }, [allnetwork, bboxCenter, brain, canvasRef, electrodeData, sampleData]);
 
     return (
         <Col md='12'>

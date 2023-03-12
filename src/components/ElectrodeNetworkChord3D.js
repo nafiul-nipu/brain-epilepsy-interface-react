@@ -173,7 +173,7 @@ export const ElectrodeNetworkChord3D = ({
             // svgload
             // scene[1].remove.apply(scene[1], scene[1].children);
             console.log(allnetwork)
-            console.log(allnetworkWithEvent)
+            // console.log(allnetworkWithEvent)
 
             console.log("loading svg")
 
@@ -186,13 +186,13 @@ export const ElectrodeNetworkChord3D = ({
 
             }
 
-            const addSVG = new SVGLoader()
-            const svgData = addSVG.parse(svgDataController.currentURL)
+            let addSVG = new SVGLoader()
+            let svgData = addSVG.parse(svgDataController.currentURL)
 
             // console.log(svgData)
-            const paths = svgData.paths;
+            let paths = svgData.paths;
 
-            const group = new THREE.Group();
+            let group = new THREE.Group();
             group.uuid = 'chord'
             group.scale.multiplyScalar(0.25);
             group.position.x = -40;
@@ -297,11 +297,129 @@ export const ElectrodeNetworkChord3D = ({
             inter = setInterval(function () {
                 let value = d3.select('#play-pause-btn').property('value')
                 if (value === 'play' && document.getElementsByClassName('referenceCircle')[0].id !== 'null') {
+                    scene[1].remove(group)
+
                     const element = document.getElementsByClassName('referenceCircle')
                     // console.log(element[0].id)
                     let i = +element[0].id;
 
-                    console.log(allnetworkWithEvent[i])
+                    // console.log(allnetworkWithEvent[i])
+                    // console.log(allnetwork)
+
+                    const mergedROIs = allnetworkWithEvent[i].map((roi1, index) => ({
+                        ...roi1,
+                        electrodes: [...allnetwork[index].electrodes],
+                    }));
+
+                    console.log(mergedROIs)
+
+                    let svgDataController = {
+                        currentURL: ReactDOMServer.renderToString(<MultipleChordContainer networkdata={mergedROIs} />), //convert the react element to SVG
+                        drawFillShapes: true,
+                        drawStrokes: true,
+                        fillShapesWireframe: false,
+                        strokesWireframe: false
+
+                    }
+
+                    addSVG = new SVGLoader()
+                    svgData = addSVG.parse(svgDataController.currentURL)
+
+                    // console.log(svgData)
+                    paths = svgData.paths;
+
+                    group = new THREE.Group();
+                    group.uuid = 'chord'
+                    group.scale.multiplyScalar(0.25);
+                    group.position.x = -40;
+                    group.position.y = 90;
+                    group.position.z = 70
+                    group.scale.y *= - 1
+                    group.rotation.y = 20
+
+                    for (let i = 0; i < paths.length; i++) {
+                        const path = paths[i];
+
+                        const fillColor = path.userData.style.fill;
+                        if (
+                            svgDataController.drawFillShapes &&
+                            fillColor !== undefined &&
+                            fillColor !== "none"
+                        ) {
+                            const material = new THREE.MeshBasicMaterial({
+                                color: new THREE.Color()
+                                    .setStyle(fillColor)
+                                    .convertSRGBToLinear(),
+                                opacity: path.userData.style.fillOpacity,
+                                transparent: true,
+                                side: THREE.DoubleSide,
+                                depthWrite: false,
+                                wireframe: svgDataController.fillShapesWireframe,
+                            });
+
+                            const shapes = SVGLoader.createShapes(path);
+
+                            for (let j = 0; j < shapes.length; j++) {
+                                const shape = shapes[j];
+
+                                const geometry = new THREE.ShapeGeometry(shape);
+                                const mesh = new THREE.Mesh(geometry, material);
+
+                                group.add(mesh);
+                            }
+                        }
+
+                        const strokeColor = path.userData.style.stroke;
+
+                        if (
+                            svgDataController.drawStrokes &&
+                            strokeColor !== undefined &&
+                            strokeColor !== "none"
+                        ) {
+                            const material = new THREE.MeshBasicMaterial({
+                                color: new THREE.Color()
+                                    .setStyle(strokeColor)
+                                    .convertSRGBToLinear(),
+                                opacity: path.userData.style.strokeOpacity,
+                                transparent: true,
+                                side: THREE.DoubleSide,
+                                depthWrite: false,
+                                wireframe: svgDataController.strokesWireframe,
+                            });
+
+                            for (let j = 0, jl = path.subPaths.length; j < jl; j++) {
+                                const subPath = path.subPaths[j];
+
+                                const geometry = SVGLoader.pointsToStroke(
+                                    subPath.getPoints(),
+                                    path.userData.style
+                                );
+
+                                if (geometry) {
+                                    const mesh = new THREE.Mesh(geometry, material);
+
+                                    group.add(mesh);
+                                }
+                            }
+                        }
+                    }
+
+                    const box = new THREE.Box3().setFromObject(group);
+                    const boxSize = new THREE.Vector3();
+                    box.getSize(boxSize);
+
+                    const yOffset = boxSize.y / -2;
+                    const xOffset = boxSize.x / -2;
+
+                    // Offset all of group's elements, to center them
+                    group.children.forEach(item => {
+                        item.position.x = xOffset;
+                        item.position.y = yOffset;
+                    });
+
+                    scene[1].add(group)
+
+
                 }
             }, 2500);
 
@@ -314,7 +432,7 @@ export const ElectrodeNetworkChord3D = ({
 
 
 
-    }, [allnetwork, bboxCenter, brain, canvasRef, electrodeData, sampleData]);
+    }, [allnetwork, allnetworkWithEvent, bboxCenter, brain, canvasRef, electrodeData, sampleData]);
 
     return (
         <Col md='12'>

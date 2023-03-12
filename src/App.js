@@ -56,7 +56,7 @@ function App() {
     sample: patientInfo.sample
   })
 
-  console.log(eventData)
+  // console.log(eventData)
 
   // console.log(fullNetwork)
   // console.log(fullEventNetwork)

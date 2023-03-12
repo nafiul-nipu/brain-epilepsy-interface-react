@@ -172,7 +172,7 @@ export const ElectrodeNetworkChord3D = ({
             console.log("load electrode")
             // svgload
             // scene[1].remove.apply(scene[1], scene[1].children);
-            console.log(allnetwork)
+            // console.log(allnetwork)
             // console.log(allnetworkWithEvent)
 
             console.log("loading svg")
@@ -311,7 +311,7 @@ export const ElectrodeNetworkChord3D = ({
                         electrodes: [...allnetwork[index].electrodes],
                     }));
 
-                    console.log(mergedROIs)
+                    // console.log(mergedROIs)
 
                     let svgDataController = {
                         currentURL: ReactDOMServer.renderToString(<MultipleChordContainer networkdata={mergedROIs} />), //convert the react element to SVG

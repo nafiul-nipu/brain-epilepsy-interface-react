@@ -471,7 +471,7 @@ export const MultipleChordContainer = ({ networkdata }) => {
                         const donArc = d3.arc()
                             .innerRadius(innerRadius)
                             .outerRadius(outerRadius)
-                            .padAngle(0.2)
+                            .padAngle(0.08)
 
                         return (
                             // <svg width={width} height={height}>

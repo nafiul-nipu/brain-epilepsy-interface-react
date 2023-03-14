@@ -29,7 +29,7 @@ export const EventViewer = ({
 
     // defining width, height, innerwidth and inner height
     const width = window.innerWidth
-    const height = window.innerHeight / 2 - 10
+    const height = window.innerHeight / 2.1
 
     const innerHeight = height - margin.top - margin.bottom
     const innerWidth = width - margin.right - margin.left

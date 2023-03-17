@@ -18,7 +18,7 @@ import {
     MultipleChordContainer
 } from '../library/CommonUtilities'
 
-// import dataRegistry from '../data/dataRegistry.json'
+import dataRegistry from '../data/dataRegistry.json'
 
 
 let canvas = null;
@@ -30,7 +30,8 @@ export const ElectrodeNetworkChord3D = ({
     sampleData,
     bboxCenter,
     allnetwork,
-    allnetworkWithEvent
+    allnetworkWithEvent,
+    patientID
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -176,9 +177,10 @@ export const ElectrodeNetworkChord3D = ({
             // console.log(allnetworkWithEvent)
 
             console.log("loading svg")
+            // console.log(dataRegistry[patientID].rois)
 
             let svgDataController = {
-                currentURL: ReactDOMServer.renderToString(<MultipleChordContainer networkdata={allnetwork} />), //convert the react element to SVG
+                currentURL: ReactDOMServer.renderToString(<MultipleChordContainer networkdata={allnetwork} rois={dataRegistry[patientID].rois} />), //convert the react element to SVG
                 drawFillShapes: true,
                 drawStrokes: true,
                 fillShapesWireframe: false,

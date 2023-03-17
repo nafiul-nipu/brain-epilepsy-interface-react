@@ -45,6 +45,7 @@ export const ENChordContainer = ({
                     bboxCenter={bboxCenter}
                     allnetwork={allnetworks}
                     allnetworkWithEvent={allnetworksWithEvent}
+                    patientID={epatient.id}
                 />
             </Row>
         </Col>

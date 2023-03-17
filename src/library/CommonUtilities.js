@@ -128,7 +128,7 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null,
         sortedData.sort((a, b) => b.frequency - a.frequency);
         let percent = +propagation[1] / 100;
 
-        console.log(Math.round(sortedData.length * percent))
+        // console.log(Math.round(sortedData.length * percent))
         let startElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.start))]
 
         let endElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.end))]
@@ -347,9 +347,9 @@ export const ChordContainer = () => {
 }
 
 
-export const MultipleChordContainer = ({ networkdata }) => {
+export const MultipleChordContainer = ({ networkdata, rois }) => {
 
-    const rois = [100, 101, 201, 300, 301, 400, 401, 501]
+    // const rois = [100, 101, 201, 300, 301, 400, 401, 501]
 
     // console.log(networkdata)
     const colorList = ["#c4c4c4", "#69b40f", "#ec1d25", "#c8125c", "#008fc8", "#10218b", "#134b24", "#737373"]
@@ -389,9 +389,15 @@ export const MultipleChordContainer = ({ networkdata }) => {
     501	L. Insula 7 okay
 */
     //              0 RFL  1LFL   2LPL    3RTL      4LTL           5ROL       6LOL       7LI
-    const x = [base - 200, base, base, base + 250, base + 350, base + 200, base + 350, base + 120]
+    let x = [base - 200, base, base, base + 250, base + 350, base + 200, base + 350, base + 120]
     //          0       1           2           3           4           5       6       7
-    const y = [hB + 250, hB + 100, hB + 550, hB, hB + 250, hB + 700, hB + 500, hB + 350]
+    let y = [hB + 250, hB + 100, hB + 550, hB, hB + 250, hB + 700, hB + 500, hB + 350]
+
+    if (rois.length < 4) {
+        x = [base, base + 300, base]
+        //          0       1           2           3           4           5       6       7
+        y = [hB + 100, hB + 150, hB + 450]
+    }
 
 
     return (
@@ -518,6 +524,7 @@ export const MultipleChordContainer = ({ networkdata }) => {
                                 // console.log(d3.select(`#roi_${each.source}`).node().getBBox())
                                 let source = rois.indexOf(each.source)
                                 let target = rois.indexOf(each.target)
+                                // console.log(source, target)
                                 return (
                                     <g className='aGroup'>
                                         <defs>

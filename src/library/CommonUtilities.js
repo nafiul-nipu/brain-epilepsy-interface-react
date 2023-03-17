@@ -394,9 +394,12 @@ export const MultipleChordContainer = ({ networkdata, rois }) => {
     let y = [hB + 250, hB + 100, hB + 550, hB, hB + 250, hB + 700, hB + 500, hB + 350]
 
     if (rois.length < 4) {
+        // x = [base, base + 300, base]
+        // //          0       1           2           3           4           5       6       7
+        // y = [hB + 100, hB + 150, hB + 450]
+
         x = [base, base + 300, base]
-        //          0       1           2           3           4           5       6       7
-        y = [hB + 100, hB + 150, hB + 450]
+        y = [hB + 450, hB + 150, hB + 100]
     }
 
 

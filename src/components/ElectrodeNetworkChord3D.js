@@ -316,7 +316,7 @@ export const ElectrodeNetworkChord3D = ({
                     // console.log(mergedROIs)
 
                     let svgDataController = {
-                        currentURL: ReactDOMServer.renderToString(<MultipleChordContainer networkdata={mergedROIs} />), //convert the react element to SVG
+                        currentURL: ReactDOMServer.renderToString(<MultipleChordContainer networkdata={mergedROIs} rois={dataRegistry[patientID].rois} />), //convert the react element to SVG
                         drawFillShapes: true,
                         drawStrokes: true,
                         fillShapesWireframe: false,

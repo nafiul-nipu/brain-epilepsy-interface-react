@@ -1,0 +1,4 @@
+.eventLine:hover {
+  cursor: pointer;
+  stroke: coral
+}

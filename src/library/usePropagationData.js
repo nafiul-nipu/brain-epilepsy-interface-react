@@ -9,10 +9,11 @@ export const usePropagationData = ({ url }) => {
     useEffect(() => {
         const row = d => {
             d.start = +d.start;
-            d.end = +d.end;
+            // d.end = +d.end;
             d.frequency = +d.frequency;
+            // d.startPosition = JSON.parse(d.startPosition);
+            // d.endPosition = JSON.parse(d.endPosition);
             d.startPosition = JSON.parse(d.startPosition);
-            d.endPosition = JSON.parse(d.endPosition);
             return d;
         }
         csv(url, row).then(setData);

@@ -1,130 +1,96 @@
 import { Col, Row } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 // slider module to create time slider
-import Slider from 'rc-slider';
+// import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { useRef, useState } from 'react';
 export const ElectrodeDropDown = ({
-    electrodeData,
-    setElectrodeNetworkValue
+    setNewPatientInfo
 }) => {
-    const propaRef = useRef()
-    const eRef = useRef()
-    let electrodeList
-    if (electrodeData) {
-        // console.log(electrodeData)
-        electrodeList = [...new Set(electrodeData.map((item) => item.electrode_number))]
-        // console.log(electrodeList)
-    }
-    let data = [
-        { name: 'TopPercentile', values: [5, 10, 15, 20] },
-        { name: 'ElectrodePair', values: electrodeList }
-    ]
-    const [propagation, selectedPropagation] = useState('TopPercentile')
+    const sampleRef = useRef()
+    const patientRef = useRef()
+    const timeRef = useRef()
+
+    const [sample, selectedSample] = useState('sample1')
+    const [patient, selectedPatient] = useState('ep187')
+    const [timerange, selectTimeRange] = useState(1000)
     return (
         <Row>
-            <Col md='3'>
+            <Col md='5'>
                 {/* Patient dropdown */}
-                <Form.Group as={Row} className='mb-3' controlId="formHorizontal">
-                    <Form.Label column sm={4} id='selectPosition'>Select Patient:</Form.Label>
-                    <Col sm={8}>
-                        <Form.Select defaultValue="EP187" id='selectPosition'>
-                            <option value='EP187'> EP187 </option>
+                <Form.Group as={Row} className='mb-4' controlId="formHorizontal">
+                    <Form.Label column sm={5} id='selectPosition'>Select Patient:</Form.Label>
+                    <Col sm={7}>
+                        <Form.Select value={patient} id='selectPosition' ref={patientRef} onChange={onPatientChange}>
+                            <option value='ep187'> EP187 </option>
+                            <option value='ep129'> EP129 </option>
                         </Form.Select>
                     </Col>
                 </Form.Group>
             </Col>
+            <Col md='4'>
+                {/* propagation dropdown */}
+                <Form.Group as={Row} className='mb-4' controlId="formHorizontal">
+                    <Form.Label column sm={4} id='selectPosition'>Sample:</Form.Label>
+                    <Col sm={8}>
+                        <Form.Select value={sample} onChange={onSampleChange} ref={sampleRef} id='selectPosition'>
+                            <option value='sample1'> Sample 1</option>
+                            <option value='sample2'> Sample 2 </option>
+                            <option value='sample3'> Sample 3 </option>
+                        </Form.Select>
+                    </Col>
+                </Form.Group>
+            </Col>
+
             <Col md='3'>
                 {/* propagation dropdown */}
-                <Form.Group as={Row} className='mb-3' controlId="formHorizontal">
-                    <Form.Label column sm={4} id='selectPosition'>Propagation:</Form.Label>
-                    <Col sm={8}>
-                        <Form.Select value={propagation} onChange={propagationOnChange} ref={propaRef} id='selectPosition'>
-                            <option value='TopPercentile'> Top Percentile </option>
-                            <option value='ElectrodePair'> Elcetrode Pair </option>
+                <Form.Group as={Row} className='mb-4' controlId="formHorizontal">
+                    <Form.Label column sm={3} id='selectPosition'>Range:</Form.Label>
+                    <Col sm={9}>
+                        <Form.Select value={timerange} onChange={ontimerangeUpdate} ref={timeRef} id='selectPosition'>
+                            <option value='50'> 50 ms</option>
+                            <option value='100'> 100 ms </option>
+                            <option value='200'> 200 ms </option>
+                            <option value='500'> 500 ms </option>
+                            <option value='1000'> 1000 ms </option>
                         </Form.Select>
                     </Col>
                 </Form.Group>
             </Col>
-            <Col md='3'>
-                {/* electrode dropdown */}
-                <Form.Group as={Row} className='mb-3' controlId="formHorizontal" >
-                    <Form.Label column sm={4} id='selectPosition'>Electrodes:</Form.Label>
-                    <Col sm={8}>
-                        <Form.Select onChange={electrodOnChange} ref={eRef} id='selectPosition'>
-                            {
-                                data.filter(d => {
-                                    return d.name === propagation;
-                                })[0].values.map((d, i) => {
-                                    return (
-                                        <option value={d} key={i}>{d}</option>
-                                    )
-                                })
-                            }
-                        </Form.Select>
-                    </Col>
-                </Form.Group>
-            </Col>
-            {/* time slider */}
-            {/* <Col md='3'>
-                Time:
-                <Slider min={10} max={30} defaultValue={10} marks={{ 10: 10, 20: 20, 30: 30 }} step={null} onChange={onSliderChange} />
-            </Col> */}
         </Row>
     )
 
 
-    function propagationOnChange(event) {
+    function onSampleChange(event) {
         // console.log(event.target.value)
-        let val = event.target.value;
+        let sampleName = event.target.value;
         // console.log(val)
-        if (val === 'TopPercentile') {
-            let evalue = +eRef.current.value;
-            // console.log(evalue)
-            let index
-            // console.log(data[1].values)
-            if (data[1].values.includes(evalue)) {
-                index = data[1].values.indexOf(evalue)
-            } else {
-                index = 0;
-            }
+        let patient = patientRef.current.value;
+        selectedSample(event.target.value)
 
-            if (index >= data[0].values.length) {
-                index = 0;
-            }
-            // console.log(index)
-            let electrode = data[0].values[index]
-            // console.log(electrode)
-            setElectrodeNetworkValue(['TopPercentile', electrode])
-
-
-            selectedPropagation(event.target.value)
-            // setData(percentile)
-        } else {
-            let val = +eRef.current.value;
-            let index
-            if (data[0].values.includes(val)) {
-                index = data[0].values.indexOf(val)
-            } else {
-                index = 0;
-            }
-            let electrode = data[1].values[index]
-            setElectrodeNetworkValue(['ElectrodePair', electrode])
-            // // setData(electrodeList)
-            // console.log(propaRef.current.value)
-            selectedPropagation(event.target.value)
-        }
+        let time = timeRef.current.value;
+        setNewPatientInfo({ id: patient, sample: sampleName, range: time })
     }
 
-    function electrodOnChange(event) {
-        let propagation = propaRef.current.value
-        let electrode = event.target.value;
-        setElectrodeNetworkValue([propagation, electrode])
-        console.log(propaRef.current.value)
+    function onPatientChange(event) {
+        let patient = event.target.value;
+        // console.log(val)
+        let sampleName = sampleRef.current.value;
+        selectedPatient(event.target.value)
+
+        let time = timeRef.current.value;
+        setNewPatientInfo({ id: patient, sample: sampleName, range: time })
+    }
+
+    function ontimerangeUpdate(event) {
+        let time = event.target.value;
+        selectTimeRange(event.target.value);
+
+        let sampleName = sampleRef.current.value;
+        let patient = patientRef.current.value;
+        setNewPatientInfo({ id: patient, sample: sampleName, range: time })
+
     }
 }
 
-function onSliderChange(value) {
-    console.log(value)
-}
 

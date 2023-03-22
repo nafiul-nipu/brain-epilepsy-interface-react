@@ -3,6 +3,8 @@
 import * as THREE from 'three';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
 import circle from '../models/disc.png'
+import * as d3 from 'd3'
+// import networkdata from '../data/electrodes/ep187/ep187_full_network.json'
 
 let width = (window.innerWidth / 3) - 10;
 let height = window.innerHeight / 2 - 10;
@@ -13,7 +15,7 @@ let far = 2000;
 
 // creating renderer
 export function createRenderer(canvas, autoClear = false) {
-    let renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+    let renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setClearColor(0Xfafbfc, 1);
@@ -51,7 +53,7 @@ export function createTrackballControls(camera, renderer) {
 }
 
 // window resize handler
-export function setOnWindowResize(renderer, camera, controls, scenes) {
+export function setOnWindowResize(renderer, camera, controls, scenes, clock, mixer) {
 
     renderer.setSize((window.innerWidth / 2) - 10, window.innerHeight / 2);
 
@@ -60,14 +62,12 @@ export function setOnWindowResize(renderer, camera, controls, scenes) {
 
     controls.handleResize();
 
-    render(renderer, scenes, camera);
+    render(renderer, scenes, camera, clock, mixer);
 
 }
 
 // render function
 export function render(renderer, scenes, camera) {
-
-    // renderer.render(scene, camera);
 
     if (scenes.length === 2) {
         renderer.clear();
@@ -128,6 +128,7 @@ export function populateElectrodes(electrodeData, bboxCenter, sampleData = null,
         sortedData.sort((a, b) => b.frequency - a.frequency);
         let percent = +propagation[1] / 100;
 
+        // console.log(Math.round(sortedData.length * percent))
         let startElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.start))]
 
         let endElec = [...new Set(sortedData.slice(0, Math.round(sortedData.length * percent)).map(item => item.end))]
@@ -260,4 +261,304 @@ export function createBrainPropagation(sampleData, bboxCenter, propagation) {
     group.position.set(bboxCenter.x, bboxCenter.y, bboxCenter.z);
 
     return group;
+}
+
+
+export const ChordContainer = () => {
+    let data = Object.assign([
+        [.096899, .008859, .000554, .004430, .025471, .024363, .005537, .025471],
+        [.001107, .018272, .000000, .004983, .011074, .010520, .002215, .004983],
+        [.000554, .002769, .002215, .002215, .003876, .008306, .000554, .003322],
+        [.000554, .001107, .000554, .012182, .011628, .006645, .004983, .010520],
+        [.002215, .004430, .000000, .002769, .104097, .012182, .004983, .028239],
+        [.011628, .026024, .000000, .013843, .087486, .168328, .017165, .055925],
+        [.000554, .004983, .000000, .003322, .004430, .008859, .017719, .004430],
+        [.002215, .007198, .000000, .003322, .016611, .014950, .001107, .054264]
+    ], {
+        names: ["Apple", "HTC", "Huawei", "LG", "Nokia", "Samsung", "Sony", "Other"],
+        colors: ["#c4c4c4", "#69b40f", "#ec1d25", "#c8125c", "#008fc8", "#10218b", "#134b24", "#737373"]
+    })
+
+    const names = data.names === undefined ? d3.range(data.length) : data.names
+    const colors = data.colors === undefined ? d3.quantize(d3.interpolateRainbow, names.length) : data.colors
+
+    const chordHeight = 500;
+    const chordWidth = 500;
+    const outerRadius = Math.min(chordWidth, chordHeight) * 0.5 - 60;
+    const innerRadius = outerRadius - 10
+    const color = d3.scaleOrdinal(names, colors)
+    const ribbon = d3.ribbon()
+        .radius(innerRadius - 1)
+        .padAngle(1 / innerRadius)
+
+    const chordArc = d3.arc()
+        .innerRadius(innerRadius)
+        .outerRadius(outerRadius)
+
+    const chord = d3.chord()
+        .padAngle(10 / innerRadius)
+        .sortSubgroups(d3.descending)
+        .sortChords(d3.descending)
+
+
+    const chords = chord(data)
+
+    // console.log(chords.groups)
+
+    return (
+        <svg width={chordWidth} height={chordHeight}>
+            <g transform={`translate(${chordWidth / 2}, ${chordHeight / 2})`}>
+                {chords.groups.map((each) => {
+                    // console.log(color(names[each.index]))
+                    return (
+                        <g key={each.index}>
+                            <path
+                                fill={color(names[each.index])}
+                                d={chordArc(each)}
+                            /><title>{`${names[each.index]}
+                                ${(each.value)}`}</title>
+
+                            {/* <text
+                                    x={8}
+                                    dy='0.35em'
+                                    fontWeight={'bold'}
+                                    textAnchor={'end'}
+                                >
+                                    ${names[each.index]}
+                                </text> */}
+                        </g>
+                    )
+                })}
+                {chords.map((each) => {
+                    return (
+                        <g fillOpacity={0.8} key={each.source.index}>
+                            <path
+                                style={{ mixBlendMode: 'multiply' }}
+                                fill={color(names[each.source.index])}
+                                d={ribbon(each)}
+                            /><title>{`${(each.source.value)} ${names[each.target.index]} → ${names[each.source.index]}${each.source.index === each.target.index ? ""
+                                : `\n${(each.target.value)} ${names[each.source.index]} → ${names[each.target.index]}`}`}</title>
+                        </g>
+                    )
+                })}
+            </g>
+        </svg>
+    )
+}
+
+
+export const MultipleChordContainer = ({ networkdata, rois }) => {
+
+    // const rois = [100, 101, 201, 300, 301, 400, 401, 501]
+
+    // console.log(networkdata)
+    const colorList = ["#c4c4c4", "#69b40f", "#ec1d25", "#c8125c", "#008fc8", "#10218b", "#134b24", "#737373"]
+
+    const height = 350;
+    const width = 350;
+    const outerRadius = Math.min(width, height) * 0.5 - 60;
+    const innerRadius = outerRadius - 10
+
+    const ribbon = d3.ribbonArrow()
+        .radius(innerRadius - 1)
+        .padAngle(0 / innerRadius)
+
+    const chordArc = d3.arc()
+        .innerRadius(innerRadius)
+        .outerRadius(outerRadius)
+
+    const chord = d3.chordDirected()
+        .padAngle(10 / innerRadius)
+        .sortSubgroups(d3.descending)
+        .sortChords(d3.descending)
+
+    const textPadding = 1.2
+
+    // console.log(chords)
+    const base = width / 2
+    const hB = height / 2
+    // console.log(base, hB)
+    /*
+    100	R. Frontal Lobe 0 okay
+    101	L. Frontal Lobe 1 okay
+    201	L. Parietal Lobe 2 okay
+    300	R. Temporal Lobe 3 okay
+    301	L. Temporal Lobe 4 okay
+    400	R. Occipital Lobe 5 okay
+    401	L. Occipital Lobe 6 okay
+    501	L. Insula 7 okay
+*/
+    //              0 RFL  1LFL   2LPL    3RTL      4LTL           5ROL       6LOL       7LI
+    let x = [base - 200, base, base, base + 250, base + 350, base + 200, base + 350, base + 120]
+    //          0       1           2           3           4           5       6       7
+    let y = [hB + 250, hB + 100, hB + 550, hB, hB + 250, hB + 700, hB + 500, hB + 350]
+
+    if (rois.length < 4) {
+        // x = [base, base + 300, base]
+        // //          0       1           2           3           4           5       6       7
+        // y = [hB + 100, hB + 150, hB + 450]
+
+        x = [base, base + 300, base]
+        y = [hB + 450, hB + 150, hB + 100]
+    }
+
+
+    return (
+        <svg width={window.innerWidth} height={window.innerHeight} className='top-svg'>
+            {
+                networkdata.map((nd, i) => {
+                    // console.log(nd)
+                    if (nd.roi !== 'rest' && nd.network.length !== 0) {
+                        // console.log(nd)
+                        let data = Object.assign(nd.matrix, { names: nd["electrodes"], colors: colorList })
+                        const chords = chord(data)
+                        const names = data.names === undefined ? d3.range(data.length) : data.names
+                        const colors = data.colors === undefined ? d3.quantize(d3.interpolateRainbow, names.length) : data.colors
+                        const color = d3.scaleOrdinal(names, colors)
+                        return (
+                            // <svg width={width} height={height}>
+                            <g transform={`translate(${x[i]}, ${y[i]})`} id={`roi_${nd.roi}`}>
+                                {chords.groups.map((each) => {
+                                    // console.log(each)
+                                    let textTransform = chordArc.centroid(each);
+                                    return (
+                                        <g key={each.index}>
+                                            <path
+                                                fill={color(names[each.index])}
+                                                d={chordArc(each)}
+                                            /><title>{`${names[each.index]}
+                                                ${(each.value)}`}</title>
+                                            <text
+                                                transform={`translate(${textTransform[0] * textPadding}, ${textTransform[1] * textPadding})`}
+                                                // x={2}
+                                                dy='0.35em'
+                                                // fontWeight={'bold'}
+                                                fontSize='0.75em'
+                                                textAnchor={'middle'}
+                                            >
+                                                {names[each.index]}
+                                            </text>
+
+                                        </g>
+                                    )
+                                })}
+                                {chords.map((each, i) => {
+                                    return (
+                                        <g fillOpacity={0.8} key={i} >
+                                            <path
+                                                style={{ mixBlendMode: 'multiply' }}
+                                                fill={color(names[each.source.index])}
+                                                d={ribbon(each)}
+                                            /><title>{`E${names[each.source.index]} → E${names[each.target.index]} = ${(each.source.value)}`}</title>
+                                        </g>
+                                    )
+                                })}
+                            </g>
+
+                            // </svg>
+
+                        )
+                    }
+                    else if (nd.roi !== 'rest') {
+                        let defaultValue = 10
+                        // let data = nd.electrodes.map((e)=> )
+                        const obj = nd.electrodes.reduce((acc, val) => {
+                            acc[val] = defaultValue;
+                            return acc;
+                        }, {});
+                        // console.log(obj) 
+                        var color = d3.scaleOrdinal()
+                            .domain(Object.keys(obj))
+                            .range(colorList)
+
+                        var pie = d3.pie()
+                            .value(function (d) { return d[1]; })
+                        var data_ready = pie(Object.entries(obj))
+                        // console.log(Object.entries(obj))
+                        // console.log(data_ready)
+
+                        const donArc = d3.arc()
+                            .innerRadius(innerRadius)
+                            .outerRadius(outerRadius)
+                            .padAngle(0.08)
+
+                        return (
+                            // <svg width={width} height={height}>
+                            <g transform={`translate(${x[i]}, ${y[i]})`} id={`roi_${nd.roi}`}>
+                                {data_ready.map((each, i) => {
+                                    // console.log(each)
+                                    let textTransform = donArc.centroid(each);
+                                    return (
+                                        <g key={i}>
+                                            <path
+                                                fill={color(each.index)}
+                                                d={donArc(each)}
+                                            /><title>{`E${+each.data[0]}`}</title>
+                                            <text
+                                                transform={`translate(${textTransform[0] * textPadding}, ${textTransform[1] * textPadding})`}
+                                                // x={2}
+                                                dy='0.35em'
+                                                fontSize='0.85em'
+                                                // fontWeight={'bold'}
+                                                textAnchor={'middle'}
+                                            >
+                                                E{+each.data[0]}
+                                            </text>
+
+                                        </g>
+                                    )
+                                })}
+                            </g>
+                            // </svg>
+                        )
+                    } else {
+                        const uniqueNames = [...new Set(nd.roiWithCount.map(item => item.count))];
+                        uniqueNames.sort((a, b) => a - b);
+                        // console.log(uniqueNames)
+                        const strokeRange = Array.from({ length: uniqueNames.length }, (_, i) => 1 + i * 0.5);
+                        // console.log(strokeRange)
+                        const strokeWidthScale = d3.scaleOrdinal()
+                            .domain(uniqueNames)
+                            .range(strokeRange)
+
+                        // console.log(d3.select(`#roi_100`).node().getBBox());
+                        return (
+                            nd['roiWithCount'].map((each) => {
+                                // console.log(d3.select(`#roi_${each.source}`).node().getBBox())
+                                let source = rois.indexOf(each.source)
+                                let target = rois.indexOf(each.target)
+                                // console.log(source, target)
+                                return (
+                                    <g className='aGroup'>
+                                        <defs>
+                                            <marker
+                                                id="arrow"
+                                                markerWidth="10"
+                                                markerHeight="10"
+                                                refX="0"
+                                                refY="3"
+                                                orient="auto"
+                                                markerUnits="strokeWidth"
+
+                                            >
+                                                <path d="M0,0 L0,6 L9,3 z" fill="black" opacity={0.5} />
+                                            </marker>
+                                        </defs>
+                                        <line
+                                            x1={x[source]}
+                                            y1={y[source]}
+                                            x2={x[target]}
+                                            y2={y[target]}
+                                            stroke="black" strokeWidth={strokeWidthScale(each.count)} markerEnd="url(#arrow)" strokeOpacity={0.4}
+                                        ></line><title>{`${+each.source} -> ${+each.target} = ${+each.count}`}</title>
+                                    </g>
+                                )
+                            })
+                        )
+                    }
+                })
+            }
+
+        </svg>
+    )
 }

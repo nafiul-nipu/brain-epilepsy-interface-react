@@ -2,13 +2,15 @@ import * as d3 from 'd3'
 import { LinePlot } from "./LinePlot";
 
 export const MultiLineCreation = ({
-    electrodeListData, 
+    electrodeListData,
     electrodeData,
     yAxisScale,
     xlineRange,
     scaleOffset,
-    keyNumber    
-}) =>{ 
+    keyNumber,
+    domain,
+    innerHeight
+}) => {
     // console.log(electrodeData)
     // for each electrode creating one line plot
     return (electrodeListData.map((each, i) => {
@@ -23,7 +25,7 @@ export const MultiLineCreation = ({
         // console.log(each, yAxisScale(each), (yAxisScale.bandwidth() + yAxisScale(each)))
 
         // setting domain based on the frequency
-        let domain = [...new Set(result.map((item) => item.frequency))]
+        // let domain = [...new Set(result.map((item) => item.frequency))]
 
         // line Y scale - rande is bandwidth as each Y position is a line chart
         let yLineScale = d3.scaleLinear()
@@ -38,16 +40,19 @@ export const MultiLineCreation = ({
         // console.log(xLineScale.domain(), xLineScale.range(), xLineScale(9))
 
         return (
-            <LinePlot
-                key={each}
-                data={result}
-                xScale={xLineScale}
-                yLineScale={yLineScale}
-                yAxisScale={yAxisScale}
-                each={each}
-                scaleOffset={scaleOffset}
-                keyNumber={keyNumber}
-            />
+            <g>
+
+                <LinePlot
+                    key={each}
+                    data={result}
+                    xScale={xLineScale}
+                    yLineScale={yLineScale}
+                    yAxisScale={yAxisScale}
+                    each={each}
+                    scaleOffset={scaleOffset}
+                    keyNumber={keyNumber}
+                />
+            </g>
         )
     }))
 }

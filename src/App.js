@@ -1,69 +1,165 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// importing components
-import { ComponentContainer } from './components/ComponentContainer';
-import { useElectrodeData } from './library/useElectrodeData';
-import { usePropagationData } from './library/usePropagationData';
-import { useBBoxcenter } from './library/useBBoxcenter';
-import { useOBJThreeStates } from './library/useOBJThreeStates';
+import { sliderHorizontal } from 'd3-simple-slider'
 
-// importing objfiles
-import brain from "./models/brain.obj"
-import lesion1_para from './models/lesion1_para.obj';
-import lesion2_para from './models/lesion2_para.obj';
-import lesion3_para from './models/lesion3_para.obj';
+// importing components
+import { useElectrodeData } from './library/useElectrodeData';
+import { useSamples } from './library/useSamples';
+
 import { useState } from 'react';
 
-// data URLS
-const electrodeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/ep187_electrodes_new.csv"
-const sampleURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/newSample1RealPosition.csv'
-const sampleURL2 = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/newSample2RealPosition.csv'
-const sampleURL3 = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/src/data/electrodes/newSample3RealPosition.csv'
+import dataRegistry from './data/dataRegistry.json'
+import { useEventData } from './library/useEventData';
+
+import { Container, Row, Col } from "react-bootstrap"
+
+import { EEGDataViewer } from "./components/EEGDataViewer"
+import { ElectrodeDropDown } from "./components/ElectrodeDropDown"
+
+import { EventViewer } from "./components/EventViewer"
+// import { PropagationTimeSeries } from "./components/PropagationTimeSeries"
+import { TimeSliderButton } from "./components/TimeSliderButton"
+import { ENTContainer } from './components/ENTContainer';
+import { ENChordContainer } from './components/ENChordContainer';
+
+import { useFullNetwork } from './library/useFullNetwork';
+import { useFullNetworkPerEvent } from './library/useFullNetworkPerEvent';
 
 
 function App() {
-  // loading brain and lesions
-  const multiBrain = useOBJThreeStates({ objType: brain });
-  const multiLesion1 = useOBJThreeStates({ objType: lesion1_para });
-  const multiLesion2 = useOBJThreeStates({ objType: lesion2_para });
-  const multiLesion3 = useOBJThreeStates({ objType: lesion3_para });
+  // console.log(dataRegistry)
+  const [patientInfo, setPatientInfo] = useState({ id: 'ep187', sample: 'sample1' })
+  // console.log('patient', patientInfo)
+  const [timeRange, setTimeRange] = useState(1000)
+  // console.log('time', timeRange)
 
-  // getting the center of the objtects
-  const bboxCenter = useBBoxcenter({ objType: brain });
+  const sampleData = useSamples({
+    patientID: patientInfo.id,
+    sampleName: patientInfo.sample,
+    range: timeRange
+  })
+  // console.log('sampledata', sampleData)
+
+  const eventData = useEventData({
+    patientID: patientInfo.id,
+    sample: patientInfo.sample
+  })
+
+  const fullNetwork = useFullNetwork({
+    patientID: patientInfo.id,
+    sample: patientInfo.sample
+  })
+
+  const fullEventNetwork = useFullNetworkPerEvent({
+    patientID: patientInfo.id,
+    sample: patientInfo.sample
+  })
+
+  // console.log(eventData)
+
+  // console.log(fullNetwork)
+  // console.log(fullEventNetwork)
+
+
 
   // loading the data
-  const electrodeDataCsv = useElectrodeData({ url: electrodeURL });
-  const sampleDataCSV = usePropagationData({ url: sampleURL });
-  const sampleDataCSV2 = usePropagationData({ url: sampleURL2 });
-  const sampleDataCSV3 = usePropagationData({ url: sampleURL3 });
+  const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
+  // console.log('electrodcsv', electrodeDataCsv)
 
-  const [electrodeNetworkValue, setElectrodeVal] = useState(["TopPercentile", "5"])
+  // console.log(dataRegistry['ep129'])
 
-  function setElectrodeNetworkValue(val){
-    console.log(val)
-    setElectrodeVal(val)
-    // console.log(electrodeNetworkValue)
+  let sliderObj = sliderHorizontal()
+    .min(0)
+    .max(dataRegistry[patientInfo.id].time)
+    .default([0, 0]) //for one slider 0
+    .ticks(4)
+    // .tickValues(tickValues)
+    // .step(30)
+    .tickPadding(0)
+    .fill('#2196f3')
+    .on('onchange', function () {
+
+    })
+
+  function setNewPatientInfo(val) {
+    console.log("setting patient info")
+    setPatientInfo({ id: val.id, sample: val.sample });
+    console.log('setting time range')
+    setTimeRange(val.range);
   }
 
-// console.log(electrodeDataCsv)
+  // console.log(electrodeDataCsv)
+
+  const [eegEL, setEEGEL] = useState({ id: 0, value: [92] })
+
+  function onEventsClicked(value) {
+    let values = value.electrode.sort((a, b) => a - b);
+    setEEGEL({ id: value.index, value: values })
+  }
 
   return (
     // <div>debugging</div>
     // component container
-    <ComponentContainer
-      electrodeData={electrodeDataCsv} //electrode data set
-      sampleData={sampleDataCSV} // propagation sample first 10 minutes
-      sampleData2={sampleDataCSV2} // propagation sample second 10 minutes
-      sampleData3={sampleDataCSV3} // propagation sample third 10 minutes
-      multiBrain={multiBrain} //brain objs
-      multiLesion1={multiLesion1} //lesion1 objs
-      multiLesion2={multiLesion2} //lesion2 objs
-      multiLesion3={multiLesion3} // lesion3 objs
-      bboxCenter={bboxCenter} //box center
-      electrodeNetworkValue={electrodeNetworkValue}
-      setElectrodeNetworkValue={setElectrodeNetworkValue}
-    />
+    <Container fluid id="container">
+      {/* nav bar */}
+      <Row style={{ height: '5vh' }}>
+        <Col md='6' style={{ height: '5vh' }}>
+          {/* dropdown menues */}
+          <ElectrodeDropDown
+            setNewPatientInfo={setNewPatientInfo}
+          />
+        </Col>
+        <Col md='6' style={{ height: '5vh' }}>
+          <TimeSliderButton
+            sliderObj={sliderObj}
+          />
+        </Col>
+      </Row>
+      {/* vis */}
+      <Row style={{ height: '50vh' }}>
+        <Col md='4'>
+          <EEGDataViewer
+            eegEL={eegEL}
+            patientInfo={patientInfo}
+          />
+        </Col>
+        <Col md='4'>
+          <ENChordContainer
+            epatient={patientInfo}
+            samples={sampleData}
+            electrodes={electrodeDataCsv}
+            allnetworks={fullNetwork}
+            allnetworksWithEvent={fullEventNetwork}
+          />
+        </Col>
+        <Col md='4'>
+          {/* top view - electrode and brain 3D model */}
+          <Row>
+            <ENTContainer
+              patientInformation={patientInfo}
+              electrodeData={electrodeDataCsv}
+              sample={sampleData}
+              slider={sliderObj}
+              time={timeRange}
+              events={eventData}
+            />
+          </Row>
+
+        </Col>
+      </Row>
+      <Row>
+        <Col md='12' style={{ height: '45vh' }}>
+          <Row>
+            <EventViewer
+              data={eventData}
+              sliderObj={sliderObj}
+              onEventsClicked={onEventsClicked}
+            />
+          </Row>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

@@ -4,6 +4,7 @@ import ChartContainer, {
   useChartContext,
 } from "../chart-container/chart-container";
 import { AxisBottom } from "../../CommonComponents/AxisBottom";
+import "./event-bar-viewer.css";
 
 /*
 interface ElectronDatum {
@@ -28,15 +29,15 @@ const containerProps = {
 
 const countAccessor = (d) => d.count;
 
-export const EventBarViewer = ({ data }) => {
+export const EventBarViewer = (props) => {
   return (
     <ChartContainer {...containerProps}>
-      <Wrapper data={data} />
+      <Wrapper {...props} />
     </ChartContainer>
   );
 };
 
-const Wrapper = ({ data }) => {
+const Wrapper = ({ data, threshold, onClickEvent }) => {
   const dimensions = useChartContext();
   const yMax = d3.max(data, countAccessor);
   const xScale = d3
@@ -50,19 +51,42 @@ const Wrapper = ({ data }) => {
     .range([dimensions.boundedHeight, 0])
     .nice();
 
+  const handleOnLineClick = (eventDatum) => {
+    d3.selectAll(".eventLine").attr("stroke", "grey");
+    d3.selectAll(`#ev_${eventDatum.index}`).attr("stroke", "green");
+
+    let arrIdex = data.findIndex((x) => x.index === eventDatum.index);
+    d3.select(".referenceCircle").attr("id", `${arrIdex}`);
+    onClickEvent(eventDatum);
+  };
+
   return (
     <>
-      {data.map((d, i) => (
-        <g>
-          <line
-            x1={xScale(i)}
-            y1={yScale(0)}
-            x2={xScale(i)}
-            y2={yScale(countAccessor(d))}
-            stroke="grey"
-          />
-        </g>
-      ))}
+      {data
+        .filter((el) => countAccessor(el) >= threshold)
+        .map((d, i) => (
+          <g key={d.index}>
+            <line
+              className="eventLine"
+              id={`ev_${d.index}`}
+              x1={xScale(d.index)}
+              y1={yScale(0)}
+              x2={xScale(d.index)}
+              y2={yScale(countAccessor(d))}
+              stroke="grey"
+              onClick={() => handleOnLineClick(d)}
+            />
+          </g>
+        ))}
+      {/* TODO: remove this hack*/}
+      <circle
+        className="referenceCircle"
+        id="null"
+        cx={dimensions.boundedWidth}
+        cy={dimensions.boundedHeight}
+        r={0}
+        fill={"red"}
+      ></circle>
       <AxisBottom
         xScale={xScale}
         yScale={yScale}

@@ -85,7 +85,7 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
     onClickEvent(eventDatum);
   };
 
-
+  // console.log(data)
 
   return (
     <>
@@ -102,7 +102,9 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
               y2={yScale(d.index)}
               stroke="grey"
               onClick={() => handleOnLineClick(d)}
-            />
+            /><title>{`
+            Event Id : ${d.index}\nTimepoint : ${d.time.length > 1 ? `${d.time[0]} - ${d.time[d.time.length - 1]}` : `${d.time}`} ms\nElectrodes : ${d.count}
+            `}</title>
             <circle
               className="eventLine"
               id={`ev_circle_${d.index}`}
@@ -111,7 +113,9 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
               r={2}
               fill={"grey"}
               onClick={() => handleOnLineClick(d)}
-            />
+            /><title>{`
+            Event Id : ${d.index}\nTimepoint : ${d.time.length > 1 ? `${d.time[0]} - ${d.time[d.time.length - 1]}` : `${d.time}`} ms\nElectrodes : ${d.count}
+            `}</title>
           </g>
         ))}
 

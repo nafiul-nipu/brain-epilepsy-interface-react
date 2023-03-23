@@ -13,7 +13,7 @@ export const EEGDataViewer = ({ eegEL, patientInfo }) => {
       </div>
 
       {eegEL ? (
-        <div className="fullh eeg-list">
+        <div className="eeg-list">
           {eegEL.value.map((eeg) => {
             const url = `${baseUrl}/${patientInfo.id}/${patientInfo.sample}/E${eeg}.png`;
 

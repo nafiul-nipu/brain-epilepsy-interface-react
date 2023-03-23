@@ -82,7 +82,7 @@ function App() {
     // .step(30)
     .tickPadding(0)
     .fill("#2196f3")
-    .on("onchange", function () {});
+    .on("onchange", function () { });
 
   function setNewPatientInfo(val) {
     console.log("setting patient info");
@@ -109,7 +109,7 @@ function App() {
     // component container
     <Container fluid id="container">
       <Row className={"fullh"}>
-        <Col md="2" className={"event-panel fullh"}>
+        <Col md="4" className={"event-panel fullh"}>
           <Logo>SpikeXplorer</Logo>
           <ElectrodeDropDown setNewPatientInfo={setNewPatientInfo} />
           <div
@@ -137,10 +137,10 @@ function App() {
             /> */}
           </div>
         </Col>
-        <Col md="3">
+        <Col md="4">
           <EEGDataViewer eegEL={eegEL} patientInfo={patientInfo} />
         </Col>
-        <Col md="7" className="fullh">
+        <Col md="4" className="fullh">
           <Row style={{ height: "50%" }}>
             <TimeSliderButton sliderObj={sliderObj} />
             <ENChordContainer

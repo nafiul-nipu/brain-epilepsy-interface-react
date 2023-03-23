@@ -126,7 +126,7 @@ function App() {
             {eventData ? (
               <EventBarViewer
                 data={eventData}
-                threshold={10}
+                // threshold={10}
                 onClickEvent={onEventsClicked}
               />
             ) : null}

@@ -19,6 +19,7 @@ export const EEGDataViewer = ({ eegEL, patientInfo }) => {
 
             return (
               <img
+                key={eeg}
                 src={url}
                 alt={`E${eeg}`}
                 style={{ objectFit: "contain", width: "95%", margin: "10px" }}

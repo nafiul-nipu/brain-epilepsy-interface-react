@@ -6,6 +6,7 @@ import ChartContainer, {
 import { AxisBottom } from "../../CommonComponents/AxisBottom";
 import "./event-bar-viewer.css";
 import { AxisLeft } from "../../CommonComponents/AxisLeft";
+import { useState } from "react";
 
 /*
 interface EventDatum {
@@ -24,34 +25,55 @@ const containerProps = {
   useZoom: false,
   ml: 45,
   mr: 90,
-  mb: 70,
+  mb: 110,
   mt: 10,
 };
 
 const countAccessor = (d) => d.count;
 
 export const EventBarViewer = (props) => {
+  const xMax = d3.max(props.data, countAccessor);
+
+  const [threshold, setThreshold] = useState(10);
+
+  const thresholds = Array.from({ length: xMax / 5 + 1 }, (_, i) => i * 5);
+
+  const onThresholdChange = (event) => {
+    setThreshold(event.target.value)
+  }
+
   return (
-    <ChartContainer {...containerProps}>
-      <Wrapper {...props} />
-    </ChartContainer>
+    <>
+      <select value={threshold} onChange={onThresholdChange} className='threshSel'>
+        {
+          thresholds.map((thres, index) => {
+            return (
+              <option key={index} value={thres}>{`Th: ${thres}`}</option>
+            )
+          })
+        }
+      </select>
+      <ChartContainer {...containerProps}>
+        <Wrapper {...props} xMax={xMax} threshold={threshold} />
+      </ChartContainer>
+    </>
   );
 };
 
-const Wrapper = ({ data, threshold, onClickEvent }) => {
+const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
   const dimensions = useChartContext();
-  const xMax = d3.max(data, countAccessor);
+
   const xScale = d3
     .scaleLinear()
     .range([0, dimensions.boundedWidth])
     .domain([0, xMax])
-    .nice();
+  // .nice();
   const yScale = d3
     .scaleLinear()
     // .range([dimensions.boundedHeight, 0])
     .range([0, dimensions.boundedHeight])
     .domain([0, data.length])
-    .nice();
+  // .nice();
 
   const handleOnLineClick = (eventDatum) => {
     d3.selectAll(".eventLine").attr("stroke", "grey");
@@ -62,6 +84,8 @@ const Wrapper = ({ data, threshold, onClickEvent }) => {
     d3.select(".referenceCircle").attr("id", `${arrIdex}`);
     onClickEvent(eventDatum);
   };
+
+
 
   return (
     <>

@@ -18,7 +18,7 @@ export const useElectrodeData = ({ id }) => {
             } else {
                 electrodeURL = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${id}/${id}_electrodes_new.csv`
             }
-            console.log(electrodeURL)
+            // console.log(electrodeURL)
             const row = d => {
                 d.electrode_number = +d.electrode_number;
                 d.position = JSON.parse(d.position)

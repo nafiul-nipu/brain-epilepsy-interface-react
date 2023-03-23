@@ -77,8 +77,8 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
 
   const handleOnLineClick = (eventDatum) => {
     d3.selectAll(".eventLine").attr("stroke", "grey");
-    d3.selectAll(`#ev_${eventDatum.index}`).attr("stroke", "green");
-    d3.selectAll(`#ev_circle_${eventDatum.index}`).attr("fill", "green");
+    d3.selectAll(`#ev_${eventDatum.index}`).attr("stroke", "#03DAC5");
+    d3.selectAll(`#ev_circle_${eventDatum.index}`).attr("fill", "#03DAC5");
 
     let arrIdex = data.findIndex((x) => x.index === eventDatum.index);
     d3.select(".referenceCircle").attr("id", `${arrIdex}`);

@@ -14,7 +14,7 @@ import { useEventData } from "./library/useEventData";
 
 import { Container, Row, Col } from "react-bootstrap";
 
-import { EEGDataViewer } from "./components/EEGDataViewer";
+import { EEGDataViewer } from "./components/eeg-data-viewer/EEGDataViewer";
 import { ElectrodeDropDown } from "./components/ElectrodeDropDown";
 
 import { EventViewer } from "./components/EventViewer";
@@ -26,6 +26,8 @@ import { ENChordContainer } from "./components/ENChordContainer";
 
 import { useFullNetwork } from "./library/useFullNetwork";
 import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
+
+import { Logo } from "./components/logo/logo";
 
 function App() {
   // console.log(dataRegistry)
@@ -103,36 +105,42 @@ function App() {
   }
 
   return (
-    // <div>debugging</div>
     // component container
     <Container fluid id="container">
-      {/* nav bar */}
-      <Row style={{ height: "5vh" }}>
-        <Col md="6" style={{ height: "5vh" }}>
-          {/* dropdown menues */}
+      <Row className={"fullh"}>
+        <Col md="2" className={"event-panel fullh"}>
+          <Logo>SpikeXplorer</Logo>
           <ElectrodeDropDown setNewPatientInfo={setNewPatientInfo} />
+          <div style={{ height: "100%", width: "100%" }}>
+            {eventData ? (
+              <EventBarViewer
+                data={eventData}
+                threshold={10}
+                onClickEvent={onEventsClicked}
+              />
+            ) : null}
+            {/* <EventViewer
+              data={eventData}
+              sliderObj={sliderObj}
+              onEventsClicked={onEventsClicked}
+            /> */}
+          </div>
         </Col>
-        <Col md="6" style={{ height: "5vh" }}>
-          <TimeSliderButton sliderObj={sliderObj} />
-        </Col>
-      </Row>
-      {/* vis */}
-      <Row style={{ height: "50vh" }}>
-        <Col md="4">
+        <Col md="3">
           <EEGDataViewer eegEL={eegEL} patientInfo={patientInfo} />
         </Col>
-        <Col md="4">
-          <ENChordContainer
-            epatient={patientInfo}
-            samples={sampleData}
-            electrodes={electrodeDataCsv}
-            allnetworks={fullNetwork}
-            allnetworksWithEvent={fullEventNetwork}
-          />
-        </Col>
-        <Col md="4">
-          {/* top view - electrode and brain 3D model */}
-          <Row>
+        <Col md="7" className="fullh">
+          <Row style={{ height: "50%" }}>
+            <TimeSliderButton sliderObj={sliderObj} />
+            <ENChordContainer
+              epatient={patientInfo}
+              samples={sampleData}
+              electrodes={electrodeDataCsv}
+              allnetworks={fullNetwork}
+              allnetworksWithEvent={fullEventNetwork}
+            />
+          </Row>
+          <Row style={{ height: "50%" }}>
             <ENTContainer
               patientInformation={patientInfo}
               electrodeData={electrodeDataCsv}
@@ -141,24 +149,6 @@ function App() {
               time={timeRange}
               events={eventData}
             />
-          </Row>
-        </Col>
-      </Row>
-      <Row>
-        <Col md="12" style={{ height: "45vh" }}>
-          <Row style={{ height: "100%" }}>
-            {/* <EventViewer
-              data={eventData}
-              sliderObj={sliderObj}
-              onEventsClicked={onEventsClicked}
-            /> */}
-            {eventData ? (
-              <EventBarViewer
-                data={eventData}
-                threshold={10}
-                onClickEvent={onEventsClicked}
-              />
-            ) : null}
           </Row>
         </Col>
       </Row>

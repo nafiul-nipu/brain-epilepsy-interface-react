@@ -1,0 +1,24 @@
+.eeg-container {
+  padding-top: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.eeg-title {
+  width: 100%;
+  display: flex;
+  flex-direction: row;  
+  justify-content: space-between;
+  padding-left: 10px;  
+  padding-right: 10px;
+}
+
+.eeg-title > div:first-child{
+  font-weight: bold;
+}
+
+.eeg-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  overflow-y: auto
+}

@@ -1,3 +1,39 @@
+#container {
+  height: 100vh;
+  width: 100vw;
+  padding: 0px;
+}
+
+.fullh {
+  height: 100%;
+}
+
+.event-panel {
+  background-color: black;
+  padding: 12px;
+}
+
+.container-flex {
+  display: "flex";
+  flex-direction: "column";
+  padding-left: 4px;
+}
+
+.container-flex > div {
+  margin-top: 4px;
+}
+
+.flex-form-entry {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.flex-form-entry > label {
+  width: 50%;
+  color: white;
+}
+
 .ticks line{
   stroke: black;
   

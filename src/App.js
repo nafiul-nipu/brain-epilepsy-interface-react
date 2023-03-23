@@ -143,15 +143,6 @@ function App() {
         <Col md="4" className="fullh">
           <Row style={{ height: "50%" }}>
             <TimeSliderButton sliderObj={sliderObj} />
-            <ENChordContainer
-              epatient={patientInfo}
-              samples={sampleData}
-              electrodes={electrodeDataCsv}
-              allnetworks={fullNetwork}
-              allnetworksWithEvent={fullEventNetwork}
-            />
-          </Row>
-          <Row style={{ height: "50%" }}>
             <ENTContainer
               patientInformation={patientInfo}
               electrodeData={electrodeDataCsv}
@@ -159,6 +150,15 @@ function App() {
               slider={sliderObj}
               time={timeRange}
               events={eventData}
+            />
+          </Row>
+          <Row style={{ height: "50%" }}>
+            <ENChordContainer
+              epatient={patientInfo}
+              samples={sampleData}
+              electrodes={electrodeDataCsv}
+              allnetworks={fullNetwork}
+              allnetworksWithEvent={fullEventNetwork}
             />
           </Row>
         </Col>

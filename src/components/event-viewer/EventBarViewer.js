@@ -5,6 +5,7 @@ import ChartContainer, {
 } from "../chart-container/chart-container";
 import { AxisBottom } from "../../CommonComponents/AxisBottom";
 import "./event-bar-viewer.css";
+import { AxisLeft } from "../../CommonComponents/AxisLeft";
 
 /*
 interface EventDatum {
@@ -39,16 +40,17 @@ export const EventBarViewer = (props) => {
 
 const Wrapper = ({ data, threshold, onClickEvent }) => {
   const dimensions = useChartContext();
-  const yMax = d3.max(data, countAccessor);
+  const xMax = d3.max(data, countAccessor);
   const xScale = d3
     .scaleLinear()
     .range([0, dimensions.boundedWidth])
-    .domain([0, data.length])
+    .domain([0, xMax])
     .nice();
   const yScale = d3
     .scaleLinear()
-    .domain([0, yMax])
-    .range([dimensions.boundedHeight, 0])
+    // .range([dimensions.boundedHeight, 0])
+    .range([0, dimensions.boundedHeight])
+    .domain([0, data.length])
     .nice();
 
   const handleOnLineClick = (eventDatum) => {
@@ -70,24 +72,38 @@ const Wrapper = ({ data, threshold, onClickEvent }) => {
             <line
               className="eventLine"
               id={`ev_${d.index}`}
-              x1={xScale(d.index)}
-              y1={yScale(0)}
-              x2={xScale(d.index)}
-              y2={yScale(countAccessor(d))}
+              x1={xScale(0)}
+              y1={yScale(d.index)}
+              x2={xScale(countAccessor(d))}
+              y2={yScale(d.index)}
               stroke="grey"
               onClick={() => handleOnLineClick(d)}
             />
             <circle
               className="eventLine"
               id={`ev_circle_${d.index}`}
-              cx={xScale(d.index)}
-              cy={yScale(countAccessor(d))}
+              cx={xScale(countAccessor(d))}
+              cy={yScale(d.index)}
               r={2}
               fill={"grey"}
               onClick={() => handleOnLineClick(d)}
             />
           </g>
         ))}
+
+      <text
+        className="axis-label"
+        textAnchor="middle"
+        transform={`translate(${-33}, ${dimensions.boundedHeight / 2} )rotate(-90)`}
+      >
+        {"Event Id"}
+      </text>
+      <AxisLeft
+        xScale={xScale}
+        yScale={yScale}
+        scaleOffset={5}
+      // innerHeight={dimensions.boundedHeight}
+      />
       {/* TODO: remove this hack*/}
       <circle
         className="referenceCircle"
@@ -97,12 +113,6 @@ const Wrapper = ({ data, threshold, onClickEvent }) => {
         r={0}
         fill={"red"}
       ></circle>
-      <AxisBottom
-        xScale={xScale}
-        yScale={yScale}
-        scaleOffset={5}
-        innerHeight={dimensions.boundedHeight}
-      />
     </>
   );
 };

@@ -122,7 +122,7 @@ function App() {
           >
             {eventData ? <EventsDistribution data={eventData} /> : null}
           </div>
-          <div style={{ height: "100%", width: "100%" }}>
+          <div style={{ height: "70vh", width: "100%" }}>
             {eventData ? (
               <EventBarViewer
                 data={eventData}

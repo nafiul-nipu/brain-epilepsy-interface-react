@@ -39,16 +39,16 @@
   
 }
 .ticks text{
-  fill: black;
+  fill: grey;
   text-anchor: middle;
   font-size: 1em;
 }
 .axisLine{
-  stroke: black;
+  stroke: grey;
 }
 .axis-label{
   font-size: 1em;
-  fill: black;
+  fill: grey;
   font-weight: bold;
 }
 

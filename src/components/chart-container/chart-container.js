@@ -46,9 +46,8 @@ const ChartContainer = ({ useZoom, ml, mr, mt, mb, children }) => {
           ref={svgRef}
         >
           <g
-            transform={`translate(${x + dimensions.marginLeft},  ${
-              y + dimensions.marginTop
-            }) scale(${k})`}
+            transform={`translate(${x + dimensions.marginLeft},  ${y + dimensions.marginTop
+              }) scale(${k})`}
           >
             {children}
           </g>

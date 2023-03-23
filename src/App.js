@@ -28,6 +28,7 @@ import { useFullNetwork } from "./library/useFullNetwork";
 import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
 
 import { Logo } from "./components/logo/logo";
+import { EventsDistribution } from "./components/events-distribution/events-distribution";
 
 function App() {
   // console.log(dataRegistry)
@@ -111,6 +112,16 @@ function App() {
         <Col md="2" className={"event-panel fullh"}>
           <Logo>SpikeXplorer</Logo>
           <ElectrodeDropDown setNewPatientInfo={setNewPatientInfo} />
+          <div
+            style={{
+              width: "100%",
+              height: "150px",
+              backgroundColor: "white",
+              marginTop: "10px",
+            }}
+          >
+            {eventData ? <EventsDistribution data={eventData} /> : null}
+          </div>
           <div style={{ height: "100%", width: "100%" }}>
             {eventData ? (
               <EventBarViewer

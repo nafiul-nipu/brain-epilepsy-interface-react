@@ -7,7 +7,7 @@ import { AxisBottom } from "../../CommonComponents/AxisBottom";
 import "./event-bar-viewer.css";
 
 /*
-interface ElectronDatum {
+interface EventDatum {
   index: number          // unique id
   count: number          // number of electrodes in event
   electrode: number[]    // ids of electrodes
@@ -54,6 +54,7 @@ const Wrapper = ({ data, threshold, onClickEvent }) => {
   const handleOnLineClick = (eventDatum) => {
     d3.selectAll(".eventLine").attr("stroke", "grey");
     d3.selectAll(`#ev_${eventDatum.index}`).attr("stroke", "green");
+    d3.selectAll(`#ev_circle_${eventDatum.index}`).attr("fill", "green");
 
     let arrIdex = data.findIndex((x) => x.index === eventDatum.index);
     d3.select(".referenceCircle").attr("id", `${arrIdex}`);
@@ -74,6 +75,15 @@ const Wrapper = ({ data, threshold, onClickEvent }) => {
               x2={xScale(d.index)}
               y2={yScale(countAccessor(d))}
               stroke="grey"
+              onClick={() => handleOnLineClick(d)}
+            />
+            <circle
+              className="eventLine"
+              id={`ev_circle_${d.index}`}
+              cx={xScale(d.index)}
+              cy={yScale(countAccessor(d))}
+              r={2}
+              fill={"grey"}
               onClick={() => handleOnLineClick(d)}
             />
           </g>

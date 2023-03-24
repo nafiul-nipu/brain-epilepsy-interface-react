@@ -29,6 +29,7 @@ import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
 
 import { Logo } from "./components/logo/logo";
 import { EventsDistribution } from "./components/events-distribution/events-distribution";
+import { useFetch } from "./library/useFetch";
 
 function App() {
   // console.log(dataRegistry)
@@ -61,6 +62,8 @@ function App() {
     patientID: patientInfo.id,
     sample: patientInfo.sample,
   });
+
+  useFetch('ep129', 'sample1', 'filter')
 
   // console.log(eventData)
 

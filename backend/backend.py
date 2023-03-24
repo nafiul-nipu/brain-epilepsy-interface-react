@@ -15,7 +15,7 @@ CORS(app)
 
 @app.route("/filter", methods=['GET'])
 @cross_origin()
-def spikeMethodUsingFilter(id_patient):
+def spikeMethodUsingFilter():
     patientID = request.args.get('id')
     sample = request.args.get('sample')    
     

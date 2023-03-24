@@ -11,10 +11,11 @@ app = Flask(__name__)
 
 CORS(app)
 
+# WHATEVER_API/patient/<id_patient>/peaks/<method>/<sample>
 
 @app.route("/filter", methods=['GET'])
 @cross_origin()
-def spikeMethodUsingFilter():
+def spikeMethodUsingFilter(id_patient):
     patientID = request.args.get('id')
     sample = request.args.get('sample')    
     

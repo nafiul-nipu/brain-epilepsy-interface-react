@@ -40,7 +40,7 @@ def spikeDetectionWithBandPassFilter(patientID, sample):
         # Detect the spikes
         spike_indices = signal.find_peaks(filtered_data, height=threshold)[0]
         
-        spikes.append({index: list(spike_indices)})
+        spikes.append({index: spike_indices.tolist()})
             
     return spikes
 
@@ -61,7 +61,7 @@ def spikeDetectionUsingWaveletTransform(patientID, sample):
         indexes = signal.find_peaks_cwt(row, widths=np.arange(5, 20), min_snr=4, max_distances=np.arange(5, 20))
     #                       , max_distances=np.arange(30, 85))
         
-        spikes.append({i: list(indexes)})
+        spikes.append({i: indexes.tolist()})
     return spikes
 
 
@@ -122,7 +122,7 @@ def SpikeDetectionWithLocalMaxima(patientID, sample):
 #         print(maxtab.size)
         if maxtab.size > 0:
 #             print('size greater than 0')
-            spikes.append({index: list(np.array(maxtab)[:,0].astype(int))})            
+            spikes.append({index: np.array(maxtab)[:,0].astype(int).tolist()})            
         else:
             spikes.append({index: []})
             
@@ -164,7 +164,7 @@ def spikeMethodUsingWavelet():
     new_data = frontData['data']        
     
     # Call the function with patientID and sample
-    SpikeDetectionWithLocalMaxima(new_data['patientID'], new_data['sample'])
+    spikeData = SpikeDetectionWithLocalMaxima(new_data['patientID'], new_data['sample'])
     
     # returning the data to the frontend
     return jsonify(spikeData)

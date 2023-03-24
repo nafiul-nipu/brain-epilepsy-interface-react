@@ -2,7 +2,7 @@ import "./eeg-data-viewer.css";
 
 const baseUrl =
   "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images";
-// const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images/ep187/sample1/E${eeg}.png`
+// const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images/ep129/sample1/E${eeg}.png`
 
 export const EEGDataViewer = ({ eegEL, patientInfo }) => {
   return (

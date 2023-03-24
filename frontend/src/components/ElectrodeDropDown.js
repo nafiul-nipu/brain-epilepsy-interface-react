@@ -14,7 +14,7 @@ export const ElectrodeDropDown = ({
   const timeRef = useRef();
 
   const [sample, selectedSample] = useState("sample1");
-  const [patient, selectedPatient] = useState("ep187");
+  const [patient, selectedPatient] = useState("ep129");
   const [timerange, selectTimeRange] = useState(1000);
   return (
     <div className="container-flex" style={{ flexDirection: direction }}>

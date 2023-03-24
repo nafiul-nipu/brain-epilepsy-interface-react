@@ -34,7 +34,7 @@ import { useFetch } from "./library/useFetch";
 function App() {
   // console.log(dataRegistry)
   const [patientInfo, setPatientInfo] = useState({
-    id: "ep187",
+    id: "ep129",
     sample: "sample1",
   });
   // console.log('patient', patientInfo)

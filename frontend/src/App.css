@@ -9,7 +9,7 @@
 }
 
 .event-panel {
-  background-color: black;
+  background-color: white;
   padding: 12px;
 }
 
@@ -31,7 +31,7 @@
 
 .flex-form-entry > label {
   width: 50%;
-  color: white;
+  color: black;
 }
 
 .ticks line{

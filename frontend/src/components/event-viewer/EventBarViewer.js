@@ -77,8 +77,12 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
 
   const handleOnLineClick = (eventDatum) => {
     d3.selectAll(".eventLine").attr("stroke", "grey");
+    d3.selectAll(".eventLineCircle").attr("fill", "grey");
     d3.selectAll(`#ev_${eventDatum.index}`).attr("stroke", "#03DAC5");
     d3.selectAll(`#ev_circle_${eventDatum.index}`).attr("fill", "#03DAC5");
+
+
+    d3.select(d3.select(`#ev_${eventDatum.index}`).node().parentNode).raise();
 
     let arrIdex = data.findIndex((x) => x.index === eventDatum.index);
     d3.select(".referenceCircle").attr("id", `${arrIdex}`);
@@ -101,16 +105,18 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
               x2={xScale(countAccessor(d))}
               y2={yScale(d.index)}
               stroke="grey"
+              strokeWidth={2}
+              strokeOpacity={1}
               onClick={() => handleOnLineClick(d)}
             /><title>{`
             Event Id : ${d.index}\nTimepoint : ${d.time.length > 1 ? `${d.time[0]} - ${d.time[d.time.length - 1]}` : `${d.time}`} ms\nElectrodes : ${d.count}
             `}</title>
             <circle
-              className="eventLine"
+              className="eventLineCircle"
               id={`ev_circle_${d.index}`}
               cx={xScale(countAccessor(d))}
               cy={yScale(d.index)}
-              r={2}
+              r={3}
               fill={"grey"}
               onClick={() => handleOnLineClick(d)}
             /><title>{`

@@ -63,7 +63,7 @@ function App() {
     sample: patientInfo.sample,
   });
 
-  useFetch('ep129', 'sample1', 'filter')
+  // useFetch('ep129', 'sample1', 'filter')
 
   // console.log(eventData)
 
@@ -119,13 +119,13 @@ function App() {
             style={{
               width: "100%",
               height: "150px",
-              backgroundColor: "white",
+              backgroundColor: "#FAFBFC",
               marginTop: "10px",
             }}
           >
             {eventData ? <EventsDistribution data={eventData} /> : null}
           </div>
-          <div style={{ height: "70vh", width: "100%" }}>
+          <div style={{ height: "70vh", width: "100%", backgroundColor: "#FAFBFC" }}>
             {eventData ? (
               <EventBarViewer
                 data={eventData}

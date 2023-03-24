@@ -70,6 +70,7 @@ const ChartWrapper = ({ data, thresholds = 100 }) => {
             fill={"none"}
             stroke={"orange"}
             strokeOpacity={1}
+            strokeWidth={2}
           />
         ))}
       <AxisLeft xScale={xScale} yScale={yScale} scaleOffset={10} />

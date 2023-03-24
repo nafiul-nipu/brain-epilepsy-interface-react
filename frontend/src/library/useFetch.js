@@ -5,15 +5,19 @@ export const useFetch = ((patientID, sample, method) => {
     const [spikeData, setSpikeData] = useState(null)
 
     useEffect(() => {
-        axios.post(
+        axios.get(
             `http://127.0.0.1:5000/${method}`,
-            { data: { patientID: patientID, sample: sample } }
-        ).then((response) => {
+            {
+                params: {
+                    id: patientID,
+                    sample: sample
+                }
+            }).then((response) => {
 
-            console.log(response)
+                console.log(response)
 
-        }).catch((error) => {
-            console.log(error)
-        });
+            }).catch((error) => {
+                console.log(error)
+            });
     }, [])
 })

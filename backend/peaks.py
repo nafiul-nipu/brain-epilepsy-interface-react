@@ -66,3 +66,75 @@ def find_peaks_wavelet(
         )
         spikes.append({i: indexes.tolist()})
     return spikes
+
+
+
+def find_peaks_local_maxima(
+    df_eeg: pd.DataFrame,
+    delta: int = 1000
+) -> List[int]:
+    """Find peaks using local maxima"""
+    spikes = []
+    for index, row in df_eeg.iterrows():
+        # Convert pandas Series object to numpy array
+        row = row.values        
+        maxtab= calculate_peaks(row, delta)
+        
+#         print(maxtab.size)
+        if maxtab.size > 0:
+#             print('size greater than 0')
+            spikes.append({index: np.array(maxtab)[:,0].astype(int).tolist()})            
+        else:
+            spikes.append({index: []})    
+                    
+    return spikes
+
+
+
+def calculate_peaks(v, delta):
+    '''
+    MATLAB script at http://billauer.co.il/peakdet.html
+    reference - http://billauer.co.il/blog/2009/01/peakdet-matlab-octave/
+    '''
+    max_peak = []
+    min_peak = []    
+    
+    
+    x = np.arange(len(v))    
+    v = np.asarray(v)    
+    
+    
+    minimum, maximum = np.Inf, -np.Inf
+    min_pos, max_pos = np.NaN, np.NaN    
+    look_for_max = True    
+    
+    
+    for i in np.arange(len(v)):
+        this = v[i]
+        
+        
+        if this > maximum:
+            maximum = this
+            max_pos = x[i]    
+            
+                    
+        if this < minimum:
+            minimum = this
+            min_pos = x[i]      
+            
+            
+        if look_for_max:
+            if this < maximum - delta:
+                max_peak.append((max_pos, maximum))
+                minimum = this
+                min_pos = x[i]
+                look_for_max = False
+                
+                
+        else:
+            if this > minimum + delta:
+                min_peak.append((min_pos, minimum))
+                maximum = this
+                max_pos = x[i]
+                look_for_max = True             
+    return np.array(max_peak) #, np.array(min_peak)

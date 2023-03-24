@@ -15,7 +15,7 @@ CORS(app)
 
 @app.route("/filter", methods=['GET'])
 @cross_origin()
-def spikeMethodUsingFilter():
+def spike_with_band_pass_filter():
     patientID = request.args.get('id')
     sample = request.args.get('sample')    
     
@@ -28,7 +28,7 @@ def spikeMethodUsingFilter():
 
 @app.route("/peak", methods=['GET'])
 @cross_origin()
-def spikeMethodUsingPeak():
+def spike_with_wavelet():
     patientID = request.args.get('id')
     sample = request.args.get('sample')          
     
@@ -41,7 +41,7 @@ def spikeMethodUsingPeak():
 
 @app.route("/wavelet", methods=['GET'])
 @cross_origin()
-def spikeMethodUsingWavelet():
+def spike_with_local_maxima():
     patientID = request.args.get('id')
     sample = request.args.get('sample')         
     

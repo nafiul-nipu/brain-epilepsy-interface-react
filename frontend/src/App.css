@@ -113,6 +113,10 @@
     bottom: .3em
 }
 
+#svgcheckbox{
+  position: absolute;
+  left: 90%;
+}
 
 
 /* width */

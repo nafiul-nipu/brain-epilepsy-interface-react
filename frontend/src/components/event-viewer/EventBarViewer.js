@@ -86,6 +86,7 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
 
     let arrIdex = data.findIndex((x) => x.index === eventDatum.index);
     d3.select(".referenceCircle").attr("id", `${arrIdex}`);
+    d3.select(".referenceCircleNetwork").attr("id", `${arrIdex}`);
     onClickEvent(eventDatum);
   };
 
@@ -138,9 +139,17 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
         scaleOffset={5}
       // innerHeight={dimensions.boundedHeight}
       />
-      {/* TODO: remove this hack*/}
+      {/* TODO: remove these hacks*/}
       <circle
         className="referenceCircle"
+        id="null"
+        cx={dimensions.boundedWidth}
+        cy={dimensions.boundedHeight}
+        r={0}
+        fill={"red"}
+      ></circle>
+      <circle
+        className="referenceCircleNetwork"
         id="null"
         cx={dimensions.boundedWidth}
         cy={dimensions.boundedHeight}

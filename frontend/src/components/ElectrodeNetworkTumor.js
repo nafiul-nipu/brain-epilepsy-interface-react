@@ -372,7 +372,7 @@ export const ElectrodeNetworkTumor = ({
                             color: new THREE.Color()
                                 .setStyle(fillColor)
                                 .convertSRGBToLinear(),
-                            opacity: drawSVG === true ? path.userData.style.fillOpacity : 0,
+                            opacity: path.userData.style.fillOpacity,
                             transparent: true,
                             side: THREE.DoubleSide,
                             depthWrite: false,
@@ -402,7 +402,7 @@ export const ElectrodeNetworkTumor = ({
                             color: new THREE.Color()
                                 .setStyle(strokeColor)
                                 .convertSRGBToLinear(),
-                            opacity: drawSVG === true ? path.userData.style.fillOpacity : 0,
+                            opacity: path.userData.style.fillOpacity,
                             transparent: true,
                             side: THREE.DoubleSide,
                             depthWrite: false,
@@ -584,7 +584,7 @@ export const ElectrodeNetworkTumor = ({
                                 color: new THREE.Color()
                                     .setStyle(fillColor)
                                     .convertSRGBToLinear(),
-                                opacity: drawSVG === true ? path.userData.style.fillOpacity : 0,
+                                opacity: path.userData.style.fillOpacity,
                                 transparent: true,
                                 side: THREE.DoubleSide,
                                 depthWrite: false,

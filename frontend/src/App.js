@@ -153,16 +153,18 @@ function App() {
               slider={sliderObj}
               time={timeRange}
               events={eventData}
+              allnetworks={fullNetwork}
+              allnetworksWithEvent={fullEventNetwork}
             />
           </Row>
           <Row style={{ height: "50%" }}>
-            <ENChordContainer
+            {/* <ENChordContainer
               epatient={patientInfo}
               samples={sampleData}
               electrodes={electrodeDataCsv}
               allnetworks={fullNetwork}
               allnetworksWithEvent={fullEventNetwork}
-            />
+            /> */}
           </Row>
         </Col>
       </Row>

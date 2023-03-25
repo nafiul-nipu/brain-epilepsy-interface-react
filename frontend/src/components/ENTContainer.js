@@ -11,7 +11,9 @@ export const ENTContainer = ({
     sample,
     slider,
     time,
-    events
+    events,
+    allnetworks,
+    allnetworksWithEvent
 }) => {
     // loading brain and lesions
     const multiBrain = useOBJThreeStates({ patient: patientInformation.id, objType: 'brain.obj' });
@@ -22,6 +24,13 @@ export const ENTContainer = ({
     // getting the center of the objtects
     const bboxCenter = useBBoxcenter({ patient: patientInformation.id, objType: 'brain.obj' });
 
+    const [isChecked, setIsChecked] = useState(true);
+
+
+    const handleCheckboxChange = (event) => {
+        // console.log(event.target.checked)
+        setIsChecked(event.target.checked);
+    };
 
     // console.log('bbox', bboxCenter)
 
@@ -29,6 +38,19 @@ export const ENTContainer = ({
         <Col>
             <Row>
                 <Col id="titleBrain1" md='6'>Propagation Over Time</Col>
+                <Col md='1' id="svgcheckbox">
+
+                    <Form>
+                        <Form.Check
+                            type="switch"
+                            id="custom-switch"
+                            label="Network"
+                            checked={isChecked}
+                            onChange={handleCheckboxChange}
+                        />
+
+                    </Form>
+                </Col>
 
             </Row>
             <Row>
@@ -41,6 +63,10 @@ export const ENTContainer = ({
                     timeRange={time}
                     lesions={lesions} //ok
                     eventData={events}
+                    allnetwork={allnetworks}
+                    allnetworkWithEvent={allnetworksWithEvent}
+                    patientID={patientInformation.id}
+                    drawSVG={isChecked}
                 />
             </Row>
         </Col>

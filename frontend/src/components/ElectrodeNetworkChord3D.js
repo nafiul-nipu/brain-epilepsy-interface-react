@@ -31,8 +31,7 @@ export const ElectrodeNetworkChord3D = ({
     bboxCenter,
     allnetwork,
     allnetworkWithEvent,
-    patientID,
-    drawSVG
+    patientID
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -171,7 +170,6 @@ export const ElectrodeNetworkChord3D = ({
 
         // load electrode
         function loadElectrode(scene, electrodeData, sampleData) {
-
             console.log("load electrode")
             // svgload
             // scene[1].remove.apply(scene[1], scene[1].children);
@@ -181,24 +179,8 @@ export const ElectrodeNetworkChord3D = ({
             console.log("loading svg")
             // console.log(dataRegistry[patientID].rois)
 
-            const circle = document.getElementsByClassName('referenceCircleNetwork')
-            console.log(circle[0].id, circle[0].id !== null)
-            let i;
-            let mergedROIs;
-            if (circle[0].id !== 'null' && allnetworkWithEvent) {
-                // console.log(allnetworkWithEvent)
-                i = +circle[0].id;
-                // console.log(i)
-                mergedROIs = allnetworkWithEvent[i].map((roi1, index) => ({
-                    ...roi1,
-                    electrodes: [...allnetwork[index].electrodes],
-                }));
-
-            }
-
-
             let svgDataController = {
-                currentURL: ReactDOMServer.renderToString(<MultipleChordContainer networkdata={i ? mergedROIs : allnetwork} rois={dataRegistry[patientID].rois} />), //convert the react element to SVG
+                currentURL: ReactDOMServer.renderToString(<MultipleChordContainer networkdata={allnetwork} rois={dataRegistry[patientID].rois} />), //convert the react element to SVG
                 drawFillShapes: true,
                 drawStrokes: true,
                 fillShapesWireframe: false,
@@ -234,7 +216,7 @@ export const ElectrodeNetworkChord3D = ({
                         color: new THREE.Color()
                             .setStyle(fillColor)
                             .convertSRGBToLinear(),
-                        opacity: drawSVG === true ? path.userData.style.fillOpacity : 0,
+                        opacity: path.userData.style.fillOpacity,
                         transparent: true,
                         side: THREE.DoubleSide,
                         depthWrite: false,
@@ -264,7 +246,7 @@ export const ElectrodeNetworkChord3D = ({
                         color: new THREE.Color()
                             .setStyle(strokeColor)
                             .convertSRGBToLinear(),
-                        opacity: drawSVG === true ? path.userData.style.fillOpacity : 0,
+                        opacity: path.userData.style.strokeOpacity,
                         transparent: true,
                         side: THREE.DoubleSide,
                         depthWrite: false,
@@ -316,8 +298,7 @@ export const ElectrodeNetworkChord3D = ({
             // change the colours, one a second
             inter = setInterval(function () {
                 let value = d3.select('#play-pause-btn').property('value')
-                // console.log(drawSVG)
-                if (value === 'play' && drawSVG === true && document.getElementsByClassName('referenceCircle')[0].id !== 'null') {
+                if (value === 'play' && document.getElementsByClassName('referenceCircle')[0].id !== 'null') {
                     scene[1].remove(group)
 
                     const element = document.getElementsByClassName('referenceCircle')
@@ -371,7 +352,7 @@ export const ElectrodeNetworkChord3D = ({
                                 color: new THREE.Color()
                                     .setStyle(fillColor)
                                     .convertSRGBToLinear(),
-                                opacity: drawSVG === true ? path.userData.style.fillOpacity : 0,
+                                opacity: path.userData.style.fillOpacity,
                                 transparent: true,
                                 side: THREE.DoubleSide,
                                 depthWrite: false,
@@ -442,8 +423,6 @@ export const ElectrodeNetworkChord3D = ({
 
 
                 }
-
-
             }, 2500);
 
         }
@@ -455,7 +434,7 @@ export const ElectrodeNetworkChord3D = ({
 
 
 
-    }, [allnetwork, allnetworkWithEvent, bboxCenter, brain, canvasRef, electrodeData, sampleData, drawSVG]);
+    }, [allnetwork, allnetworkWithEvent, bboxCenter, brain, canvasRef, electrodeData, sampleData]);
 
     return (
         <Col md='12'>
@@ -463,5 +442,4 @@ export const ElectrodeNetworkChord3D = ({
         </Col>
     )
 }
-
 

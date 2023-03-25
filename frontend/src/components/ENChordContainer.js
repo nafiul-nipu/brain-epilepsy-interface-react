@@ -22,11 +22,9 @@ export const ENChordContainer = ({
 
     const [isChecked, setIsChecked] = useState(true);
 
-    let checkboxNetwork = true;
 
     const handleCheckboxChange = (event) => {
         // console.log(event.target.checked)
-        checkboxNetwork = event.target.checked;
         setIsChecked(event.target.checked);
     };
 
@@ -57,7 +55,7 @@ export const ENChordContainer = ({
                     allnetwork={allnetworks}
                     allnetworkWithEvent={allnetworksWithEvent}
                     patientID={epatient.id}
-                    drawSVG={checkboxNetwork}
+                    drawSVG={isChecked}
                 />
             </Row>
         </Col>

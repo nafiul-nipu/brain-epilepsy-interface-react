@@ -59,7 +59,7 @@ export const ElectrodeNetworkTumor = ({
         let centerBrain;
         let centerOther = bboxCenter;
         // console.log(canvasRef.current);
-        console.log("working brain with network")
+        console.log("brain three D view render starts")
 
         // size scale for brain network
         let sizeScale = d3.scaleLinear()
@@ -103,7 +103,7 @@ export const ElectrodeNetworkTumor = ({
                 scene: scene,
                 obj: brain,
                 color: 0X111111,
-                opacity: 0.5,
+                opacity: 0.15,
                 transparency: true
             });
 
@@ -180,8 +180,8 @@ export const ElectrodeNetworkTumor = ({
 
         // load electrode
         function loadElectrode(scene, electrodeData, sampleData) {
-            let intervalPauseCheck = true
             console.log("load electrode")
+            console.log("rendering electrodes")
 
             let uniforms = {
 
@@ -293,7 +293,43 @@ export const ElectrodeNetworkTumor = ({
                 }));
 
             }
-            // scene[1].add(points);
+
+            if (i) {
+                if (points) scene[1].remove(points)
+                let elecColors = []
+                let elecSize = []
+                for (let top = 0; top < electrodeData.length; top++) {
+                    if (eventData[i].electrode.includes(electrodeData[top].electrode_number)) {
+                        // start electrode
+                        // console.log('start')
+                        color.setRGB(3 / 255, 218 / 255, 197 / 255);
+                        elecColors.push(color.r, color.g, color.b)
+                        elecSize.push(6)
+
+                    } else {
+                        // rest electrode
+                        color.setRGB(10 / 255, 10 / 255, 10 / 255);
+                        elecColors.push(color.r, color.g, color.b);
+                        elecSize.push(6);
+                    }
+                }
+
+                let geom = new THREE.BufferGeometry();
+                geom.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                console.log('position')
+                geom.setAttribute('color', new THREE.Float32BufferAttribute(elecColors, 3));
+                // points.geom.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
+                geom.setAttribute('size', new THREE.Float32BufferAttribute(elecSize, 1).setUsage(THREE.DynamicDrawUsage));
+
+                points = new THREE.Points(geom, shaderMaterial);
+                points.geometry.colorsNeedUpdate = true;
+                points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
+
+                scene[1].add(points);
+
+                sliderObj.value([eventData[i].time[0], eventData[i].time[eventData[i].time.length - 1]])
+
+            }
 
             let group = new THREE.Group();
             let addSVG = new SVGLoader();
@@ -413,6 +449,8 @@ export const ElectrodeNetworkTumor = ({
 
             }
 
+
+
             // render(renderer, [scene[0], scene[1]], camera)
 
             // console.log(points)
@@ -452,60 +490,60 @@ export const ElectrodeNetworkTumor = ({
                     // render(renderer, [scene[0], scene[1]], camera)
 
                 }
-                else if (value === 'Play' && document.getElementsByClassName('referenceCircle')[0].id !== 'null') {
-                    console.log('pause animation and event click')
+                // else if (value === 'Play' && document.getElementsByClassName('referenceCircle')[0].id !== 'null') {
+                //     console.log('pause animation and event click')
 
-                    const element = document.getElementsByClassName('referenceCircle')
-                    // console.log(element[0].id)
-                    let i = +element[0].id;
-                    scene[1].remove(points)
+                //     const element = document.getElementsByClassName('referenceCircle')
+                //     // console.log(element[0].id)
+                //     let i = +element[0].id;
+                //     scene[1].remove(points)
 
-                    // console.log(electrodeData)
-                    // console.log(eventData)
+                //     // console.log(electrodeData)
+                //     // console.log(eventData)
 
-                    let EEachColor = []
-                    let EEachSize = []
-                    for (let top = 0; top < electrodeData.length; top++) {
-                        if (eventData[i].electrode.includes(electrodeData[top].electrode_number)) {
-                            // start electrode
-                            // console.log('start')
-                            color.setRGB(3 / 255, 218 / 255, 197 / 255);
-                            EEachColor.push(color.r, color.g, color.b)
-                            EEachSize.push(6)
+                //     let EEachColor = []
+                //     let EEachSize = []
+                //     for (let top = 0; top < electrodeData.length; top++) {
+                //         if (eventData[i].electrode.includes(electrodeData[top].electrode_number)) {
+                //             // start electrode
+                //             // console.log('start')
+                //             color.setRGB(3 / 255, 218 / 255, 197 / 255);
+                //             EEachColor.push(color.r, color.g, color.b)
+                //             EEachSize.push(6)
 
-                        } else {
-                            // rest electrode
-                            color.setRGB(10 / 255, 10 / 255, 10 / 255);
-                            EEachColor.push(color.r, color.g, color.b);
-                            EEachSize.push(6);
-                        }
-                    }
+                //         } else {
+                //             // rest electrode
+                //             color.setRGB(10 / 255, 10 / 255, 10 / 255);
+                //             EEachColor.push(color.r, color.g, color.b);
+                //             EEachSize.push(6);
+                //         }
+                //     }
 
 
 
-                    // console.log(sizes[colIdx])
-                    // console.log(EEachColor)
-                    // console.log(colors)
-                    let geometry = new THREE.BufferGeometry();
-                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                    geometry.setAttribute('color', new THREE.Float32BufferAttribute(EEachColor, 3));
-                    // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
-                    geometry.setAttribute('size', new THREE.Float32BufferAttribute(EEachSize, 1).setUsage(THREE.DynamicDrawUsage));
+                //     // console.log(sizes[colIdx])
+                //     // console.log(EEachColor)
+                //     // console.log(colors)
+                //     let geometry = new THREE.BufferGeometry();
+                //     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                //     geometry.setAttribute('color', new THREE.Float32BufferAttribute(EEachColor, 3));
+                //     // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
+                //     geometry.setAttribute('size', new THREE.Float32BufferAttribute(EEachSize, 1).setUsage(THREE.DynamicDrawUsage));
 
-                    points = new THREE.Points(geometry, shaderMaterial);
-                    points.geometry.colorsNeedUpdate = true;
-                    points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
+                //     points = new THREE.Points(geometry, shaderMaterial);
+                //     points.geometry.colorsNeedUpdate = true;
+                //     points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
 
-                    scene[1].add(points);
+                //     scene[1].add(points);
 
-                    render(renderer, [scene[0], scene[1]], camera)
+                //     render(renderer, [scene[0], scene[1]], camera)
 
-                    // console.log(eventData[i])
-                    // sliderObj.value([eventData[i].time[0], eventData[i].time[eventData[i].time.length - 1]]);
+                //     // console.log(eventData[i])
+                //     // sliderObj.value([eventData[i].time[0], eventData[i].time[eventData[i].time.length - 1]]);
 
-                    element[0].id = 'null';
+                //     element[0].id = 'null';
 
-                }
+                // }
                 else if (value === 'Play' && document.getElementsByClassName('referenceDIV')[0].id !== 'null') {
                     console.log('pause animation and eeg click')
                     // && document.getElementsByClassName('referenceDIV')[0].id !== 'null')) {
@@ -557,30 +595,6 @@ export const ElectrodeNetworkTumor = ({
                     // render(renderer, [scene[0], scene[1]], camera)
 
                     element[0].id = 'null';
-                } else if (value === 'Play' && intervalPauseCheck === true) {
-                    scene[1].remove(points)
-                    // console.log("inter")
-
-                    let ranges = sliderObj.value();
-                    let idx = (ranges[1] / timeRange);
-
-
-                    // console.log(sizes[colIdx])
-                    let geometry = new THREE.BufferGeometry();
-                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors[idx], 3));
-                    // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
-                    geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes[idx], 1).setUsage(THREE.DynamicDrawUsage));
-
-                    points = new THREE.Points(geometry, shaderMaterial);
-                    points.geometry.colorsNeedUpdate = true;
-                    points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
-
-                    scene[1].add(points);
-
-                    // render(renderer, [scene[0], scene[1]], camera)
-
-                    intervalPauseCheck = false;
                 }
             }, 2500);
 

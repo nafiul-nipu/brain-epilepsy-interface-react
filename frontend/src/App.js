@@ -139,9 +139,11 @@ function App() {
 
   function onEventsClicked(eventDatum) {
     // set slider object here, instead of inside bars
+    console.log('event clicked')
     let startTime = eventDatum.time[0];
     let endTime = eventDatum.time[eventDatum.time.length - 1];
-    sliderObj.value([startTime, endTime]);
+    console.log(startTime, endTime)
+    // sliderObj.value([startTime, endTime]);
 
     let values = eventDatum.electrode.sort((a, b) => a - b);
     setEEGEL({ id: eventDatum.index, value: values });

@@ -23,7 +23,7 @@ import dataRegistry from '../data/dataRegistry.json'
 
 import { vertexShader, fragmentShader } from '../library/shadersrc'
 
-// let canvas = null;
+let canvas = null;
 // let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
 
 // const colorD3 = d3.scaleOrdinal()
@@ -48,7 +48,7 @@ export const ElectrodeNetworkTumor = ({
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
-    let canvas = canvasRef.current;
+    canvas = canvasRef.current;
 
 
     useEffect(() => {
@@ -292,43 +292,8 @@ export const ElectrodeNetworkTumor = ({
                     electrodes: [...allnetwork[index].electrodes],
                 }));
 
-
-                // scene[1].remove(points)
-
-                // // console.log(electrodeData)
-                // // console.log(eventData)
-
-                // let EEachColor = []
-                // let EEachSize = []
-                // for (let top = 0; top < electrodeData.length; top++) {
-                //     if (eventData[i].electrode.includes(electrodeData[top].electrode_number)) {
-                //         // start electrode
-                //         // console.log('start')
-                //         color.setRGB(3 / 255, 218 / 255, 197 / 255);
-                //         EEachColor.push(color.r, color.g, color.b)
-                //         EEachSize.push(6)
-
-                //     } else {
-                //         // rest electrode
-                //         color.setRGB(10 / 255, 10 / 255, 10 / 255);
-                //         EEachColor.push(color.r, color.g, color.b);
-                //         EEachSize.push(6);
-                //     }
-                // }
-
-                // let geometry = new THREE.BufferGeometry();
-                // geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                // geometry.setAttribute('color', new THREE.Float32BufferAttribute(EEachColor, 3));
-                // // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
-                // geometry.setAttribute('size', new THREE.Float32BufferAttribute(EEachSize, 1).setUsage(THREE.DynamicDrawUsage));
-
-                // points = new THREE.Points(geometry, shaderMaterial);
-                // points.geometry.colorsNeedUpdate = true;
-                // points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
-
-                // scene[1].add(points);
-
             }
+            // scene[1].add(points);
 
             let group = new THREE.Group();
             let addSVG = new SVGLoader();
@@ -384,8 +349,8 @@ export const ElectrodeNetworkTumor = ({
                         for (let j = 0; j < shapes.length; j++) {
                             const shape = shapes[j];
 
-                            const geometry = new THREE.ShapeGeometry(shape);
-                            const mesh = new THREE.Mesh(geometry, material);
+                            const geom1 = new THREE.ShapeGeometry(shape);
+                            const mesh = new THREE.Mesh(geom1, material);
 
                             group.add(mesh);
                         }
@@ -412,13 +377,13 @@ export const ElectrodeNetworkTumor = ({
                         for (let j = 0, jl = path.subPaths.length; j < jl; j++) {
                             const subPath = path.subPaths[j];
 
-                            const geometry = SVGLoader.pointsToStroke(
+                            const geom2 = SVGLoader.pointsToStroke(
                                 subPath.getPoints(),
                                 path.userData.style
                             );
 
-                            if (geometry) {
-                                const mesh = new THREE.Mesh(geometry, material);
+                            if (geom2) {
+                                const mesh = new THREE.Mesh(geom2, material);
 
                                 group.add(mesh);
                             }
@@ -444,15 +409,11 @@ export const ElectrodeNetworkTumor = ({
                 if (groupCheck) {
                     scene[1].remove(group)
                 }
-
                 scene[1].add(group)
 
             }
 
-
             // render(renderer, [scene[0], scene[1]], camera)
-
-
 
             // console.log(points)
             // change the colours, one a second
@@ -467,11 +428,6 @@ export const ElectrodeNetworkTumor = ({
                     scene[1].remove(points)
                     // console.log("inter")
                     colIdx = (colIdx + 1) % colors.length;
-
-                    d3.selectAll('.highlightRect').style('opacity', '0')
-                    if (colIdx !== 0) {
-                        d3.selectAll(`#high${colIdx}`).style('opacity', '0.5')
-                    }
 
                     if (colIdx === 0) {
                         sliderObj.value([0, 0]);
@@ -495,17 +451,17 @@ export const ElectrodeNetworkTumor = ({
 
                     // render(renderer, [scene[0], scene[1]], camera)
 
-                } else if (value === 'Play' && document.getElementsByClassName('referenceCircle')[0].id !== 'null') {
+                }
+                else if (value === 'Play' && document.getElementsByClassName('referenceCircle')[0].id !== 'null') {
                     console.log('pause animation and event click')
-                    // && document.getElementsByClassName('referenceDIV')[0].id !== 'null')) {
+
                     const element = document.getElementsByClassName('referenceCircle')
                     // console.log(element[0].id)
                     let i = +element[0].id;
-
                     scene[1].remove(points)
-                    scene[1].remove(group)
 
-                    console.log(i)
+                    // console.log(electrodeData)
+                    // console.log(eventData)
 
                     let EEachColor = []
                     let EEachSize = []
@@ -525,142 +481,32 @@ export const ElectrodeNetworkTumor = ({
                         }
                     }
 
-                    console.log(vertices)
-                    console.log(EEachColor)
-                    console.log(EEachSize)
+
+
+                    // console.log(sizes[colIdx])
+                    // console.log(EEachColor)
+                    // console.log(colors)
                     let geometry = new THREE.BufferGeometry();
-                    console.log('geometry created')
                     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                    console.log('position set')
                     geometry.setAttribute('color', new THREE.Float32BufferAttribute(EEachColor, 3));
-                    console.log('color set')
                     // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
                     geometry.setAttribute('size', new THREE.Float32BufferAttribute(EEachSize, 1).setUsage(THREE.DynamicDrawUsage));
-                    console.log('size set')
+
                     points = new THREE.Points(geometry, shaderMaterial);
-                    console.log('points created')
                     points.geometry.colorsNeedUpdate = true;
-                    console.log('color update')
                     points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
-                    console.log('translate')
 
                     scene[1].add(points);
-                    console.log('points added')
 
-                    let svgDataController = {
-                        currentURL: ReactDOMServer.renderToString(<MultipleChordContainer networkdata={mergedROIs} rois={dataRegistry[patientID].rois} />), //convert the react element to SVG
-                        drawFillShapes: true,
-                        drawStrokes: true,
-                        fillShapesWireframe: false,
-                        strokesWireframe: false
-
-                    }
-
-                    addSVG = new SVGLoader()
-                    svgData = addSVG.parse(svgDataController.currentURL)
-
-                    // console.log(svgData)
-                    paths = svgData.paths;
-
-                    group = new THREE.Group();
-                    group.uuid = 'chord'
-                    group.scale.multiplyScalar(0.25);
-                    group.position.x = -40;
-                    group.position.y = 90;
-                    group.position.z = 70
-                    group.scale.y *= - 1
-                    group.rotation.y = 20
-
-                    for (let i = 0; i < paths.length; i++) {
-                        const path = paths[i];
-
-                        const fillColor = path.userData.style.fill;
-                        if (
-                            svgDataController.drawFillShapes &&
-                            fillColor !== undefined &&
-                            fillColor !== "none"
-                        ) {
-                            const material = new THREE.MeshBasicMaterial({
-                                color: new THREE.Color()
-                                    .setStyle(fillColor)
-                                    .convertSRGBToLinear(),
-                                opacity: path.userData.style.fillOpacity,
-                                transparent: true,
-                                side: THREE.DoubleSide,
-                                depthWrite: false,
-                                wireframe: svgDataController.fillShapesWireframe,
-                            });
-
-                            const shapes = SVGLoader.createShapes(path);
-
-                            for (let j = 0; j < shapes.length; j++) {
-                                const shape = shapes[j];
-
-                                const geometry = new THREE.ShapeGeometry(shape);
-                                const mesh = new THREE.Mesh(geometry, material);
-
-                                group.add(mesh);
-                            }
-                        }
-
-                        const strokeColor = path.userData.style.stroke;
-
-                        if (
-                            svgDataController.drawStrokes &&
-                            strokeColor !== undefined &&
-                            strokeColor !== "none"
-                        ) {
-                            const material = new THREE.MeshBasicMaterial({
-                                color: new THREE.Color()
-                                    .setStyle(strokeColor)
-                                    .convertSRGBToLinear(),
-                                opacity: path.userData.style.strokeOpacity,
-                                transparent: true,
-                                side: THREE.DoubleSide,
-                                depthWrite: false,
-                                wireframe: svgDataController.strokesWireframe,
-                            });
-
-                            for (let j = 0, jl = path.subPaths.length; j < jl; j++) {
-                                const subPath = path.subPaths[j];
-
-                                const geometry = SVGLoader.pointsToStroke(
-                                    subPath.getPoints(),
-                                    path.userData.style
-                                );
-
-                                if (geometry) {
-                                    const mesh = new THREE.Mesh(geometry, material);
-
-                                    group.add(mesh);
-                                }
-                            }
-                        }
-                    }
-
-                    const box = new THREE.Box3().setFromObject(group);
-                    const boxSize = new THREE.Vector3();
-                    box.getSize(boxSize);
-
-                    const yOffset = boxSize.y / -2;
-                    const xOffset = boxSize.x / -2;
-
-                    // Offset all of group's elements, to center them
-                    group.children.forEach(item => {
-                        item.position.x = xOffset;
-                        item.position.y = yOffset;
-                    });
-
-                    scene[1].add(group)
-
-                    // render(renderer, [scene[0], scene[1]], camera)
+                    render(renderer, [scene[0], scene[1]], camera)
 
                     // console.log(eventData[i])
-                    sliderObj.value([eventData[i].time[0], eventData[i].time[eventData[i].time.length - 1]]);
+                    // sliderObj.value([eventData[i].time[0], eventData[i].time[eventData[i].time.length - 1]]);
 
                     element[0].id = 'null';
 
-                } else if (value === 'Play' && document.getElementsByClassName('referenceDIV')[0].id !== 'null') {
+                }
+                else if (value === 'Play' && document.getElementsByClassName('referenceDIV')[0].id !== 'null') {
                     console.log('pause animation and eeg click')
                     // && document.getElementsByClassName('referenceDIV')[0].id !== 'null')) {
                     const element = document.getElementsByClassName('referenceDIV')

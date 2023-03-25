@@ -47,7 +47,7 @@ export const TimeSliderButton = ({
 
     useEffect(() => {
         // console.log(d3.select(slider).node().clientWidth)
-        let slider = sliderRef.current;
+        slider = sliderRef.current;
         d3.select(slider).select('svg').remove()
 
         // slider = sliderRef.current;

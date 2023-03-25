@@ -103,7 +103,7 @@ export const ElectrodeNetworkTumor = ({
                 scene: scene,
                 obj: brain,
                 color: 0X111111,
-                opacity: 0.25,
+                opacity: 0.5,
                 transparency: true
             });
 

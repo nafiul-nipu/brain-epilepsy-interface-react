@@ -209,7 +209,7 @@ function App() {
             /> */}
 
           {/* <TimeSliderButton sliderObj={secondSlider} /> */}
-          <ENTContainer
+          {/* <ENTContainer
             patientInformation={second}
             electrodeData={secondElectrode}
             sample={seconSample}
@@ -219,7 +219,7 @@ function App() {
             allnetworks={secondNetwork}
             allnetworksWithEvent={secondEventNetwork}
             view={'bottom'}
-          />
+          /> */}
           {/* </Row> */}
         </Col>
       </Row>

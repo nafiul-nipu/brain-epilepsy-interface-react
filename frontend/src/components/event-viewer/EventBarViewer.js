@@ -78,8 +78,8 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
   const handleOnLineClick = (eventDatum) => {
     d3.selectAll(".eventLine").attr("stroke", "grey");
     d3.selectAll(".eventLineCircle").attr("fill", "grey");
-    d3.selectAll(`#ev_${eventDatum.index}`).attr("stroke", "#03DAC5");
-    d3.selectAll(`#ev_circle_${eventDatum.index}`).attr("fill", "#03DAC5");
+    d3.selectAll(`#ev_${eventDatum.index}`).attr("stroke", "#FFA500");
+    d3.selectAll(`#ev_circle_${eventDatum.index}`).attr("fill", "#FFA500"); //rgb(255,165,0)
 
 
     d3.select(d3.select(`#ev_${eventDatum.index}`).node().parentNode).raise();

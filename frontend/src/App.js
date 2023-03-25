@@ -32,6 +32,8 @@ import { EventsDistribution } from "./components/events-distribution/events-dist
 import { useFetch } from "./library/useFetch";
 
 function App() {
+
+  // first three d
   // console.log(dataRegistry)
   const [patientInfo, setPatientInfo] = useState({
     id: "ep129",
@@ -63,22 +65,59 @@ function App() {
     sample: patientInfo.sample,
   });
 
-  // useFetch('ep129', 'sample1', 'filter')
-
-  // console.log(eventData)
-
-  // console.log(fullNetwork)
-  // console.log(fullEventNetwork)
-
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
-  // console.log('electrodcsv', electrodeDataCsv)
 
-  // console.log(dataRegistry['ep129'])
+
+  // second three d
+  // console.log(dataRegistry)
+  const second = {
+    id: "ep187",
+    sample: "sample1",
+  }
+  // console.log('patient', patientInfo)
+  const secondTimeRange = 1000;
+
+  const seconSample = useSamples({
+    patientID: second.id,
+    sampleName: second.sample,
+    range: secondTimeRange,
+  });
+  // console.log('sampledata', sampleData)
+
+  const secondEvent = useEventData({
+    patientID: second.id,
+    sample: second.sample,
+  });
+
+  const secondNetwork = useFullNetwork({
+    patientID: second.id,
+    sample: second.sample,
+  });
+
+  const secondEventNetwork = useFullNetworkPerEvent({
+    patientID: second.id,
+    sample: second.sample,
+  });
+
+  // loading the data
+  const secondElectrode = useElectrodeData({ id: second.id });
+
 
   let sliderObj = sliderHorizontal()
     .min(0)
     .max(dataRegistry[patientInfo.id].time)
+    .default([0, 0]) //for one slider 0
+    .ticks(4)
+    // .tickValues(tickValues)
+    // .step(30)
+    .tickPadding(0)
+    .fill("#2196f3")
+    .on("onchange", function () { });
+
+  let secondSlider = sliderHorizontal()
+    .min(0)
+    .max(dataRegistry[second.id].time)
     .default([0, 0]) //for one slider 0
     .ticks(4)
     // .tickValues(tickValues)
@@ -107,6 +146,8 @@ function App() {
     let values = eventDatum.electrode.sort((a, b) => a - b);
     setEEGEL({ id: eventDatum.index, value: values });
   }
+
+  // useFetch('ep129', 'sample1', 'filter')
 
   return (
     // component container
@@ -165,6 +206,18 @@ function App() {
               allnetworks={fullNetwork}
               allnetworksWithEvent={fullEventNetwork}
             /> */}
+
+            <TimeSliderButton sliderObj={secondSlider} />
+            <ENTContainer
+              patientInformation={second}
+              electrodeData={secondElectrode}
+              sample={seconSample}
+              slider={secondSlider}
+              time={secondTimeRange}
+              events={secondEvent}
+              allnetworks={secondNetwork}
+              allnetworksWithEvent={secondEventNetwork}
+            />
           </Row>
         </Col>
       </Row>

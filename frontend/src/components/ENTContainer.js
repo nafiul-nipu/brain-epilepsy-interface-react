@@ -37,7 +37,7 @@ export const ENTContainer = ({
     return (
         <Col>
             <Row>
-                <Col id="titleBrain1" md='6'>Propagation Over Time</Col>
+                <Col id="titleBrain1" md='6'>{`${patientInformation.id}: Propagation Over Time`}</Col>
                 <Col md='1' id="svgcheckbox">
 
                     <Form>

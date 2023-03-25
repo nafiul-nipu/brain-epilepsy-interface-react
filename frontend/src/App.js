@@ -155,7 +155,7 @@ function App() {
     // component container
     <Container fluid id="container">
       <Row className={"fullh"}>
-        <Col md="4" className={"event-panel fullh"}>
+        <Col md="3" className={"event-panel fullh"}>
           <Logo>SpikeXplorer</Logo>
           <ElectrodeDropDown setNewPatientInfo={setNewPatientInfo} />
           <div
@@ -183,7 +183,7 @@ function App() {
             /> */}
           </div>
         </Col>
-        <Col md="4">
+        <Col md="5">
           <EEGDataViewer eegEL={eegEL} patientInfo={patientInfo} />
         </Col>
         <Col md="4" className="fullh">
@@ -198,7 +198,6 @@ function App() {
             events={eventData}
             allnetworks={fullNetwork}
             allnetworksWithEvent={fullEventNetwork}
-            view={'top'}
           />
           {/* </Row> */}
           {/* <Row style={{ height: "50%" }}> */}
@@ -220,7 +219,6 @@ function App() {
             events={secondEvent}
             allnetworks={secondNetwork}
             allnetworksWithEvent={secondEventNetwork}
-            view={'bottom'}
           /> */}
           {/* </Row> */}
         </Col>

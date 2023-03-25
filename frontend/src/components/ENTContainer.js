@@ -4,6 +4,7 @@ import { useOBJThreeStates } from "../library/useOBJThreeStates";
 import { useLesionData } from "../library/useLesionData";
 import { useBBoxcenter } from "../library/useBBoxcenter";
 import { useState } from "react";
+import { TimeSliderButton } from "./TimeSliderButton";
 
 export const ENTContainer = ({
     patientInformation,
@@ -13,7 +14,8 @@ export const ENTContainer = ({
     time,
     events,
     allnetworks,
-    allnetworksWithEvent
+    allnetworksWithEvent,
+    view
 }) => {
     // loading brain and lesions
     const multiBrain = useOBJThreeStates({ patient: patientInformation.id, objType: 'brain.obj' });
@@ -32,43 +34,63 @@ export const ENTContainer = ({
         setIsChecked(event.target.checked);
     };
 
+    const [buttonValue, setButtonValue] = useState('Pause');
+
+    function handleClick() {
+        if (buttonValue === 'Pause') {
+            setButtonValue('Play');
+        } else {
+            setButtonValue('Pause');
+        }
+    }
+
     // console.log('bbox', bboxCenter)
 
     return (
-        <Col>
-            <Row>
-                <Col id="titleBrain1" md='6'>{`${patientInformation.id}: Propagation Over Time`}</Col>
-                <Col md='1' id="svgcheckbox">
+        <Row style={{ height: "50%" }}>
+            <TimeSliderButton
+                sliderObj={slider}
+                id={view}
+                buttonValue={buttonValue}
+                handleClick={handleClick}
+            />
+            <Col>
+                <Row>
+                    <Col id="titleBrain1" md='6'>{`${patientInformation.id}: Propagation Over Time`}</Col>
+                    <Col md='1' id="svgcheckbox">
 
-                    <Form>
-                        <Form.Check
-                            type="switch"
-                            id="custom-switch"
-                            label="Network"
-                            checked={isChecked}
-                            onChange={handleCheckboxChange}
-                        />
+                        <Form>
+                            <Form.Check
+                                type="switch"
+                                id="custom-switch"
+                                label="Network"
+                                checked={isChecked}
+                                onChange={handleCheckboxChange}
+                            />
 
-                    </Form>
-                </Col>
+                        </Form>
+                    </Col>
 
-            </Row>
-            <Row>
-                <ElectrodeNetworkTumor
-                    brain={multiBrain.obj1} //ok
-                    electrodeData={electrodeData} //ok
-                    sampleData={sample} //ok
-                    bboxCenter={bboxCenter} //ok
-                    sliderObj={slider} //problem
-                    timeRange={time}
-                    lesions={lesions} //ok
-                    eventData={events}
-                    allnetwork={allnetworks}
-                    allnetworkWithEvent={allnetworksWithEvent}
-                    patientID={patientInformation.id}
-                    drawSVG={isChecked}
-                />
-            </Row>
-        </Col>
+                </Row>
+                <Row>
+                    <ElectrodeNetworkTumor
+                        brain={multiBrain.obj1} //ok
+                        electrodeData={electrodeData} //ok
+                        sampleData={sample} //ok
+                        bboxCenter={bboxCenter} //ok
+                        sliderObj={slider} //problem
+                        timeRange={time}
+                        lesions={lesions} //ok
+                        eventData={events}
+                        allnetwork={allnetworks}
+                        allnetworkWithEvent={allnetworksWithEvent}
+                        patientID={patientInformation.id}
+                        drawSVG={isChecked}
+                        view={view}
+                        buttonValue={buttonValue}
+                    />
+                </Row>
+            </Col>
+        </Row>
     )
 }

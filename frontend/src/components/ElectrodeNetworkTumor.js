@@ -43,6 +43,8 @@ export const ElectrodeNetworkTumor = ({
     allnetworkWithEvent,
     patientID,
     drawSVG,
+    view,
+    buttonValue
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -178,6 +180,7 @@ export const ElectrodeNetworkTumor = ({
 
         // load electrode
         function loadElectrode(scene, electrodeData, sampleData) {
+            let intervalPauseCheck = true
             console.log("load electrode")
 
             let uniforms = {
@@ -277,7 +280,7 @@ export const ElectrodeNetworkTumor = ({
             // console.log(dataRegistry[patientID].rois)
 
             const network_reference = document.getElementsByClassName('referenceCircleNetwork')
-            console.log(network_reference[0].id, network_reference[0].id !== null)
+            // console.log(network_reference[0].id, network_reference[0].id !== null)
             let i;
             let mergedROIs;
             if (network_reference[0].id !== 'null' && allnetworkWithEvent) {
@@ -447,10 +450,13 @@ export const ElectrodeNetworkTumor = ({
             // console.log(points)
             // change the colours, one a second
             inter = setInterval(function () {
+                // console.log(d3.select(`#play-pause-btn${view}`))
+                // console.log(buttonValue)
+                // let value = d3.select(`#play-pause-btn${view}`).property('value')
+                let value = buttonValue;
 
-                let value = d3.select('#play-pause-btn').property('value')
-
-                if (value === 'pause') {
+                if (value === 'Pause') {
+                    console.log('play animation')
                     scene[1].remove(points)
                     // console.log("inter")
                     colIdx = (colIdx + 1) % colors.length;
@@ -482,7 +488,8 @@ export const ElectrodeNetworkTumor = ({
 
                     render(renderer, [scene[0], scene[1]], camera)
 
-                } else if (value === 'play' && document.getElementsByClassName('referenceCircle')[0].id !== 'null') {
+                } else if (value === 'Play' && document.getElementsByClassName('referenceCircle')[0].id !== 'null') {
+                    console.log('pause animation and event click')
                     // && document.getElementsByClassName('referenceDIV')[0].id !== 'null')) {
                     const element = document.getElementsByClassName('referenceCircle')
                     // console.log(element[0].id)
@@ -637,7 +644,8 @@ export const ElectrodeNetworkTumor = ({
                     sliderObj.value([eventData[i].time[0], eventData[i].time[eventData[i].time.length - 1]]);
 
                     element[0].id = 'null';
-                } else if (value === 'play' && document.getElementsByClassName('referenceDIV')[0].id !== 'null') {
+                } else if (value === 'Play' && document.getElementsByClassName('referenceDIV')[0].id !== 'null') {
+                    console.log('pause animation and eeg click')
                     // && document.getElementsByClassName('referenceDIV')[0].id !== 'null')) {
                     const element = document.getElementsByClassName('referenceDIV')
                     // console.log(document.getElementsByClassName('referenceDIV')[0].id !== 'null')
@@ -687,6 +695,30 @@ export const ElectrodeNetworkTumor = ({
                     render(renderer, [scene[0], scene[1]], camera)
 
                     element[0].id = 'null';
+                } else if (value === 'Play' && intervalPauseCheck === true) {
+                    scene[1].remove(points)
+                    // console.log("inter")
+
+                    let ranges = sliderObj.value();
+                    let idx = (ranges[1] / timeRange);
+
+
+                    // console.log(sizes[colIdx])
+                    let geometry = new THREE.BufferGeometry();
+                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors[idx], 3));
+                    // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
+                    geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes[idx], 1).setUsage(THREE.DynamicDrawUsage));
+
+                    points = new THREE.Points(geometry, shaderMaterial);
+                    points.geometry.colorsNeedUpdate = true;
+                    points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
+
+                    scene[1].add(points);
+
+                    render(renderer, [scene[0], scene[1]], camera)
+
+                    intervalPauseCheck = false;
                 }
             }, 2500);
 
@@ -698,7 +730,7 @@ export const ElectrodeNetworkTumor = ({
         }
 
 
-    }, [allnetwork, allnetworkWithEvent, bboxCenter, brain, canvasRef, drawSVG, electrodeData, eventData, lesions, patientID, sampleData, sliderObj, timeRange]);
+    }, [allnetwork, allnetworkWithEvent, bboxCenter, brain, canvasRef, drawSVG, electrodeData, eventData, lesions, patientID, sampleData, sliderObj, timeRange, buttonValue]);
 
     return (
         <Col md='12'>

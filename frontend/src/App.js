@@ -185,21 +185,22 @@ function App() {
           <EEGDataViewer eegEL={eegEL} patientInfo={patientInfo} />
         </Col>
         <Col md="4" className="fullh">
-          <Row style={{ height: "50%" }}>
-            <TimeSliderButton sliderObj={sliderObj} />
-            <ENTContainer
-              patientInformation={patientInfo}
-              electrodeData={electrodeDataCsv}
-              sample={sampleData}
-              slider={sliderObj}
-              time={timeRange}
-              events={eventData}
-              allnetworks={fullNetwork}
-              allnetworksWithEvent={fullEventNetwork}
-            />
-          </Row>
-          <Row style={{ height: "50%" }}>
-            {/* <ENChordContainer
+          {/* <Row style={{ height: "50%" }}> */}
+          {/* <TimeSliderButton sliderObj={sliderObj} /> */}
+          <ENTContainer
+            patientInformation={patientInfo}
+            electrodeData={electrodeDataCsv}
+            sample={sampleData}
+            slider={sliderObj}
+            time={timeRange}
+            events={eventData}
+            allnetworks={fullNetwork}
+            allnetworksWithEvent={fullEventNetwork}
+            view={'top'}
+          />
+          {/* </Row> */}
+          {/* <Row style={{ height: "50%" }}> */}
+          {/* <ENChordContainer
               epatient={patientInfo}
               samples={sampleData}
               electrodes={electrodeDataCsv}
@@ -207,18 +208,19 @@ function App() {
               allnetworksWithEvent={fullEventNetwork}
             /> */}
 
-            <TimeSliderButton sliderObj={secondSlider} />
-            <ENTContainer
-              patientInformation={second}
-              electrodeData={secondElectrode}
-              sample={seconSample}
-              slider={secondSlider}
-              time={secondTimeRange}
-              events={secondEvent}
-              allnetworks={secondNetwork}
-              allnetworksWithEvent={secondEventNetwork}
-            />
-          </Row>
+          {/* <TimeSliderButton sliderObj={secondSlider} /> */}
+          <ENTContainer
+            patientInformation={second}
+            electrodeData={secondElectrode}
+            sample={seconSample}
+            slider={secondSlider}
+            time={secondTimeRange}
+            events={secondEvent}
+            allnetworks={secondNetwork}
+            allnetworksWithEvent={secondEventNetwork}
+            view={'bottom'}
+          />
+          {/* </Row> */}
         </Col>
       </Row>
     </Container>

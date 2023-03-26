@@ -30,6 +30,7 @@ import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
 import { Logo } from "./components/logo/logo";
 import { EventsDistribution } from "./components/events-distribution/events-distribution";
 import { useFetch } from "./library/useFetch";
+import { useAllEventData } from "./library/useAllEventData";
 
 function App() {
 
@@ -54,6 +55,10 @@ function App() {
     patientID: patientInfo.id,
     sample: patientInfo.sample,
   });
+
+  const allEventData = useAllEventData({ patientID: patientInfo.id })
+
+  // console.log(allEventData)
 
   const fullNetwork = useFullNetwork({
     patientID: patientInfo.id,
@@ -119,13 +124,6 @@ function App() {
     .fill("#2196f3")
     .on("onchange", function () { });
 
-  function setNewPatientInfo(val) {
-    console.log("setting patient info");
-    setPatientInfo({ id: val.id, sample: val.sample });
-    console.log("setting time range");
-    setTimeRange(val.range);
-  }
-
   // console.log(electrodeDataCsv)
 
   const [eegEL, setEEGEL] = useState({ id: 0, value: [92] });
@@ -152,7 +150,12 @@ function App() {
       <Row className={"fullh"}>
         <Col md="3" className={"event-panel fullh"}>
           <Logo>SpikeXplorer</Logo>
-          <ElectrodeDropDown setNewPatientInfo={setNewPatientInfo} />
+          <ElectrodeDropDown
+            patientInfo={patientInfo}
+            setPatientInfo={setPatientInfo}
+            timeRange={timeRange}
+            setTimeRange={setTimeRange}
+          />
           <div
             style={{
               width: "100%",
@@ -165,9 +168,9 @@ function App() {
           </div>
           <div style={{ height: "70vh", width: "100%", backgroundColor: "#FAFBFC" }}>
             <div>Event Viewer</div>
-            {eventData ? (
+            {allEventData ? (
               <EventBarViewer
-                data={eventData}
+                data={allEventData[patientInfo.sample]}
                 threshold={barThreshold}
                 onClickEvent={onEventsClicked}
               />
@@ -182,10 +185,8 @@ function App() {
         <Col md="5">
           <EEGDataViewer eegEL={eegEL} patientInfo={patientInfo} />
         </Col>
-        <Col md="4" className="fullh">
-          {/* <Row style={{ height: "50%" }}> */}
-          {/* <TimeSliderButton sliderObj={sliderObj} /> */}
-          {/* <ENTContainer
+        {/* <Col md="4" className="fullh">
+          <ENTContainer
             patientInformation={patientInfo}
             electrodeData={electrodeDataCsv}
             sample={sampleData}
@@ -194,28 +195,16 @@ function App() {
             events={eventData}
             allnetworks={fullNetwork}
             allnetworksWithEvent={fullEventNetwork}
-          /> */}
-          {/* </Row> */}
-          {/* <Row style={{ height: "50%" }}> */}
-          {/* <ENChordContainer
-              epatient={patientInfo}
-              samples={sampleData}
-              electrodes={electrodeDataCsv}
-              allnetworks={fullNetwork}
-              allnetworksWithEvent={fullEventNetwork}
-            /> */}
-
-          {/* <TimeSliderButton sliderObj={secondSlider} /> */}
-          {/* <ENTContainer
+          />
+          <ENTContainer
             patientInformation={second}
             electrodeData={secondElectrode}
             sample={seconSample}
             slider={secondSlider}
             time={secondTimeRange}
             allnetworks={secondNetwork}
-          /> */}
-          {/* </Row> */}
-        </Col>
+          />
+        </Col> */}
       </Row>
     </Container>
   );

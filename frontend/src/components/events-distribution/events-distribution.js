@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import ChartContainer, {
   useChartContext,
 } from "../chart-container/chart-container";
@@ -60,25 +60,21 @@ const ChartWrapper = ({ data, barThreshold, setBarThreshold }) => {
       .y((d) => yScale(d.length))
       .curve(d3.curveMonotoneX)(data);
 
-  const brushRef = useRef(null);
 
-  useEffect(() => {
-    if (brushRef.current) {
-      const brush = d3.brushX()
-        .extent([[0, dimensions.boundedHeight / 2], [dimensions.boundedWidth, dimensions.boundedHeight]]) // set the extent to the size of the <g> element
-        .on('end', (event) => {
-          // do something when the brush is brushed
-          console.log(Math.round(xScale.invert(event.selection[0])), Math.round(xScale.invert(event.selection[1])));
+  const handleBrushEnd = (event) => {
 
-          // setBarThreshold([Math.round(xScale.invert(event.selection[0])), Math.round(xScale.invert(event.selection[1]))]);
-        });
+    const [x1, x2] = event.selection;
+    const domain = [Math.round(xScale.invert(x1)), Math.round(xScale.invert(x2))];
+    setBarThreshold(domain);
 
-      d3.select(brushRef.current)
-        .call(brush)
-        .call(brush.move, [xScale(5), xScale(10)])
-        ;
-    }
-  }, [dimensions.boundedHeight, dimensions.boundedWidth, xScale, barThreshold]);
+    // console.log(domain)
+
+  };
+
+  const brush = d3.brushX()
+    .extent([[0, 0], [dimensions.boundedWidth, dimensions.boundedHeight]])
+    .on('end', handleBrushEnd);
+
 
 
   return (
@@ -94,11 +90,8 @@ const ChartWrapper = ({ data, barThreshold, setBarThreshold }) => {
             strokeWidth={2}
           />
         ))}
-
-      <g ref={brushRef}>
-        {/* add your group elements here */}
+      <g ref={node => d3.select(node).call(brush)}>
       </g>
-
       <AxisLeft
         xScale={xScale} yScale={yScale} scaleOffset={10}
         ticks={yScale.ticks()}

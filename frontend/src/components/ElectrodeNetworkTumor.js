@@ -561,7 +561,14 @@ export const ElectrodeNetworkTumor = ({
         }
 
 
-    }, [allnetwork, allnetworkWithEvent, bboxCenter, brain, canvasRef, drawSVG, electrodeData, eventData, lesions, patientID, sampleData, sliderObj, timeRange, buttonValue]);
+    }, [canvasRef, brain, sampleData, timeRange, patientID, drawSVG, sliderObj, bboxCenter, electrodeData, lesions, allnetworkWithEvent, allnetwork, eventData, buttonValue]);
+
+    //[canvasRef, drawSVG, electrodeData, patientID, sliderObj,
+    //  timeRange, buttonValue, bboxCenter, brain, sampleData,
+    //lesions, allnetworkWithEvent, allnetwork, eventData]);
+    // 
+
+
 
     return (
         <Col md='12'>

@@ -76,7 +76,8 @@ const ChartWrapper = ({ data, barThreshold, setBarThreshold }) => {
     .on('end', handleBrushEnd);
 
 
-
+  const yTicks = yScale.ticks();
+  const tickValues = [yTicks[0], yTicks[Math.floor(yTicks.length / 4)], yTicks[Math.floor(yTicks.length / 2)], yTicks[Math.floor(yTicks.length * 3 / 4)], yTicks[yTicks.length - 1]];
   return (
     <>
       {lines.length > 0 &&
@@ -92,9 +93,16 @@ const ChartWrapper = ({ data, barThreshold, setBarThreshold }) => {
         ))}
       <g ref={node => d3.select(node).call(brush)}>
       </g>
+      <text
+        // className="axis-label"
+        textAnchor="middle"
+        transform={`translate(${dimensions.boundedWidth - 50}, ${10} )`}
+      >
+        {"Brush to filter"}
+      </text>
       <AxisLeft
         xScale={xScale} yScale={yScale} scaleOffset={10}
-        ticks={yScale.ticks()}
+        ticks={tickValues}
       />
       <AxisBottom
         xScale={xScale}

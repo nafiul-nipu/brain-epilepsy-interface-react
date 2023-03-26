@@ -164,6 +164,7 @@ function App() {
             {eventData ? <EventsDistribution data={eventData} barThreshold={barThreshold} setBarThreshold={setBarThreshold} /> : null}
           </div>
           <div style={{ height: "70vh", width: "100%", backgroundColor: "#FAFBFC" }}>
+            <div>Event Viewer</div>
             {eventData ? (
               <EventBarViewer
                 data={eventData}

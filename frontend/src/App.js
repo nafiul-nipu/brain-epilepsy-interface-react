@@ -10,19 +10,19 @@ import { useSamples } from "./library/useSamples";
 import { useState } from "react";
 
 import dataRegistry from "./data/dataRegistry.json";
-import { useEventData } from "./library/useEventData";
+// import { useEventData } from "./library/useEventData";
 
 import { Container, Row, Col } from "react-bootstrap";
 
 import { EEGDataViewer } from "./components/eeg-data-viewer/EEGDataViewer";
 import { ElectrodeDropDown } from "./components/ElectrodeDropDown";
 
-import { EventViewer } from "./components/EventViewer";
+// import { EventViewer } from "./components/EventViewer";
 import { EventBarViewer } from "./components/event-viewer/EventBarViewer";
 // import { PropagationTimeSeries } from "./components/PropagationTimeSeries"
-import { TimeSliderButton } from "./components/TimeSliderButton";
+// import { TimeSliderButton } from "./components/TimeSliderButton";
 import { ENTContainer } from "./components/ENTContainer";
-import { ENChordContainer } from "./components/ENChordContainer";
+// import { ENChordContainer } from "./components/ENChordContainer";
 
 import { useFullNetwork } from "./library/useFullNetwork";
 import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
@@ -30,8 +30,11 @@ import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
 import { Logo } from "./components/logo/logo";
 import { EventsDistribution } from "./components/events-distribution/events-distribution";
 import { useFetch } from "./library/useFetch";
+import { useAllEventData } from "./library/useAllEventData";
 
 function App() {
+
+  // first three d
   // console.log(dataRegistry)
   const [patientInfo, setPatientInfo] = useState({
     id: "ep129",
@@ -48,10 +51,9 @@ function App() {
   });
   // console.log('sampledata', sampleData)
 
-  const eventData = useEventData({
-    patientID: patientInfo.id,
-    sample: patientInfo.sample,
-  });
+  const allEventData = useAllEventData({ patientID: patientInfo.id })
+
+  // console.log(allEventData)
 
   const fullNetwork = useFullNetwork({
     patientID: patientInfo.id,
@@ -63,18 +65,37 @@ function App() {
     sample: patientInfo.sample,
   });
 
-  useFetch('ep129', 'sample1', 'filter')
-
-  // console.log(eventData)
-
-  // console.log(fullNetwork)
-  // console.log(fullEventNetwork)
-
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
-  // console.log('electrodcsv', electrodeDataCsv)
 
-  // console.log(dataRegistry['ep129'])
+
+  // second three d
+  // console.log(dataRegistry)
+  const second = {
+    id: "ep187",
+    sample: "sample1",
+  }
+  // console.log('patient', patientInfo)
+  const secondTimeRange = 1000;
+
+  const seconSample = useSamples({
+    patientID: second.id,
+    sampleName: second.sample,
+    range: secondTimeRange,
+  });
+  // console.log('sampledata', sampleData)
+
+
+
+  const secondNetwork = useFullNetwork({
+    patientID: second.id,
+    sample: second.sample,
+  });
+
+
+  // loading the data
+  const secondElectrode = useElectrodeData({ id: second.id });
+
 
   let sliderObj = sliderHorizontal()
     .min(0)
@@ -87,12 +108,16 @@ function App() {
     .fill("#2196f3")
     .on("onchange", function () { });
 
-  function setNewPatientInfo(val) {
-    console.log("setting patient info");
-    setPatientInfo({ id: val.id, sample: val.sample });
-    console.log("setting time range");
-    setTimeRange(val.range);
-  }
+  let secondSlider = sliderHorizontal()
+    .min(0)
+    .max(dataRegistry[second.id].time)
+    .default([0, 0]) //for one slider 0
+    .ticks(4)
+    // .tickValues(tickValues)
+    // .step(30)
+    .tickPadding(0)
+    .fill("#2196f3")
+    .on("onchange", function () { });
 
   // console.log(electrodeDataCsv)
 
@@ -100,71 +125,86 @@ function App() {
 
   function onEventsClicked(eventDatum) {
     // set slider object here, instead of inside bars
-    let startTime = eventDatum.time[0];
-    let endTime = eventDatum.time[eventDatum.time.length - 1];
-    sliderObj.value([startTime, endTime]);
+    console.log('event clicked')
+    // let startTime = eventDatum.time[0];
+    // let endTime = eventDatum.time[eventDatum.time.length - 1];
+    // console.log(startTime, endTime)
+    // sliderObj.value([startTime, endTime]);
 
     let values = eventDatum.electrode.sort((a, b) => a - b);
     setEEGEL({ id: eventDatum.index, value: values });
   }
 
+  const [barThreshold, setBarThreshold] = useState([35, 40]);
+
+  // useFetch('ep129', 'sample1', 'filter')
+
   return (
     // component container
     <Container fluid id="container">
       <Row className={"fullh"}>
-        <Col md="4" className={"event-panel fullh"}>
+        <Col md="3" className={"event-panel fullh"}>
           <Logo>SpikeXplorer</Logo>
-          <ElectrodeDropDown setNewPatientInfo={setNewPatientInfo} />
+          <ElectrodeDropDown
+            patientInfo={patientInfo}
+            setPatientInfo={setPatientInfo}
+            timeRange={timeRange}
+            setTimeRange={setTimeRange}
+          />
           <div
             style={{
               width: "100%",
               height: "150px",
-              backgroundColor: "white",
+              backgroundColor: "#FAFBFC",
               marginTop: "10px",
             }}
           >
-            {eventData ? <EventsDistribution data={eventData} /> : null}
+            {allEventData ?
+              (<EventsDistribution
+                id={patientInfo.id}
+                currentSample={patientInfo.sample}
+                data={allEventData}
+                setBarThreshold={setBarThreshold}
+              />
+              ) : null}
           </div>
-          <div style={{ height: "70vh", width: "100%" }}>
-            {eventData ? (
+          <div style={{ height: "70vh", width: "100%", backgroundColor: "#FAFBFC" }}>
+            <div>Event Viewer</div>
+            {allEventData ? (
               <EventBarViewer
-                data={eventData}
-                // threshold={10}
+                data={allEventData[patientInfo.sample]}
+                threshold={barThreshold}
                 onClickEvent={onEventsClicked}
               />
             ) : null}
-            {/* <EventViewer
-              data={eventData}
-              sliderObj={sliderObj}
-              onEventsClicked={onEventsClicked}
-            /> */}
           </div>
         </Col>
-        <Col md="4">
+        <Col md="5">
           <EEGDataViewer eegEL={eegEL} patientInfo={patientInfo} />
         </Col>
-        <Col md="4" className="fullh">
-          <Row style={{ height: "50%" }}>
-            <TimeSliderButton sliderObj={sliderObj} />
+        {allEventData ? (
+          <Col md="4" className="fullh">
             <ENTContainer
               patientInformation={patientInfo}
               electrodeData={electrodeDataCsv}
               sample={sampleData}
               slider={sliderObj}
               time={timeRange}
-              events={eventData}
-            />
-          </Row>
-          <Row style={{ height: "50%" }}>
-            <ENChordContainer
-              epatient={patientInfo}
-              samples={sampleData}
-              electrodes={electrodeDataCsv}
+              events={allEventData[patientInfo.sample]}
               allnetworks={fullNetwork}
               allnetworksWithEvent={fullEventNetwork}
             />
-          </Row>
-        </Col>
+            <ENTContainer
+              patientInformation={second}
+              electrodeData={secondElectrode}
+              sample={seconSample}
+              slider={secondSlider}
+              time={secondTimeRange}
+              allnetworks={secondNetwork}
+            />
+          </Col>
+        ) : null}
+
       </Row>
     </Container>
   );

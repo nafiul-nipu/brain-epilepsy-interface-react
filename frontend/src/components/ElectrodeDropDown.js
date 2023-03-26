@@ -6,25 +6,21 @@ import "rc-slider/assets/index.css";
 import { useRef, useState } from "react";
 
 export const ElectrodeDropDown = ({
-  setNewPatientInfo,
+  patientInfo,
+  setPatientInfo,
+  timeRange,
+  setTimeRange,
   direction = "column",
 }) => {
-  const sampleRef = useRef();
-  const patientRef = useRef();
-  const timeRef = useRef();
 
-  const [sample, selectedSample] = useState("sample1");
-  const [patient, selectedPatient] = useState("ep129");
-  const [timerange, selectTimeRange] = useState(1000);
   return (
     <div className="container-flex" style={{ flexDirection: direction }}>
       {/* Patient dropdown */}
       <Form.Group controlId="formHorizontal" className="flex-form-entry">
         <Form.Label id="selectPosition">Patient:</Form.Label>
         <Form.Select
-          value={patient}
+          value={patientInfo.id}
           id="selectPosition"
-          ref={patientRef}
           onChange={onPatientChange}
         >
           <option value="ep187"> EP187 </option>
@@ -36,9 +32,8 @@ export const ElectrodeDropDown = ({
       <Form.Group controlId="formHorizontal" className="flex-form-entry">
         <Form.Label id="selectPosition">Sample:</Form.Label>
         <Form.Select
-          value={sample}
+          value={patientInfo.sample}
           onChange={onSampleChange}
-          ref={sampleRef}
           id="selectPosition"
         >
           <option value="sample1"> Sample 1</option>
@@ -51,9 +46,8 @@ export const ElectrodeDropDown = ({
       <Form.Group controlId="formHorizontal" className="flex-form-entry">
         <Form.Label id="selectPosition">Range:</Form.Label>
         <Form.Select
-          value={timerange}
+          value={timeRange}
           onChange={ontimerangeUpdate}
-          ref={timeRef}
           id="selectPosition"
         >
           <option value="50"> 50 ms</option>
@@ -67,32 +61,16 @@ export const ElectrodeDropDown = ({
   );
 
   function onSampleChange(event) {
-    // console.log(event.target.value)
-    let sampleName = event.target.value;
-    // console.log(val)
-    let patient = patientRef.current.value;
-    selectedSample(event.target.value);
+    // console.log({ ...patientInfo, sample: event.target.value })
+    setPatientInfo({ ...patientInfo, sample: event.target.value });
 
-    let time = timeRef.current.value;
-    setNewPatientInfo({ id: patient, sample: sampleName, range: time });
   }
 
   function onPatientChange(event) {
-    let patient = event.target.value;
-    // console.log(val)
-    let sampleName = sampleRef.current.value;
-    selectedPatient(event.target.value);
-
-    let time = timeRef.current.value;
-    setNewPatientInfo({ id: patient, sample: sampleName, range: time });
+    setPatientInfo({ ...patientInfo, id: event.target.value });
   }
 
   function ontimerangeUpdate(event) {
-    let time = event.target.value;
-    selectTimeRange(event.target.value);
-
-    let sampleName = sampleRef.current.value;
-    let patient = patientRef.current.value;
-    setNewPatientInfo({ id: patient, sample: sampleName, range: time });
+    setTimeRange(event.target.value);
   }
 };

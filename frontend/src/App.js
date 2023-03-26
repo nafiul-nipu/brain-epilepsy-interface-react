@@ -85,20 +85,13 @@ function App() {
   });
   // console.log('sampledata', sampleData)
 
-  const secondEvent = useEventData({
-    patientID: second.id,
-    sample: second.sample,
-  });
+
 
   const secondNetwork = useFullNetwork({
     patientID: second.id,
     sample: second.sample,
   });
 
-  const secondEventNetwork = useFullNetworkPerEvent({
-    patientID: second.id,
-    sample: second.sample,
-  });
 
   // loading the data
   const secondElectrode = useElectrodeData({ id: second.id });
@@ -210,16 +203,15 @@ function App() {
             /> */}
 
           {/* <TimeSliderButton sliderObj={secondSlider} /> */}
-          {/* <ENTContainer
+          <ENTContainer
             patientInformation={second}
             electrodeData={secondElectrode}
             sample={seconSample}
             slider={secondSlider}
             time={secondTimeRange}
-            events={secondEvent}
             allnetworks={secondNetwork}
-            allnetworksWithEvent={secondEventNetwork}
-          /> */}
+
+          />
           {/* </Row> */}
         </Col>
       </Row>

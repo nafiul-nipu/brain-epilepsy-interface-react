@@ -1,48 +1,16 @@
 import { Col, Row } from "react-bootstrap"
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 
 import * as d3 from 'd3'
 
-let button, slider
+// let button, slider
 export const TimeSliderButton = ({
     sliderObj,
     id,
     buttonValue,
     handleClick
 }) => {
-    const buttoneRef = useRef(null)
     const sliderRef = useRef(null)
-
-
-
-    // useEffect(() => {
-    //     let button = buttoneRef.current;
-
-
-    //     d3.select(`#play-pause-btn${id}`).remove();
-
-    //     console.log('button creation');
-
-    //     d3.select(button).append('button')
-    //         .attr('class', `btn btn-light btn-sm`)
-    //         .attr("style", "margin-left:5px")
-    //         .attr('id', `play-pause-btn-${id}`)
-    //         .attr('value', 'pause')
-    //         .text('Pause')
-    //         .on('click', (d) => {
-    //             console.log(d.target.value)
-    //             if (d.target.value === 'play') {
-    //                 d3.select(`#play-pause-btn-${id}`).attr('value', 'pause')
-    //                     .text('Pause')
-
-    //             } else if (d.target.value === 'pause') {
-    //                 d3.select(`#play-pause-btn-${id}`).attr('value', 'play')
-    //                     .text('Play')
-    //             }
-    //         })
-
-    // }, [])
-
 
 
     useEffect(() => {
@@ -70,7 +38,7 @@ export const TimeSliderButton = ({
                         id={`play-pause-btn-${id}`}
                         className="btn btn-light btn-sm"
                         style={{ marginLeft: '5px' }}
-                        value='pause'
+                        value={buttonValue}
                         onClick={handleClick}
                     >{buttonValue}
                     </button>
@@ -81,13 +49,3 @@ export const TimeSliderButton = ({
         </Col>
     )
 }
-
-function Button(props) {
-    return (
-        <button onClick={props.onClick}>
-            {props.label}
-        </button>
-    );
-}
-
-export default Button;

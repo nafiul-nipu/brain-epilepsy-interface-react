@@ -34,7 +34,7 @@ export const ENTContainer = ({
         setIsChecked(event.target.checked);
     };
 
-    const [buttonValue, setButtonValue] = useState('Pause');
+    const [buttonValue, setButtonValue] = useState('Play');
 
     function handleClick() {
         if (buttonValue === 'Pause') {

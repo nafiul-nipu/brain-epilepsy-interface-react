@@ -3,10 +3,10 @@ import * as d3 from "d3";
 import ChartContainer, {
   useChartContext,
 } from "../chart-container/chart-container";
-import { AxisBottom } from "../../CommonComponents/AxisBottom";
+// import { AxisBottom } from "../../CommonComponents/AxisBottom";
 import "./event-bar-viewer.css";
 import { AxisLeft } from "../../CommonComponents/AxisLeft";
-import { useState } from "react";
+// import { useState } from "react";
 
 /*
 interface EventDatum {

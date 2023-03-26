@@ -10,19 +10,19 @@ import { useSamples } from "./library/useSamples";
 import { useState } from "react";
 
 import dataRegistry from "./data/dataRegistry.json";
-import { useEventData } from "./library/useEventData";
+// import { useEventData } from "./library/useEventData";
 
 import { Container, Row, Col } from "react-bootstrap";
 
 import { EEGDataViewer } from "./components/eeg-data-viewer/EEGDataViewer";
 import { ElectrodeDropDown } from "./components/ElectrodeDropDown";
 
-import { EventViewer } from "./components/EventViewer";
+// import { EventViewer } from "./components/EventViewer";
 import { EventBarViewer } from "./components/event-viewer/EventBarViewer";
 // import { PropagationTimeSeries } from "./components/PropagationTimeSeries"
-import { TimeSliderButton } from "./components/TimeSliderButton";
+// import { TimeSliderButton } from "./components/TimeSliderButton";
 import { ENTContainer } from "./components/ENTContainer";
-import { ENChordContainer } from "./components/ENChordContainer";
+// import { ENChordContainer } from "./components/ENChordContainer";
 
 import { useFullNetwork } from "./library/useFullNetwork";
 import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
@@ -50,11 +50,6 @@ function App() {
     range: timeRange,
   });
   // console.log('sampledata', sampleData)
-
-  const eventData = useEventData({
-    patientID: patientInfo.id,
-    sample: patientInfo.sample,
-  });
 
   const allEventData = useAllEventData({ patientID: patientInfo.id })
 
@@ -182,36 +177,34 @@ function App() {
                 onClickEvent={onEventsClicked}
               />
             ) : null}
-            {/* <EventViewer
-              data={eventData}
-              sliderObj={sliderObj}
-              onEventsClicked={onEventsClicked}
-            /> */}
           </div>
         </Col>
         <Col md="5">
           <EEGDataViewer eegEL={eegEL} patientInfo={patientInfo} />
         </Col>
-        {/* <Col md="4" className="fullh">
-          <ENTContainer
-            patientInformation={patientInfo}
-            electrodeData={electrodeDataCsv}
-            sample={sampleData}
-            slider={sliderObj}
-            time={timeRange}
-            events={eventData}
-            allnetworks={fullNetwork}
-            allnetworksWithEvent={fullEventNetwork}
-          />
-          <ENTContainer
-            patientInformation={second}
-            electrodeData={secondElectrode}
-            sample={seconSample}
-            slider={secondSlider}
-            time={secondTimeRange}
-            allnetworks={secondNetwork}
-          />
-        </Col> */}
+        {allEventData ? (
+          <Col md="4" className="fullh">
+            <ENTContainer
+              patientInformation={patientInfo}
+              electrodeData={electrodeDataCsv}
+              sample={sampleData}
+              slider={sliderObj}
+              time={timeRange}
+              events={allEventData[patientInfo.sample]}
+              allnetworks={fullNetwork}
+              allnetworksWithEvent={fullEventNetwork}
+            />
+            <ENTContainer
+              patientInformation={second}
+              electrodeData={secondElectrode}
+              sample={seconSample}
+              slider={secondSlider}
+              time={secondTimeRange}
+              allnetworks={secondNetwork}
+            />
+          </Col>
+        ) : null}
+
       </Row>
     </Container>
   );

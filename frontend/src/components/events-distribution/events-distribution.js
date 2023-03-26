@@ -6,6 +6,8 @@ import ChartContainer, {
 import { AxisBottom } from "../../CommonComponents/AxisBottom";
 import { AxisLeft } from "../../CommonComponents/AxisLeft";
 
+import dataRegistry from "../../data/dataRegistry.json"
+
 /**
  * See EventBarViewer for definition of EventDatum
  * data: EventDatum[]
@@ -20,33 +22,38 @@ const containerProps = {
 };
 const countAccessor = (d) => d.count;
 
-export const EventsDistribution = ({ data, barThreshold, setBarThreshold }) => {
-  const distribution = data.map((el) => countAccessor(el));
+export const EventsDistribution = ({ data, id, currentSample, setBarThreshold }) => {
+  const maxBin = dataRegistry[id].maxEvent;
 
   return (
     <ChartContainer {...containerProps}>
-      <ChartWrapper data={distribution} barThreshold={barThreshold} setBarThreshold={setBarThreshold} />
+      <ChartWrapper data={data} maxBin={maxBin} currentSample={currentSample} setBarThreshold={setBarThreshold} />
     </ChartContainer>
   );
 };
 
-const ChartWrapper = ({ data, barThreshold, setBarThreshold }) => {
+const ChartWrapper = ({ data, maxBin, currentSample, setBarThreshold }) => {
+  // console.log(data)
   const dimensions = useChartContext();
   const bin = d3.bin(); //.thresholds(thresholds);
 
   // originally for handling several lines, each with its own distribution
   let lines = [];
 
-  // get binned data and largest bin
-  const binnedData = bin(data);
-  const maxBin = d3.max(binnedData, (d) => d.length);
-  lines.push({ bins: binnedData });
+  let extent = [];
+  for (let ev in data) {
+    const distribution = data[ev].map((el) => countAccessor(el));
+    extent.push(...d3.extent(distribution))
+    const binnedData = bin(distribution);
+    lines.push({ bins: binnedData, sample: ev });
+
+  }
 
   const xScale = d3
     .scaleLinear()
     .range([0, dimensions.boundedWidth])
     .nice()
-    .domain(d3.extent(data, (d) => d));
+    .domain(d3.extent(extent));
   const yScale = d3
     .scaleLinear()
     .domain([0, maxBin])
@@ -86,7 +93,7 @@ const ChartWrapper = ({ data, barThreshold, setBarThreshold }) => {
             key={`line-${i}`}
             d={line(el.bins)}
             fill={"none"}
-            stroke={"orange"}
+            stroke={el.sample === currentSample ? "orange" : 'grey'}
             strokeOpacity={1}
             strokeWidth={2}
           />

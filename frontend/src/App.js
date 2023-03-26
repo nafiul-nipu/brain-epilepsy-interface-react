@@ -164,7 +164,14 @@ function App() {
               marginTop: "10px",
             }}
           >
-            {eventData ? <EventsDistribution data={eventData} barThreshold={barThreshold} setBarThreshold={setBarThreshold} /> : null}
+            {allEventData ?
+              (<EventsDistribution
+                id={patientInfo.id}
+                currentSample={patientInfo.sample}
+                data={allEventData}
+                setBarThreshold={setBarThreshold}
+              />
+              ) : null}
           </div>
           <div style={{ height: "70vh", width: "100%", backgroundColor: "#FAFBFC" }}>
             <div>Event Viewer</div>

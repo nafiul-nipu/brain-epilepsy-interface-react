@@ -33,6 +33,7 @@ const countAccessor = (d) => d.count;
 
 export const EventBarViewer = (props) => {
   const xMax = d3.max(props.data, countAccessor);
+  // console.log(xMax)
 
   return (
     <>

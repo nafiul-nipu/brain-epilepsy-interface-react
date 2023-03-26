@@ -46,16 +46,38 @@ export const EventBarViewer = (props) => {
 const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
   const dimensions = useChartContext();
 
+  let yTicks;
+  let yScale;
+
+  // if threshold is 30 and above use point scale
+  //else use linear scale
+  if (threshold[0] >= 30) {
+    const filteredEntries = Object.entries(data).filter(([key, value]) => value.count >= threshold[0] && value.count <= threshold[1]);
+    const indexArrays = filteredEntries.map(([key, value]) => value.index);
+    yScale = d3
+      .scalePoint()
+      // .range([dimensions.boundedHeight, 0])
+      .range([0, dimensions.boundedHeight])
+      .domain(indexArrays)
+
+    yTicks = indexArrays
+  } else {
+    yScale = d3
+      .scaleLinear()
+      // .range([dimensions.boundedHeight, 0])
+      .range([0, dimensions.boundedHeight])
+      .domain([0, data.length])
+
+    yTicks = yScale.ticks()
+
+  }
+
   const xScale = d3
     .scaleLinear()
     .range([0, dimensions.boundedWidth])
     .domain([0, xMax])
   // .nice();
-  const yScale = d3
-    .scaleLinear()
-    // .range([dimensions.boundedHeight, 0])
-    .range([0, dimensions.boundedHeight])
-    .domain([0, data.length])
+
   // .nice();
 
   const handleOnLineClick = (eventDatum) => {
@@ -120,7 +142,7 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
         xScale={xScale}
         yScale={yScale}
         scaleOffset={5}
-        ticks={yScale.ticks()}
+        ticks={yTicks}
       // innerHeight={dimensions.boundedHeight}
       />
       {/* TODO: remove these hacks*/}

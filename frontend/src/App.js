@@ -142,7 +142,7 @@ function App() {
     setEEGEL({ id: eventDatum.index, value: values });
   }
 
-  const [barThreshold, setBarThreshold] = useState([5, 10]);
+  const [barThreshold, setBarThreshold] = useState([35, 40]);
 
   // useFetch('ep129', 'sample1', 'filter')
 

@@ -142,6 +142,8 @@ function App() {
     setEEGEL({ id: eventDatum.index, value: values });
   }
 
+  const [barThreshold, setBarThreshold] = useState([5, 10]);
+
   // useFetch('ep129', 'sample1', 'filter')
 
   return (
@@ -159,13 +161,13 @@ function App() {
               marginTop: "10px",
             }}
           >
-            {eventData ? <EventsDistribution data={eventData} /> : null}
+            {eventData ? <EventsDistribution data={eventData} barThreshold={barThreshold} setBarThreshold={setBarThreshold} /> : null}
           </div>
           <div style={{ height: "70vh", width: "100%", backgroundColor: "#FAFBFC" }}>
             {eventData ? (
               <EventBarViewer
                 data={eventData}
-                // threshold={10}
+                threshold={barThreshold}
                 onClickEvent={onEventsClicked}
               />
             ) : null}
@@ -182,7 +184,7 @@ function App() {
         <Col md="4" className="fullh">
           {/* <Row style={{ height: "50%" }}> */}
           {/* <TimeSliderButton sliderObj={sliderObj} /> */}
-          <ENTContainer
+          {/* <ENTContainer
             patientInformation={patientInfo}
             electrodeData={electrodeDataCsv}
             sample={sampleData}
@@ -191,7 +193,7 @@ function App() {
             events={eventData}
             allnetworks={fullNetwork}
             allnetworksWithEvent={fullEventNetwork}
-          />
+          /> */}
           {/* </Row> */}
           {/* <Row style={{ height: "50%" }}> */}
           {/* <ENChordContainer
@@ -203,15 +205,14 @@ function App() {
             /> */}
 
           {/* <TimeSliderButton sliderObj={secondSlider} /> */}
-          <ENTContainer
+          {/* <ENTContainer
             patientInformation={second}
             electrodeData={secondElectrode}
             sample={seconSample}
             slider={secondSlider}
             time={secondTimeRange}
             allnetworks={secondNetwork}
-
-          />
+          /> */}
           {/* </Row> */}
         </Col>
       </Row>

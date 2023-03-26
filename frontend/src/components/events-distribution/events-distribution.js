@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-
+import { useRef, useEffect } from "react";
 import ChartContainer, {
   useChartContext,
 } from "../chart-container/chart-container";
@@ -20,17 +20,17 @@ const containerProps = {
 };
 const countAccessor = (d) => d.count;
 
-export const EventsDistribution = ({ data }) => {
+export const EventsDistribution = ({ data, barThreshold, setBarThreshold }) => {
   const distribution = data.map((el) => countAccessor(el));
 
   return (
     <ChartContainer {...containerProps}>
-      <ChartWrapper data={distribution} />
+      <ChartWrapper data={distribution} barThreshold={barThreshold} setBarThreshold={setBarThreshold} />
     </ChartContainer>
   );
 };
 
-const ChartWrapper = ({ data, thresholds = 100 }) => {
+const ChartWrapper = ({ data, barThreshold, setBarThreshold }) => {
   const dimensions = useChartContext();
   const bin = d3.bin(); //.thresholds(thresholds);
 
@@ -60,6 +60,27 @@ const ChartWrapper = ({ data, thresholds = 100 }) => {
       .y((d) => yScale(d.length))
       .curve(d3.curveMonotoneX)(data);
 
+  const brushRef = useRef(null);
+
+  useEffect(() => {
+    if (brushRef.current) {
+      const brush = d3.brushX()
+        .extent([[0, dimensions.boundedHeight / 2], [dimensions.boundedWidth, dimensions.boundedHeight]]) // set the extent to the size of the <g> element
+        .on('end', (event) => {
+          // do something when the brush is brushed
+          console.log(Math.round(xScale.invert(event.selection[0])), Math.round(xScale.invert(event.selection[1])));
+
+          // setBarThreshold([Math.round(xScale.invert(event.selection[0])), Math.round(xScale.invert(event.selection[1]))]);
+        });
+
+      d3.select(brushRef.current)
+        .call(brush)
+        .call(brush.move, [xScale(5), xScale(10)])
+        ;
+    }
+  }, [dimensions.boundedHeight, dimensions.boundedWidth, xScale, barThreshold]);
+
+
   return (
     <>
       {lines.length > 0 &&
@@ -73,7 +94,15 @@ const ChartWrapper = ({ data, thresholds = 100 }) => {
             strokeWidth={2}
           />
         ))}
-      <AxisLeft xScale={xScale} yScale={yScale} scaleOffset={10} />
+
+      <g ref={brushRef}>
+        {/* add your group elements here */}
+      </g>
+
+      <AxisLeft
+        xScale={xScale} yScale={yScale} scaleOffset={10}
+        ticks={yScale.ticks()}
+      />
       <AxisBottom
         xScale={xScale}
         yScale={yScale}

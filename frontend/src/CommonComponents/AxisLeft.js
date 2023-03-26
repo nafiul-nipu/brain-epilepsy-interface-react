@@ -1,10 +1,10 @@
 import React from "react";
 
-export const AxisLeft = ({ xScale, yScale, scaleOffset }) => {
+export const AxisLeft = ({ xScale, yScale, scaleOffset, ticks }) => {
     // console.log(xScale, yScale, scaleOffset)
     const [xStart,] = xScale.range();
     const [yStart, yEnd] = yScale.range();
-    const ticks = yScale.ticks();
+    // const ticks = yScale.ticks();
     // console.log(ticks)
     return (
         <>

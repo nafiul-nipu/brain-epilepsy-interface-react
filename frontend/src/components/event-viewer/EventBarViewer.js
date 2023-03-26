@@ -34,27 +34,10 @@ const countAccessor = (d) => d.count;
 export const EventBarViewer = (props) => {
   const xMax = d3.max(props.data, countAccessor);
 
-  const [threshold, setThreshold] = useState(10);
-
-  const thresholds = Array.from({ length: xMax / 5 + 1 }, (_, i) => i * 5);
-
-  const onThresholdChange = (event) => {
-    setThreshold(event.target.value)
-  }
-
   return (
     <>
-      <select value={threshold} onChange={onThresholdChange} className='threshSel'>
-        {
-          thresholds.map((thres, index) => {
-            return (
-              <option key={index} value={thres}>{`Th: ${thres}`}</option>
-            )
-          })
-        }
-      </select>
       <ChartContainer {...containerProps}>
-        <Wrapper {...props} xMax={xMax} threshold={threshold} />
+        <Wrapper {...props} xMax={xMax} />
       </ChartContainer>
     </>
   );
@@ -95,7 +78,7 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
   return (
     <>
       {data
-        .filter((el) => countAccessor(el) >= threshold)
+        .filter((el) => countAccessor(el) >= threshold[0] && countAccessor(el) <= threshold[1])
         .map((d, i) => (
           <g key={d.index}>
             <line
@@ -137,6 +120,7 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
         xScale={xScale}
         yScale={yScale}
         scaleOffset={5}
+        ticks={yScale.ticks()}
       // innerHeight={dimensions.boundedHeight}
       />
       {/* TODO: remove these hacks*/}

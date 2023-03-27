@@ -1,25 +1,60 @@
 import "./eeg-data-viewer.css";
 import { useState } from "react";
+import { EEGImage } from "./eeg-image";
+import Form from "react-bootstrap/Form";
+import { Col, Row, InputGroup, Button, FormControl } from "react-bootstrap";
 
-const baseUrl =
-  "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images";
-// const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images/ep129/sample1/E${eeg}.png`
 
-export const EEGDataViewer = ({ eegEL, patientInfo }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+export const EEGDataViewer = ({ eegEL, patientInfo, baseUrl, setBaseUrl }) => {
+  const [spikeAlgorithm, setSpikeAlgorithm] = useState("bandpass");
 
-  function handleClick(eeg, index) {
-    // console.log(eegEL)
-    // console.log('inside mouseover', eeg)
-    const referenceDIV = document.getElementsByClassName('referenceDIV');
-    referenceDIV[0].id = `${eegEL.id}_${eeg}`;
+  function onSpikeAlgorithmChange(e) {
+    setSpikeAlgorithm(e.target.value);
+  }
 
-    setSelectedImage(index);
+  const [inputValue, setInputValue] = useState(1000);
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  }
+
+  const handleButtonOnClick = () => {
+    console.log(spikeAlgorithm, inputValue)
   }
 
 
   return (
     <div className="eeg-container">
+      <Row>
+        <Col md='6'>
+          <Form.Group controlId="formHorizontal" className="flex-form-entry">
+            <Form.Label id="selectPosition">Spike_Alg:</Form.Label>
+            <Form.Select
+              value={spikeAlgorithm}
+              id="selectPosition"
+              onChange={onSpikeAlgorithmChange}
+            >
+              <option value="bandpass"> Bandpass </option>
+              <option value="localMaxima"> Local Maxima </option>
+              <option value="wavelt"> Wavelet </option>
+            </Form.Select>
+          </Form.Group>
+        </Col>
+        <Col md='6'>
+          <InputGroup size="sm" id="inputs">
+            <InputGroup.Text id="basic-addon1">Threshold</InputGroup.Text>
+            <FormControl
+              aria-label="lower"
+              aria-describedby="basic-addon1"
+              defaultValue={inputValue}
+              onBlur={handleInputChange}
+            />
+            <Button variant="outline-secondary" id="button-addon2" onClick={handleButtonOnClick}>
+              See Spike
+            </Button>
+          </InputGroup>
+        </Col>
+      </Row>
       <div className="eeg-title">
         <div>EEGs </div>
         <div className="referenceDIV" id="null"></div>
@@ -27,22 +62,11 @@ export const EEGDataViewer = ({ eegEL, patientInfo }) => {
       </div>
 
       {eegEL ? (
-        <div className="eeg-list">
-          {eegEL.value.map((eeg, index) => {
-            const url = `${baseUrl}/${patientInfo.id}/${patientInfo.sample}/E${eeg}.png`;
-
-            return (
-              <img
-                key={index}
-                src={url}
-                alt={`E${eeg}`}
-                style={{ objectFit: "contain", width: "95%", margin: "10px", boxShadow: selectedImage === index ? "0 0 10px 5px #000000" : "none" }}
-                title={`E${eeg}`}
-                onClick={() => handleClick(eeg, index)}
-              />
-            );
-          })}
-        </div>
+        <EEGImage
+          eegEL={eegEL}
+          patientInfo={patientInfo}
+          baseUrl={baseUrl}
+        />
       ) : null}
     </div>
   );

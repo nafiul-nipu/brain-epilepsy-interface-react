@@ -43,7 +43,7 @@ export const TimeSliderButton = ({
                             size="small"
                             getAriaLabel={() => 'Temperature range'}
                             value={sliderValue}
-                            onChange={handleSliderChange}
+                            // onChange={handleSliderChange}
                             valueLabelDisplay="on"
                             getAriaValueText={valuetext}
                             min={0}

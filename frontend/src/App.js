@@ -129,8 +129,8 @@ function App() {
 
   const [sliderValue, setSliderValue] = useState([0, 1000]);
 
-  const handleSliderChange = (event, newValue) => {
-    // console.log(newValue)
+  const handleSliderChange = (newValue) => {
+    console.log(newValue)
     setSliderValue(newValue);
   };
 

@@ -43,20 +43,19 @@ const ChartWrapper = ({ data, maxBin, currentSample, setBarThreshold }) => {
   let extent = [];
   for (let ev in data) {
     const distribution = data[ev].map((el) => countAccessor(el));
-    extent.push(...d3.extent(distribution))
     const binnedData = bin(distribution);
+    extent.push(d3.max(binnedData, (d) => d.length))
     lines.push({ bins: binnedData, sample: ev });
 
   }
-
   const xScale = d3
     .scaleLinear()
     .range([0, dimensions.boundedWidth])
     .nice()
-    .domain(d3.extent(extent));
+    .domain([0, maxBin]);
   const yScale = d3
     .scaleLinear()
-    .domain([0, maxBin])
+    .domain([0, d3.max(extent)])
     .nice()
     .range([dimensions.boundedHeight, 0]);
 
@@ -111,12 +110,26 @@ const ChartWrapper = ({ data, maxBin, currentSample, setBarThreshold }) => {
         xScale={xScale} yScale={yScale} scaleOffset={10}
         ticks={tickValues}
       />
+      <text
+        // className="axis-label"
+        textAnchor="middle"
+        transform={`translate(${-(containerProps.mb + containerProps.mr)}, ${dimensions.boundedHeight / 2} )rotate(-90)`}
+      >
+        {"Event ID"}
+      </text>
       <AxisBottom
         xScale={xScale}
         yScale={yScale}
         scaleOffset={5}
         innerHeight={dimensions.boundedHeight}
       />
+      <text
+        // className="axis-label"
+        textAnchor="middle"
+        transform={`translate(${(dimensions.boundedWidth / 2 + containerProps.mr)}, ${dimensions.boundedHeight + containerProps.mb} )`}
+      >
+        {"Activated Electrode Counts"}
+      </text>
     </>
   );
 };

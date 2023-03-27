@@ -32,7 +32,6 @@ import { EventsDistribution } from "./components/events-distribution/events-dist
 import { useFetch } from "./library/useFetch";
 import { useAllEventData } from "./library/useAllEventData";
 
-const spikeURL = "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images"
 
 function App() {
 
@@ -125,7 +124,6 @@ function App() {
 
   const [eegEL, setEEGEL] = useState({ id: 0, value: [92] });
 
-  const [baseUrl, setBaseUrl] = useState(spikeURL);
 
   function onEventsClicked(eventDatum) {
     // set slider object here, instead of inside bars
@@ -137,7 +135,6 @@ function App() {
 
     let values = eventDatum.electrode.sort((a, b) => a - b);
     setEEGEL({ id: eventDatum.index, value: values });
-    setBaseUrl(spikeURL);
   }
 
   const [barThreshold, setBarThreshold] = useState([35, 40]);
@@ -188,8 +185,6 @@ function App() {
           <EEGDataViewer
             eegEL={eegEL}
             patientInfo={patientInfo}
-            baseUrl={baseUrl}
-            setBaseUrl={setBaseUrl}
           />
         </Col>
         {allEventData ? (

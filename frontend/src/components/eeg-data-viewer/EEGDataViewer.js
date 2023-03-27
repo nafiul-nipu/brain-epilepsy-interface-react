@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import { Col, Row, InputGroup, Button, FormControl } from "react-bootstrap";
 
 
-export const EEGDataViewer = ({ eegEL, patientInfo, baseUrl, setBaseUrl }) => {
+export const EEGDataViewer = ({ eegEL, patientInfo }) => {
   const [spikeAlgorithm, setSpikeAlgorithm] = useState("bandpass");
 
   function onSpikeAlgorithmChange(e) {
@@ -20,7 +20,7 @@ export const EEGDataViewer = ({ eegEL, patientInfo, baseUrl, setBaseUrl }) => {
 
   const handleButtonOnClick = () => {
     // console.log(spikeAlgorithm, inputValue)
-    setBaseUrl(`https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/eegSpikeDemo/frontend/src/data/${spikeAlgorithm}`);
+    // setBaseUrl(`https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/eegSpikeDemo/frontend/src/data/${spikeAlgorithm}`);
   }
 
 
@@ -66,7 +66,7 @@ export const EEGDataViewer = ({ eegEL, patientInfo, baseUrl, setBaseUrl }) => {
         <EEGImage
           eegEL={eegEL}
           patientInfo={patientInfo}
-          baseUrl={baseUrl}
+
         />
       ) : null}
     </div>

@@ -139,6 +139,13 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
       >
         {`Thr: ${threshold[0]} - ${threshold[1]}`}
       </text>
+      <text
+        // className="axis-label"
+        textAnchor="middle"
+        transform={`translate(${-34}, ${dimensions.boundedHeight / 2} )rotate(-90)`}
+      >
+        {"Event ID"}
+      </text>
       <AxisLeft
         xScale={xScale}
         yScale={yScale}

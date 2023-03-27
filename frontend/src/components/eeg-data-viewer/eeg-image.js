@@ -1,10 +1,10 @@
 import { useState } from "react";
-// const baseUrl =
-//     "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images";
+const baseUrl =
+    "https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images";
 // // const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/EEG%20Images/ep129/sample1/E${eeg}.png`
 
 
-export const EEGImage = ({ eegEL, patientInfo, baseUrl }) => {
+export const EEGImage = ({ eegEL, patientInfo }) => {
     const [selectedImage, setSelectedImage] = useState(null);
 
     function handleClick(eeg, index) {

@@ -1,35 +1,28 @@
 import { Col, Row } from "react-bootstrap"
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 import * as d3 from 'd3'
 
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
+import dataRegistry from "../data/dataRegistry.json";
+
+
 // let button, slider
+function valuetext(value) {
+    return `${value}°C`;
+}
+
 export const TimeSliderButton = ({
     sliderObj,
     id,
     buttonValue,
-    handleClick
+    handleClick,
+    sliderValue,
+    handleSliderChange,
+    patient
 }) => {
-    const sliderRef = useRef(null)
 
-
-    useEffect(() => {
-        // console.log(d3.select(slider).node().clientWidth)
-        let slider = sliderRef.current;
-        d3.select(slider).select('svg').remove()
-
-        // slider = sliderRef.current;
-
-        sliderObj.width(d3.select(slider).node().clientWidth - 70)
-
-        d3.select(slider).append('svg')
-            .attr('class', 'slider-svg')
-            .attr('width', d3.select(slider).node().clientWidth)
-            .attr('height', 70)
-            .append('g')
-            .attr('transform', 'translate(15, 10)')
-            .call(sliderObj)
-    }, [sliderObj])
     return (
         <Col md='12' style={{ height: '5vh' }}>
             <Row>
@@ -44,7 +37,21 @@ export const TimeSliderButton = ({
                     </button>
                 </Col>
                 <Col md='1'>Time</Col>
-                <Col md='9' ref={sliderRef}></Col>
+                <Col md='9'>
+                    <Box sx={{ width: '22vw' }}>
+                        <Slider
+                            size="small"
+                            getAriaLabel={() => 'Temperature range'}
+                            value={sliderValue}
+                            onChange={handleSliderChange}
+                            valueLabelDisplay="on"
+                            getAriaValueText={valuetext}
+                            min={0}
+                            max={dataRegistry[patient].time}
+
+                        />
+                    </Box>
+                </Col>
             </Row>
         </Col>
     )

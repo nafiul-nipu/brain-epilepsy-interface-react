@@ -15,7 +15,9 @@ export const ENTContainer = ({
     events,
     allnetworks,
     allnetworksWithEvent,
-    view
+    view,
+    sliderValue,
+    handleSliderChange
 }) => {
     // loading brain and lesions
     const multiBrain = useOBJThreeStates({ patient: patientInformation.id, objType: 'brain.obj' });
@@ -53,8 +55,12 @@ export const ENTContainer = ({
                 id={view}
                 buttonValue={buttonValue}
                 handleClick={handleClick}
+                sliderValue={sliderValue}
+                handleSliderChange={handleSliderChange}
+                patient={patientInformation.id}
+
             />
-            <Col>
+            {/* <Col>
                 <Row>
                     <Col id="titleBrain1" md='6'>{`${patientInformation.id}: Propagation Over Time`}</Col>
                     <Col md='1' id="svgcheckbox">
@@ -90,7 +96,7 @@ export const ENTContainer = ({
                         buttonValue={buttonValue}
                     />
                 </Row>
-            </Col>
+            </Col> */}
         </Row>
     )
 }

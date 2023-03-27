@@ -123,21 +123,30 @@ function App() {
 
   const [eegEL, setEEGEL] = useState({ id: 0, value: [92] });
 
+  const [barThreshold, setBarThreshold] = useState([35, 40]);
+
+  // useFetch('ep129', 'sample1', 'filter')
+
+  const [sliderValue, setSliderValue] = useState([0, 1000]);
+
+  const handleSliderChange = (event, newValue) => {
+    // console.log(newValue)
+    setSliderValue(newValue);
+  };
+
+
   function onEventsClicked(eventDatum) {
     // set slider object here, instead of inside bars
     console.log('event clicked')
-    // let startTime = eventDatum.time[0];
-    // let endTime = eventDatum.time[eventDatum.time.length - 1];
+    let startTime = eventDatum.time[0];
+    let endTime = eventDatum.time[eventDatum.time.length - 1];
     // console.log(startTime, endTime)
     // sliderObj.value([startTime, endTime]);
+    handleSliderChange([startTime, endTime])
 
     let values = eventDatum.electrode.sort((a, b) => a - b);
     setEEGEL({ id: eventDatum.index, value: values });
   }
-
-  const [barThreshold, setBarThreshold] = useState([35, 40]);
-
-  // useFetch('ep129', 'sample1', 'filter')
 
   return (
     // component container
@@ -193,15 +202,17 @@ function App() {
               events={allEventData[patientInfo.sample]}
               allnetworks={fullNetwork}
               allnetworksWithEvent={fullEventNetwork}
+              sliderValue={sliderValue}
+              handleSliderChange={handleSliderChange}
             />
-            <ENTContainer
+            {/* <ENTContainer
               patientInformation={second}
               electrodeData={secondElectrode}
               sample={seconSample}
               slider={secondSlider}
               time={secondTimeRange}
               allnetworks={secondNetwork}
-            />
+            /> */}
           </Col>
         ) : null}
 

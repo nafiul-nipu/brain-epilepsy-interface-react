@@ -139,3 +139,16 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+
+/* material UI */
+/* .MuiSlider-valueLabelLabel {
+  color: #000000 !important;
+} */
+
+.MuiSlider-valueLabel {
+  top: 40px !important;
+}
+
+.MuiSlider-valueLabel:before {
+  top: -6px;
+}

@@ -19,7 +19,8 @@ export const EEGDataViewer = ({ eegEL, patientInfo, baseUrl, setBaseUrl }) => {
   }
 
   const handleButtonOnClick = () => {
-    console.log(spikeAlgorithm, inputValue)
+    // console.log(spikeAlgorithm, inputValue)
+    setBaseUrl(`https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/eegSpikeDemo/frontend/src/data/${spikeAlgorithm}`);
   }
 
 

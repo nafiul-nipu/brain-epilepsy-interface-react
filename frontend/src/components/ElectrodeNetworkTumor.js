@@ -275,7 +275,7 @@ export const ElectrodeNetworkTumor = ({
             let points = new THREE.Points(pointGeometry, shaderMaterial);
             points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
 
-            // scene[1].add(points);
+            scene[1].add(points);
 
 
             console.log("loading svg")
@@ -330,7 +330,7 @@ export const ElectrodeNetworkTumor = ({
                 points.geometry.colorsNeedUpdate = true;
                 points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
 
-                // scene[1].add(points);
+                scene[1].add(points);
 
                 sliderObj.value([eventData[i].time[0], eventData[i].time[eventData[i].time.length - 1]])
 
@@ -342,7 +342,12 @@ export const ElectrodeNetworkTumor = ({
             let paths = null;
             if (drawSVG) {
                 let svgDataController = {
-                    currentURL: ReactDOMServer.renderToString(<AdjacencyContainer networkdata={i ? mergedROIs : allnetwork} rois={dataRegistry[patientID].rois} />), //convert the react element to SVG
+                    currentURL: ReactDOMServer.renderToString(
+                        <AdjacencyContainer
+                            networkdata={i ? mergedROIs : allnetwork}
+                            rois={dataRegistry[patientID].rois}
+                            maxNet={dataRegistry[patientID].maxNetwork}
+                        />), //convert the react element to SVG
                     drawFillShapes: true,
                     drawStrokes: true,
                     fillShapesWireframe: false,
@@ -452,7 +457,7 @@ export const ElectrodeNetworkTumor = ({
                 }
                 scene[1].add(group)
 
-                scene[1].add(points)
+                // scene[1].add(points)
 
             }
 

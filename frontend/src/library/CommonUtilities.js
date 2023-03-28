@@ -567,7 +567,7 @@ export const MultipleChordContainer = ({ networkdata, rois }) => {
 }
 
 
-export const AdjacencyContainer = ({ networkdata, rois }) => {
+export const AdjacencyContainer = ({ networkdata, rois, maxNet }) => {
     // const rois = [100, 101, 201, 300, 301, 400, 401, 501]
     const height = 350;
     const width = 350;
@@ -583,6 +583,7 @@ export const AdjacencyContainer = ({ networkdata, rois }) => {
 
     const color = d3.scaleSequential()
         .interpolator(d3.interpolateReds)
+    // .domain([0, maxNet])
 
 
     const base = width / 2

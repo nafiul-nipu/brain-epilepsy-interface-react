@@ -97,6 +97,11 @@
   padding-top: 0px;
   height: 94%;
 }
+#selectPositionSession{
+  padding-top: 0px;
+  height: 94%;
+  color: orange;
+}
 
 #container{
   overflow: hidden;

@@ -30,15 +30,15 @@ export const ElectrodeDropDown = ({
 
       {/* propagation dropdown */}
       <Form.Group controlId="formHorizontal" className="flex-form-entry">
-        <Form.Label id="selectPosition">Sample:</Form.Label>
+        <Form.Label id="selectPosition">Session:</Form.Label>
         <Form.Select
           value={patientInfo.sample}
           onChange={onSampleChange}
-          id="selectPosition"
+          id="selectPositionSession"
         >
-          <option value="sample1"> Sample 1</option>
-          <option value="sample2"> Sample 2 </option>
-          <option value="sample3"> Sample 3 </option>
+          <option value="sample1"> Session 1</option>
+          <option value="sample2"> Session 2 </option>
+          <option value="sample3"> Session 3 </option>
         </Form.Select>
       </Form.Group>
 

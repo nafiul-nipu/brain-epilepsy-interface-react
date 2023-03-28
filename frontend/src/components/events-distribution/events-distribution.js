@@ -115,7 +115,7 @@ const ChartWrapper = ({ data, maxBin, currentSample, setBarThreshold }) => {
         textAnchor="middle"
         transform={`translate(${-(containerProps.mb + containerProps.mr)}, ${dimensions.boundedHeight / 2} )rotate(-90)`}
       >
-        {"Event ID"}
+        {"# of Events"}
       </text>
       <AxisBottom
         xScale={xScale}
@@ -128,7 +128,7 @@ const ChartWrapper = ({ data, maxBin, currentSample, setBarThreshold }) => {
         textAnchor="middle"
         transform={`translate(${(dimensions.boundedWidth / 2 + containerProps.mr)}, ${dimensions.boundedHeight + containerProps.mb} )`}
       >
-        {"Activated Electrode Counts"}
+        {"Activated Electrode Count"}
       </text>
     </>
   );

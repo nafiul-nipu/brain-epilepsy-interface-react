@@ -565,3 +565,145 @@ export const MultipleChordContainer = ({ networkdata, rois }) => {
         </svg>
     )
 }
+
+
+export const AdjacencyContainer = ({ networkdata, rois }) => {
+    // const rois = [100, 101, 201, 300, 301, 400, 401, 501]
+    const height = 350;
+    const width = 350;
+    const margin = { top: 100, right: 100, bottom: 100, left: 100 };
+
+    const xScale = d3.scaleBand()
+        // .domain(categories)
+        .range([margin.left, width - margin.right])
+
+    const yScale = d3.scaleBand()
+        // .domain([...categories].reverse())
+        .range([height - margin.bottom, margin.top])
+
+    const color = d3.scaleLinear()
+        .range(["#fcbba1", "#a50f15"])
+
+
+    const base = width / 2
+    const hB = height / 2
+    // console.log(base, hB)
+    // const rois = [100, 101, 201, 300, 301, 400, 401, 501]
+    //              0 RFL  1LFL   2LPL    3RTL      4LTL           5ROL       6LOL       7LI
+    let netx = [base - 200, base, base, base + 250, base + 350, base + 200, base + 350, base + 120]
+    //          0       1           2           3           4           5       6       7
+    let nety = [hB + 250, hB + 100, hB + 550, hB, hB + 250, hB + 700, hB + 500, hB + 350]
+
+    //              0 RFL  1LFL   2LPL    3RTL      4LTL           5ROL       6LOL       7LI
+    let x = [base - 200, base, base, base + 250, base + 350, base + 200, base + 350, base + 120]
+    //          0       1           2           3           4           5       6       7
+    let y = [hB + 250, hB + 100, hB + 550, hB, hB + 250, hB + 700, hB + 500, hB + 350]
+
+    if (rois.length < 4) {
+        // x = [base, base + 300, base]
+        // //          0       1           2           3           4           5       6       7
+        // y = [hB + 100, hB + 150, hB + 450]
+
+        x = [base - 150, -base + 100, base + 150]
+        y = [hB - 180, hB + 150, hB - 80]
+
+        netx = [base - 100, base + 350, base]
+        nety = [hB + 350, hB + 100, hB - 50]
+    }
+
+    return (
+        <svg width={window.innerWidth / 2} height={window.innerHeight - 20} className='top-svg'>
+            {
+                networkdata.map((nd, i) => {
+                    // console.log(nd)
+                    if (nd.roi !== 'rest') {
+                        // console.log(nd)
+                        let matrix = nd.matrix;
+                        let max_val = d3.max(matrix, d => d3.max(d))
+                        color.domain([0, max_val])
+                        const categories = [...Array(nd.electrodes.length).keys()];
+                        xScale.domain(categories);
+                        yScale.domain([...categories].reverse());
+                        return (
+
+                            <g transform={`translate(${x[i]}, ${y[i]})`} id={`roi_${nd.roi}`}>
+                                {
+                                    matrix.map((row, index) => {
+                                        return (
+                                            row.map((col, j) => {
+                                                return (
+                                                    <g>
+                                                        <rect
+                                                            key={index + "-" + j}
+                                                            x={xScale(index)}
+                                                            y={yScale(j)}
+                                                            width={xScale.bandwidth()}
+                                                            height={yScale.bandwidth()}
+                                                            fill={color(col)}
+                                                            rx={4}
+                                                            ry={4}
+                                                        />
+                                                    </g>
+                                                )
+                                            })
+                                        )
+                                    })
+                                }
+                            </g>
+
+
+                        )
+                    }
+                    else {
+                        const uniqueNames = [...new Set(nd.roiWithCount.map(item => item.count))];
+                        uniqueNames.sort((a, b) => a - b);
+                        // console.log(uniqueNames)
+                        const strokeRange = Array.from({ length: uniqueNames.length }, (_, i) => 1 + i * 0.25);
+                        // console.log(strokeRange)
+                        const strokeWidthScale = d3.scaleOrdinal()
+                            .domain(uniqueNames)
+                            .range(strokeRange)
+
+                        // console.log(d3.select(`#roi_100`).node().getBBox());
+                        return (
+                            nd['roiWithCount'].map((each) => {
+                                // console.log(d3.select(`#roi_${each.source}`).node().getBBox())
+                                let source = rois.indexOf(each.source)
+                                let target = rois.indexOf(each.target)
+                                return (
+                                    <g className='aGroup'>
+                                        <defs>
+                                            <marker
+                                                id="arrow"
+                                                markerWidth="10"
+                                                markerHeight="10"
+                                                refX="0"
+                                                refY="3"
+                                                orient="auto"
+                                                markerUnits="strokeWidth"
+
+                                            >
+                                                <path d="M0,0 L0,6 L9,3 z" fill="black" opacity={0.5} />
+                                            </marker>
+                                        </defs>
+                                        <line
+                                            x1={netx[source]}
+                                            y1={nety[source]}
+                                            x2={netx[target]}
+                                            y2={nety[target]}
+                                            stroke="black" strokeWidth={strokeWidthScale(each.count)} markerEnd="url(#arrow)" strokeOpacity={0.4}
+                                        ></line><title>{`${+each.source} -> ${+each.target} = ${+each.count}`}</title>
+                                    </g>
+                                )
+                            })
+                        )
+                    }
+
+                })
+            }
+
+        </svg>
+
+    )
+
+}

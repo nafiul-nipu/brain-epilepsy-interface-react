@@ -189,7 +189,7 @@ function App() {
         </Col>
         {allEventData ? (
           <Col md="4" className="fullh">
-            <ENTContainer
+            {/* <ENTContainer
               patientInformation={patientInfo}
               electrodeData={electrodeDataCsv}
               sample={sampleData}
@@ -198,7 +198,7 @@ function App() {
               events={allEventData[patientInfo.sample]}
               allnetworks={fullNetwork}
               allnetworksWithEvent={fullEventNetwork}
-            />
+            /> */}
             <ENTContainer
               patientInformation={second}
               electrodeData={secondElectrode}

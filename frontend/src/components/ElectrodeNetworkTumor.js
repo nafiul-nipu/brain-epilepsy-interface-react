@@ -16,6 +16,7 @@ import {
     render,
     getbbox,
     objMaterialManipulation,
+    AdjacencyContainer,
     MultipleChordContainer
 } from '../library/CommonUtilities'
 
@@ -341,7 +342,7 @@ export const ElectrodeNetworkTumor = ({
             let paths = null;
             if (drawSVG) {
                 let svgDataController = {
-                    currentURL: ReactDOMServer.renderToString(<MultipleChordContainer networkdata={i ? mergedROIs : allnetwork} rois={dataRegistry[patientID].rois} />), //convert the react element to SVG
+                    currentURL: ReactDOMServer.renderToString(<AdjacencyContainer networkdata={i ? mergedROIs : allnetwork} rois={dataRegistry[patientID].rois} />), //convert the react element to SVG
                     drawFillShapes: true,
                     drawStrokes: true,
                     fillShapesWireframe: false,

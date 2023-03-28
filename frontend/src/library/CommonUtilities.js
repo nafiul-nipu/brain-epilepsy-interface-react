@@ -620,7 +620,12 @@ export const AdjacencyContainer = ({ networkdata, rois }) => {
                         // console.log(nd)
                         let matrix = nd.matrix;
                         let max_val = d3.max(matrix, d => d3.max(d))
-                        color.domain([0, max_val])
+                        if (max_val === 0) {
+                            color.domain([0, 1])
+                        } else {
+                            color.domain([0, max_val])
+                        }
+
                         const categories = [...Array(nd.electrodes.length).keys()];
                         xScale.domain(categories);
                         yScale.domain([...categories].reverse());
@@ -641,7 +646,7 @@ export const AdjacencyContainer = ({ networkdata, rois }) => {
                                                             y={yScale(j)}
                                                             width={xScale.bandwidth()}
                                                             height={yScale.bandwidth()}
-                                                            fill={d3.interpolatePurples(col)} //{d3.interpolateReds(col)}
+                                                            fill={color(col)} //{d3.interpolateReds(col)}
                                                             rx={4}
                                                             ry={4}
                                                         />

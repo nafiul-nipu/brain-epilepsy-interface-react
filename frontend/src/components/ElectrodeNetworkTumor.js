@@ -196,7 +196,7 @@ export const ElectrodeNetworkTumor = ({
                 vertexShader: vertexShader,
                 fragmentShader: fragmentShader,
                 // blending: THREE.AdditiveBlending,
-                depthTest: true,
+                depthTest: false,
                 transparent: true,
                 vertexColors: true,
                 alphaTest: 0.5,

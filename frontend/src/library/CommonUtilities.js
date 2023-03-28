@@ -581,8 +581,8 @@ export const AdjacencyContainer = ({ networkdata, rois }) => {
         // .domain([...categories].reverse())
         .range([height - margin.bottom, margin.top])
 
-    const color = d3.scaleLinear()
-        .range(["#fcbba1", "#a50f15"])
+    const color = d3.scaleSequential()
+        .interpolator(d3.interpolateReds)
 
 
     const base = width / 2
@@ -594,10 +594,10 @@ export const AdjacencyContainer = ({ networkdata, rois }) => {
     //          0       1           2           3           4           5       6       7
     let nety = [hB + 250, hB + 100, hB + 550, hB, hB + 250, hB + 700, hB + 500, hB + 350]
 
-    //              0 RFL  1LFL   2LPL    3RTL      4LTL           5ROL       6LOL       7LI
-    let x = [base - 200, base, base, base + 250, base + 350, base + 200, base + 350, base + 120]
-    //          0       1           2           3           4           5       6       7
-    let y = [hB + 250, hB + 100, hB + 550, hB, hB + 250, hB + 700, hB + 500, hB + 350]
+    //        0 RFL ok  1LFL ok       2LPL ok    3RTL ok       4LTL ok   5ROL ok   6LOL ok       7LI ok
+    let x = [base - 350, base - 175, base - 175, base + 75, base + 175, base + 25, base + 175, base - 50]
+    //          0    1        2      3         4          5       6       7
+    let y = [hB, hB - 75, hB + 350, hB - 175, hB + 75, hB + 500, hB + 325, hB + 175]
 
     if (rois.length < 4) {
         // x = [base, base + 300, base]
@@ -607,8 +607,8 @@ export const AdjacencyContainer = ({ networkdata, rois }) => {
         x = [base - 150, -base + 100, base + 150]
         y = [hB - 180, hB + 150, hB - 80]
 
-        netx = [base - 100, base + 350, base]
-        nety = [hB + 350, hB + 100, hB - 50]
+        netx = [base - 75, base + 325, base + 25]
+        nety = [hB + 350, hB + 100, hB]
     }
 
     return (
@@ -629,8 +629,10 @@ export const AdjacencyContainer = ({ networkdata, rois }) => {
                             <g transform={`translate(${x[i]}, ${y[i]})`} id={`roi_${nd.roi}`}>
                                 {
                                     matrix.map((row, index) => {
+                                        // console.log(row)
                                         return (
                                             row.map((col, j) => {
+                                                // console.log(col)
                                                 return (
                                                     <g>
                                                         <rect
@@ -639,7 +641,7 @@ export const AdjacencyContainer = ({ networkdata, rois }) => {
                                                             y={yScale(j)}
                                                             width={xScale.bandwidth()}
                                                             height={yScale.bandwidth()}
-                                                            fill={color(col)}
+                                                            fill={d3.interpolatePurples(col)} //{d3.interpolateReds(col)}
                                                             rx={4}
                                                             ry={4}
                                                         />

@@ -94,7 +94,7 @@ export const ElectrodeNetworkTumor = ({
 
         // light
         const light = new THREE.PointLight(0xffffff, .2);
-        camera.add(light);
+        scene.add(light);
 
 
         // console.log(electrodeData)
@@ -196,7 +196,7 @@ export const ElectrodeNetworkTumor = ({
                 vertexShader: vertexShader,
                 fragmentShader: fragmentShader,
                 // blending: THREE.AdditiveBlending,
-                depthTest: false,
+                depthTest: true,
                 transparent: true,
                 vertexColors: true,
                 alphaTest: 0.5,
@@ -275,7 +275,7 @@ export const ElectrodeNetworkTumor = ({
             let points = new THREE.Points(pointGeometry, shaderMaterial);
             points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
 
-            scene[1].add(points);
+            // scene[1].add(points);
 
 
             console.log("loading svg")
@@ -330,7 +330,7 @@ export const ElectrodeNetworkTumor = ({
                 points.geometry.colorsNeedUpdate = true;
                 points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
 
-                scene[1].add(points);
+                // scene[1].add(points);
 
                 sliderObj.value([eventData[i].time[0], eventData[i].time[eventData[i].time.length - 1]])
 
@@ -451,6 +451,8 @@ export const ElectrodeNetworkTumor = ({
                     scene[1].remove(group)
                 }
                 scene[1].add(group)
+
+                scene[1].add(points)
 
             }
 

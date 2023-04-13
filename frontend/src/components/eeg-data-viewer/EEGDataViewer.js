@@ -1,6 +1,6 @@
 import "./eeg-data-viewer.css";
 import { useState } from "react";
-import { EEGImage } from "./eeg-image";
+import { EEGImage } from './eeg-image';
 import Form from "react-bootstrap/Form";
 import { Col, Row, InputGroup, Button, FormControl } from "react-bootstrap";
 

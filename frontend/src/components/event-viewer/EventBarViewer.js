@@ -153,23 +153,6 @@ const Wrapper = ({ data, onClickEvent, xMax, threshold }) => {
         ticks={yTicks}
       // innerHeight={dimensions.boundedHeight}
       />
-      {/* TODO: remove these hacks*/}
-      <circle
-        className="referenceCircle"
-        id="null"
-        cx={dimensions.boundedWidth}
-        cy={dimensions.boundedHeight}
-        r={0}
-        fill={"red"}
-      ></circle>
-      <circle
-        className="referenceCircleNetwork"
-        id="null"
-        cx={dimensions.boundedWidth}
-        cy={dimensions.boundedHeight}
-        r={0}
-        fill={"red"}
-      ></circle>
     </>
   );
 };

@@ -45,7 +45,8 @@ export const ElectrodeNetworkTumor = ({
     patientID,
     drawSVG,
     view,
-    buttonValue
+    buttonValue,
+    eventid
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -279,29 +280,21 @@ export const ElectrodeNetworkTumor = ({
 
 
             console.log("loading svg")
-            // console.log(dataRegistry[patientID].rois)
-
-            const network_reference = document.getElementsByClassName('referenceCircleNetwork')
-            // console.log(network_reference[0].id, network_reference[0].id !== null)
-            let i;
             let mergedROIs;
-            if (network_reference[0].id !== 'null' && allnetworkWithEvent) {
-                // console.log(allnetworkWithEvent)
-                i = +network_reference[0].id;
-                // console.log(i)
-                mergedROIs = allnetworkWithEvent[i].map((roi1, index) => ({
+            if (eventid !== null && allnetworkWithEvent) {
+                mergedROIs = allnetworkWithEvent[eventid].map((roi1, index) => ({
                     ...roi1,
                     electrodes: [...allnetwork[index].electrodes],
                 }));
 
             }
 
-            if (i) {
+            if (eventid) {
                 if (points) scene[1].remove(points)
                 let elecColors = []
                 let elecSize = []
                 for (let top = 0; top < electrodeData.length; top++) {
-                    if (eventData[i].electrode.includes(electrodeData[top].electrode_number)) {
+                    if (eventData[eventid].electrode.includes(electrodeData[top].electrode_number)) {
                         // start electrode
                         // console.log('start')
                         //rgb(255,165,0)
@@ -321,7 +314,7 @@ export const ElectrodeNetworkTumor = ({
 
                 let geom = new THREE.BufferGeometry();
                 geom.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                console.log('position')
+                // console.log('position')
                 geom.setAttribute('color', new THREE.Float32BufferAttribute(elecColors, 3));
                 // points.geom.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
                 geom.setAttribute('size', new THREE.Float32BufferAttribute(elecSize, 1).setUsage(THREE.DynamicDrawUsage));
@@ -332,7 +325,7 @@ export const ElectrodeNetworkTumor = ({
 
                 scene[1].add(points);
 
-                sliderObj([eventData[i].time[0], eventData[i].time[eventData[i].time.length - 1]])
+                sliderObj([eventData[eventid].time[0], eventData[eventid].time[eventData[eventid].time.length - 1]])
 
             }
 
@@ -344,7 +337,7 @@ export const ElectrodeNetworkTumor = ({
                 let svgDataController = {
                     currentURL: ReactDOMServer.renderToString(
                         <AdjacencyContainer
-                            networkdata={i ? mergedROIs : allnetwork}
+                            networkdata={eventid ? mergedROIs : allnetwork}
                             rois={dataRegistry[patientID].rois}
                             maxNet={dataRegistry[patientID].maxNetwork}
                         />), //convert the react element to SVG
@@ -569,7 +562,7 @@ export const ElectrodeNetworkTumor = ({
         }
 
 
-    }, [canvasRef, brain, sampleData, timeRange, patientID, drawSVG, sliderObj, bboxCenter, electrodeData, lesions, allnetworkWithEvent, allnetwork, eventData, buttonValue]);
+    }, [canvasRef, brain, sampleData, timeRange, patientID, drawSVG, sliderObj, bboxCenter, electrodeData, lesions, allnetworkWithEvent, allnetwork, eventData, buttonValue, eventid]);
 
     //[canvasRef, drawSVG, electrodeData, patientID, sliderObj,
     //  timeRange, buttonValue, bboxCenter, brain, sampleData,

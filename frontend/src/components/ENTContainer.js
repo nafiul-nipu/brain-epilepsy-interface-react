@@ -16,6 +16,7 @@ export const ENTContainer = ({
     allnetworks,
     allnetworksWithEvent,
     view,
+    eventid
 }) => {
     const [sliderValue, setSliderValue] = useState([0, 0])
     // loading brain and lesions
@@ -91,6 +92,7 @@ export const ENTContainer = ({
                         drawSVG={isChecked}
                         view={view}
                         buttonValue={buttonValue}
+                        eventid={eventid}
                     />
                 </Row>
             </Col>

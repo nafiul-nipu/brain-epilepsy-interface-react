@@ -69,49 +69,9 @@ function App() {
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
 
-
-  // second three d
-  // console.log(dataRegistry)
-  const second = {
-    id: "ep187",
-    sample: "sample1",
-  }
-  // console.log('patient', patientInfo)
-  const secondTimeRange = 1000;
-
-  const seconSample = useSamples({
-    patientID: second.id,
-    sampleName: second.sample,
-    range: secondTimeRange,
-  });
-  // console.log('sampledata', sampleData)
-
-
-
-  const secondNetwork = useFullNetwork({
-    patientID: second.id,
-    sample: second.sample,
-  });
-
-
-  // loading the data
-  const secondElectrode = useElectrodeData({ id: second.id });
-
-
   let sliderObj = sliderHorizontal()
     .min(0)
     .max(dataRegistry[patientInfo.id].time)
-    .default([0, 0]) //for one slider 0
-    .ticks(4)
-    // .tickValues(tickValues)
-    // .step(30)
-    .tickPadding(0)
-    .fill("#2196f3")
-    .on("onchange", function () { });
-
-  let secondSlider = sliderHorizontal()
-    .min(0)
-    .max(dataRegistry[second.id].time)
     .default([0, 0]) //for one slider 0
     .ticks(4)
     // .tickValues(tickValues)
@@ -198,14 +158,6 @@ function App() {
               events={allEventData[patientInfo.sample]}
               allnetworks={fullNetwork}
               allnetworksWithEvent={fullEventNetwork}
-            />
-            <ENTContainer
-              patientInformation={second}
-              electrodeData={secondElectrode}
-              sample={seconSample}
-              slider={secondSlider}
-              time={secondTimeRange}
-              allnetworks={secondNetwork}
             />
           </Col>
         ) : null}

@@ -1,5 +1,7 @@
 import { Col, Row } from "react-bootstrap"
 import dataRegistry from "../data/dataRegistry.json";
+import { Thumb } from '../CommonComponents/Thumb'
+// import { getPercentValue } from "@chakra-ui/utils";
 
 import {
     RangeSlider,
@@ -7,6 +9,8 @@ import {
     RangeSliderFilledTrack,
     RangeSliderThumb,
     RangeSliderMark,
+    Box,
+    useRangeSlider
 } from '@chakra-ui/react'
 
 // let button, slider
@@ -22,6 +26,21 @@ export const TimeSliderButton = ({
     const ranges = Array.from({ length: 5 }, (_, i) => (i + 1) * (time / 4));
     // console.log(ranges)
     // console.log("time slider is rendered")
+
+    // min={25} max={75} stepToNumber={85} stepToIndex={1} stepByNumber={10} defaultValue={[25, 75]} aria-label={['min', 'max']}
+    // min, max, stepToNumber, stepToIndex, stepByNumber, defaultValue, ...rest
+    const {
+        state,
+        actions,
+        getInnerTrackProps,
+        getInputProps,
+        getMarkerProps,
+        getRootProps,
+        getThumbProps,
+        getTrackProps,
+    } = useRangeSlider(25, 75, [25, 75])
+
+    console.log(state.value)
 
     return (
         <Col md='12' style={{ height: '5vh' }}>
@@ -60,7 +79,7 @@ export const TimeSliderButton = ({
                         <RangeSliderMark value={ranges[3]} mt='1' ml='-2.5' fontSize='sm'>
                             {ranges[3]}
                         </RangeSliderMark>
-                        <RangeSliderMark
+                        {/* <RangeSliderMark
                             value={sliderValue[0]}
                             textAlign='center'
                             bg='blue.500'
@@ -70,12 +89,12 @@ export const TimeSliderButton = ({
                             w='12'
                         >
                             {sliderValue[0]}
-                        </RangeSliderMark>
+                        </RangeSliderMark> */}
                         <RangeSliderMark
                             value={sliderValue[1]}
                             textAlign='center'
-                            bg='blue.500'
-                            color='white'
+                            bg='blue.100'
+                            color='black'
                             mt='2'
                             ml='-5'
                             w='12'
@@ -85,11 +104,17 @@ export const TimeSliderButton = ({
                         <RangeSliderTrack bg='red.100'>
                             <RangeSliderFilledTrack bg='tomato' />
                         </RangeSliderTrack>
-                        <RangeSliderThumb boxSize={6} index={0}>
-                            {/* <Box color='tomato' as={MdGraphicEq} /> */}
+                        <RangeSliderThumb boxSize={6} index={1} aria-valuenow={sliderValue[1]} value={sliderValue[1]}>
+                            {/* <Box color='tomato'>{sliderValue[1]}</Box> */}
                         </RangeSliderThumb>
-                        <RangeSliderThumb boxSize={6} index={1}>
-                            {/* <Box color='tomato' as={MdGraphicEq} /> */}
+
+                        <RangeSliderThumb
+                            boxSize={6}
+                            index={0}
+                            aria-valuenow={sliderValue[0]}
+                        // left={`${getPercentValue(sliderValue[0], [0, time])}%`}
+                        >
+                            <Box bg='blue.100' color='black'>{sliderValue[0]}</Box>
                         </RangeSliderThumb>
                     </RangeSlider>
                 </Col>

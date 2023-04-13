@@ -79,43 +79,60 @@ export const TimeSliderButton = ({
                         <RangeSliderMark value={ranges[3]} mt='1' ml='-2.5' fontSize='sm'>
                             {ranges[3]}
                         </RangeSliderMark>
-                        {/* <RangeSliderMark
+                        <RangeSliderTrack bg='red.100'>
+                            <RangeSliderFilledTrack bg='tomato' />
+                        </RangeSliderTrack>
+
+                        {/* left slider */}
+                        <RangeSliderMark
                             value={sliderValue[0]}
                             textAlign='center'
-                            bg='blue.500'
-                            color='white'
-                            mt='2'
-                            ml='-5'
-                            w='12'
+                            bg='blue.100'
+                            color='black'
+                            mt='-6'
+                            ml='-12'
+                            w='14'
                         >
                             {sliderValue[0]}
-                        </RangeSliderMark> */}
+                        </RangeSliderMark>
+
+                        {/* left slider marker */}
+                        <RangeSliderMark
+                            value={sliderValue[0]}
+                            textAlign='center'
+                            bg='black.500'
+                            color='black'
+                            mt='-2.5'
+                            ml='0'
+                            w='2'
+                        >
+                            |
+                        </RangeSliderMark>
+
+                        {/* right slider */}
                         <RangeSliderMark
                             value={sliderValue[1]}
                             textAlign='center'
                             bg='blue.100'
                             color='black'
-                            mt='2'
-                            ml='-5'
-                            w='12'
+                            mt='1'
+                            ml='0'
+                            w='14'
                         >
                             {sliderValue[1]}
                         </RangeSliderMark>
-                        <RangeSliderTrack bg='red.100'>
-                            <RangeSliderFilledTrack bg='tomato' />
-                        </RangeSliderTrack>
-                        <RangeSliderThumb boxSize={6} index={1} aria-valuenow={sliderValue[1]} value={sliderValue[1]}>
-                            {/* <Box color='tomato'>{sliderValue[1]}</Box> */}
-                        </RangeSliderThumb>
-
-                        <RangeSliderThumb
-                            boxSize={6}
-                            index={0}
-                            aria-valuenow={sliderValue[0]}
-                        // left={`${getPercentValue(sliderValue[0], [0, time])}%`}
+                        {/* right slider marker */}
+                        <RangeSliderMark
+                            value={sliderValue[1]}
+                            textAlign='center'
+                            bg='black.500'
+                            color='black'
+                            mt='-2.5'
+                            ml='0'
+                            w='2'
                         >
-                            <Box bg='blue.100' color='black'>{sliderValue[0]}</Box>
-                        </RangeSliderThumb>
+                            |
+                        </RangeSliderMark>
                     </RangeSlider>
                 </Col>
             </Row>

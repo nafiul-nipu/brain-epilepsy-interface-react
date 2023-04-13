@@ -332,7 +332,7 @@ export const ElectrodeNetworkTumor = ({
 
                 scene[1].add(points);
 
-                sliderObj.value([eventData[i].time[0], eventData[i].time[eventData[i].time.length - 1]])
+                sliderObj([eventData[i].time[0], eventData[i].time[eventData[i].time.length - 1]])
 
             }
 
@@ -480,9 +480,9 @@ export const ElectrodeNetworkTumor = ({
                     colIdx = (colIdx + 1) % colors.length;
 
                     if (colIdx === 0) {
-                        sliderObj.value([0, 0]);
+                        sliderObj([0, 0]);
                     } else {
-                        sliderObj.value([(colIdx - 1) * timeRange, colIdx * timeRange]);
+                        sliderObj([(colIdx - 1) * timeRange, colIdx * timeRange]);
                     }
 
 

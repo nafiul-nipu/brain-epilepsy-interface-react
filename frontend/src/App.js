@@ -69,6 +69,8 @@ function App() {
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
 
+
+
   let sliderObj = sliderHorizontal()
     .min(0)
     .max(dataRegistry[patientInfo.id].time)

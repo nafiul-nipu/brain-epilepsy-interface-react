@@ -1,35 +1,32 @@
 import { Col, Row } from "react-bootstrap"
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 import * as d3 from 'd3'
 
+import dataRegistry from "../data/dataRegistry.json";
+
+import {
+    RangeSlider,
+    RangeSliderTrack,
+    RangeSliderFilledTrack,
+    RangeSliderThumb,
+    RangeSliderMark,
+} from '@chakra-ui/react'
+
 // let button, slider
 export const TimeSliderButton = ({
-    sliderObj,
     id,
     buttonValue,
-    handleClick
+    handleClick,
+    sliderValue,
+    setSliderValue,
+    patientID
 }) => {
-    const sliderRef = useRef(null)
+    const time = dataRegistry[patientID].time
+    const ranges = Array.from({ length: 5 }, (_, i) => (i + 1) * (time / 4));
+    // console.log(ranges)
+    // console.log("time slider is rendered")
 
-
-    useEffect(() => {
-        // console.log(d3.select(slider).node().clientWidth)
-        let slider = sliderRef.current;
-        d3.select(slider).select('svg').remove()
-
-        // slider = sliderRef.current;
-
-        sliderObj.width(d3.select(slider).node().clientWidth - 70)
-
-        d3.select(slider).append('svg')
-            .attr('class', 'slider-svg')
-            .attr('width', d3.select(slider).node().clientWidth)
-            .attr('height', 70)
-            .append('g')
-            .attr('transform', 'translate(15, 10)')
-            .call(sliderObj)
-    }, [sliderObj])
     return (
         <Col md='12' style={{ height: '5vh' }}>
             <Row>
@@ -43,8 +40,63 @@ export const TimeSliderButton = ({
                     >{buttonValue}
                     </button>
                 </Col>
-                <Col md='1'>Time</Col>
-                <Col md='9' ref={sliderRef}></Col>
+                <Col md='2'>Time</Col>
+                {/* <Col md='9' ref={sliderRef}></Col> */}
+                <Col md='7'>
+                    <RangeSlider
+                        aria-label={['min', 'max']}
+                        // defaultValue={[30, 80]}
+                        onChange={(val) => setSliderValue(val)}
+                        max={time}
+                    >
+                        <RangeSliderMark value={0} mt='1' ml='-2.5' fontSize='sm'>
+                            0
+                        </RangeSliderMark>
+                        <RangeSliderMark value={ranges[0]} mt='1' ml='-2.5' fontSize='sm'>
+                            {ranges[0]}
+                        </RangeSliderMark>
+                        <RangeSliderMark value={ranges[1]} mt='1' ml='-2.5' fontSize='sm'>
+                            {ranges[1]}
+                        </RangeSliderMark>
+                        <RangeSliderMark value={ranges[2]} mt='1' ml='-2.5' fontSize='sm'>
+                            {ranges[2]}
+                        </RangeSliderMark>
+                        <RangeSliderMark value={ranges[3]} mt='1' ml='-2.5' fontSize='sm'>
+                            {ranges[3]}
+                        </RangeSliderMark>
+                        <RangeSliderMark
+                            value={sliderValue[0]}
+                            textAlign='center'
+                            bg='blue.500'
+                            color='white'
+                            mt='2'
+                            ml='-5'
+                            w='12'
+                        >
+                            {sliderValue[0]}
+                        </RangeSliderMark>
+                        <RangeSliderMark
+                            value={sliderValue[1]}
+                            textAlign='center'
+                            bg='blue.500'
+                            color='white'
+                            mt='2'
+                            ml='-5'
+                            w='12'
+                        >
+                            {sliderValue[1]}
+                        </RangeSliderMark>
+                        <RangeSliderTrack bg='red.100'>
+                            <RangeSliderFilledTrack bg='tomato' />
+                        </RangeSliderTrack>
+                        <RangeSliderThumb boxSize={6} index={0}>
+                            {/* <Box color='tomato' as={MdGraphicEq} /> */}
+                        </RangeSliderThumb>
+                        <RangeSliderThumb boxSize={6} index={1}>
+                            {/* <Box color='tomato' as={MdGraphicEq} /> */}
+                        </RangeSliderThumb>
+                    </RangeSlider>
+                </Col>
             </Row>
         </Col>
     )

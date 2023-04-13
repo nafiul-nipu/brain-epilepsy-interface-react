@@ -15,8 +15,9 @@ export const ENTContainer = ({
     events,
     allnetworks,
     allnetworksWithEvent,
-    view
+    view,
 }) => {
+    const [sliderValue, setSliderValue] = useState([0, 0])
     // loading brain and lesions
     const multiBrain = useOBJThreeStates({ patient: patientInformation.id, objType: 'brain.obj' });
     // console.log('brain', multiBrain)
@@ -49,10 +50,12 @@ export const ENTContainer = ({
     return (
         <Row style={{ height: "50%" }}>
             <TimeSliderButton
-                sliderObj={slider}
                 id={view}
                 buttonValue={buttonValue}
                 handleClick={handleClick}
+                sliderValue={sliderValue}
+                setSliderValue={setSliderValue}
+                patientID={patientInformation.id}
             />
             <Col>
                 <Row>
@@ -78,7 +81,7 @@ export const ENTContainer = ({
                         electrodeData={electrodeData} //ok
                         sampleData={sample} //ok
                         bboxCenter={bboxCenter} //ok
-                        sliderObj={slider} //problem
+                        sliderObj={setSliderValue} //problem
                         timeRange={time}
                         lesions={lesions} //ok
                         eventData={events}

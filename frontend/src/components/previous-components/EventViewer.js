@@ -1,8 +1,8 @@
 import { Col } from "react-bootstrap";
 import * as d3 from "d3";
 
-import { AxisLeft } from "../CommonComponents/AxisLeft";
-import { AxisBottom } from "../CommonComponents/AxisBottom";
+import { AxisLeft } from "../../CommonComponents/AxisLeft";
+import { AxisBottom } from "../../CommonComponents/AxisBottom";
 
 // margin for SVG
 const margin = { top: 10, right: 40, bottom: 70, left: 45 };

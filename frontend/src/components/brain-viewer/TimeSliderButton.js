@@ -1,6 +1,5 @@
 import { Col, Row } from "react-bootstrap"
-import dataRegistry from "../data/dataRegistry.json";
-import { Thumb } from '../CommonComponents/Thumb'
+import dataRegistry from "../../data/dataRegistry.json";
 // import { getPercentValue } from "@chakra-ui/utils";
 
 import {

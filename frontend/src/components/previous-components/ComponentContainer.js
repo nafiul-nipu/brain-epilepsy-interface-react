@@ -1,11 +1,11 @@
 import { Container, Row, Col } from "react-bootstrap"
 import { EEGDataViewer } from "./EEGDataViewer"
-import { ElectrodeDropDown } from "./ElectrodeDropDown"
+import { ElectrodeDropDown } from "../ElectrodeDropDown"
 import { ElectrodeNetworkChord3D } from "./ElectrodeNetworkChord3D"
-import { ElectrodeNetworkTumor } from "./ElectrodeNetworkTumor"
+import { ElectrodeNetworkTumor } from "../ElectrodeNetworkTumor"
 import { EventViewer } from "./EventViewer"
 // import { PropagationTimeSeries } from "./PropagationTimeSeries"
-import { TimeSliderButton } from "./TimeSliderButton"
+import { TimeSliderButton } from "../brain-viewer/TimeSliderButton"
 
 export const ComponentContainer = ({
     electrodeData,

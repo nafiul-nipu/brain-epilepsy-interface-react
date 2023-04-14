@@ -4,7 +4,7 @@ import { useRef, useEffect } from 'react';
 import { Col } from 'react-bootstrap';
 import * as THREE from 'three';
 import * as d3 from 'd3';
-import circle from '../models/disc.png'
+import circle from '../../models/disc.png'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
 import ReactDOMServer from 'react-dom/server';
 import {
@@ -18,11 +18,11 @@ import {
     objMaterialManipulation,
     AdjacencyContainer,
     MultipleChordContainer
-} from '../library/CommonUtilities'
+} from '../../library/CommonUtilities'
 
-import dataRegistry from '../data/dataRegistry.json'
+import dataRegistry from '../../data/dataRegistry.json'
 
-import { vertexShader, fragmentShader } from '../library/shadersrc'
+import { vertexShader, fragmentShader } from '../../library/shadersrc'
 
 let canvas = null;
 // let renderer, scene, scene2, camera, controls, centerBrain, centerOther;
@@ -31,7 +31,7 @@ let canvas = null;
 //     .domain([101, 301, 300, 100, 400, 401, 201, 501])
 //     .range(['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf'])
 
-export const ElectrodeNetworkTumor = ({
+export const ElectrodeNetworkTumorWithNetwork = ({
     brain,
     electrodeData,
     sampleData,

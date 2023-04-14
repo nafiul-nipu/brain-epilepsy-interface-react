@@ -16,9 +16,9 @@ import {
     getbbox,
     objMaterialManipulation,
     MultipleChordContainer
-} from '../library/CommonUtilities'
+} from '../../library/CommonUtilities'
 
-import dataRegistry from '../data/dataRegistry.json'
+import dataRegistry from '../../data/dataRegistry.json'
 
 
 let canvas = null;

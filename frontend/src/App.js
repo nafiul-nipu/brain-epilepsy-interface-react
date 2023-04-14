@@ -10,19 +10,15 @@ import { useSamples } from "./library/useSamples";
 import { useState } from "react";
 
 import dataRegistry from "./data/dataRegistry.json";
-// import { useEventData } from "./library/useEventData";
 
 import { Container, Row, Col } from "react-bootstrap";
 
 import { EEGDataViewer } from "./components/eeg-data-viewer/EEGDataViewer";
 import { ElectrodeDropDown } from "./components/ElectrodeDropDown";
 
-// import { EventViewer } from "./components/EventViewer";
 import { EventBarViewer } from "./components/event-viewer/EventBarViewer";
-// import { PropagationTimeSeries } from "./components/PropagationTimeSeries"
-// import { TimeSliderButton } from "./components/TimeSliderButton";
-import { ENTContainer } from "./components/ENTContainer";
-// import { ENChordContainer } from "./components/ENChordContainer";
+
+import { ENTContainer } from "./components/brain-viewer/ENTContainer";
 
 import { useFullNetwork } from "./library/useFullNetwork";
 import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";

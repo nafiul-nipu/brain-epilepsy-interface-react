@@ -128,14 +128,28 @@ function App() {
               ) : null}
           </div>
           <div style={{ height: "70vh", width: "100%", backgroundColor: "#FAFBFC" }}>
-            <div>Event Viewer</div>
+            {/* <div>Event Viewer</div>
+             */}
             {allEventData ? (
+              <ENTContainer
+                patientInformation={patientInfo}
+                electrodeData={electrodeDataCsv}
+                sample={sampleData}
+                slider={sliderObj}
+                time={timeRange}
+                events={allEventData[patientInfo.sample]}
+                allnetworks={fullNetwork}
+                allnetworksWithEvent={fullEventNetwork}
+                eventid={eventid}
+              />
+            ) : null}
+            {/* {allEventData ? (
               <EventBarViewer
                 data={allEventData[patientInfo.sample]}
                 threshold={barThreshold}
                 onClickEvent={onEventsClicked}
               />
-            ) : null}
+            ) : null} */}
           </div>
         </Col>
         <Col md="5">
@@ -144,22 +158,10 @@ function App() {
             patientInfo={patientInfo}
           />
         </Col>
-        {allEventData ? (
-          <Col md="4" className="fullh">
-            <ENTContainer
-              patientInformation={patientInfo}
-              electrodeData={electrodeDataCsv}
-              sample={sampleData}
-              slider={sliderObj}
-              time={timeRange}
-              events={allEventData[patientInfo.sample]}
-              allnetworks={fullNetwork}
-              allnetworksWithEvent={fullEventNetwork}
-              eventid={eventid}
-            />
-          </Col>
-        ) : null}
+        <Col md="4" className="fullh">
 
+
+        </Col>
       </Row>
     </Container>
   );

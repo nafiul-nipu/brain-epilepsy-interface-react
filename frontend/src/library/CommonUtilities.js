@@ -6,8 +6,8 @@ import circle from '../models/disc.png'
 import * as d3 from 'd3'
 // import networkdata from '../data/electrodes/ep187/ep187_full_network.json'
 
-let width = (window.innerWidth / 3) - 10;
-let height = window.innerHeight / 2 - 10;
+let width = (window.innerWidth / 3.5) - 10;
+let height = window.innerHeight / 3.5 - 10;
 let angle = 40;
 let aspect = width / height;
 let near = 1;

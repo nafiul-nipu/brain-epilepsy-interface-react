@@ -154,14 +154,13 @@ function App() {
           </div>
         </Col>
         <Col md="5">
+
+        </Col>
+        <Col md="4" className="fullh">
           <EEGDataViewer
             eegEL={eegEL}
             patientInfo={patientInfo}
           />
-        </Col>
-        <Col md="4" className="fullh">
-
-
         </Col>
       </Row>
     </Container>

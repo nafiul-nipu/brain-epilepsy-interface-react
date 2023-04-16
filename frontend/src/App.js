@@ -1,20 +1,16 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { sliderHorizontal } from "d3-simple-slider";
-
 // importing components
 import { useElectrodeData } from "./library/useElectrodeData";
 import { useSamples } from "./library/useSamples";
 
 import { useState } from "react";
 
-import dataRegistry from "./data/dataRegistry.json";
-
 import { Container, Row, Col } from "react-bootstrap";
 
 import { EEGDataViewer } from "./components/eeg-data-viewer/EEGDataViewer";
-import { ElectrodeDropDown } from "./components/ElectrodeDropDown";
+import { ElectrodeDropDown } from "./components/top-navigation-panel/ElectrodeDropDown";
 
 import { EventBarViewer } from "./components/event-viewer/EventBarViewer";
 
@@ -22,11 +18,11 @@ import { ENTContainer } from "./components/brain-viewer/ENTContainer";
 
 import { useFullNetwork } from "./library/useFullNetwork";
 import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
-
-import { Logo } from "./components/logo/logo";
 import { EventsDistribution } from "./components/events-distribution/events-distribution";
 import { useFetch } from "./library/useFetch";
 import { useAllEventData } from "./library/useAllEventData";
+import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
+import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
 
 
 function App() {
@@ -67,16 +63,6 @@ function App() {
 
 
 
-  let sliderObj = sliderHorizontal()
-    .min(0)
-    .max(dataRegistry[patientInfo.id].time)
-    .default([0, 0]) //for one slider 0
-    .ticks(4)
-    // .tickValues(tickValues)
-    // .step(30)
-    .tickPadding(0)
-    .fill("#2196f3")
-    .on("onchange", function () { });
 
   // console.log(electrodeDataCsv)
 
@@ -101,15 +87,31 @@ function App() {
   return (
     // component container
     <Container fluid id="container">
-      <Row className={"fullh"}>
-        <Col md="3" className={"event-panel fullh"}>
-          <Logo>SpikeXplorer</Logo>
+      <Row>
+        {/* electrode dropdown */}
+        <Col md='12' style={{ height: '5vh' }}>
           <ElectrodeDropDown
             patientInfo={patientInfo}
             setPatientInfo={setPatientInfo}
             timeRange={timeRange}
             setTimeRange={setTimeRange}
           />
+        </Col>
+      </Row>
+      <Row>
+        {/* global-event timeline */}
+        <Col md='12' style={{ height: '5vh' }}>
+          <GlobalEvent />
+        </Col>
+      </Row>
+      <Row>
+        {/* event timeline */}
+        <Col md='12' style={{ height: '5vh' }}>
+          <LocalEvent />
+        </Col>
+      </Row>
+      <Row className={"fullh"}>
+        <Col md="3" className={"event-panel fullh"}>
           <div
             style={{
               width: "100%",
@@ -135,7 +137,6 @@ function App() {
                 patientInformation={patientInfo}
                 electrodeData={electrodeDataCsv}
                 sample={sampleData}
-                slider={sliderObj}
                 time={timeRange}
                 events={allEventData[patientInfo.sample]}
                 allnetworks={fullNetwork}

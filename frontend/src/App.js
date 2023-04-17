@@ -165,10 +165,10 @@ function App() {
           <Row>
             <Col md="12" style={{ height: '40vh', backgroundColor: "lightblue" }}>
               Adjacency Matrix for a selected region
-              <AdjacencyMatrix
+              {/* <AdjacencyMatrix
                 data={matrix}
                 columns={columns}
-              />
+              /> */}
             </Col>
           </Row>
           <Row>

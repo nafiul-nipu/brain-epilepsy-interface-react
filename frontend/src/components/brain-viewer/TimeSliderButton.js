@@ -23,23 +23,6 @@ export const TimeSliderButton = ({
 }) => {
     const time = dataRegistry[patientID].time
     const ranges = Array.from({ length: 5 }, (_, i) => (i + 1) * (time / 4));
-    // console.log(ranges)
-    // console.log("time slider is rendered")
-
-    // min={25} max={75} stepToNumber={85} stepToIndex={1} stepByNumber={10} defaultValue={[25, 75]} aria-label={['min', 'max']}
-    // min, max, stepToNumber, stepToIndex, stepByNumber, defaultValue, ...rest
-    const {
-        state,
-        actions,
-        getInnerTrackProps,
-        getInputProps,
-        getMarkerProps,
-        getRootProps,
-        getThumbProps,
-        getTrackProps,
-    } = useRangeSlider(25, 75, [25, 75])
-
-    console.log(state.value)
 
     return (
         <Col md='12' style={{ height: '5vh' }}>

@@ -12,8 +12,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import { EEGDataViewer } from "./components/eeg-data-viewer/EEGDataViewer";
 import { ElectrodeDropDown } from "./components/top-navigation-panel/ElectrodeDropDown";
 
-import { EventBarViewer } from "./components/event-viewer/EventBarViewer";
-
 import { ENTContainer } from "./components/brain-viewer/ENTContainer";
 
 import { useFullNetwork } from "./library/useFullNetwork";
@@ -23,6 +21,7 @@ import { useFetch } from "./library/useFetch";
 import { useAllEventData } from "./library/useAllEventData";
 import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
 import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
+import { AdjacencyMatrix } from "./CommonComponents/AdjacencyMatrix";
 
 
 function App() {
@@ -84,6 +83,19 @@ function App() {
 
   // useFetch('ep129', 'sample1', 'filter')
 
+  // fake data for adjacency matrix
+  var numrows = 5;
+  var numcols = 5;
+
+  var matrix = new Array(numrows);
+  for (var i = 0; i < numrows; i++) {
+    matrix[i] = new Array(numcols);
+    for (var j = 0; j < numcols; j++) {
+      matrix[i][j] = Math.random() * 2;
+    }
+  }
+  let columns = [0, 1, 2, 3, 4];
+
   return (
     // component container
     <Container fluid id="container">
@@ -110,7 +122,8 @@ function App() {
           <LocalEvent />
         </Col>
       </Row>
-      <Row >
+      <Row>
+        {/* left panel */}
         <Col md="3" >
           <Row>
             <Col md="12" style={{ height: '15vh', backgroundColor: "#FAFBFC" }}>
@@ -144,9 +157,25 @@ function App() {
             <Col md='12' style={{ height: '30vh', backgroundColor: 'lightcyan' }}>Region Summary</Col>
           </Row>
         </Col>
+        {/* middle panel */}
         <Col md="5">
-          <Row></Row>
+          <Row>
+            <Col md="12" style={{ height: '10vh', backgroundColor: "lightcyan" }}>Selected Event Window</Col>
+          </Row>
+          <Row>
+            <Col md="12" style={{ height: '40vh', backgroundColor: "lightblue" }}>
+              Adjacency Matrix for a selected region
+              <AdjacencyMatrix
+                data={matrix}
+                columns={columns}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="12" style={{ height: '35vh', backgroundColor: "orange" }}>Similar Regions/Exploration so far</Col>
+          </Row>
         </Col>
+        {/* right panel */}
         <Col md="4" className="fullh">
           <EEGDataViewer
             eegEL={eegEL}

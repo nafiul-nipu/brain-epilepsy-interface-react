@@ -1,6 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 // importing components
 import { useElectrodeData } from "./library/useElectrodeData";
 import { useSamples } from "./library/useSamples";
@@ -96,6 +97,7 @@ function App() {
   }
   let columns = Array.from({ length: matrix.length }, (_, i) => i);
 
+
   return (
     // component container
     <Container fluid id="container">
@@ -173,7 +175,22 @@ function App() {
             </Col>
           </Row>
           <Row>
-            <Col md="12" style={{ height: '35vh', backgroundColor: "orange" }}>Similar Regions/Exploration so far</Col>
+            <Col md="12" style={{ height: '35vh' }}>
+              <Tabs variant='enclosed' colorScheme='green'>
+                <TabList>
+                  <Tab>Similar Regions</Tab>
+                  <Tab>Exploration So Far</Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    <p>Showing Similar Regions</p>
+                  </TabPanel>
+                  <TabPanel>
+                    <p>Showing Exploration so far</p>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </Col>
           </Row>
         </Col>
         {/* right panel */}

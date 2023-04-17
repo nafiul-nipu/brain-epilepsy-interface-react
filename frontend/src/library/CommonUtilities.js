@@ -6,8 +6,8 @@ import circle from '../models/disc.png'
 import * as d3 from 'd3'
 // import networkdata from '../data/electrodes/ep187/ep187_full_network.json'
 
-let width = (window.innerWidth / 3.5) - 10;
-let height = window.innerHeight / 3.5 - 10;
+let width = (window.innerWidth / 4) - 10;
+let height = window.innerHeight / 2.85 - 10;
 let angle = 40;
 let aspect = width / height;
 let near = 1;
@@ -18,7 +18,7 @@ export function createRenderer(canvas, autoClear = false) {
     let renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setClearColor(0Xfafbfc, 1);
+    renderer.setClearColor(0Xfafbfc, 1); //fafbfc
     renderer.autoClear = autoClear;
 
     renderer.outputEncoding = THREE.sRGBEncoding;

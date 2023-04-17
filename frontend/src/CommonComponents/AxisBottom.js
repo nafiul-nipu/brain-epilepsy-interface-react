@@ -1,6 +1,6 @@
 import React from "react";
 
-export const AxisBottom = ({ xScale, yScale, scaleOffset, innerHeight }) => {
+export const AxisBottom = ({ xScale, yScale, scaleOffset, innerHeight, textPosition }) => {
     const [xStart, xEnd] = xScale.range();
     const [, yEnd] = yScale.range();
     const ticks = xScale.ticks();
@@ -15,7 +15,7 @@ export const AxisBottom = ({ xScale, yScale, scaleOffset, innerHeight }) => {
                             <line x1={x} x2={x} y1={yEnd} y2={yEnd + scaleOffset} />
                             <text
                                 x={x}
-                                y={yEnd + scaleOffset * 5}
+                                y={yEnd + scaleOffset * textPosition}
                             >
                                 {t}
                             </text>

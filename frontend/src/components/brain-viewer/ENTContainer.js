@@ -40,38 +40,40 @@ export const ENTContainer = ({
     // console.log('bbox', bboxCenter)
 
     return (
-        <Row style={{ height: "50%" }}>
-            <TimeSliderButton
-                id={view}
-                buttonValue={buttonValue}
-                handleClick={handleClick}
-                sliderValue={sliderValue}
-                setSliderValue={setSliderValue}
-                patientID={patientInformation.id}
-            />
-            <Col>
-                <Row>
-                    <Col id="titleBrain1" md='6'>{`${patientInformation.id}: Propagation Over Time`}</Col>
-                </Row>
-                <Row>
-                    <ElectrodeNetworkTumor
-                        brain={multiBrain.obj1} //ok
-                        electrodeData={electrodeData} //ok
-                        sampleData={sample} //ok
-                        bboxCenter={bboxCenter} //ok
-                        sliderObj={setSliderValue}
-                        timeRange={time}
-                        lesions={lesions} //ok
-                        eventData={events}
-                        allnetwork={allnetworks}
-                        allnetworkWithEvent={allnetworksWithEvent}
-                        patientID={patientInformation.id}
-                        view={view}
-                        buttonValue={buttonValue}
-                        eventid={eventid}
-                    />
-                </Row>
-            </Col>
-        </Row>
+        <>
+            <Row >
+                <TimeSliderButton
+                    id={view}
+                    buttonValue={buttonValue}
+                    handleClick={handleClick}
+                    sliderValue={sliderValue}
+                    setSliderValue={setSliderValue}
+                    patientID={patientInformation.id}
+                />
+            </Row>
+            <Row>
+                <Col md='12' style={{ height: '35vh' }}>
+                    <Row>
+                        <div id="titleBrain1">{`${patientInformation.id}: Propagation Over Time`}</div>
+                        <ElectrodeNetworkTumor
+                            brain={multiBrain.obj1} //ok
+                            electrodeData={electrodeData} //ok
+                            sampleData={sample} //ok
+                            bboxCenter={bboxCenter} //ok
+                            sliderObj={setSliderValue}
+                            timeRange={time}
+                            lesions={lesions} //ok
+                            eventData={events}
+                            allnetwork={allnetworks}
+                            allnetworkWithEvent={allnetworksWithEvent}
+                            patientID={patientInformation.id}
+                            view={view}
+                            buttonValue={buttonValue}
+                            eventid={eventid}
+                        />
+                    </Row>
+                </Col>
+            </Row>
+        </>
     )
 }

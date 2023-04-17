@@ -110,51 +110,42 @@ function App() {
           <LocalEvent />
         </Col>
       </Row>
-      <Row className={"fullh"}>
-        <Col md="3" className={"event-panel fullh"}>
-          <div
-            style={{
-              width: "100%",
-              height: "150px",
-              backgroundColor: "#FAFBFC",
-              marginTop: "10px",
-            }}
-          >
-            {allEventData ?
-              (<EventsDistribution
-                id={patientInfo.id}
-                currentSample={patientInfo.sample}
-                data={allEventData}
-                setBarThreshold={setBarThreshold}
-              />
+      <Row >
+        <Col md="3" >
+          <Row>
+            <Col md="12" style={{ height: '15vh', backgroundColor: "#FAFBFC" }}>
+              {allEventData ?
+                (<EventsDistribution
+                  id={patientInfo.id}
+                  currentSample={patientInfo.sample}
+                  data={allEventData}
+                  setBarThreshold={setBarThreshold}
+                />
+                ) : null}
+            </Col>
+          </Row>
+          <Row>
+            <Col md='12' style={{ height: '40vh', backgroundColor: "#FAFBFC" }}>
+              {allEventData ? (
+                <ENTContainer
+                  patientInformation={patientInfo}
+                  electrodeData={electrodeDataCsv}
+                  sample={sampleData}
+                  time={timeRange}
+                  events={allEventData[patientInfo.sample]}
+                  allnetworks={fullNetwork}
+                  allnetworksWithEvent={fullEventNetwork}
+                  eventid={eventid}
+                />
               ) : null}
-          </div>
-          <div style={{ height: "70vh", width: "100%", backgroundColor: "#FAFBFC" }}>
-            {/* <div>Event Viewer</div>
-             */}
-            {allEventData ? (
-              <ENTContainer
-                patientInformation={patientInfo}
-                electrodeData={electrodeDataCsv}
-                sample={sampleData}
-                time={timeRange}
-                events={allEventData[patientInfo.sample]}
-                allnetworks={fullNetwork}
-                allnetworksWithEvent={fullEventNetwork}
-                eventid={eventid}
-              />
-            ) : null}
-            {/* {allEventData ? (
-              <EventBarViewer
-                data={allEventData[patientInfo.sample]}
-                threshold={barThreshold}
-                onClickEvent={onEventsClicked}
-              />
-            ) : null} */}
-          </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col md='12' style={{ height: '30vh', backgroundColor: 'lightcyan' }}>Region Summary</Col>
+          </Row>
         </Col>
         <Col md="5">
-
+          <Row></Row>
         </Col>
         <Col md="4" className="fullh">
           <EEGDataViewer

@@ -5,7 +5,8 @@ export const AdjacencyMatrix = ({
     margin = { top: 20, right: 20, bottom: 20, left: 20 },
     height = 350,
     width = 350,
-    colorRange = ["#fcbba1", "#a50f15"]
+    colorRange = ["#fcbba1", "#a50f15"],
+    fontSize = "0.65em"
 }) => {
 
     let xScale = d3.scaleBand()
@@ -33,9 +34,9 @@ export const AdjacencyMatrix = ({
                                     <text
                                         key={`top_${i}`}
                                         x={xScale(col) + xScale.bandwidth() / 2}
-                                        y={margin.top / 2}
+                                        y={margin.left / 2}
                                         textAnchor="middle"
-                                        fontSize="1em"
+                                        fontSize={fontSize}
                                     >
                                         {col}
                                     </text>
@@ -44,7 +45,7 @@ export const AdjacencyMatrix = ({
                                         x={margin.left / 2}
                                         y={yScale(col) + yScale.bandwidth() / 2}
                                         textAnchor="middle"
-                                        fontSize="1em"
+                                        fontSize={fontSize}
                                     >
                                         {col}
                                     </text>

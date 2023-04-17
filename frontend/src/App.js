@@ -84,8 +84,8 @@ function App() {
   // useFetch('ep129', 'sample1', 'filter')
 
   // fake data for adjacency matrix
-  var numrows = 5;
-  var numcols = 5;
+  var numrows = 30;
+  var numcols = 30;
 
   var matrix = new Array(numrows);
   for (var i = 0; i < numrows; i++) {
@@ -94,7 +94,7 @@ function App() {
       matrix[i][j] = Math.random() * 2;
     }
   }
-  let columns = [0, 1, 2, 3, 4];
+  let columns = Array.from({ length: matrix.length }, (_, i) => i);
 
   return (
     // component container
@@ -164,11 +164,12 @@ function App() {
           </Row>
           <Row>
             <Col md="12" style={{ height: '40vh', backgroundColor: "lightblue" }}>
-              Adjacency Matrix for a selected region
-              {/* <AdjacencyMatrix
+              <AdjacencyMatrix
                 data={matrix}
                 columns={columns}
-              /> */}
+                width={385}
+                height={385}
+              />
             </Col>
           </Row>
           <Row>

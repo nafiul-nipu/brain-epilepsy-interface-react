@@ -165,7 +165,7 @@ function App() {
             <Col md="12" style={{ height: '10vh', backgroundColor: "lightcyan" }}>Selected Event Window</Col>
           </Row>
           <Row>
-            <Col md="12" style={{ height: '40vh', backgroundColor: "lightblue" }}>
+            <Col md="12" style={{ height: '40vh', backgroundColor: "#FAFBFC" }}>
               <AdjacencyMatrix
                 data={matrix}
                 columns={columns}

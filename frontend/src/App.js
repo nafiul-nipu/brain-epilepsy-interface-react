@@ -169,9 +169,8 @@ function App() {
               <AdjacencyMatrix
                 data={matrix}
                 columns={columns}
-                width={385}
-                height={385}
               />
+
             </Col>
           </Row>
           <Row>
@@ -200,8 +199,8 @@ function App() {
             patientInfo={patientInfo}
           />
         </Col>
-      </Row>
-    </Container>
+      </Row >
+    </Container >
   );
 }
 

@@ -80,7 +80,7 @@ function App() {
     setEventid(eventDatum.index)
   }
 
-  const [barThreshold, setBarThreshold] = useState([35, 40]);
+  const [barThreshold, setBarThreshold] = useState([0, 70]);
 
   // useFetch('ep129', 'sample1', 'filter')
 
@@ -114,8 +114,15 @@ function App() {
       </Row>
       <Row>
         {/* global-event timeline */}
-        <Col md='12' style={{ height: '5vh' }}>
-          <GlobalEvent />
+        <Col md='12' style={{ height: '5vh', backgroundColor: '#FAFBFC' }}>
+          {allEventData ?
+            (<GlobalEvent
+              data={allEventData}
+              id={patientInfo.id}
+              currentSample={patientInfo.sample}
+              threshold={barThreshold}
+            />
+            ) : null}
         </Col>
       </Row>
       <Row>

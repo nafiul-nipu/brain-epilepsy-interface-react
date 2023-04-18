@@ -24,6 +24,8 @@ import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
 import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
 import { AdjacencyMatrix } from "./CommonComponents/AdjacencyMatrix";
 
+import dataRegistry from "./data/dataRegistry.json";
+
 
 function App() {
 
@@ -128,8 +130,15 @@ function App() {
       </Row>
       <Row>
         {/* event timeline */}
-        <Col md='12' style={{ height: '5vh' }}>
-          <LocalEvent />
+        <Col md='12' style={{ width: `${dataRegistry[patientInfo.id].time}px`, height: '5vh' }}>
+          {allEventData ?
+            (<LocalEvent
+              data={allEventData}
+              id={patientInfo.id}
+              currentSample={patientInfo.sample}
+              threshold={barThreshold}
+            />
+            ) : null}
         </Col>
       </Row>
       <Row>

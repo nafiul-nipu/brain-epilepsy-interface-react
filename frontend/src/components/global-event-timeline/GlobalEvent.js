@@ -23,7 +23,7 @@ export const GlobalEvent = ({ data, id, currentSample, threshold }) => {
 };
 
 const ChartWrapper = ({ data, id, currentSample, threshold }) => {
-    console.log(dataRegistry[id].time)
+    // console.log(dataRegistry[id].time)
     const dimensions = useChartContext();
     const xScale = d3
         .scaleLinear()

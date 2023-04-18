@@ -123,6 +123,11 @@
   left: 90%;
 }
 
+.globalEventTitle{
+  position: absolute;
+  top: 2.5%;
+}
+
 
 
 /* width */

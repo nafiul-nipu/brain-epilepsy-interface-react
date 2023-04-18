@@ -115,6 +115,7 @@ function App() {
       <Row>
         {/* global-event timeline */}
         <Col md='12' style={{ height: '5vh', backgroundColor: '#FAFBFC' }}>
+          <div className="globalEventTitle">Global Event Timeline</div>
           {allEventData ?
             (<GlobalEvent
               data={allEventData}

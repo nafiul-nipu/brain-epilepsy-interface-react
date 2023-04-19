@@ -12,21 +12,26 @@ const containerProps = {
 };
 
 export const RegionCircles = ({
-    activeElectrode
+    activeElectrode,
+    sampleData
 }) => {
     return (
         <ChartContainer {...containerProps}>
-            <RegionWrapper activeElectrode={activeElectrode} />
+            <RegionWrapper activeElectrode={activeElectrode} sampleData={sampleData} />
         </ChartContainer>
     )
 };
 
-const RegionWrapper = ({ activeElectrode }) => {
+const RegionWrapper = ({ activeElectrode, sampleData }) => {
+    console.log(sampleData)
     const dimensions = useChartContext();
 
     // Set number of circles per row
     const circlesPerRow = 8;
     const count = activeElectrode.length;
+
+    const circleSpacing = (dimensions.boundedWidth - 2 * 10 * circlesPerRow) / (circlesPerRow - 1);
+
 
     // Calculate number of rows needed
     const numRows = Math.ceil(count / circlesPerRow);
@@ -44,8 +49,8 @@ const RegionWrapper = ({ activeElectrode }) => {
                 circles.push(
                     <circle
                         key={circleIndex}
-                        cx={`${(j + 0.5) * (100 / circlesPerRow)}%`}
-                        cy={`${(i + 0.5) * (100 / numRows)}%`}
+                        cx={10 + j * (circleSpacing + 2 * 10)}
+                        cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
                         r={`${circleRadius}%`}
                         fill="blue"
                     />

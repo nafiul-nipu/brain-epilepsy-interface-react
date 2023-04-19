@@ -197,6 +197,7 @@ function App() {
               {fullNetwork ?
                 (<RegionCircles
                   activeElectrode={fullNetwork[0].electrodes}
+                  sampleData={sampleData}
                 />
                 ) : null}
 

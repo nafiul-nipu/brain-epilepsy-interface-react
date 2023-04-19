@@ -27,6 +27,7 @@ import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
 import { AdjacencyMatrix } from "./CommonComponents/AdjacencyMatrix";
 
 import dataRegistry from "./data/dataRegistry.json";
+import { RegionCircles } from "./CommonComponents/RegionCircles";
 
 
 function App() {
@@ -189,10 +190,15 @@ function App() {
           </Row>
           <Row>
             <Col md="12" style={{ height: '40vh', backgroundColor: "#FAFBFC" }}>
-              <AdjacencyMatrix
+              {/* <AdjacencyMatrix
                 data={matrix}
                 columns={columns}
-              />
+              /> */}
+              {fullNetwork ?
+                (<RegionCircles
+                  activeElectrode={fullNetwork[0].electrodes}
+                />
+                ) : null}
 
             </Col>
           </Row>

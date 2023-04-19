@@ -279,14 +279,14 @@ export const ElectrodeNetworkTumor = ({
 
 
             console.log("loading svg")
-            let mergedROIs;
-            if (eventid !== null && allnetworkWithEvent) {
-                mergedROIs = allnetworkWithEvent[eventid].map((roi1, index) => ({
-                    ...roi1,
-                    electrodes: [...allnetwork[index].electrodes],
-                }));
+            // let mergedROIs;
+            // if (eventid !== null && allnetworkWithEvent) {
+            //     mergedROIs = allnetworkWithEvent[eventid].map((roi1, index) => ({
+            //         ...roi1,
+            //         electrodes: [...allnetwork[index].electrodes],
+            //     }));
 
-            }
+            // }
 
             if (eventid) {
                 if (points) scene[1].remove(points)

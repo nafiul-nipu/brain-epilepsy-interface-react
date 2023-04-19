@@ -34,6 +34,11 @@ const ChartWrapper = ({ data, id, currentSample, threshold }) => {
         .range([0, 10])
         .domain([0, d3.max(data[currentSample], (d) => d.count)]);
 
+    const saturationScale = d3
+        .scaleLinear()
+        .range([0, 1])
+        .domain([0, d3.max(data[currentSample], (d) => d.count)]);
+
     return (
         <>
             {/* <text x={0} y={10} textAnchor="middle" fontSize="12px">Global Timeline</text> */}
@@ -48,9 +53,11 @@ const ChartWrapper = ({ data, id, currentSample, threshold }) => {
                                         key={i}
                                         x={d.time.length > 1 ? xScale(d.time[0]) : xScale(d.time)}
                                         y={0}
+                                        // width={d.time.length > 1 ? xScale(d.time[d.time.length - 1]) - xScale(d.time[0]) : 1}
                                         width={yScale(d.count)}
                                         height={dimensions.boundedHeight}
                                         fill={'orange'}
+                                        filter={`saturate(${saturationScale(d.count)})`}
                                     /><title>{`
                                 Event Id : ${d.index}\nTimepoint : ${d.time.length > 1 ? `${d.time[0]} - ${d.time[d.time.length - 1]}` : `${d.time}`} ms\nElectrodes : ${d.count}
                                 `}</title>

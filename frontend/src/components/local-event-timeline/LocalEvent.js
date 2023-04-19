@@ -16,11 +16,11 @@ export const LocalEvent = ({ data, id, currentSample, threshold, width, locaEven
     // console.log(data[currentSample])
     const xScale = d3
         .scaleLinear()
-        .range([0, 121000])
+        .range([0, width])
         .domain([0, dataRegistry[id].time]);
     const yScale = d3
         .scaleLinear()
-        .range([0, 10])
+        .range([0,])
         .domain([0, d3.max(data[currentSample], (d) => d.count)]);
     return (
         <div className="scrollableEvent">
@@ -36,7 +36,7 @@ export const LocalEvent = ({ data, id, currentSample, threshold, width, locaEven
                                             key={i}
                                             x={d.time.length > 1 ? xScale(d.time[0]) : xScale(d.time)}
                                             y={0}
-                                            width={yScale(d.count)}
+                                            width={d.time.length > 1 ? xScale(d.time[d.time.length - 1]) - xScale(d.time[0]) : 1}
                                             height={height}
                                             fill={'orange'}
                                         /><title>{`

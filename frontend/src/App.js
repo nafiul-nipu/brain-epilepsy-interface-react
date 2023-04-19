@@ -1,6 +1,8 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import { useEffect } from "react";
+
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 // importing components
 import { useElectrodeData } from "./library/useElectrodeData";
@@ -28,6 +30,7 @@ import dataRegistry from "./data/dataRegistry.json";
 
 
 function App() {
+  const localEventSize = useLocalHeightResize()
 
   // first three d
   // console.log(dataRegistry)
@@ -116,7 +119,7 @@ function App() {
       </Row>
       <Row>
         {/* global-event timeline */}
-        <Col md='12' style={{ height: '5vh', backgroundColor: '#FAFBFC' }}>
+        <Col md='12' style={{ height: '4vh', backgroundColor: '#FAFBFC' }}>
           <div className="globalEventTitle">Global Event Timeline</div>
           {allEventData ?
             (<GlobalEvent
@@ -130,13 +133,16 @@ function App() {
       </Row>
       <Row>
         {/* event timeline */}
-        <Col md='12' style={{ width: `${dataRegistry[patientInfo.id].time}px`, height: '5vh' }}>
+        <Col style={{ height: '5vh' }}>
+          <div className="localEventTitle">Local Event Timeline</div>
           {allEventData ?
             (<LocalEvent
               data={allEventData}
               id={patientInfo.id}
               currentSample={patientInfo.sample}
               threshold={barThreshold}
+              width={dataRegistry[patientInfo.id].time}
+              locaEventHeight={localEventSize.height}
             />
             ) : null}
         </Col>
@@ -219,6 +225,32 @@ function App() {
       </Row >
     </Container >
   );
+}
+
+
+function useLocalHeightResize() {
+  // Initialize state with undefined width/height so server and client renders match
+  // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+  const [localHeight, setLocalHeight] = useState({
+    height: (0.04 * window.innerHeight)
+  });
+
+  useEffect(() => {
+    // Handler to call on window resize
+    function handleResize() {
+      // Set window width/height to state
+      setLocalHeight({
+        height: (0.04 * window.innerHeight),
+      });
+    }
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []); // Empty array ensures that effect is only run on mount
+  return localHeight;
 }
 
 export default App;

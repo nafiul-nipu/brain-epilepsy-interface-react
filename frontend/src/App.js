@@ -189,7 +189,15 @@ function App() {
             </Col>
           </Row>
           <Row>
-            <Col md='12' style={{ height: '30vh', backgroundColor: 'lightcyan' }}>Region Summary</Col>
+            <Col md='12' style={{ height: '30vh', backgroundColor: 'lightcyan' }}>
+              Region Summary
+              {fullNetwork ?
+                (<RegionCircles
+                  activeElectrode={fullNetwork[0].electrodes}
+                  sampleData={sampleData}
+                />
+                ) : null}
+            </Col>
           </Row>
         </Col>
         {/* middle panel */}
@@ -199,16 +207,10 @@ function App() {
           </Row>
           <Row>
             <Col md="12" style={{ height: '40vh', backgroundColor: "#FAFBFC" }}>
-              {/* <AdjacencyMatrix
+              <AdjacencyMatrix
                 data={matrix}
                 columns={columns}
-              /> */}
-              {fullNetwork ?
-                (<RegionCircles
-                  activeElectrode={fullNetwork[0].electrodes}
-                  sampleData={sampleData}
-                />
-                ) : null}
+              />
 
             </Col>
           </Row>

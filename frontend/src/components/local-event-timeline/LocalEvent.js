@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { useState } from 'react';
 import dataRegistry from "../../data/dataRegistry.json";
 import ChartContainer, { useChartContext } from '../chart-container/chart-container';
 
@@ -35,6 +36,24 @@ const ChartWrapper = ({ data, id, currentSample, threshold, domain, locaEventHei
         .scaleLinear()
         .range([0, dimensions.boundedWidth])
         .domain(domain);
+
+
+    const [rectPos, setRectPos] = useState({ x: 0, y: 0 });
+
+    const handleMouseDown = (event) => {
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mouseup", handleMouseUp);
+    };
+
+    const handleMouseMove = (event) => {
+        const deltaX = event.movementX;
+        setRectPos({ x: rectPos.x + Math.sign(deltaX) * 100, y: rectPos.y });
+    };
+
+    const handleMouseUp = () => {
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+    };
     return (
         <>
             <rect x={0} y={0} width={dimensions.boundedWidth} height={height} fill="#DDDCDC" />
@@ -59,6 +78,14 @@ const ChartWrapper = ({ data, id, currentSample, threshold, domain, locaEventHei
                         })
                 }
             </g>
+            <rect
+                x={rectPos.x}
+                y={rectPos.y}
+                width="100"
+                height="100"
+                fill="blue"
+                onMouseDown={handleMouseDown}
+            />
         </>
     );
 

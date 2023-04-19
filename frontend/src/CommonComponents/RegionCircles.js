@@ -32,14 +32,11 @@ const RegionWrapper = ({ activeElectrode, sampleData }) => {
 
     const circleSpacing = (dimensions.boundedWidth - 2 * 10 * circlesPerRow) / (circlesPerRow - 1);
 
-
     // Calculate number of rows needed
     const numRows = Math.ceil(count / circlesPerRow);
 
-    // Calculate circle radius based on number of circles per row and SVG width
     const circleRadius = (50 / circlesPerRow) / 2;
 
-    // Create rows and circles using nested loops
     const rows = [];
     for (let i = 0; i < numRows; i++) {
         const circles = [];
@@ -51,7 +48,7 @@ const RegionWrapper = ({ activeElectrode, sampleData }) => {
                         key={circleIndex}
                         cx={10 + j * (circleSpacing + 2 * 10)}
                         cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
-                        r={`${circleRadius}%`}
+                        r={circleRadius}
                         fill="blue"
                     />
                 );

@@ -92,7 +92,7 @@ function App() {
 
   const [localEventDomain, setLocalEventDomain] = useState([0, globalTimelineRectWidth])
 
-  const adjaData = useMergedRois({ network: fullNetwork, networkWithEvent: fullEventNetwork, eventid: 23 })
+  const adjaData = useMergedRois({ network: fullNetwork, networkWithEvent: fullEventNetwork, eventid: 201 })
 
   // console.log(adjaData)
 
@@ -200,7 +200,7 @@ function App() {
                   adjaData.map((data, index) => {
                     if (index !== 3) {
                       return (
-                        <Row style={{ height: '25vh' }}>
+                        <Row style={{ /*width: '15vw',*/ height: '25vh' }}>
                           <AdjacencyMatrix
                             data={data.matrix}
                             columns={Array.from({ length: data.electrodes.length }, (_, i) => i)}

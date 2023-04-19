@@ -20,7 +20,7 @@ export const LocalEvent = ({ data, id, currentSample, threshold, width, locaEven
         .domain([0, dataRegistry[id].time]);
     const yScale = d3
         .scaleLinear()
-        .range([0,])
+        .range([0, 10])
         .domain([0, d3.max(data[currentSample], (d) => d.count)]);
     return (
         <div className="scrollableEvent">

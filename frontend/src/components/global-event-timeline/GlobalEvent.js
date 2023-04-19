@@ -53,6 +53,7 @@ const ChartWrapper = ({ data, id, currentSample, threshold }) => {
                                         key={i}
                                         x={d.time.length > 1 ? xScale(d.time[0]) : xScale(d.time)}
                                         y={0}
+                                        // TODO: Fix the width of the rectangle
                                         // width={d.time.length > 1 ? xScale(d.time[d.time.length - 1]) - xScale(d.time[0]) : 1}
                                         width={yScale(d.count)}
                                         height={dimensions.boundedHeight}

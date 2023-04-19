@@ -92,7 +92,7 @@ function App() {
 
   const [localEventDomain, setLocalEventDomain] = useState([0, globalTimelineRectWidth])
 
-  const adjaData = useMergedRois({ network: fullNetwork, networkWithEvent: fullEventNetwork, eventid: 10 })
+  const adjaData = useMergedRois({ network: fullNetwork, networkWithEvent: fullEventNetwork, eventid: 23 })
 
   // console.log(adjaData)
 
@@ -194,19 +194,28 @@ function App() {
             <Col md="12" style={{ height: '10vh', backgroundColor: "lightcyan" }}>Selected Event Window</Col>
           </Row>
           <Row>
-            <Col md="12" style={{ height: '40vh', backgroundColor: "#FAFBFC" }}>
+            <Col md="12" style={{ height: '75vh', backgroundColor: "#FAFBFC" }}>
               {
                 adjaData ? (
-                  <AdjacencyMatrix
-                    data={adjaData[2].matrix}
-                    columns={Array.from({ length: adjaData[2].electrodes.length }, (_, i) => i)}
-                    labels={adjaData[2].electrodes}
-                  />
+                  adjaData.map((data, index) => {
+                    if (index !== 3) {
+                      return (
+                        <Row style={{ height: '25vh' }}>
+                          <AdjacencyMatrix
+                            data={data.matrix}
+                            columns={Array.from({ length: data.electrodes.length }, (_, i) => i)}
+                            labels={data.electrodes}
+                          />
+                        </Row>
+                      )
+                    }
+                  })
+
                 ) : null
               }
             </Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col md="12" style={{ height: '35vh' }}>
               <Tabs variant='enclosed' colorScheme='green'>
                 <TabList>
@@ -223,7 +232,7 @@ function App() {
                 </TabPanels>
               </Tabs>
             </Col>
-          </Row>
+          </Row> */}
         </Col>
         {/* right panel */}
         <Col md="4" className="fullh">

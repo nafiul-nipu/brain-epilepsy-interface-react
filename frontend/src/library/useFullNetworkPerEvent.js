@@ -12,7 +12,7 @@ export const useFullNetworkPerEvent = ({
         // console.log('before', patientID, sample)
         if (patientID && sample) {
             // console.log('after', patientID, sample)
-            const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${patientID}/${sample}/${patientID}_${sample}_full_network_event.json`;
+            const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${patientID}/${sample}/${patientID}_${sample}_full_network_event_new.json`;
 
             json(url).then(jData => {
                 // const filteredData = jData.filter((item) => item.count > 1)

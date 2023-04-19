@@ -128,9 +128,24 @@
   top: 2.5%;
 }
 
+.gloablTime{
+  position: absolute;
+  top: 2.5%;
+  right: 1%;
+}
+
 .localEventTitle{
   position: absolute;
   top: 8%;
+}
+.localTimestart{
+  position: absolute;
+  top: 12%;
+}
+.localTimeEnd{
+  position: absolute;
+  top: 12%;
+  right: 1%;
 }
 
 .scrollableEvent{

@@ -29,6 +29,8 @@ import { AdjacencyMatrix } from "./CommonComponents/AdjacencyMatrix";
 import dataRegistry from "./data/dataRegistry.json";
 import { RegionCircles } from "./CommonComponents/RegionCircles";
 
+const globalTimelineRectWidth = 10000;
+
 
 function App() {
   const localEventSize = useLocalHeightResize()
@@ -103,6 +105,8 @@ function App() {
   }
   let columns = Array.from({ length: matrix.length }, (_, i) => i);
 
+  const [localEventDomain, setLocalEventDomain] = useState([0, globalTimelineRectWidth])
+
 
   return (
     // component container
@@ -122,12 +126,15 @@ function App() {
         {/* global-event timeline */}
         <Col md='12' style={{ height: '4vh', backgroundColor: '#FAFBFC' }}>
           <div className="globalEventTitle">Global Event Timeline</div>
+          <div className="gloablTime">{`${dataRegistry[patientInfo.id].time} MS`}</div>
           {allEventData ?
             (<GlobalEvent
               data={allEventData}
               id={patientInfo.id}
               currentSample={patientInfo.sample}
               threshold={barThreshold}
+              rectWidth={globalTimelineRectWidth}
+              setLocalEventDomain={setLocalEventDomain}
             />
             ) : null}
         </Col>
@@ -136,13 +143,15 @@ function App() {
         {/* event timeline */}
         <Col style={{ height: '5vh' }}>
           <div className="localEventTitle">Local Event Timeline</div>
+          <div className="localTimestart">{`${localEventDomain[0]} MS`}</div>
+          <div className="localTimeEnd">{`${localEventDomain[1]} MS`}</div>
           {allEventData ?
             (<LocalEvent
               data={allEventData}
               id={patientInfo.id}
               currentSample={patientInfo.sample}
               threshold={barThreshold}
-              width={dataRegistry[patientInfo.id].time}
+              domain={localEventDomain}
               locaEventHeight={localEventSize.height}
             />
             ) : null}

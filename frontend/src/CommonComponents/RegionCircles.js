@@ -23,7 +23,7 @@ export const RegionCircles = ({
 };
 
 const RegionWrapper = ({ activeElectrode, sampleData }) => {
-    console.log(sampleData)
+    // console.log(sampleData)
     const dimensions = useChartContext();
 
     // Set number of circles per row

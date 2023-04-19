@@ -28,6 +28,7 @@ import { AdjacencyMatrix } from "./CommonComponents/AdjacencyMatrix";
 
 import dataRegistry from "./data/dataRegistry.json";
 import { RegionCircles } from "./CommonComponents/RegionCircles";
+import { useMergedRois } from "./library/useMergedRois";
 
 const globalTimelineRectWidth = 10000;
 
@@ -69,9 +70,6 @@ function App() {
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
 
-
-
-
   // console.log(electrodeDataCsv)
 
   const [eegEL, setEEGEL] = useState({ id: 0, value: [92] });
@@ -92,21 +90,11 @@ function App() {
 
   // useFetch('ep129', 'sample1', 'filter')
 
-  // fake data for adjacency matrix
-  var numrows = 30;
-  var numcols = 30;
-
-  var matrix = new Array(numrows);
-  for (var i = 0; i < numrows; i++) {
-    matrix[i] = new Array(numcols);
-    for (var j = 0; j < numcols; j++) {
-      matrix[i][j] = Math.random() * 2;
-    }
-  }
-  let columns = Array.from({ length: matrix.length }, (_, i) => i);
-
   const [localEventDomain, setLocalEventDomain] = useState([0, globalTimelineRectWidth])
 
+  const adjaData = useMergedRois({ network: fullNetwork, networkWithEvent: fullEventNetwork, eventid: 10 })
+
+  // console.log(adjaData)
 
   return (
     // component container
@@ -207,11 +195,15 @@ function App() {
           </Row>
           <Row>
             <Col md="12" style={{ height: '40vh', backgroundColor: "#FAFBFC" }}>
-              <AdjacencyMatrix
-                data={matrix}
-                columns={columns}
-              />
-
+              {
+                adjaData ? (
+                  <AdjacencyMatrix
+                    data={adjaData[2].matrix}
+                    columns={Array.from({ length: adjaData[2].electrodes.length }, (_, i) => i)}
+                    labels={adjaData[2].electrodes}
+                  />
+                ) : null
+              }
             </Col>
           </Row>
           <Row>

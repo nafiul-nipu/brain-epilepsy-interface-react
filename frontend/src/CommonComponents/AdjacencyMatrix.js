@@ -15,7 +15,8 @@ export const AdjacencyMatrix = ({
     data,
     columns,
     colorRange = ["#fcbba1", "#a50f15"],
-    fontSize = "0.65em"
+    fontSize = "0.65em",
+    labels
 }) => {
 
     // const containerProps = {
@@ -27,12 +28,14 @@ export const AdjacencyMatrix = ({
     // };
     return (
         <ChartContainer {...containerProps}>
-            <Wrapper data={data} columns={columns} colorRange={colorRange} fontSize={fontSize} />
+            <Wrapper data={data} columns={columns} colorRange={colorRange} fontSize={fontSize} labels={labels} />
         </ChartContainer>
     )
 };
 
-const Wrapper = ({ data, columns, colorRange, fontSize }) => {
+const Wrapper = ({ data, columns, colorRange, fontSize, labels }) => {
+    // console.log(data)
+    // console.log(columns)
     const dimensions = useChartContext();
 
     let xScale = d3.scaleBand()
@@ -62,7 +65,7 @@ const Wrapper = ({ data, columns, colorRange, fontSize }) => {
                                 textAnchor="middle"
                                 fontSize={fontSize}
                             >
-                                {col}
+                                {labels[i]}
                             </text>
                             <text
                                 key={`left_${i}`}
@@ -71,7 +74,7 @@ const Wrapper = ({ data, columns, colorRange, fontSize }) => {
                                 textAnchor="middle"
                                 fontSize={fontSize}
                             >
-                                {col}
+                                {labels[i]}
                             </text>
                         </g>
 
@@ -96,7 +99,9 @@ const Wrapper = ({ data, columns, colorRange, fontSize }) => {
                                                     fill={color(col)}
                                                     rx={4}
                                                     ry={4}
-                                                /><title>{col}</title>
+                                                /><title>{`
+                                                Source: ${labels[i]}\nTarget : ${labels[j]} \nFrequency : ${col}
+                                                `}</title>
                                             </g>
 
                                         )

@@ -11,7 +11,7 @@ export const useMergedRois = ({
     useEffect(() => {
         // console.log('useSample', patientID, sampleName, range)
         if (network && networkWithEvent && eventid) {
-            console.log(networkWithEvent)
+            // console.log(networkWithEvent)
             const mergedROIs = networkWithEvent[eventid].map((roi1, index) => ({
                 ...roi1,
                 electrodes: [...network[index].electrodes],

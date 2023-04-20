@@ -53,7 +53,10 @@ const ChartWrapper = ({ data, currentSample, threshold, domain }) => {
         .range([5, dimensions.boundedWidth])
         .domain([domain[0], domain[1]]);
 
-
+    // console.log(dimensions.boundedWidth)
+    // console.log(domain)
+    // console.log(widtheScale(100))
+    // console.log(widtheScale(105))
     return (
         <g>
             {/* <text x={0} y={10} textAnchor="middle" fontSize="12px">Global Timeline</text> */}
@@ -64,14 +67,18 @@ const ChartWrapper = ({ data, currentSample, threshold, domain }) => {
                         .filter((el) => el.time.some(t => t >= domain[0] && t <= domain[1]))
                         .filter((el) => countAccessor(el) >= threshold[0] && countAccessor(el) <= threshold[1])
                         .map((d, i) => {
+                            // console.log(d.time)
+                            // console.log(d.time[0], widtheScale(d.time[0]))
+                            // console.log(d.time[d.time.length - 1], widtheScale(d.time[d.time.length - 1]))
+
+                            // console.log(widtheScale(d.time[d.time.length - 1]) - widtheScale(d.time[0]))
                             return (
                                 <g key={i}>
                                     <rect
                                         key={i}
                                         x={d.time.length > 1 ? xScale(d.time[0]) : xScale(d.time)}
                                         y={0}
-                                        // TODO: Fix the width of the rectangle
-                                        width={d.time.length > 1 ? xScale(d.time[d.time.length - 1]) - xScale(d.time[0]) : 2}
+                                        width={d.time.length > 1 ? widtheScale(d.time[d.time.length - 1]) - widtheScale(d.time[0]) : 2}
                                         // width={yScale(d.count)}
                                         height={dimensions.boundedHeight}
                                         fill={'orange'}

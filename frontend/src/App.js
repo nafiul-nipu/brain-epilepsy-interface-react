@@ -32,6 +32,7 @@ import { useMergedRois } from "./library/useMergedRois";
 import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
 
 const globalTimelineRectWidth = 10000;
+const localTimelineRectWidth = 500;
 
 
 function App() {
@@ -92,7 +93,7 @@ function App() {
   // useFetch('ep129', 'sample1', 'filter')
 
   const [localEventDomain, setLocalEventDomain] = useState([0, globalTimelineRectWidth])
-  const [selectedEventRange, setSelectedEventRange] = useState([0, 100])
+  const [selectedEventRange, setSelectedEventRange] = useState([0, localTimelineRectWidth])
 
   /*
 event: count
@@ -155,6 +156,8 @@ event: count
               domain={localEventDomain}
               locaEventHeight={localEventSize.height}
               setSelectedEventRange={setSelectedEventRange}
+              rectWidth={localTimelineRectWidth}
+
             />
             ) : null}
         </Col>

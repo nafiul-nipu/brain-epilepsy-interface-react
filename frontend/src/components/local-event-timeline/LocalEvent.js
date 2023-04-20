@@ -11,7 +11,6 @@ const containerProps = {
     mt: 0,
 };
 
-const rectWidth = 100; //500ms
 
 const countAccessor = (d) => d.count;
 
@@ -21,7 +20,8 @@ export const LocalEvent = ({
     threshold,
     domain,
     locaEventHeight,
-    setSelectedEventRange
+    setSelectedEventRange,
+    rectWidth
 }) => {
     return (
         <ChartContainer {...containerProps}>
@@ -32,6 +32,7 @@ export const LocalEvent = ({
                 domain={domain}
                 locaEventHeight={locaEventHeight}
                 setSelectedEventRange={setSelectedEventRange}
+                rectWidth={rectWidth}
             />
         </ChartContainer>
     );
@@ -44,7 +45,8 @@ const ChartWrapper = ({
     threshold,
     domain,
     locaEventHeight,
-    setSelectedEventRange
+    setSelectedEventRange,
+    rectWidth
 }) => {
     const dimensions = useChartContext();
     const height = locaEventHeight - containerProps.mt - containerProps.mb;
@@ -77,9 +79,11 @@ const ChartWrapper = ({
     };
 
     const handleMouseUp = () => {
-        // console.log(rectPos.x, xScale.invert(rectPos.x), xScale.invert(rectPos.x + xScale(rectWidth)));
+        // console.log("rectpos", rectPos.x, "rectpost invert", xScale.invert(rectPos.x));
+        // console.log("rectwidth", rectWidth, "scale rectWitdh", xScale(rectWidth))
+        // console.log("rectpos + rect Width Invert", xScale.invert(rectPos.x + xScale(rectWidth)))
         setIsDragging(false);
-        setSelectedEventRange([xScale.invert(rectPos.x), xScale.invert(rectPos.x + rectWidth)]);
+        setSelectedEventRange([Math.round(xScale.invert(rectPos.x)), Math.round(xScale.invert(rectPos.x)) + rectWidth]);
     };
     return (
         <g onMouseDown={handleMouseDown} onMouseMove={handleMouseMove}>

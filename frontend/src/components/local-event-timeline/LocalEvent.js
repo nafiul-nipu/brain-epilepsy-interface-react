@@ -11,6 +11,8 @@ const containerProps = {
     mt: 0,
 };
 
+const rectWidth = 500; //500ms
+
 const countAccessor = (d) => d.count;
 
 export const LocalEvent = ({ data, id, currentSample, threshold, domain, locaEventHeight }) => {
@@ -57,6 +59,15 @@ const ChartWrapper = ({ data, id, currentSample, threshold, domain, locaEventHei
     return (
         <>
             <rect x={0} y={0} width={dimensions.boundedWidth} height={height} fill="#DDDCDC" />
+            <rect
+                x={rectPos.x}
+                y={rectPos.y}
+                width={xScale(domain[0] + rectWidth)}
+                height={dimensions.boundedHeight}
+                fill="red"
+                opacity={0.5}
+                onMouseDown={handleMouseDown}
+            />
             <g>
                 {
                     data[currentSample].filter((el) => countAccessor(el) >= threshold[0] && countAccessor(el) <= threshold[1])
@@ -78,14 +89,7 @@ const ChartWrapper = ({ data, id, currentSample, threshold, domain, locaEventHei
                         })
                 }
             </g>
-            <rect
-                x={rectPos.x}
-                y={rectPos.y}
-                width="100"
-                height="100"
-                fill="blue"
-                onMouseDown={handleMouseDown}
-            />
+
         </>
     );
 

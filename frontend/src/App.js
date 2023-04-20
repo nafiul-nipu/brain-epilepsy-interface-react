@@ -92,7 +92,18 @@ function App() {
 
   const [localEventDomain, setLocalEventDomain] = useState([0, globalTimelineRectWidth])
 
-  const adjaData = useMergedRois({ network: fullNetwork, networkWithEvent: fullEventNetwork, eventid: 201 })
+  /*
+event: count
+670: 40
+809: 39
+872: 42
+*/
+
+  const adjaData = useMergedRois({
+    network: fullNetwork,
+    networkWithEvent: fullEventNetwork,
+    eventid: 201
+  })
 
   // console.log(adjaData)
 
@@ -194,19 +205,17 @@ function App() {
             <Col md="12" style={{ height: '10vh', backgroundColor: "lightcyan" }}>Selected Event Window</Col>
           </Row>
           <Row>
-            <Col md="12" style={{ height: '75vh', backgroundColor: "#FAFBFC" }}>
+            <Col md="12" style={{ height: '25vh', backgroundColor: "#FAFBFC" }}>
               {
                 adjaData ? (
                   adjaData.map((data, index) => {
-                    if (index !== 3) {
+                    if (index === 2) {
                       return (
-                        <Row style={{ /*width: '15vw',*/ height: '25vh' }}>
-                          <AdjacencyMatrix
-                            data={data.matrix}
-                            columns={Array.from({ length: data.electrodes.length }, (_, i) => i)}
-                            labels={data.electrodes}
-                          />
-                        </Row>
+                        <AdjacencyMatrix
+                          data={data.matrix}
+                          columns={Array.from({ length: data.electrodes.length }, (_, i) => i)}
+                          labels={data.electrodes}
+                        />
                       )
                     }
                   })
@@ -215,7 +224,7 @@ function App() {
               }
             </Col>
           </Row>
-          {/* <Row>
+          <Row>
             <Col md="12" style={{ height: '35vh' }}>
               <Tabs variant='enclosed' colorScheme='green'>
                 <TabList>
@@ -232,7 +241,7 @@ function App() {
                 </TabPanels>
               </Tabs>
             </Col>
-          </Row> */}
+          </Row>
         </Col>
         {/* right panel */}
         <Col md="4" className="fullh">

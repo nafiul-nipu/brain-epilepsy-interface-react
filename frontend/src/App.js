@@ -29,6 +29,7 @@ import { AdjacencyMatrix } from "./CommonComponents/AdjacencyMatrix";
 import dataRegistry from "./data/dataRegistry.json";
 import { RegionCircles } from "./CommonComponents/RegionCircles";
 import { useMergedRois } from "./library/useMergedRois";
+import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
 
 const globalTimelineRectWidth = 10000;
 
@@ -91,6 +92,7 @@ function App() {
   // useFetch('ep129', 'sample1', 'filter')
 
   const [localEventDomain, setLocalEventDomain] = useState([0, globalTimelineRectWidth])
+  const [selectedEventRange, setSelectedEventRange] = useState([0, 100])
 
   /*
 event: count
@@ -152,6 +154,7 @@ event: count
               threshold={barThreshold}
               domain={localEventDomain}
               locaEventHeight={localEventSize.height}
+              setSelectedEventRange={setSelectedEventRange}
             />
             ) : null}
         </Col>
@@ -202,7 +205,19 @@ event: count
         {/* middle panel */}
         <Col md="5">
           <Row>
-            <Col md="12" style={{ height: '10vh', backgroundColor: "lightcyan" }}>Selected Event Window</Col>
+            <Col md="12" style={{ height: '10vh', backgroundColor: "lightcyan" }}>
+              {/* Selected Event Window */}
+              {allEventData ?
+                (<SelectedEventWindow
+                  data={allEventData}
+                  id={patientInfo.id}
+                  currentSample={patientInfo.sample}
+                  domain={selectedEventRange}
+                  threshold={barThreshold}
+                />
+                ) : null}
+
+            </Col>
           </Row>
           <Row>
             <Col md="12" style={{ height: '25vh', backgroundColor: "#FAFBFC" }}>

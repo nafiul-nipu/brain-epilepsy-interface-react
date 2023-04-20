@@ -11,26 +11,41 @@ const containerProps = {
     mt: 0,
 };
 
-const rectWidth = 500; //500ms
+const rectWidth = 100; //500ms
 
 const countAccessor = (d) => d.count;
 
-export const LocalEvent = ({ data, id, currentSample, threshold, domain, locaEventHeight }) => {
+export const LocalEvent = ({
+    data,
+    currentSample,
+    threshold,
+    domain,
+    locaEventHeight,
+    setSelectedEventRange
+}) => {
     return (
         <ChartContainer {...containerProps}>
             <ChartWrapper
                 data={data}
-                id={id}
                 currentSample={currentSample}
                 threshold={threshold}
                 domain={domain}
-                locaEventHeight={locaEventHeight} />
+                locaEventHeight={locaEventHeight}
+                setSelectedEventRange={setSelectedEventRange}
+            />
         </ChartContainer>
     );
 
 };
 
-const ChartWrapper = ({ data, id, currentSample, threshold, domain, locaEventHeight }) => {
+const ChartWrapper = ({
+    data,
+    currentSample,
+    threshold,
+    domain,
+    locaEventHeight,
+    setSelectedEventRange
+}) => {
     const dimensions = useChartContext();
     const height = locaEventHeight - containerProps.mt - containerProps.mb;
     // console.log(data[currentSample])
@@ -41,23 +56,33 @@ const ChartWrapper = ({ data, id, currentSample, threshold, domain, locaEventHei
 
 
     const [rectPos, setRectPos] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStartPos, setDragStartPos] = useState({ x: 0, y: 0 });
 
     const handleMouseDown = (event) => {
-        document.addEventListener("mousemove", handleMouseMove);
-        document.addEventListener("mouseup", handleMouseUp);
+        setIsDragging(true);
+        setDragStartPos({ x: event.clientX, y: event.clientY });
     };
 
     const handleMouseMove = (event) => {
-        const deltaX = event.movementX;
-        setRectPos({ x: rectPos.x + Math.sign(deltaX) * 100, y: rectPos.y });
+        if (isDragging) {
+            const deltaX = event.clientX - dragStartPos.x;
+            // const deltaY = event.clientY - dragStartPos.y;
+            const newRectX = rectPos.x + deltaX;
+            if (newRectX >= 0 && newRectX <= dimensions.boundedWidth - xScale(rectWidth)) {
+                setRectPos({ x: newRectX });
+                setDragStartPos({ x: event.clientX });
+            }
+        }
     };
 
     const handleMouseUp = () => {
-        document.removeEventListener("mousemove", handleMouseMove);
-        document.removeEventListener("mouseup", handleMouseUp);
+        // console.log(rectPos.x, xScale.invert(rectPos.x), xScale.invert(rectPos.x + xScale(rectWidth)));
+        setIsDragging(false);
+        setSelectedEventRange([xScale.invert(rectPos.x), xScale.invert(rectPos.x + rectWidth)]);
     };
     return (
-        <>
+        <g onMouseDown={handleMouseDown} onMouseMove={handleMouseMove}>
             <rect x={0} y={0} width={dimensions.boundedWidth} height={height} fill="#DDDCDC" />
             <rect
                 x={rectPos.x}
@@ -66,7 +91,7 @@ const ChartWrapper = ({ data, id, currentSample, threshold, domain, locaEventHei
                 height={dimensions.boundedHeight}
                 fill="red"
                 opacity={0.5}
-                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
             />
             <g>
                 {
@@ -90,7 +115,7 @@ const ChartWrapper = ({ data, id, currentSample, threshold, domain, locaEventHei
                 }
             </g>
 
-        </>
+        </g>
     );
 
 };

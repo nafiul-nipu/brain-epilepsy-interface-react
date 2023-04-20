@@ -1,0 +1,89 @@
+import * as d3 from 'd3';
+import { useState } from "react";
+
+import ChartContainer, { useChartContext } from '../chart-container/chart-container';
+
+import dataRegistry from "../../data/dataRegistry.json";
+
+const containerProps = {
+    useZoom: false,
+    ml: 0,
+    mr: 0,
+    mb: 5,
+    mt: 5,
+};
+
+
+const countAccessor = (d) => d.count;
+
+export const SelectedEventWindow = ({
+    data,
+    currentSample,
+    domain,
+    threshold
+}) => {
+    // console.log(data[currentSample])
+    return (
+        <ChartContainer {...containerProps}>
+            <ChartWrapper
+                data={data}
+                currentSample={currentSample}
+                threshold={threshold}
+                domain={domain}
+            />
+        </ChartContainer>
+    );
+};
+
+const ChartWrapper = ({ data, currentSample, threshold, domain }) => {
+    // console.log(data)
+    const dimensions = useChartContext();
+    const xScale = d3
+        .scaleLinear()
+        .range([0, dimensions.boundedWidth])
+        .domain([domain[0], domain[1]]);
+
+    const saturationScale = d3
+        .scaleLinear()
+        .range([0, 1])
+        .domain([0, d3.max(data[currentSample], (d) => d.count)]);
+
+    const widtheScale = d3
+        .scaleLinear()
+        .range([5, dimensions.boundedWidth])
+        .domain([domain[0], domain[1]]);
+
+
+    return (
+        <g>
+            {/* <text x={0} y={10} textAnchor="middle" fontSize="12px">Global Timeline</text> */}
+            <rect x={0} y={0} width={dimensions.boundedWidth} height={dimensions.boundedHeight} fill="#DDDCDC" />
+            <g>
+                {
+                    data[currentSample]
+                        .filter((el) => el.time.some(t => t >= domain[0] && t <= domain[1]))
+                        .filter((el) => countAccessor(el) >= threshold[0] && countAccessor(el) <= threshold[1])
+                        .map((d, i) => {
+                            return (
+                                <g key={i}>
+                                    <rect
+                                        key={i}
+                                        x={d.time.length > 1 ? xScale(d.time[0]) : xScale(d.time)}
+                                        y={0}
+                                        // TODO: Fix the width of the rectangle
+                                        width={d.time.length > 1 ? xScale(d.time[d.time.length - 1]) - xScale(d.time[0]) : 2}
+                                        // width={yScale(d.count)}
+                                        height={dimensions.boundedHeight}
+                                        fill={'orange'}
+                                    // filter={`saturate(${saturationScale(d.count)})`}
+                                    /><title>{`
+                                Event Id : ${d.index}\nTimepoint : ${d.time.length > 1 ? `${d.time[0]} - ${d.time[d.time.length - 1]}` : `${d.time}`} ms\nElectrodes : ${d.count}
+                                `}</title>
+                                </g>
+                            );
+                        })
+                }
+            </g>
+        </g>
+    );
+}

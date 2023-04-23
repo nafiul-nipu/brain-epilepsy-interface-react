@@ -148,6 +148,11 @@
   right: 1%;
 }
 
+.regionSummary{
+  position: absolute;
+  bottom: 30%;
+}
+
 .scrollableEvent{
   /* width: 100%; */
   /* display: flex; */

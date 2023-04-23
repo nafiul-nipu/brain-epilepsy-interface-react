@@ -195,11 +195,13 @@ event: count
           </Row>
           <Row>
             <Col md='12' style={{ height: '30vh', backgroundColor: 'lightcyan' }}>
-              Region Summary
+              <div className="regionSummary">Region Summary</div>
               {fullNetwork ?
                 (<RegionCircles
-                  activeElectrode={fullNetwork[0].electrodes}
-                  sampleData={sampleData}
+                  data={{
+                    "activeElectrode": fullNetwork[0].electrodes,
+                    "frequency": Array.from({ length: fullNetwork[0].electrodes.length }, () => Math.floor(Math.random() * 40) + 1)
+                  }}
                 />
                 ) : null}
             </Col>

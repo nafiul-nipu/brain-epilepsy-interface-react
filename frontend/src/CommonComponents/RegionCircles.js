@@ -12,30 +12,34 @@ const containerProps = {
 };
 
 export const RegionCircles = ({
-    activeElectrode,
-    sampleData
+    data
 }) => {
     return (
         <ChartContainer {...containerProps}>
-            <RegionWrapper activeElectrode={activeElectrode} sampleData={sampleData} />
+            <RegionWrapper data={data} />
         </ChartContainer>
     )
 };
 
-const RegionWrapper = ({ activeElectrode, sampleData }) => {
-    // console.log(sampleData)
+const RegionWrapper = ({ data }) => {
+    console.log(data.activeElectrode)
     const dimensions = useChartContext();
 
     // Set number of circles per row
     const circlesPerRow = 8;
-    const count = activeElectrode.length;
+    const count = data.activeElectrode.length;
 
     const circleSpacing = (dimensions.boundedWidth - 2 * 10 * circlesPerRow) / (circlesPerRow - 1);
 
     // Calculate number of rows needed
     const numRows = Math.ceil(count / circlesPerRow);
 
-    const circleRadius = (50 / circlesPerRow) / 2;
+    const circleRadius = d3.scaleLinear()
+        .domain(d3.extent(data.frequency))
+        .range([2, 10])
+
+    // const circleRadius = (50 / circlesPerRow) / 2;
+    // console.log(d3.extent(data.frequency))
 
     const rows = [];
     for (let i = 0; i < numRows; i++) {
@@ -44,13 +48,17 @@ const RegionWrapper = ({ activeElectrode, sampleData }) => {
             const circleIndex = i * circlesPerRow + j;
             if (circleIndex < count) {
                 circles.push(
-                    <circle
-                        key={circleIndex}
-                        cx={10 + j * (circleSpacing + 2 * 10)}
-                        cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
-                        r={circleRadius}
-                        fill="blue"
-                    />
+                    <>
+                        <circle
+                            key={circleIndex}
+                            cx={10 + j * (circleSpacing + 2 * 10)}
+                            cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
+                            r={circleRadius(data.frequency[circleIndex])}
+                            fill="blue"
+                        /><title>{`
+                        Electrode : E${data.activeElectrode[circleIndex]}\nFrequency : ${data.frequency[circleIndex]}
+                        `}</title>
+                    </>
                 );
             }
         }
@@ -61,6 +69,7 @@ const RegionWrapper = ({ activeElectrode, sampleData }) => {
     return (
         <>
             {rows}
+            <rect x={0} y={0} width={dimensions.boundedWidth} height={dimensions.boundedHeight} fill="none" stroke="black" />
         </>
     )
 }

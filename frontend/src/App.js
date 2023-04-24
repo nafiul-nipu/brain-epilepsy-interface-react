@@ -195,7 +195,7 @@ event: count
             </Col>
           </Row>
           <Row>
-            <Col md='12' style={{ height: '30vh', backgroundColor: 'lightcyan' }}>
+            <Col md='12' className="regionSummaryContainer" style={{ height: '30vh', backgroundColor: '#FAFBFC' }}>
               <div className="regionSummary">Region Summary</div>
               {fullNetwork && allEventData ?
                 (<RegionSummary
@@ -210,7 +210,7 @@ event: count
         {/* middle panel */}
         <Col md="5">
           <Row>
-            <Col md="12" style={{ height: '7vh', backgroundColor: "lightcyan" }}>
+            <Col md="12" style={{ height: '7vh', backgroundColor: "#FAFBFC" }}>
               {/* Selected Event Window */}
               {allEventData ?
                 (<SelectedEventWindow

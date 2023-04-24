@@ -55,7 +55,7 @@ const RegionWrapper = ({ data, radiusDomain }) => {
                             cx={10 + j * (circleSpacing + 2 * 10)}
                             cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
                             r={circleRadius(data.frequency[circleIndex])}
-                            fill="blue"
+                            fill="#307362"
                         /><title>{`
                         Electrode : E${data.activeElectrode[circleIndex]}\nFrequency : ${data.frequency[circleIndex]}
                         `}</title>

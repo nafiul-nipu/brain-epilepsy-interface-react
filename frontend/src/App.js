@@ -197,9 +197,11 @@ event: count
           <Row>
             <Col md='12' style={{ height: '30vh', backgroundColor: 'lightcyan' }}>
               <div className="regionSummary">Region Summary</div>
-              {fullNetwork ?
+              {fullNetwork && allEventData ?
                 (<RegionSummary
                   data={fullNetwork}
+                  eventData={allEventData[patientInfo.sample]}
+                  eventRange={selectedEventRange}
                 />
                 ) : null}
             </Col>

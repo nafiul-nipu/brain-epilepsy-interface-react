@@ -12,16 +12,17 @@ const containerProps = {
 };
 
 export const RegionCircles = ({
-    data
+    data,
+    radiusDomain
 }) => {
     return (
         <ChartContainer {...containerProps}>
-            <RegionWrapper data={data} />
+            <RegionWrapper data={data} radiusDomain={radiusDomain} />
         </ChartContainer>
     )
 };
 
-const RegionWrapper = ({ data }) => {
+const RegionWrapper = ({ data, radiusDomain }) => {
     // console.log(data.activeElectrode)
     const dimensions = useChartContext();
 
@@ -35,8 +36,8 @@ const RegionWrapper = ({ data }) => {
     const numRows = Math.ceil(count / circlesPerRow);
 
     const circleRadius = d3.scaleLinear()
-        .domain(d3.extent(data.frequency))
-        .range([0.5, 4])
+        .domain(radiusDomain)
+        .range([2, 6])
 
     // const circleRadius = (50 / circlesPerRow) / 2;
     // console.log(d3.extent(data.frequency))
@@ -48,7 +49,7 @@ const RegionWrapper = ({ data }) => {
             const circleIndex = i * circlesPerRow + j;
             if (circleIndex < count) {
                 circles.push(
-                    <>
+                    <g>
                         <circle
                             key={circleIndex}
                             cx={10 + j * (circleSpacing + 2 * 10)}
@@ -58,7 +59,7 @@ const RegionWrapper = ({ data }) => {
                         /><title>{`
                         Electrode : E${data.activeElectrode[circleIndex]}\nFrequency : ${data.frequency[circleIndex]}
                         `}</title>
-                    </>
+                    </g>
                 );
             }
         }

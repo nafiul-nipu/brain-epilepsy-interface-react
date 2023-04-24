@@ -265,10 +265,17 @@ event: count
         </Col>
         {/* right panel */}
         <Col md="4" className="fullh">
-          <EEGDataViewer
-            eegEL={eegEL}
-            patientInfo={patientInfo}
-          />
+          <Row>
+            <Col md="12" style={{ height: '60vh', backgroundColor: "#FAFBFC" }}>
+              <EEGDataViewer
+                eegEL={eegEL}
+                patientInfo={patientInfo}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="12" style={{ height: '40vh', backgroundColor: "#FAFBFC" }}> Patient Summary</Col>
+          </Row>
         </Col>
       </Row >
     </Container >

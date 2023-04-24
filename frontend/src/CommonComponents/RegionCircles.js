@@ -5,10 +5,10 @@ import ChartContainer, {
 
 const containerProps = {
     useZoom: false,
-    ml: 20,
-    mr: 20,
+    ml: 2,
+    mr: 2,
     mb: 0,
-    mt: 20,
+    mt: 5,
 };
 
 export const RegionCircles = ({
@@ -22,7 +22,7 @@ export const RegionCircles = ({
 };
 
 const RegionWrapper = ({ data }) => {
-    console.log(data.activeElectrode)
+    // console.log(data.activeElectrode)
     const dimensions = useChartContext();
 
     // Set number of circles per row
@@ -36,7 +36,7 @@ const RegionWrapper = ({ data }) => {
 
     const circleRadius = d3.scaleLinear()
         .domain(d3.extent(data.frequency))
-        .range([2, 10])
+        .range([0.5, 4])
 
     // const circleRadius = (50 / circlesPerRow) / 2;
     // console.log(d3.extent(data.frequency))

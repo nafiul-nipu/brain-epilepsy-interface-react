@@ -30,6 +30,7 @@ import dataRegistry from "./data/dataRegistry.json";
 import { RegionCircles } from "./CommonComponents/RegionCircles";
 import { useMergedRois } from "./library/useMergedRois";
 import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
+import { RegionSummary } from "./components/region-summary/RegionSummary";
 
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
@@ -105,7 +106,7 @@ event: count
   const adjaData = useMergedRois({
     network: fullNetwork,
     networkWithEvent: fullEventNetwork,
-    eventid: 201
+    eventid: 10
   })
 
   // console.log(adjaData)
@@ -197,11 +198,8 @@ event: count
             <Col md='12' style={{ height: '30vh', backgroundColor: 'lightcyan' }}>
               <div className="regionSummary">Region Summary</div>
               {fullNetwork ?
-                (<RegionCircles
-                  data={{
-                    "activeElectrode": fullNetwork[0].electrodes,
-                    "frequency": Array.from({ length: fullNetwork[0].electrodes.length }, () => Math.floor(Math.random() * 40) + 1)
-                  }}
+                (<RegionSummary
+                  data={fullNetwork}
                 />
                 ) : null}
             </Col>

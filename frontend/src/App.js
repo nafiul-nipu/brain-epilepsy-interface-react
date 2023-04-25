@@ -31,6 +31,7 @@ import { RegionCircles } from "./CommonComponents/RegionCircles";
 import { useMergedRois } from "./library/useMergedRois";
 import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
 import { RegionSummary } from "./components/region-summary/RegionSummary";
+import { NetworkViewer } from "./components/network-viewer/NetworkViewer";
 
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
@@ -82,10 +83,10 @@ function App() {
 
   function onEventsClicked(eventDatum) {
     // set slider object here, instead of inside bars
-    console.log('event clicked')
+    // console.log('event clicked')
     let values = eventDatum.electrode.sort((a, b) => a - b);
     setEEGEL({ id: eventDatum.index, value: values });
-    console.log(eventDatum.index)
+    // console.log(eventDatum.index)
     setEventid(eventDatum.index)
   }
 
@@ -95,19 +96,12 @@ function App() {
 
   const [localEventDomain, setLocalEventDomain] = useState([0, globalTimelineRectWidth])
   const [selectedEventRange, setSelectedEventRange] = useState([0, localTimelineRectWidth])
+  const [eventRangeNetwork, setEventRangeNetwork] = useState([0, localTimelineRectWidth])
 
-  /*
-event: count
-670: 40
-809: 39
-872: 42
-*/
 
-  const adjaData = useMergedRois({
-    network: fullNetwork,
-    networkWithEvent: fullEventNetwork,
-    eventid: 10
-  })
+  const [selectedRoi, setSelectedRoi] = useState(0)
+
+
 
   // console.log(adjaData)
 
@@ -157,6 +151,7 @@ event: count
               domain={localEventDomain}
               locaEventHeight={localEventSize.height}
               setSelectedEventRange={setSelectedEventRange}
+              setEventRangeNetwork={setEventRangeNetwork}
               rectWidth={localTimelineRectWidth}
 
             />
@@ -201,7 +196,8 @@ event: count
                 (<RegionSummary
                   data={fullNetwork}
                   eventData={allEventData[patientInfo.sample]}
-                  eventRange={selectedEventRange}
+                  eventRange={eventRangeNetwork}
+                  setSelectedRoi={setSelectedRoi}
                 />
                 ) : null}
             </Col>
@@ -219,6 +215,7 @@ event: count
                   currentSample={patientInfo.sample}
                   domain={selectedEventRange}
                   threshold={barThreshold}
+                  setEventRangeNetwork={setEventRangeNetwork}
                 />
                 ) : null}
 
@@ -226,22 +223,16 @@ event: count
           </Row>
           <Row>
             <Col md="12" style={{ height: '28vh', backgroundColor: "#FAFBFC" }}>
-              {
-                adjaData ? (
-                  adjaData.map((data, index) => {
-                    if (index === 2) {
-                      return (
-                        <AdjacencyMatrix
-                          data={data.matrix}
-                          columns={Array.from({ length: data.electrodes.length }, (_, i) => i)}
-                          labels={data.electrodes}
-                        />
-                      )
-                    }
-                  })
+              {fullNetwork && allEventData && fullEventNetwork ?
+                (<NetworkViewer
+                  sessionNetwork={fullNetwork}
+                  eventData={allEventData[patientInfo.sample]}
+                  eventRange={eventRangeNetwork}
+                  eventNet={fullEventNetwork}
+                  selectedRoi={selectedRoi}
+                />
+                ) : null}
 
-                ) : null
-              }
             </Col>
           </Row>
           <Row>

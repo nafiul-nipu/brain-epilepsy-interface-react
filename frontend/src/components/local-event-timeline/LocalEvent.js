@@ -21,6 +21,7 @@ export const LocalEvent = ({
     domain,
     locaEventHeight,
     setSelectedEventRange,
+    setEventRangeNetwork,
     rectWidth
 }) => {
     return (
@@ -32,6 +33,7 @@ export const LocalEvent = ({
                 domain={domain}
                 locaEventHeight={locaEventHeight}
                 setSelectedEventRange={setSelectedEventRange}
+                setEventRangeNetwork={setEventRangeNetwork}
                 rectWidth={rectWidth}
             />
         </ChartContainer>
@@ -46,6 +48,7 @@ const ChartWrapper = ({
     domain,
     locaEventHeight,
     setSelectedEventRange,
+    setEventRangeNetwork,
     rectWidth
 }) => {
     const dimensions = useChartContext();
@@ -84,6 +87,7 @@ const ChartWrapper = ({
         // console.log("rectpos + rect Width Invert", xScale.invert(rectPos.x + xScale(rectWidth)))
         setIsDragging(false);
         setSelectedEventRange([Math.round(xScale.invert(rectPos.x)), Math.round(xScale.invert(rectPos.x)) + rectWidth]);
+        setEventRangeNetwork([Math.round(xScale.invert(rectPos.x)), Math.round(xScale.invert(rectPos.x)) + rectWidth]);
     };
     return (
         <g onMouseDown={handleMouseDown} onMouseMove={handleMouseMove}>

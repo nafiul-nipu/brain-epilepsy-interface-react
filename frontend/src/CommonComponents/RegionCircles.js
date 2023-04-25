@@ -68,9 +68,18 @@ const RegionWrapper = ({ data, radiusDomain }) => {
 
 
     return (
-        <>
+        <g >
+            <rect
+                x={0}
+                y={0}
+                width={dimensions.boundedWidth}
+                height={dimensions.boundedHeight}
+                fill="black"
+                opacity={0.05}
+                stroke="black"
+            />
             {rows}
-            <rect x={0} y={0} width={dimensions.boundedWidth} height={dimensions.boundedHeight} fill="none" stroke="black" />
-        </>
+
+        </g>
     )
 }

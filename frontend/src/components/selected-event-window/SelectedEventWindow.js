@@ -20,7 +20,8 @@ export const SelectedEventWindow = ({
     data,
     currentSample,
     domain,
-    threshold
+    threshold,
+    setEventRangeNetwork
 }) => {
     // console.log(data[currentSample])
     return (
@@ -30,12 +31,13 @@ export const SelectedEventWindow = ({
                 currentSample={currentSample}
                 threshold={threshold}
                 domain={domain}
+                setEventRangeNetwork={setEventRangeNetwork}
             />
         </ChartContainer>
     );
 };
 
-const ChartWrapper = ({ data, currentSample, threshold, domain }) => {
+const ChartWrapper = ({ data, currentSample, threshold, domain, setEventRangeNetwork }) => {
     // console.log(data)
     const dimensions = useChartContext();
     const xScale = d3
@@ -57,6 +59,11 @@ const ChartWrapper = ({ data, currentSample, threshold, domain }) => {
     // console.log(domain)
     // console.log(widtheScale(100))
     // console.log(widtheScale(105))
+    function onEventClick(time) {
+        // console.log(time)
+        setEventRangeNetwork(time.length > 1 ? time : [time, time])
+
+    }
     return (
         <g>
             {/* <text x={0} y={10} textAnchor="middle" fontSize="12px">Global Timeline</text> */}
@@ -82,6 +89,7 @@ const ChartWrapper = ({ data, currentSample, threshold, domain }) => {
                                         // width={yScale(d.count)}
                                         height={dimensions.boundedHeight}
                                         fill={'orange'}
+                                        onClick={() => onEventClick(d.time)}
                                     // filter={`saturate(${saturationScale(d.count)})`}
                                     /><title>{`
                                 Event Id : ${d.index}\nTimepoint : ${d.time.length > 1 ? `${d.time[0]} - ${d.time[d.time.length - 1]}` : `${d.time}`} ms\nElectrodes : ${d.count}

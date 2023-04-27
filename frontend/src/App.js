@@ -108,6 +108,8 @@ function App() {
     sample: patientInfo.sample,
   });
 
+  const [similarRegionEvent, setSimilarRegionEvent] = useState(null)
+
 
 
   // console.log(adjaData)
@@ -223,6 +225,7 @@ function App() {
                   domain={selectedEventRange}
                   threshold={barThreshold}
                   setEventRangeNetwork={setEventRangeNetwork}
+                  setSimilarRegionEvent={setSimilarRegionEvent}
                 />
                 ) : null}
 
@@ -251,11 +254,12 @@ function App() {
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    {similarRegionData && eventid ?
+                    {similarRegionData && similarRegionEvent ?
                       (
                         <SimilarRegion
                           data={similarRegionData}
-                          eventid={eventid}
+                          similarRegionEvent={similarRegionEvent}
+                          selectedRoi={selectedRoi}
                         />
                       )
                       : <p>Select an event</p>

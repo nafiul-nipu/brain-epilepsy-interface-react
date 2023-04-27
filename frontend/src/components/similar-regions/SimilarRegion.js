@@ -1,11 +1,17 @@
 export const SimilarRegion = ({
     data,
-    eventid
+    similarRegionEvent,
+    selectedRoi
 }) => {
     console.log(data)
     return (
         <div>
-            SimilarRegion
+            <p>
+                Event ID: {similarRegionEvent} <br />
+                Neighbors: {`${data.find(obj => obj.eventID === similarRegionEvent)?.neighbors}`}
+                <br />
+                Selected ROI: {selectedRoi}
+            </p>
         </div>
     )
 }

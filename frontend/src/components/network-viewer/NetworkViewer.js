@@ -24,13 +24,6 @@ export const NetworkViewer = ({
             return result;
         }, {});
 
-    // console.log(eventNet['1'])
-    // console.log(eventNet[filteredEventIds[0]])
-    // console.log(filteredata)
-    // console.log(Object.keys(eventNet)
-    //     .filter(key => filteredEventIds.includes(parseInt(key))))
-
-    // console.log(eventNet[filteredata[0]])
 
     let totalMatrix = null;
 
@@ -57,7 +50,7 @@ export const NetworkViewer = ({
         }
     }
 
-    console.log(totalMatrix);
+    // console.log(totalMatrix);
 
 
     return (

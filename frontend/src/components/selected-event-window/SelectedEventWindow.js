@@ -21,7 +21,8 @@ export const SelectedEventWindow = ({
     currentSample,
     domain,
     threshold,
-    setEventRangeNetwork
+    setEventRangeNetwork,
+    setSimilarRegionEvent
 }) => {
     // console.log(data[currentSample])
     return (
@@ -32,12 +33,13 @@ export const SelectedEventWindow = ({
                 threshold={threshold}
                 domain={domain}
                 setEventRangeNetwork={setEventRangeNetwork}
+                setSimilarRegionEvent={setSimilarRegionEvent}
             />
         </ChartContainer>
     );
 };
 
-const ChartWrapper = ({ data, currentSample, threshold, domain, setEventRangeNetwork }) => {
+const ChartWrapper = ({ data, currentSample, threshold, domain, setEventRangeNetwork, setSimilarRegionEvent }) => {
     // console.log(data)
     const dimensions = useChartContext();
     const xScale = d3
@@ -62,6 +64,7 @@ const ChartWrapper = ({ data, currentSample, threshold, domain, setEventRangeNet
     function onEventClick(el) {
         // console.log(time)
         setEventRangeNetwork(el.time.length > 1 ? el.time : [el.time, el.time])
+        setSimilarRegionEvent(el.index)
 
     }
     return (

@@ -8,7 +8,7 @@ export const RegionSummary = ({ data, eventData, eventRange, setSelectedRoi }) =
 
     const filteredData = eventData.filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[1]))
 
-    console.log(filteredData)
+    // console.log(filteredData)
     // console.log(data)
 
     const regionCiclesData = [];
@@ -32,7 +32,7 @@ export const RegionSummary = ({ data, eventData, eventRange, setSelectedRoi }) =
         radiusDomain.push(...d3.extent(result.frequency))
     }
 
-    console.log(regionCiclesData)
+    // console.log(regionCiclesData)
     // console.log(radiusDomain)
 
     function summaryOnClick(index, rowStartIndex) {

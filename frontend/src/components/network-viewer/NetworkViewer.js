@@ -7,13 +7,13 @@ export const NetworkViewer = ({
     eventNet,
     selectedRoi
 }) => {
-    console.log(eventNet)
+    // console.log(eventNet)
     const filteredEventIds = eventData
         .filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[1]))
         .map((el) => el.index)
 
-    console.log(filteredEventIds)
-    console.log(Object.keys(eventNet))
+    // console.log(filteredEventIds)
+    // console.log(Object.keys(eventNet))
     const filteredata = Object.keys(eventNet)
         .filter(key => filteredEventIds.includes(parseInt(key)))
         .reduce((result, key) => {
@@ -22,8 +22,8 @@ export const NetworkViewer = ({
             return result;
         }, {});
 
-    console.log(eventNet['1'])
-    console.log(eventNet[filteredEventIds[0]])
+    // console.log(eventNet['1'])
+    // console.log(eventNet[filteredEventIds[0]])
     // console.log(filteredata)
     // console.log(Object.keys(eventNet)
     //     .filter(key => filteredEventIds.includes(parseInt(key))))

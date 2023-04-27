@@ -232,7 +232,7 @@ function App() {
             </Col>
           </Row>
           <Row>
-            <Col md="12" style={{ height: '28vh', backgroundColor: "#FAFBFC" }}>
+            <Col md="12" style={{ height: '25vh', backgroundColor: "#FAFBFC" }}>
               {fullNetwork && allEventData && fullEventNetwork ?
                 (<NetworkViewer
                   sessionNetwork={fullNetwork}
@@ -245,6 +245,36 @@ function App() {
 
             </Col>
           </Row>
+          {/*
+          <Row>
+            <Col md="12" style={{ height: '25vh', backgroundColor: "#FAFBFC" }}>
+              {fullNetwork && allEventData && fullEventNetwork ?
+                (<NetworkViewer
+                  sessionNetwork={fullNetwork}
+                  eventData={allEventData[patientInfo.sample]}
+                  eventRange={eventRangeNetwork}
+                  eventNet={fullEventNetwork}
+                  selectedRoi={1}
+                />
+                ) : null}
+
+            </Col>
+          </Row>
+          <Row>
+            <Col md="12" style={{ height: '25vh', backgroundColor: "#FAFBFC" }}>
+              {fullNetwork && allEventData && fullEventNetwork ?
+                (<NetworkViewer
+                  sessionNetwork={fullNetwork}
+                  eventData={allEventData[patientInfo.sample]}
+                  eventRange={eventRangeNetwork}
+                  eventNet={fullEventNetwork}
+                  selectedRoi={2}
+                />
+                ) : null}
+
+            </Col>
+          </Row>
+          */}
           <Row>
             <Col md="12" style={{ height: '35vh' }}>
               <Tabs variant='enclosed' colorScheme='green'>

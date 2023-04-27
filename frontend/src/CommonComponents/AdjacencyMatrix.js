@@ -49,7 +49,7 @@ const Wrapper = ({ data, columns, colorRange, fontSize, labels }) => {
     let max_val = d3.max(data, d => d3.max(d))
 
     let color = d3.scaleLinear()
-        .domain([0, max_val])
+        .domain([0, max_val === 0 ? 1 : max_val])
         .range(colorRange)
 
     return (

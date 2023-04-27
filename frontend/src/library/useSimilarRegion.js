@@ -15,9 +15,17 @@ export const useSimilarRegion = ({
             const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/newPrototypeDesign/frontend/src/data/electrodes/${patientID}/${sample}/${patientID}_${sample}_similarRegion.json`;
 
             json(url).then(jData => {
-                // const filteredData = jData.filter((item) => item.count > 1)
-                // setData(filteredData);
-                setData(jData);
+                // console.log(jData)
+                let numericData = jData.map(function (item) {
+                    return {
+                        eventID: +item.eventID,
+                        neighbors: item.neighbors.map(function (val) {
+                            return +val;
+                        })
+                    };
+                });
+
+                setData(numericData);
             })
 
         }

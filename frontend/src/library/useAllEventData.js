@@ -14,9 +14,27 @@ export const useAllEventData = ({
             const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/frontend/src/data/electrodes/${patientID}/${patientID}_all_events.json`;
 
             json(url).then(jData => {
-                // const filteredData = jData.filter((item) => item.count > 1)
-                // setData(filteredData);
-                setData(jData);
+                // console.log(jData)
+                const formattedData = {};
+                for (const key in jData) {
+                    const item = jData[key];
+
+                    formattedData[key] = item.map(function (d) {
+                        return {
+                            index: +d.index,
+                            count: +d.count,
+                            electrode: d.electrode.map(function (e) {
+                                return +e;
+                            }),
+                            time: d.time.map(function (t) {
+                                return +t;
+                            })
+                        }
+                    });
+
+                }
+
+                setData(formattedData);
             })
 
         }

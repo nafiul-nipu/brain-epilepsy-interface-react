@@ -17,8 +17,11 @@ export const useFullNetworkPerEvent = ({
             // console.log(url);
             json(url).then(jData => {
                 // Convert roi, network source and target, and matrix to numeric values
-                const formattedData = Object.values(jData).map(function (item) {
-                    return item.map(function (d) {
+                const formattedData = {};
+
+                for (const key in jData) {
+                    const item = jData[key];
+                    formattedData[key] = item.map(function (d) {
                         // console.log(d)
                         return {
                             roi: d.roi === 'rest' ? d.roi : +d.roi,
@@ -36,8 +39,7 @@ export const useFullNetworkPerEvent = ({
                             }) : null
                         };
                     });
-                });
-
+                }
                 setData(formattedData);
             })
 

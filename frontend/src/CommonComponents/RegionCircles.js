@@ -49,7 +49,7 @@ const RegionWrapper = ({ data, radiusDomain }) => {
             const circleIndex = i * circlesPerRow + j;
             if (circleIndex < count) {
                 circles.push(
-                    <g>
+                    <g key={`${i}_${j}`}>
                         <circle
                             key={circleIndex}
                             cx={10 + j * (circleSpacing + 2 * 10)}

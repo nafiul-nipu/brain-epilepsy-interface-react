@@ -16,7 +16,20 @@ export const useSamples = ({
             const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${patientID}/${sampleName}/${sampleName}_${range}.json`
             // console.log(url)
             json(url).then(jdata => {
-                setData(jdata)
+                // console.log(jdata)
+                let numericData = jdata.map(function (item) {
+                    return item.map(function (d) {
+                        d.start = +d.start;
+                        d.startPosition = d.startPosition.map(function (val) {
+                            return +val;
+                        });
+                        d.frequency = +d.frequency;
+
+                        return d;
+                    });
+                });
+
+                setData(numericData)
             });
         }
 

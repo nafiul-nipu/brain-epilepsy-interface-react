@@ -40,7 +40,9 @@ export const useFullNetworkPerEvent = ({
                         };
                     });
                 }
+                console.log(formattedData)
                 setData(formattedData);
+
             })
 
         }

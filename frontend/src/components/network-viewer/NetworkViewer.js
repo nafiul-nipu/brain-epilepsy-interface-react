@@ -8,6 +8,7 @@ export const NetworkViewer = ({
     selectedRoi
 }) => {
     // console.log(eventNet)
+
     const filteredEventIds = eventData
         .filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[1]))
         .map((el) => el.index)
@@ -17,7 +18,8 @@ export const NetworkViewer = ({
     const filteredata = Object.keys(eventNet)
         .filter(key => filteredEventIds.includes(parseInt(key)))
         .reduce((result, key) => {
-            const filteredArray = eventNet[key].slice(0, -1); // remove last element from array
+            // using json parse and stringify to deep clone the array
+            const filteredArray = JSON.parse(JSON.stringify(eventNet[key].slice(0, -1))); // remove last element from array
             result[key] = filteredArray;
             return result;
         }, {});
@@ -55,7 +57,7 @@ export const NetworkViewer = ({
         }
     }
 
-    // console.log(totalMatrix);
+    console.log(totalMatrix);
 
 
     return (

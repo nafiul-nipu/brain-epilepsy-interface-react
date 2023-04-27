@@ -32,6 +32,8 @@ import { useMergedRois } from "./library/useMergedRois";
 import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
 import { RegionSummary } from "./components/region-summary/RegionSummary";
 import { NetworkViewer } from "./components/network-viewer/NetworkViewer";
+import { useSimilarRegion } from "./library/useSimilarRegion";
+import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
 
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
@@ -100,6 +102,11 @@ function App() {
 
 
   const [selectedRoi, setSelectedRoi] = useState(0)
+
+  const similarRegionData = useSimilarRegion({
+    patientID: patientInfo.id,
+    sample: patientInfo.sample,
+  });
 
 
 
@@ -244,7 +251,15 @@ function App() {
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <p>Showing Similar Regions</p>
+                    {similarRegionData && eventid ?
+                      (
+                        <SimilarRegion
+                          data={similarRegionData}
+                          eventid={eventid}
+                        />
+                      )
+                      : <p>Select an event</p>
+                    }
                   </TabPanel>
                   <TabPanel>
                     <p>Showing Exploration so far</p>

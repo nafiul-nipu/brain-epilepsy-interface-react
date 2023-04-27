@@ -59,9 +59,9 @@ const ChartWrapper = ({ data, currentSample, threshold, domain, setEventRangeNet
     // console.log(domain)
     // console.log(widtheScale(100))
     // console.log(widtheScale(105))
-    function onEventClick(time) {
+    function onEventClick(el) {
         // console.log(time)
-        setEventRangeNetwork(time.length > 1 ? time : [time, time])
+        setEventRangeNetwork(el.time.length > 1 ? el.time : [el.time, el.time])
 
     }
     return (
@@ -89,7 +89,7 @@ const ChartWrapper = ({ data, currentSample, threshold, domain, setEventRangeNet
                                         // width={yScale(d.count)}
                                         height={dimensions.boundedHeight}
                                         fill={'orange'}
-                                        onClick={() => onEventClick(d.time)}
+                                        onClick={() => onEventClick(d)}
                                     // filter={`saturate(${saturationScale(d.count)})`}
                                     /><title>{`
                                 Event Id : ${d.index}\nTimepoint : ${d.time.length > 1 ? `${d.time[0]} - ${d.time[d.time.length - 1]}` : `${d.time}`} ms\nElectrodes : ${d.count}

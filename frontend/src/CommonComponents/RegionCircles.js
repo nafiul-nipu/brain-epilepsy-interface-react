@@ -82,6 +82,15 @@ const RegionWrapper = ({ data, radiusDomain, roi }) => {
                 opacity={0.05}
                 stroke="black"
             />
+            <rect
+                x={35}
+                y={-10}
+                width={dimensions.boundedWidth - 40}
+                height={containerProps.mt - containerProps.ml}
+                fill="red"
+                // opacity={0.05}
+                stroke="red"
+            />
             {rows}
 
         </g>

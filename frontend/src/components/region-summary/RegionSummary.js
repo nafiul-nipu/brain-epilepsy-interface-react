@@ -51,7 +51,7 @@ export const RegionSummary = ({ data, eventData, eventRange, selectedRoi, setSel
                         <RegionCircles
                             data={object}
                             radiusDomain={d3.extent(radiusDomain)}
-                            roi={data[i].roi}
+                            roi={i + rowStartIndex}
                         />
                     </Col>
 

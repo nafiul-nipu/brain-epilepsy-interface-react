@@ -51,8 +51,10 @@ export const RegionSummary = ({ data, eventData, eventRange, setSelectedRoi }) =
                         <RegionCircles
                             data={object}
                             radiusDomain={d3.extent(radiusDomain)}
+                            roi={data[i].roi}
                         />
                     </Col>
+
                 ))}
             </Row>
         );

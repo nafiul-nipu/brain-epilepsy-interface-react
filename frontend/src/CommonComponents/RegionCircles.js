@@ -8,21 +8,22 @@ const containerProps = {
     ml: 2,
     mr: 2,
     mb: 0,
-    mt: 5,
+    mt: 10,
 };
 
 export const RegionCircles = ({
     data,
-    radiusDomain
+    radiusDomain,
+    roi
 }) => {
     return (
         <ChartContainer {...containerProps}>
-            <RegionWrapper data={data} radiusDomain={radiusDomain} />
+            <RegionWrapper data={data} radiusDomain={radiusDomain} roi={roi} />
         </ChartContainer>
     )
 };
 
-const RegionWrapper = ({ data, radiusDomain }) => {
+const RegionWrapper = ({ data, radiusDomain, roi }) => {
     // console.log(data.activeElectrode)
     const dimensions = useChartContext();
 
@@ -69,6 +70,9 @@ const RegionWrapper = ({ data, radiusDomain }) => {
 
     return (
         <g >
+            <text x={0} y={0} fontSize={12} fill="black" textAnchor="start">
+                {`Roi: ${roi}`}
+            </text>
             <rect
                 x={0}
                 y={0}

@@ -254,7 +254,7 @@ function App() {
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    {similarRegionData && similarRegionEvent ?
+                    {similarRegionData && similarRegionEvent && allEventData ?
                       (
                         <SimilarRegion
                           data={similarRegionData}

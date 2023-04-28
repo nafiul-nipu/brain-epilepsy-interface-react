@@ -1,4 +1,5 @@
 import { AdjacencyMatrix } from "../../CommonComponents/AdjacencyMatrix";
+import "./NetworkViewer.css";
 
 export const NetworkViewer = ({
     sessionNetwork,
@@ -56,11 +57,18 @@ export const NetworkViewer = ({
     return (
         <>
             {
-                totalMatrix ? (<AdjacencyMatrix
-                    data={totalMatrix[selectedRoi].matrix}
-                    columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
-                    labels={sessionNetwork[selectedRoi].electrodes}
-                />) : <div>No Network</div>
+                totalMatrix ? (
+                    <>
+                        <div className="networkEvents">
+                            {`EventID: ${filteredEventIds} Roi: ${selectedRoi}`}
+                        </div>
+                        <AdjacencyMatrix
+                            data={totalMatrix[selectedRoi].matrix}
+                            columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
+                            labels={sessionNetwork[selectedRoi].electrodes}
+                        />
+                    </>
+                ) : <div>No Network</div>
             }
         </>
 

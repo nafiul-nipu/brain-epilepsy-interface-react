@@ -193,7 +193,7 @@ function App() {
                   events={allEventData[patientInfo.sample]}
                   allnetworks={fullNetwork}
                   allnetworksWithEvent={fullEventNetwork}
-                  eventid={eventid}
+                  eventid={similarRegionEvent}
                 />
               ) : null}
             </Col>

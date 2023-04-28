@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import * as d3 from 'd3';
 const rowSize = 3;
 
-export const RegionSummary = ({ data, eventData, eventRange, setSelectedRoi }) => {
+export const RegionSummary = ({ data, eventData, eventRange, selectedRoi, setSelectedRoi }) => {
     const numRows = Math.ceil((data.length - 1) / rowSize);
 
     const filteredData = eventData.filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[1]))
@@ -47,7 +47,7 @@ export const RegionSummary = ({ data, eventData, eventRange, setSelectedRoi }) =
         return (
             <Row key={rowKey}>
                 {rowObjects.map((object, i) => (
-                    <Col md='4' key={data[i].roi} style={{ height: `${30 / numRows}vh` }} onClick={() => summaryOnClick(i, rowStartIndex)}>
+                    <Col md='4' key={data[i].roi} style={{ height: `${30 / numRows}vh`, backgroundColor: selectedRoi === (i + rowStartIndex) ? "rgba(202, 204, 202, 0.4)" : "white", }} onClick={() => summaryOnClick(i, rowStartIndex)}>
                         <RegionCircles
                             data={object}
                             radiusDomain={d3.extent(radiusDomain)}

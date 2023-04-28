@@ -206,6 +206,7 @@ function App() {
                   data={fullNetwork}
                   eventData={allEventData[patientInfo.sample]}
                   eventRange={eventRangeNetwork}
+                  selectedRoi={selectedRoi}
                   setSelectedRoi={setSelectedRoi}
                 />
                 ) : null}

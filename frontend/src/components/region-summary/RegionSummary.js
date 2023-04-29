@@ -3,13 +3,14 @@ import { Col, Row } from "react-bootstrap";
 import * as d3 from 'd3';
 const rowSize = 3;
 
-export const RegionSummary = ({ data, eventData, eventRange, selectedRoi, setSelectedRoi }) => {
+export const RegionSummary = ({ data, eventData, eventRange, selectedRoi, setSelectedRoi, roiCount }) => {
     const numRows = Math.ceil((data.length - 1) / rowSize);
 
     const filteredData = eventData.filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[1]))
 
     // console.log(filteredData)
     // console.log(data)
+    // console.log(roiCount)
 
     const regionCiclesData = [];
     let radiusDomain = [];
@@ -52,6 +53,7 @@ export const RegionSummary = ({ data, eventData, eventRange, selectedRoi, setSel
                             data={object}
                             radiusDomain={d3.extent(radiusDomain)}
                             roi={i + rowStartIndex}
+                            roiCount={roiCount}
                         />
                     </Col>
 

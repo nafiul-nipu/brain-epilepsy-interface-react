@@ -35,6 +35,7 @@ import { NetworkViewer } from "./components/network-viewer/NetworkViewer";
 import { useSimilarRegion } from "./library/useSimilarRegion";
 import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
 
+
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
 
@@ -208,6 +209,7 @@ function App() {
                   eventRange={eventRangeNetwork}
                   selectedRoi={selectedRoi}
                   setSelectedRoi={setSelectedRoi}
+                  roiCount={dataRegistry[patientInfo.id].roiCount[patientInfo.sample]}
                 />
                 ) : null}
             </Col>

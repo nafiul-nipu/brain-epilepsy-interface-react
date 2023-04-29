@@ -3,6 +3,7 @@ import ChartContainer, {
     useChartContext,
 } from "../components/chart-container/chart-container";
 
+
 const containerProps = {
     useZoom: false,
     ml: 2,
@@ -14,16 +15,17 @@ const containerProps = {
 export const RegionCircles = ({
     data,
     radiusDomain,
-    roi
+    roi,
+    roiCount
 }) => {
     return (
         <ChartContainer {...containerProps}>
-            <RegionWrapper data={data} radiusDomain={radiusDomain} roi={roi} />
+            <RegionWrapper data={data} radiusDomain={radiusDomain} roi={roi} roiCount={roiCount} />
         </ChartContainer>
     )
 };
 
-const RegionWrapper = ({ data, radiusDomain, roi }) => {
+const RegionWrapper = ({ data, radiusDomain, roi, roiCount }) => {
     // console.log(data.activeElectrode)
     const dimensions = useChartContext();
 
@@ -42,6 +44,10 @@ const RegionWrapper = ({ data, radiusDomain, roi }) => {
 
     // const circleRadius = (50 / circlesPerRow) / 2;
     // console.log(d3.extent(data.frequency))
+
+    const roiScale = d3.scaleLinear()
+        .domain([0, d3.max(roiCount)])
+        .range([0, dimensions.boundedWidth - 40])
 
     const rows = [];
     for (let i = 0; i < numRows; i++) {
@@ -73,6 +79,9 @@ const RegionWrapper = ({ data, radiusDomain, roi }) => {
             <text x={0} y={0} fontSize={12} fill="black" textAnchor="start">
                 {`Roi: ${roi}`}
             </text>
+            {/* <text x={0} y={0} fontSize={12} fill="black" textAnchor="start">
+                {`Freq: ${roiCount[roi]}`}
+            </text> */}
             <rect
                 x={0}
                 y={0}
@@ -85,12 +94,15 @@ const RegionWrapper = ({ data, radiusDomain, roi }) => {
             <rect
                 x={35}
                 y={-10}
-                width={dimensions.boundedWidth - 40}
+                width={roiScale(roiCount[roi])}
                 height={containerProps.mt - containerProps.ml}
-                fill="red"
-                // opacity={0.05}
-                stroke="red"
-            />
+                fill="#FFA500"
+            // opacity={0.05}
+            // stroke="#FFA500"
+            /><title>{`
+            Roi : ${roi}\nFrequency : ${roiCount[roi]}
+            `}</title>
+
             {rows}
 
         </g>

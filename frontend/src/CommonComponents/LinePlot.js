@@ -7,7 +7,7 @@ export const LinePlot = ({
     yLineScale
 }) => {
     // console.log("in line plot")
-    // console.log(data)
+    console.log(data)
     // console.log(yAxisScale)
     // console.log(`${keyNumber}_${each}`)
     return (
@@ -27,7 +27,7 @@ export const LinePlot = ({
                     .y((d, i) => {
                         // console.log("line plot i")
                         // console.log(time[i])
-                        return yLineScale(d.count)
+                        return yLineScale(d)
                     })
                     .curve(curveCatmullRom)
                     (data)}

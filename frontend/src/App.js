@@ -289,10 +289,13 @@ function App() {
         <Col md="4" className="fullh">
           <Row>
             <Col md="12" style={{ height: '60vh', backgroundColor: "#FAFBFC" }}>
-              <EEGDataViewer
-                eegEL={eegEL}
-                patientInfo={patientInfo}
-              />
+              {allEventData ? (
+                <EEGDataViewer
+                  data={allEventData}
+                  selectedEventRange={eventRangeNetwork}
+                  currentSample={patientInfo.sample}
+                />
+              ) : null}
             </Col>
           </Row>
           <Row>

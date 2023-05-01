@@ -37,7 +37,7 @@ export const ENTContainer = ({
         }
     }
 
-    // console.log('bbox', bboxCenter)
+    console.log(eventid)
 
     return (
         <>

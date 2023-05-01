@@ -79,19 +79,19 @@ function App() {
 
   // console.log(electrodeDataCsv)
 
-  const [eegEL, setEEGEL] = useState({ id: 0, value: [92] });
+  // const [eegEL, setEEGEL] = useState({ id: 0, value: [92] });
 
-  const [eventid, setEventid] = useState(null);
+  // const [eventid, setEventid] = useState(null);
 
 
-  function onEventsClicked(eventDatum) {
-    // set slider object here, instead of inside bars
-    // console.log('event clicked')
-    let values = eventDatum.electrode.sort((a, b) => a - b);
-    setEEGEL({ id: eventDatum.index, value: values });
-    // console.log(eventDatum.index)
-    setEventid(eventDatum.index)
-  }
+  // function onEventsClicked(eventDatum) {
+  //   // set slider object here, instead of inside bars
+  //   // console.log('event clicked')
+  //   let values = eventDatum.electrode.sort((a, b) => a - b);
+  //   setEEGEL({ id: eventDatum.index, value: values });
+  //   // console.log(eventDatum.index)
+  //   setEventid(eventDatum.index)
+  // }
 
   const [barThreshold, setBarThreshold] = useState([0, 70]);
 
@@ -168,6 +168,7 @@ function App() {
               setEventRangeNetwork={setEventRangeNetwork}
               rectWidth={localTimelineRectWidth}
               roiElectrodes={roiFilter ? fullNetwork[roiFilter].electrodes : null}
+              setSimilarRegionEvent={setSimilarRegionEvent}
             />
             ) : null}
         </Col>

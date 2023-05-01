@@ -67,6 +67,10 @@ const EEGChartWrapper = ({ data }) => {
     .domain([0, 101])
     .range([dimensions.boundedHeight, 0])
 
+  const yTicks = yLineScale.ticks();
+  const tickValues = [yTicks[0], yTicks[Math.floor(yTicks.length * 2 / 4)], yTicks[yTicks.length - 1]];
+
+
   return (
     <g>
       <LinePlot
@@ -76,7 +80,7 @@ const EEGChartWrapper = ({ data }) => {
       />
       <AxisLeft
         xScale={xScale} yScale={yLineScale} scaleOffset={10}
-        ticks={yLineScale.ticks()}
+        ticks={tickValues}
         textPosition={2.85}
       />
       <AxisBottom

@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "spikexplorer-core"
+version = "0.1.0"
+description = ""
+authors = ["Juan Trelles <juantrelles@gmail.com>"]
+readme = "README.md"
+packages = [{include = "spikexplorer_core"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.12"
+pandas = "^2.0.1"
+scipy = "^1.10.1"
+flask = "^2.3.2"
+flask-cors = "^3.0.10"
+pyarrow = "^11.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.22.0"
+black = "^23.3.0"
+pytest = "^7.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

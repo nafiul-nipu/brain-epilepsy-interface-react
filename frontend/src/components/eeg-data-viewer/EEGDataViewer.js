@@ -39,7 +39,7 @@ export const EEGDataViewer = ({
         {
           electrodeList.map((el, i) => {
             return (
-              <div style={{ height: '10vh' }}>
+              <div style={{ height: '10vh' }} key={i}>
                 <ChartContainer {...containerProps} key={i}>
                   <EEGChartWrapper
                     data={electrodeList}

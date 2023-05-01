@@ -7,7 +7,7 @@ export const LinePlot = ({
     yLineScale
 }) => {
     // console.log("in line plot")
-    console.log(data)
+    // console.log(data)
     // console.log(yAxisScale)
     // console.log(`${keyNumber}_${each}`)
     return (

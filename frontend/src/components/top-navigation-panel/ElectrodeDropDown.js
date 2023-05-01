@@ -8,6 +8,7 @@ export const ElectrodeDropDown = ({
   timeRange,
   setTimeRange,
   direction = "column",
+  setRoiFilter
 }) => {
 
   return (
@@ -67,14 +68,17 @@ export const ElectrodeDropDown = ({
   function onSampleChange(event) {
     // console.log({ ...patientInfo, sample: event.target.value })
     setPatientInfo({ ...patientInfo, sample: event.target.value });
+    setRoiFilter(null)
 
   }
 
   function onPatientChange(event) {
     setPatientInfo({ ...patientInfo, id: event.target.value });
+    setRoiFilter(null)
   }
 
   function ontimerangeUpdate(event) {
     setTimeRange(event.target.value);
+    setRoiFilter(null)
   }
 };

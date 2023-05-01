@@ -16,8 +16,16 @@ const containerProps = {
 
 const countAccessor = (d) => d.count;
 
-export const GlobalEvent = ({ data, id, currentSample, threshold, rectWidth, setLocalEventDomain }) => {
-    // console.log(data[currentSample])
+export const GlobalEvent = ({
+    data,
+    id,
+    currentSample,
+    threshold,
+    rectWidth,
+    setLocalEventDomain,
+    roiElectrodes
+}) => {
+    // console.log(roiElectrodes)
     return (
         <ChartContainer {...containerProps}>
             <ChartWrapper
@@ -27,12 +35,13 @@ export const GlobalEvent = ({ data, id, currentSample, threshold, rectWidth, set
                 threshold={threshold}
                 rectWidth={rectWidth}
                 setLocalEventDomain={setLocalEventDomain}
+                roiElectrodes={roiElectrodes}
             />
         </ChartContainer>
     );
 };
 
-const ChartWrapper = ({ data, id, currentSample, threshold, rectWidth, setLocalEventDomain }) => {
+const ChartWrapper = ({ data, id, currentSample, threshold, rectWidth, setLocalEventDomain, roiElectrodes }) => {
     // console.log(dataRegistry[id].time)
     const dimensions = useChartContext();
     const xScale = d3
@@ -78,7 +87,16 @@ const ChartWrapper = ({ data, id, currentSample, threshold, rectWidth, setLocalE
             <rect x={0} y={0} width={dimensions.boundedWidth} height={dimensions.boundedHeight} fill="#DDDCDC" />
             <g>
                 {
-                    data[currentSample].filter((el) => countAccessor(el) >= threshold[0] && countAccessor(el) <= threshold[1])
+                    data[currentSample]
+                        .filter(el => {
+                            // console.log(el)
+                            if (roiElectrodes === null) {
+                                return true; // include all elements if roiElectrodes is null
+                            }
+
+                            return el.electrode.some(elem => roiElectrodes.includes(elem));
+                        })
+                        .filter((el) => countAccessor(el) >= threshold[0] && countAccessor(el) <= threshold[1])
                         .map((d, i) => {
                             return (
                                 <g key={i}>

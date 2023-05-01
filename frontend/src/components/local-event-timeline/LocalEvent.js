@@ -22,7 +22,8 @@ export const LocalEvent = ({
     locaEventHeight,
     setSelectedEventRange,
     setEventRangeNetwork,
-    rectWidth
+    rectWidth,
+    roiElectrodes
 }) => {
     return (
         <ChartContainer {...containerProps}>
@@ -35,6 +36,7 @@ export const LocalEvent = ({
                 setSelectedEventRange={setSelectedEventRange}
                 setEventRangeNetwork={setEventRangeNetwork}
                 rectWidth={rectWidth}
+                roiElectrodes={roiElectrodes}
             />
         </ChartContainer>
     );
@@ -49,7 +51,8 @@ const ChartWrapper = ({
     locaEventHeight,
     setSelectedEventRange,
     setEventRangeNetwork,
-    rectWidth
+    rectWidth,
+    roiElectrodes
 }) => {
     const dimensions = useChartContext();
     const height = locaEventHeight - containerProps.mt - containerProps.mb;
@@ -103,7 +106,16 @@ const ChartWrapper = ({
             />
             <g>
                 {
-                    data[currentSample].filter((el) => countAccessor(el) >= threshold[0] && countAccessor(el) <= threshold[1])
+                    data[currentSample]
+                        .filter(el => {
+                            // console.log(el)
+                            if (roiElectrodes === null) {
+                                return true; // include all elements if roiElectrodes is null
+                            }
+
+                            return el.electrode.some(elem => roiElectrodes.includes(elem));
+                        })
+                        .filter((el) => countAccessor(el) >= threshold[0] && countAccessor(el) <= threshold[1])
                         .map((d, i) => {
                             return (
                                 <g key={i}>

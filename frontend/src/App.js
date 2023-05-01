@@ -111,9 +111,11 @@ function App() {
 
   const [similarRegionEvent, setSimilarRegionEvent] = useState(null)
 
+  const [roiFilter, setRoiFilter] = useState(null)
 
 
-  // console.log(adjaData)
+
+  // console.log(fullNetwork)
 
   return (
     // component container
@@ -126,6 +128,7 @@ function App() {
             setPatientInfo={setPatientInfo}
             timeRange={timeRange}
             setTimeRange={setTimeRange}
+            setRoiFilter={setRoiFilter}
           />
         </Col>
       </Row>
@@ -134,7 +137,7 @@ function App() {
         <Col md='12' style={{ height: '4vh', backgroundColor: '#FAFBFC' }}>
           <div className="globalEventTitle">Global Event Timeline</div>
           <div className="gloablTime">{`${dataRegistry[patientInfo.id].time} MS`}</div>
-          {allEventData ?
+          {allEventData && fullNetwork ?
             (<GlobalEvent
               data={allEventData}
               id={patientInfo.id}
@@ -142,6 +145,7 @@ function App() {
               threshold={barThreshold}
               rectWidth={globalTimelineRectWidth}
               setLocalEventDomain={setLocalEventDomain}
+              roiElectrodes={roiFilter ? fullNetwork[roiFilter].electrodes : null}
             />
             ) : null}
         </Col>
@@ -152,7 +156,7 @@ function App() {
           <div className="localEventTitle">Local Event Timeline</div>
           <div className="localTimestart">{`${localEventDomain[0]} MS`}</div>
           <div className="localTimeEnd">{`${localEventDomain[1]} MS`}</div>
-          {allEventData ?
+          {allEventData && fullNetwork ?
             (<LocalEvent
               data={allEventData}
               id={patientInfo.id}
@@ -163,7 +167,7 @@ function App() {
               setSelectedEventRange={setSelectedEventRange}
               setEventRangeNetwork={setEventRangeNetwork}
               rectWidth={localTimelineRectWidth}
-
+              roiElectrodes={roiFilter ? fullNetwork[roiFilter].electrodes : null}
             />
             ) : null}
         </Col>
@@ -210,6 +214,8 @@ function App() {
                   selectedRoi={selectedRoi}
                   setSelectedRoi={setSelectedRoi}
                   roiCount={dataRegistry[patientInfo.id].roiCount[patientInfo.sample]}
+                  roiFilter={roiFilter}
+                  setRoiFilter={setRoiFilter}
                 />
                 ) : null}
             </Col>

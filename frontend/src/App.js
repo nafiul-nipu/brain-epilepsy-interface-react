@@ -146,7 +146,7 @@ function App() {
               threshold={barThreshold}
               rectWidth={globalTimelineRectWidth}
               setLocalEventDomain={setLocalEventDomain}
-              roiElectrodes={roiFilter ? fullNetwork[roiFilter].electrodes : null}
+              roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
             />
             ) : null}
         </Col>
@@ -168,7 +168,7 @@ function App() {
               setSelectedEventRange={setSelectedEventRange}
               setEventRangeNetwork={setEventRangeNetwork}
               rectWidth={localTimelineRectWidth}
-              roiElectrodes={roiFilter ? fullNetwork[roiFilter].electrodes : null}
+              roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
               setSimilarRegionEvent={setSimilarRegionEvent}
             />
             ) : null}

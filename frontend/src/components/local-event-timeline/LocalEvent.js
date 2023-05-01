@@ -59,7 +59,7 @@ const ChartWrapper = ({
 }) => {
     const dimensions = useChartContext();
     const height = locaEventHeight - containerProps.mt - containerProps.mb;
-    // console.log(data[currentSample])
+
     const xScale = d3
         .scaleLinear()
         .range([0, dimensions.boundedWidth])

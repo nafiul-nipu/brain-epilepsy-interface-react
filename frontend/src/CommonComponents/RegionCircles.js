@@ -17,7 +17,8 @@ export const RegionCircles = ({
     radiusDomain,
     roi,
     roiCount,
-    roiFilter
+    roiFilter,
+    setRoiFilter
 }) => {
     return (
         <ChartContainer {...containerProps}>
@@ -27,12 +28,13 @@ export const RegionCircles = ({
                 roi={roi}
                 roiCount={roiCount}
                 roiFilter={roiFilter}
+                setRoiFilter={setRoiFilter}
             />
         </ChartContainer>
     )
 };
 
-const RegionWrapper = ({ data, radiusDomain, roi, roiCount, roiFilter }) => {
+const RegionWrapper = ({ data, radiusDomain, roi, roiCount, roiFilter, setRoiFilter }) => {
     // console.log(data.activeElectrode)
     const dimensions = useChartContext();
 
@@ -104,6 +106,7 @@ const RegionWrapper = ({ data, radiusDomain, roi, roiCount, roiFilter }) => {
                 width={roiScale(roiCount[roi])}
                 height={containerProps.mt - containerProps.ml}
                 fill={roi === roiFilter ? "#FFA500" : "#2b2b2a"}
+                onClick={() => setRoiFilter(roi)}
             /><title>{`
             Roi : ${roi}\nFrequency : ${roiCount[roi]}
             `}</title>

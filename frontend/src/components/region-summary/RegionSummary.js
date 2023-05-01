@@ -48,7 +48,7 @@ export const RegionSummary = ({
     function summaryOnClick(index, rowStartIndex) {
         // console.log('clicked', rowStartIndex + index)
         setSelectedRoi(rowStartIndex + index)
-        setRoiFilter(rowStartIndex + index)
+        // setRoiFilter(rowStartIndex + index)
     }
     const rows = [...Array(numRows)].map((_, rowIndex) => {
         const rowStartIndex = rowIndex * rowSize;
@@ -65,6 +65,7 @@ export const RegionSummary = ({
                             roi={i + rowStartIndex}
                             roiCount={roiCount}
                             roiFilter={roiFilter}
+                            setRoiFilter={setRoiFilter}
                         />
                     </Col>
 

@@ -200,6 +200,7 @@ function App() {
                   allnetworks={fullNetwork}
                   allnetworksWithEvent={fullEventNetwork}
                   eventid={similarRegionEvent}
+                  selectedEventRange={selectedEventRange}
                 />
               ) : null}
             </Col>

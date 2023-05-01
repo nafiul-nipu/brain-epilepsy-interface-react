@@ -15,7 +15,8 @@ export const ENTContainer = ({
     allnetworks,
     allnetworksWithEvent,
     view,
-    eventid
+    eventid,
+    selectedEventRange
 }) => {
     const [sliderValue, setSliderValue] = useState([0, 0])
     // loading brain and lesions
@@ -37,7 +38,7 @@ export const ENTContainer = ({
         }
     }
 
-    console.log(eventid)
+    // console.log(eventid)
 
     return (
         <>
@@ -70,6 +71,7 @@ export const ENTContainer = ({
                             view={view}
                             buttonValue={buttonValue}
                             eventid={eventid}
+                            selectedEventRange={selectedEventRange}
                         />
                     </Row>
                 </Col>

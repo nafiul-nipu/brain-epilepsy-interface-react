@@ -45,7 +45,8 @@ export const ElectrodeNetworkTumor = ({
     patientID,
     view,
     buttonValue,
-    eventid
+    eventid,
+    selectedEventRange
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -279,14 +280,53 @@ export const ElectrodeNetworkTumor = ({
 
 
             console.log("loading svg")
-            // let mergedROIs;
-            // if (eventid !== null && allnetworkWithEvent) {
-            //     mergedROIs = allnetworkWithEvent[eventid].map((roi1, index) => ({
-            //         ...roi1,
-            //         electrodes: [...allnetwork[index].electrodes],
-            //     }));
 
-            // }
+            if (eventid === null && selectedEventRange) {
+                // console.log(selectedEventRange)
+                // console.log(eventData)
+                const filteredData = eventData
+                    .filter((el) => el.time.some(t => t >= selectedEventRange[0] && t <= selectedEventRange[1]))
+
+                const electrodeList = [...new Set(filteredData.reduce((acc, cur) => acc.concat(cur.electrode), []))];
+                // console.log(electrodeList)
+
+
+                if (points) scene[1].remove(points)
+                let elecColors = []
+                let elecSize = []
+                for (let top = 0; top < electrodeData.length; top++) {
+                    if (electrodeList.includes(electrodeData[top].electrode_number)) {
+
+                        color.setRGB(255 / 255, 165 / 255, 0 / 255);
+                        // color.setRGB(1, 0.435, 0.38);
+                        elecColors.push(color.r, color.g, color.b)
+                        elecSize.push(6)
+
+                    } else {
+                        // rest electrode
+                        color.setRGB(10 / 255, 10 / 255, 10 / 255);
+                        elecColors.push(color.r, color.g, color.b);
+                        elecSize.push(6);
+                    }
+                }
+
+                let geom = new THREE.BufferGeometry();
+                geom.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                // console.log('position')
+                geom.setAttribute('color', new THREE.Float32BufferAttribute(elecColors, 3));
+                // points.geom.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
+                geom.setAttribute('size', new THREE.Float32BufferAttribute(elecSize, 1).setUsage(THREE.DynamicDrawUsage));
+
+                points = new THREE.Points(geom, shaderMaterial);
+                points.geometry.colorsNeedUpdate = true;
+                points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
+
+                scene[1].add(points);
+
+                sliderObj([selectedEventRange[0], selectedEventRange[1]])
+
+
+            }
 
             if (eventid) {
                 if (points) scene[1].remove(points)
@@ -294,10 +334,6 @@ export const ElectrodeNetworkTumor = ({
                 let elecSize = []
                 for (let top = 0; top < electrodeData.length; top++) {
                     if (eventData[eventid].electrode.includes(electrodeData[top].electrode_number)) {
-                        // start electrode
-                        // console.log('start')
-                        //rgb(255,165,0)
-                        // color.setRGB(3 / 255, 218 / 255, 197 / 255);
                         color.setRGB(255 / 255, 165 / 255, 0 / 255);
                         // color.setRGB(1, 0.435, 0.38);
                         elecColors.push(color.r, color.g, color.b)
@@ -434,7 +470,7 @@ export const ElectrodeNetworkTumor = ({
         }
 
 
-    }, [canvasRef, brain, sampleData, timeRange, patientID, sliderObj, bboxCenter, electrodeData, lesions, allnetworkWithEvent, allnetwork, eventData, buttonValue, eventid]);
+    }, [canvasRef, brain, sampleData, timeRange, patientID, sliderObj, bboxCenter, electrodeData, lesions, allnetworkWithEvent, allnetwork, eventData, buttonValue, eventid, selectedEventRange]);
 
     //[canvasRef, drawSVG, electrodeData, patientID, sliderObj,
     //  timeRange, buttonValue, bboxCenter, brain, sampleData,

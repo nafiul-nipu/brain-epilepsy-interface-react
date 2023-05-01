@@ -46,7 +46,7 @@ const RegionWrapper = ({ data, radiusDomain, roi, roiCount, roiFilter }) => {
     const numRows = Math.ceil(count / circlesPerRow);
 
     const circleRadius = d3.scaleLinear()
-        .domain(radiusDomain)
+        .domain([0, d3.max(radiusDomain) === 0 ? 1 : d3.max(radiusDomain)])
         .range([2, 6])
 
     // const circleRadius = (50 / circlesPerRow) / 2;

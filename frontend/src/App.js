@@ -129,6 +129,7 @@ function App() {
             timeRange={timeRange}
             setTimeRange={setTimeRange}
             setRoiFilter={setRoiFilter}
+            setSelectedRoi={setSelectedRoi}
           />
         </Col>
       </Row>

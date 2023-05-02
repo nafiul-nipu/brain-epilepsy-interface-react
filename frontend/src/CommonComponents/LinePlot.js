@@ -4,7 +4,9 @@ import { line, curveCatmullRom } from "d3";
 export const LinePlot = ({
     data,
     xScale,
-    yLineScale
+    yLineScale,
+    colorChecker=null,
+    curr = null
 }) => {
     // console.log("in line plot")
     // console.log(data)
@@ -16,7 +18,7 @@ export const LinePlot = ({
             <path
                 id="line-plot"
                 fill="none"
-                stroke='#137B80'
+                stroke={colorChecker?.includes(curr)? '#137B80': 'grey'}
                 strokeWidth={"2px"}
                 d={line()
                     .x((d, i) => {

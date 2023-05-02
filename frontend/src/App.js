@@ -100,6 +100,7 @@ function App() {
   const [localEventDomain, setLocalEventDomain] = useState([0, globalTimelineRectWidth])
   const [selectedEventRange, setSelectedEventRange] = useState([0, localTimelineRectWidth])
   const [eventRangeNetwork, setEventRangeNetwork] = useState([0, localTimelineRectWidth])
+  const [eegPanelRange, seteegPanelRange] = useState([0, localTimelineRectWidth])
 
 
   const [selectedRoi, setSelectedRoi] = useState(0)
@@ -167,6 +168,7 @@ function App() {
               locaEventHeight={localEventSize.height}
               setSelectedEventRange={setSelectedEventRange}
               setEventRangeNetwork={setEventRangeNetwork}
+              seteegPanelRange={seteegPanelRange}
               rectWidth={localTimelineRectWidth}
               roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
               setSimilarRegionEvent={setSimilarRegionEvent}
@@ -297,6 +299,7 @@ function App() {
                   data={allEventData}
                   selectedEventRange={eventRangeNetwork}
                   currentSample={patientInfo.sample}
+                  eegPanelRange={eegPanelRange}
                 />
               ) : null}
             </Col>

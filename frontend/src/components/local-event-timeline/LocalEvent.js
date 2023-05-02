@@ -24,7 +24,8 @@ export const LocalEvent = ({
     setEventRangeNetwork,
     rectWidth,
     roiElectrodes,
-    setSimilarRegionEvent
+    setSimilarRegionEvent,
+    seteegPanelRange
 }) => {
     return (
         <ChartContainer {...containerProps}>
@@ -39,6 +40,7 @@ export const LocalEvent = ({
                 rectWidth={rectWidth}
                 roiElectrodes={roiElectrodes}
                 setSimilarRegionEvent={setSimilarRegionEvent}
+                seteegPanelRange={seteegPanelRange}
             />
         </ChartContainer>
     );
@@ -55,7 +57,8 @@ const ChartWrapper = ({
     setEventRangeNetwork,
     rectWidth,
     roiElectrodes,
-    setSimilarRegionEvent
+    setSimilarRegionEvent,
+    seteegPanelRange
 }) => {
     const dimensions = useChartContext();
     const height = locaEventHeight - containerProps.mt - containerProps.mb;
@@ -94,7 +97,8 @@ const ChartWrapper = ({
         setIsDragging(false);
         setSelectedEventRange([Math.round(xScale.invert(rectPos.x)), Math.round(xScale.invert(rectPos.x)) + rectWidth]);
         setEventRangeNetwork([Math.round(xScale.invert(rectPos.x)), Math.round(xScale.invert(rectPos.x)) + rectWidth]);
-        setSimilarRegionEvent(null)
+        seteegPanelRange([Math.round(xScale.invert(rectPos.x)), Math.round(xScale.invert(rectPos.x)) + rectWidth]);
+        setSimilarRegionEvent(null);
     };
     return (
         <g onMouseDown={handleMouseDown} onMouseMove={handleMouseMove}>

@@ -9,7 +9,7 @@ const containerProps = {
   useZoom: false,
   ml: 50,
   mr: 20,
-  mb: 30,
+  mb: 35,
   mt: 0,
 };
 
@@ -17,6 +17,7 @@ export const EEGDataViewer = ({
   data,
   selectedEventRange,
   currentSample,
+  eegPanelRange
 }) => {
   const filteredData = data[currentSample]
     .filter((el) => el.time.some(t => t >= selectedEventRange[0] && t <= selectedEventRange[1]))
@@ -26,6 +27,14 @@ export const EEGDataViewer = ({
   // console.log(electrodeList)
 
   const eventList = filteredData.map((el) => el.index);
+
+  const filteredDataForEventWindow = data[currentSample]
+  .filter((el) => el.time.some(t => t >= eegPanelRange[0] && t <= eegPanelRange[1]))
+
+  const electrodeListEventWindow = [...new Set(filteredDataForEventWindow.reduce((acc, cur) => acc.concat(cur.electrode), []))];
+
+  // console.log(electrodeList)
+  // console.log(electrodeListEventWindow)
 
   return (
     <div className="eeg-container">
@@ -37,12 +46,15 @@ export const EEGDataViewer = ({
 
       <div className="eeg-list">
         {
-          electrodeList.map((el, i) => {
+          electrodeListEventWindow.map((el, i) => {
             return (
               <div style={{ height: '10vh' }} key={i}>
+                <div className="electrodeEEGNameDiv">{`E${el}`} </div>
                 <ChartContainer {...containerProps} key={i}>
                   <EEGChartWrapper
-                    data={electrodeList}
+                    // data={electrodeList}
+                    electrodeList={electrodeList}
+                    currenElectrode={el}
                   />
                 </ChartContainer>
               </div>
@@ -55,7 +67,7 @@ export const EEGDataViewer = ({
 };
 
 
-const EEGChartWrapper = ({ data }) => {
+const EEGChartWrapper = ({ electrodeList, currenElectrode }) => {
 
   const dimensions = useChartContext();
 
@@ -77,6 +89,8 @@ const EEGChartWrapper = ({ data }) => {
         data={Array.from({ length: 500 }, () => Math.floor(Math.random() * 101))}
         xScale={xScale}
         yLineScale={yLineScale}
+        colorChecker={electrodeList}
+        curr={currenElectrode}
       />
       <AxisLeft
         xScale={xScale} yScale={yLineScale} scaleOffset={10}

@@ -49,14 +49,14 @@ def fetch_patient_eeg(
         electrodes = escape(electrodes)
         electrodes = [int(el) for el in electrodes.split(",")]
 
-        patient_request = eeg.PatientRequest(DATADIR, patient_id, sample_id)
+        patient = eeg.Patient(DATADIR, patient_id)
         key = (patient_id, sample_id)
         if key not in patients_egg:
             # read from memory if data not cached
-            patients_egg[key] = eeg.load_eeg_df(patient_request)
+            patients_egg[key] = eeg.load_eeg_df(patient, sample_id)
 
         return services.fetch_eeg_request(
-            patient_request, patients_egg[key], start_ms, num_records, electrodes
+            patient, patients_egg[key], start_ms, num_records, electrodes
         )
     except FileNotFoundError:
         err_msg = "Patient data not found"

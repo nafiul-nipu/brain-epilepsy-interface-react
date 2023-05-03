@@ -165,6 +165,12 @@
   overflow-x: auto;
 }
 
+
+.eventWindowEndText{
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 5px;

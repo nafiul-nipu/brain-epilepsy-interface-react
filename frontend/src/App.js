@@ -232,20 +232,28 @@ function App() {
         <Col md="4">
           <Row>
             <Col md="12" style={{ height: '7vh', backgroundColor: "#FAFBFC" }}>
-              {/* Selected Event Window */}
-              {allEventData ?
-                (<SelectedEventWindow
-                  data={allEventData}
-                  id={patientInfo.id}
-                  currentSample={patientInfo.sample}
-                  domain={selectedEventRange}
-                  threshold={barThreshold}
-                  setEventRangeNetwork={setEventRangeNetwork}
-                  setSimilarRegionEvent={setSimilarRegionEvent}
-                  similarRegionEvent={similarRegionEvent}
-                />
-                ) : null}
-
+              <Row>
+                <Col md='2' style={{ height: '2vh' }}>{`${selectedEventRange[0]} ms`}</Col>
+                <Col md='8' style={{ height: '2vh' }}>Selected Event Window</Col>
+                <Col md='2' style={{ height: '2vh' }}>{`${selectedEventRange[1]} ms`}</Col>
+              </Row>
+              <Row>
+              <Col md='12' style={{ height: '5vh' }}>
+                {/* Selected Event Window */}
+                {allEventData ?
+                  (<SelectedEventWindow
+                    data={allEventData}
+                    id={patientInfo.id}
+                    currentSample={patientInfo.sample}
+                    domain={selectedEventRange}
+                    threshold={barThreshold}
+                    setEventRangeNetwork={setEventRangeNetwork}
+                    setSimilarRegionEvent={setSimilarRegionEvent}
+                    similarRegionEvent={similarRegionEvent}
+                  />
+                  ) : null}
+              </Col>
+              </Row>
             </Col>
           </Row>
           <Row>

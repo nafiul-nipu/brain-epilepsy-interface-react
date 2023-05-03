@@ -7,34 +7,48 @@ import pandas as pd
 
 
 @dataclass
-class PatientRequest:
+class Patient:
     """Placeholder for location of patient info on disk
     Arguments:
     - datadir:    str   Location on disk for project data
     - patient_id: str   id in format epNUMBER, e.g., ep1
-    - sample_id:  str   sample id in format sample_NUMBER, e.g. sample_10
     """
 
     datadir: str
     patient_id: str
-    sample_id: str
-    eeg_path: Path = field(init=False)
-    events_path: Path = field(init=False)
+    patient_path: Path = field(init=False)
 
     def __post_init__(self):
-        sample_path = Path(self.datadir) / "patients" / self.patient_id / self.sample_id
-        self.eeg_path = sample_path / "eegData.parquet"
-        self.events_path = sample_path / f"{self.sample_id}_events.json"
+        self.patient_path = Path(self.datadir) / "patients" / self.patient_id
+
+    def eeg_path(self, sample_id: str):
+        """Location of parquet file with eeg data"""
+        return self.patient_path / sample_id / "eegData_fast.parquet"
+
+    def events_path(self, sample_id: str):
+        """Location of events for sample"""
+        return self.patient_path / sample_id / f"{sample_id}_events.json"
+
+    def sorted_data(self, sample_id: str):
+        """TODO: this needs a better name, there are events and network data here"""
+        return self.patient_path / sample_id / f"{self.patient_id}_sorted_data.json"
+
+    def fetch_electrodes(self) -> List[int]:
+        """List of electrode numbers"""
+        f_path = Path(self.datadir) / "patients" / self.patient_id
+        f_path = f_path / f"{self.patient_id}_electrodes_new.csv"
+        df_electrodes = pd.read_csv(f_path)
+        return df_electrodes["electrode_number"].tolist()
 
 
-def load_eeg_df(patient_request: PatientRequest) -> pd.DataFrame:
+def load_eeg_df(patient: Patient, sample_id: str) -> pd.DataFrame:
     """Load and return EEG dataframe to store it on app server memory
     Returns:
       Dataframe
     Raises:
       FileNotFound exception
     """
-    patient_df = pd.read_parquet(patient_request.eeg_path, engine="pyarrow")
+    patient_df = pd.read_parquet(patient.eeg_path(sample_id), engine="pyarrow")
     return patient_df
 
 
@@ -50,7 +64,7 @@ def index_eeg(
     if not start_ms:
         start_ms = 0
     return patient_df.iloc[
-        patient_df.index.isin(electrodes), start_ms : start_ms + num_records - 1
+        patient_df.index.isin(electrodes), start_ms : start_ms + num_records
     ]
 
 
@@ -62,7 +76,7 @@ def egg_df_to_dict(input_df: pd.DataFrame) -> Dict[int, List[float]]:
     return output
 
 
-def fetch_spike_times_by_events(patient: PatientRequest, event_ids: List[int]):
+def fetch_spike_times_by_events(patient: Patient, event_ids: List[int]):
     """Fetch events with peaks"""
     with open(patient.events_path, "r", encoding="utf-8") as f_in:
         all_events = json.load(f_in)
@@ -70,10 +84,14 @@ def fetch_spike_times_by_events(patient: PatientRequest, event_ids: List[int]):
 
 
 def fetch_spike_times_by_electrodes(
-    patient: PatientRequest, electrodes: List[int], start_ms: int, num_records: int
+    patient: Patient,
+    sample_id: str,
+    electrodes: List[int],
+    start_ms: int,
+    num_records: int,
 ):
     """Fetch events with peaks"""
-    with open(patient.events_path, "r", encoding="utf-8") as f_in:
+    with open(patient.events_path(sample_id), "r", encoding="utf-8") as f_in:
         all_events = json.load(f_in)
     inputs = []
     end_ms = start_ms + num_records

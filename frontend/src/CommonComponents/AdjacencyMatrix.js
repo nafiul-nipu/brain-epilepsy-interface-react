@@ -7,7 +7,7 @@ const containerProps = {
     useZoom: false,
     ml: 20,
     mr: 20,
-    mb: 0,
+    mb: 20,
     mt: 20,
 };
 
@@ -15,7 +15,7 @@ export const AdjacencyMatrix = ({
     data,
     columns,
     colorRange = ["#fcbba1", "#a50f15"],
-    fontSize = "0.65em",
+    fontSize = "0.45em",
     labels
 }) => {
 
@@ -97,8 +97,8 @@ const Wrapper = ({ data, columns, colorRange, fontSize, labels }) => {
                                                     width={xScale.bandwidth()}
                                                     height={yScale.bandwidth()}
                                                     fill={color(col)}
-                                                    rx={4}
-                                                    ry={4}
+                                                    rx={2}
+                                                    ry={2}
                                                 /><title>{`
                                                 Source: ${labels[i]}\nTarget : ${labels[j]} \nFrequency : ${col}
                                                 `}</title>

@@ -180,9 +180,9 @@ function App() {
       </Row>
       <Row>
         {/* left panel */}
-        <Col md="3" >
+        <Col md="4" >
           <Row>
-            <Col md="12" style={{ height: '15vh', backgroundColor: "#FAFBFC" }}>
+            <Col md="12" style={{ height: '15vh', backgroundColor: "#FAFBFC" }}>              
               {allEventData ?
                 (<EventsDistribution
                   id={patientInfo.id}
@@ -250,6 +250,7 @@ function App() {
           </Row>
           <Row>
             <Col md="12" style={{ height: '28vh', backgroundColor: "#FAFBFC" }}>
+              <div style={{width: "30vh", height: "30vh"}}>
               {fullNetwork && allEventData && fullEventNetwork ?
                 (<NetworkViewer
                   sessionNetwork={fullNetwork}
@@ -259,7 +260,7 @@ function App() {
                   selectedRoi={selectedRoi}
                 />
                 ) : null}
-
+                </div>
             </Col>
           </Row>
           <Row>
@@ -294,7 +295,7 @@ function App() {
           </Row>
         </Col>
         {/* right panel */}
-        <Col md="4" className="fullh">
+        <Col md="3" className="fullh">
           <Row>
             <Col md="12" style={{ height: '60vh', backgroundColor: "#FAFBFC" }}>
               {allEventData ? (

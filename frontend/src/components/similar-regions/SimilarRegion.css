@@ -1,14 +1,18 @@
 .firstSimilar{
     position: absolute;
     top: 54%;
+    font-size: 0.75em;
 }
 .secondSimilar{
     position: absolute;
     top: 54%;
+    font-size: 0.75em;
 }
 .thirdSimilar{
     position: absolute;
+    font-size: 0.75em;
 }
 .fourthSimilar{
     position: absolute;
+    font-size: 0.75em;
 }

@@ -10,7 +10,7 @@ export const SimilarRegion = ({
     eventNet,
     eventData
 }) => {
-    // console.log(similarRegionEvent)
+    console.log(similarRegionEvent)
     // console.log(eventData)
     const neighbors = data.find(obj => obj.eventID === similarRegionEvent)?.neighbors
     // console.log(neighbors)

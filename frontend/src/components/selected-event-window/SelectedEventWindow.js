@@ -22,7 +22,8 @@ export const SelectedEventWindow = ({
     domain,
     threshold,
     setEventRangeNetwork,
-    setSimilarRegionEvent
+    setSimilarRegionEvent,
+    similarRegionEvent
 }) => {
     // console.log(data[currentSample])
     return (
@@ -34,15 +35,15 @@ export const SelectedEventWindow = ({
                 domain={domain}
                 setEventRangeNetwork={setEventRangeNetwork}
                 setSimilarRegionEvent={setSimilarRegionEvent}
+                similarRegionEvent={similarRegionEvent}
             />
         </ChartContainer>
     );
 };
 
-const ChartWrapper = ({ data, currentSample, threshold, domain, setEventRangeNetwork, setSimilarRegionEvent }) => {
+const ChartWrapper = ({ data, currentSample, threshold, domain, setEventRangeNetwork, setSimilarRegionEvent, similarRegionEvent }) => {
     // console.log(data)
     const dimensions = useChartContext();
-    const [colorChange, setColorChange] = useState(null)
     const xScale = d3
         .scaleLinear()
         .range([0, dimensions.boundedWidth])
@@ -64,7 +65,6 @@ const ChartWrapper = ({ data, currentSample, threshold, domain, setEventRangeNet
     // console.log(widtheScale(105))
     function onEventClick(el) {
         // console.log(time)
-        setColorChange(el)
         setEventRangeNetwork(el.time.length > 1 ? el.time : [el.time, el.time])
         setSimilarRegionEvent(el.index)
 
@@ -93,7 +93,7 @@ const ChartWrapper = ({ data, currentSample, threshold, domain, setEventRangeNet
                                         width={d.time.length > 1 ? widtheScale(d.time[d.time.length - 1]) - widtheScale(d.time[0]) : 2}
                                         // width={yScale(d.count)}
                                         height={dimensions.boundedHeight}
-                                        fill={colorChange === d ? 'red' : 'orange'}
+                                        fill={similarRegionEvent === d.index ? 'red' : 'orange'}
                                         onClick={() => onEventClick(d)}
                                     // filter={`saturate(${saturationScale(d.count)})`}
                                     /><title>{`

@@ -99,7 +99,8 @@ function App() {
 
   const [localEventDomain, setLocalEventDomain] = useState([0, globalTimelineRectWidth])
   const [selectedEventRange, setSelectedEventRange] = useState([0, localTimelineRectWidth])
-  const [eventRangeNetwork, setEventRangeNetwork] = useState([0, localTimelineRectWidth])
+  // first event time
+  const [eventRangeNetwork, setEventRangeNetwork] = useState([103, 113])
   const [eegPanelRange, seteegPanelRange] = useState([0, localTimelineRectWidth])
 
 
@@ -110,7 +111,8 @@ function App() {
     sample: patientInfo.sample,
   });
 
-  const [similarRegionEvent, setSimilarRegionEvent] = useState(null)
+  // fist event ID
+  const [similarRegionEvent, setSimilarRegionEvent] = useState(1)
 
   const [roiFilter, setRoiFilter] = useState(null)
 
@@ -240,6 +242,7 @@ function App() {
                   threshold={barThreshold}
                   setEventRangeNetwork={setEventRangeNetwork}
                   setSimilarRegionEvent={setSimilarRegionEvent}
+                  similarRegionEvent={similarRegionEvent}
                 />
                 ) : null}
 
@@ -268,7 +271,7 @@ function App() {
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    {similarRegionData && similarRegionEvent && allEventData ?
+                    {similarRegionData && similarRegionEvent && allEventData && fullEventNetwork ?
                       (
                         <SimilarRegion
                           data={similarRegionData}

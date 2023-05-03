@@ -229,7 +229,7 @@ function App() {
           </Row>
         </Col>
         {/* middle panel */}
-        <Col md="5">
+        <Col md="4">
           <Row>
             <Col md="12" style={{ height: '7vh', backgroundColor: "#FAFBFC" }}>
               {/* Selected Event Window */}
@@ -295,7 +295,7 @@ function App() {
           </Row>
         </Col>
         {/* right panel */}
-        <Col md="3" className="fullh">
+        <Col md="4" className="fullh">
           <Row>
             <Col md="12" style={{ height: '60vh', backgroundColor: "#FAFBFC" }}>
               {allEventData ? (

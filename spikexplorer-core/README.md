@@ -11,6 +11,9 @@
 
 ## Endpoints
 
+On success, return 200 and payload. In case of errors, raise a 400 BadRequest or
+a 500 Internal Server Error.
+
 `/patient/<patient_id>/eeg/<sample_id>/<start>/<num_records>/<electrodes>`
 
 - patient*id: str (e.g., \_ep128*)
@@ -30,7 +33,6 @@
     {"time": 123, "event": 1},
     {"time": 130, "event": 2},
   ],
-  error: null
 }
 ```
 
@@ -45,6 +47,5 @@
 // Successful payload
 {
   "neighbhors": [1,22,12,32,43], // sample list of events
-  "error": null
 }
 ```

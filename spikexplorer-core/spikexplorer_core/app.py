@@ -4,9 +4,9 @@ from os import getenv, getcwd
 import logging
 from pathlib import Path
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS, cross_origin
-from markupsafe import escape
+from werkzeug.exceptions import BadRequest, InternalServerError
 
 from spikexplorer_core.core import eeg
 from spikexplorer_core import services
@@ -35,6 +35,21 @@ logging.info("Starting Flask with DATADIR=%s and ROOT=%s", DATADIR, ROOT)
 ################################################################################
 
 
+# Error handlers ###############################################################
+@app.errorhandler(InternalServerError)
+def handle_internal_server_error(error):
+    """Handler for cases when the code raised an exception"""
+    response = {"description": error.description}
+    return jsonify(response), 500
+
+
+@app.errorhandler(BadRequest)
+def handle_bad_request(error):
+    """Handler for cases when the parameters are wrong"""
+    response = {"description": error.description}
+    return jsonify(response), 400
+
+
 # Routes #######################################################################
 @cross_origin()
 @app.route(
@@ -46,13 +61,9 @@ def fetch_patient_eeg(
 ):
     """Index patient dataset to retrieve subset of EEG data"""
     try:
-        patient_id = escape(patient_id)
-        sample_id = escape(sample_id)
-        start_ms = int(escape(start))
-        num_records = int(escape(num_records))
-        electrodes = escape(electrodes)
+        start = int(start)
+        num_records = int(num_records)
         electrodes = [int(el) for el in electrodes.split(",")]
-
         patient = eeg.Patient(DATADIR, patient_id)
         key = (patient_id, sample_id)
         if key not in patients_cache:
@@ -60,16 +71,20 @@ def fetch_patient_eeg(
             patients_cache[key] = eeg.load_eeg_df(patient, sample_id)
 
         return services.fetch_eeg_request(
-            patient, patients_cache[key], start_ms, num_records, electrodes
+            patient, sample_id, patients_cache[key], start, num_records, electrodes
         )
-    except FileNotFoundError:
+    except ValueError as exc:
+        err_msg = "Wrong parameters"
+        logging.error(err_msg, exc_info=True)
+        raise BadRequest(err_msg) from exc
+    except FileNotFoundError as exc:
         err_msg = "Patient data not found"
         logging.error("%s: %s %s", err_msg, patient_id, sample_id)
-        return {"data": None, "error": err_msg}
+        raise BadRequest(err_msg) from exc
     # pylint: disable=broad-exception-caught
-    except Exception:
+    except Exception as exc:
         logging.error("error", exc_info=True)
-        return {"data": None, "error": "internal server error?"}
+        raise InternalServerError("internal server error") from exc
 
 
 @cross_origin()
@@ -79,15 +94,21 @@ def fetch_patient_eeg(
 )
 def fetch_similar_events(patient_id: str, sample_id: str, event_id: int, n_neigh: int):
     """Fetch most similar events using PCA"""
-    patient_id = escape(patient_id)
-    sample_id = escape(sample_id)
-    event_id = escape(event_id)
-    n_neigh = escape(n_neigh)
 
     try:
+        n_neigh = int(n_neigh)
+        event_id = int(event_id)
         patient = eeg.Patient(DATADIR, patient_id)
         return services.fetch_similar(patient, sample_id, event_id, n_neigh)
+    except ValueError as exc:
+        err_msg = "Wrong parameters"
+        logging.error(err_msg, exc_info=True)
+        raise BadRequest(err_msg) from exc
+    except FileNotFoundError as exc:
+        err_msg = "Patient data not found"
+        logging.error("%s: %s %s", err_msg, patient_id, sample_id)
+        raise BadRequest(err_msg) from exc
     # pylint: disable=broad-exception-caught
-    except Exception:
+    except Exception as exc:
         logging.error("error", exc_info=True)
-        return {"data": None, "error": "internal server error?"}
+        raise InternalServerError("internal server error") from exc

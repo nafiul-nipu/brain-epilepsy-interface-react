@@ -4,7 +4,7 @@ from os import getenv, getcwd
 import logging
 from pathlib import Path
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask, jsonify, escape
 from flask_cors import CORS, cross_origin
 from werkzeug.exceptions import BadRequest, InternalServerError
 
@@ -30,7 +30,6 @@ CORS(app)
 # environmental variables
 DATADIR = getenv("DATADIR")  # where user data is stored
 ROOT = getenv("ROOT")  # URL endpoint e.g. server:port/ROOT
-patients_cache = {}
 logging.info("Starting Flask with DATADIR=%s and ROOT=%s", DATADIR, ROOT)
 ################################################################################
 
@@ -63,15 +62,12 @@ def fetch_patient_eeg(
     try:
         start = int(start)
         num_records = int(num_records)
+        electrodes = escape(electrodes)
         electrodes = [int(el) for el in electrodes.split(",")]
         patient = eeg.Patient(DATADIR, patient_id)
-        key = (patient_id, sample_id)
-        if key not in patients_cache:
-            # read from memory if data not cached
-            patients_cache[key] = eeg.load_eeg_df(patient, sample_id)
 
         return services.fetch_eeg_request(
-            patient, sample_id, patients_cache[key], start, num_records, electrodes
+            patient, sample_id, start, num_records, electrodes
         )
     except ValueError as exc:
         err_msg = "Wrong parameters"

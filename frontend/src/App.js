@@ -24,11 +24,8 @@ import { useFetch } from "./library/useFetch";
 import { useAllEventData } from "./library/useAllEventData";
 import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
 import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
-import { AdjacencyMatrix } from "./CommonComponents/AdjacencyMatrix";
 
 import dataRegistry from "./data/dataRegistry.json";
-import { RegionCircles } from "./CommonComponents/RegionCircles";
-import { useMergedRois } from "./library/useMergedRois";
 import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
 import { RegionSummary } from "./components/region-summary/RegionSummary";
 import { NetworkViewer } from "./components/network-viewer/NetworkViewer";
@@ -76,22 +73,6 @@ function App() {
 
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
-
-  // console.log(electrodeDataCsv)
-
-  // const [eegEL, setEEGEL] = useState({ id: 0, value: [92] });
-
-  // const [eventid, setEventid] = useState(null);
-
-
-  // function onEventsClicked(eventDatum) {
-  //   // set slider object here, instead of inside bars
-  //   // console.log('event clicked')
-  //   let values = eventDatum.electrode.sort((a, b) => a - b);
-  //   setEEGEL({ id: eventDatum.index, value: values });
-  //   // console.log(eventDatum.index)
-  //   setEventid(eventDatum.index)
-  // }
 
   const [barThreshold, setBarThreshold] = useState([0, 70]);
 
@@ -182,7 +163,7 @@ function App() {
         {/* left panel */}
         <Col md="4" >
           <Row>
-            <Col md="12" style={{ height: '15vh', backgroundColor: "#FAFBFC" }}>              
+            <Col md="12" style={{ height: '15vh', backgroundColor: "#FAFBFC" }}>
               {allEventData ?
                 (<EventsDistribution
                   id={patientInfo.id}
@@ -238,37 +219,37 @@ function App() {
                 <Col md='2' style={{ height: '2vh' }}>{`${selectedEventRange[1]} ms`}</Col>
               </Row>
               <Row>
-              <Col md='12' style={{ height: '5vh' }}>
-                {/* Selected Event Window */}
-                {allEventData ?
-                  (<SelectedEventWindow
-                    data={allEventData}
-                    id={patientInfo.id}
-                    currentSample={patientInfo.sample}
-                    domain={selectedEventRange}
-                    threshold={barThreshold}
-                    setEventRangeNetwork={setEventRangeNetwork}
-                    setSimilarRegionEvent={setSimilarRegionEvent}
-                    similarRegionEvent={similarRegionEvent}
-                  />
-                  ) : null}
-              </Col>
+                <Col md='12' style={{ height: '5vh' }}>
+                  {/* Selected Event Window */}
+                  {allEventData ?
+                    (<SelectedEventWindow
+                      data={allEventData}
+                      id={patientInfo.id}
+                      currentSample={patientInfo.sample}
+                      domain={selectedEventRange}
+                      threshold={barThreshold}
+                      setEventRangeNetwork={setEventRangeNetwork}
+                      setSimilarRegionEvent={setSimilarRegionEvent}
+                      similarRegionEvent={similarRegionEvent}
+                    />
+                    ) : null}
+                </Col>
               </Row>
             </Col>
           </Row>
           <Row>
             <Col md="12" style={{ height: '28vh', backgroundColor: "#FAFBFC" }}>
-              <div style={{width: "30vh", height: "30vh"}}>
-              {fullNetwork && allEventData && fullEventNetwork ?
-                (<NetworkViewer
-                  sessionNetwork={fullNetwork}
-                  eventData={allEventData[patientInfo.sample]}
-                  eventRange={eventRangeNetwork}
-                  eventNet={fullEventNetwork}
-                  selectedRoi={selectedRoi}
-                />
-                ) : null}
-                </div>
+              <div style={{ width: "30vh", height: "30vh" }}>
+                {fullNetwork && allEventData && fullEventNetwork ?
+                  (<NetworkViewer
+                    sessionNetwork={fullNetwork}
+                    eventData={allEventData[patientInfo.sample]}
+                    eventRange={eventRangeNetwork}
+                    eventNet={fullEventNetwork}
+                    selectedRoi={selectedRoi}
+                  />
+                  ) : null}
+              </div>
             </Col>
           </Row>
           <Row>

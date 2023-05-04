@@ -2,11 +2,12 @@
 from typing import Optional, List
 from pandas import DataFrame
 
-from spikexplorer_core.eeg import eeg
+from spikexplorer_core.core import eeg, similarity
+from spikexplorer_core.core.patient import Patient
 
 
 def fetch_eeg_request(
-    patient: eeg.Patient,
+    patient: Patient,
     sample_id: str,
     input_eeg_df: DataFrame,
     start_ms: Optional[int],
@@ -25,4 +26,12 @@ def fetch_eeg_request(
     eeg_dict = eeg.egg_df_to_dict(filtered_eeg_df)
     peaks = eeg.fetch_spike_times_by_electrodes(patient, sample_id, **filters)
 
-    return {"eeg": eeg_dict, "peaks": peaks}
+    return {"eeg": eeg_dict, "peaks": peaks, "error": None}
+
+
+def fetch_similar(patient: Patient, sample_id: str, event_id: int, n_neighbors: int):
+    """Return n_neighbors most similar graphs based on all nodes, PCA and KNN"""
+    event_ids = similarity.find_similar_pca(
+        patient, sample_id, event_id, n_neighbors=n_neighbors
+    )
+    return {"neighbhors": event_ids, "error": None}

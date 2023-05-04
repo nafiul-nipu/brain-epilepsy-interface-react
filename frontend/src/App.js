@@ -20,7 +20,7 @@ import { ENTContainer } from "./components/brain-viewer/ENTContainer";
 import { useFullNetwork } from "./library/useFullNetwork";
 import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
 import { EventsDistribution } from "./components/events-distribution/events-distribution";
-import { useFetch } from "./library/useFetch";
+import { useFetchEEG } from "./library/useFetch";
 import { useAllEventData } from "./library/useAllEventData";
 import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
 import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
@@ -31,6 +31,7 @@ import { RegionSummary } from "./components/region-summary/RegionSummary";
 import { NetworkViewer } from "./components/network-viewer/NetworkViewer";
 import { useSimilarRegion } from "./library/useSimilarRegion";
 import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
+import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
 
 
 const globalTimelineRectWidth = 10000;
@@ -76,14 +77,11 @@ function App() {
 
   const [barThreshold, setBarThreshold] = useState([0, 70]);
 
-  // useFetch('ep129', 'sample1', 'filter')
-
   const [localEventDomain, setLocalEventDomain] = useState([0, globalTimelineRectWidth])
   const [selectedEventRange, setSelectedEventRange] = useState([0, localTimelineRectWidth])
   // first event time
   const [eventRangeNetwork, setEventRangeNetwork] = useState([103, 113])
   const [eegPanelRange, seteegPanelRange] = useState([0, localTimelineRectWidth])
-
 
   const [selectedRoi, setSelectedRoi] = useState(0)
 
@@ -288,10 +286,10 @@ function App() {
           <Row>
             <Col md="12" style={{ height: '60vh', backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
-                <EEGDataViewer
-                  data={allEventData}
+                <EEGDataContainer
+                  allEventData={allEventData}
+                  patient={patientInfo}
                   selectedEventRange={eventRangeNetwork}
-                  currentSample={patientInfo.sample}
                   eegPanelRange={eegPanelRange}
                 />
               ) : null}

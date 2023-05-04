@@ -9,6 +9,23 @@
   ROOT: endpoing for deploymeny
 ```
 
+### Data
+
+`DATADIR` stores the patient data in the following structure
+
+```
+DATADIR/
+  patients/
+    epXX/
+      sample1/
+        eegData_fast.parquet
+        epXX_sorter_data.json
+        sample1_events.json
+      sample2
+      epXX_electrodes_new.csv
+    epXY
+```
+
 ## Endpoints
 
 On success, return 200 and payload. In case of errors, raise a 400 BadRequest or

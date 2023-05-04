@@ -39,3 +39,7 @@ class Patient:
         f_path = f_path / f"{self.patient_id}_electrodes_new.csv"
         df_electrodes = read_csv(f_path)
         return df_electrodes["electrode_number"].tolist()
+
+    def egg_duckdb_path(self, sample_id) -> str:
+        """EEG data for duckdb"""
+        return str(self.patient_path / sample_id / "eegdb.parquet")

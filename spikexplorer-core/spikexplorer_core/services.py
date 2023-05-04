@@ -9,7 +9,6 @@ from spikexplorer_core.core.patient import Patient
 def fetch_eeg_request(
     patient: Patient,
     sample_id: str,
-    input_eeg_df: DataFrame,
     start_ms: Optional[int],
     num_records: int,
     electrodes: List[int],
@@ -22,11 +21,10 @@ def fetch_eeg_request(
         "start_ms": start_ms,
         "num_records": num_records,
     }
-    filtered_eeg_df = eeg.index_eeg(input_eeg_df, **filters)
-    eeg_dict = eeg.egg_df_to_dict(filtered_eeg_df)
-    peaks = eeg.fetch_spike_times_by_electrodes(patient, sample_id, **filters)
+    eeg_dict = eeg.fetch_eeg_data_from_db(patient, sample_id, **filters)
+    # peaks = eeg.fetch_spike_times_by_electrodes(patient, sample_id, **filters)
 
-    return {"eeg": eeg_dict, "peaks": peaks, "error": None}
+    return {"eeg": eeg_dict, "peaks": {}, "error": None}
 
 
 def fetch_similar(patient: Patient, sample_id: str, event_id: int, n_neighbors: int):

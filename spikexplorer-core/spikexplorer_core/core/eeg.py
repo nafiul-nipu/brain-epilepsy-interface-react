@@ -2,6 +2,7 @@
 from typing import Optional, List, Dict
 import json
 import pandas as pd
+import duckdb
 from spikexplorer_core.core.patient import Patient
 
 
@@ -22,7 +23,8 @@ def index_eeg(
     start_ms: Optional[int],
     num_records: Optional[int],
 ) -> Dict[int, List[float]]:
-    """Index in memory dataframe to return subset of EEG data"""
+    """Index in memory dataframe to return subset of EEG data. To be used with
+    parquets in wide format"""
     if not start_ms and not num_records:
         return patient_df.loc[patient_df.index.isin(electrodes), :]
     if not start_ms:
@@ -37,6 +39,34 @@ def egg_df_to_dict(input_df: pd.DataFrame) -> Dict[int, List[float]]:
     output = {}
     for idx, row in input_df.iterrows():
         output[idx] = row.values.tolist()
+    return output
+
+
+def fetch_eeg_data_from_db(
+    patient: Patient,
+    sample_id: str,
+    electrodes: List[int],
+    start_ms: Optional[int],
+    num_records: Optional[int],
+):
+    """Fetch the data for EEGs by querying duckdb"""
+    start_ms = 0 if not start_ms else start_ms
+    electrodes_filter = ",".join([str(el) for el in electrodes])
+
+    query = f"""
+        SELECT electrode, ms, value FROM '{patient.egg_duckdb_path(sample_id)}'
+        WHERE electrode in ({electrodes_filter}) AND ms >= {start_ms}
+    """
+    if num_records:
+        query += f" AND ms <= {start_ms+num_records} "
+    query += " ORDER BY electrode, ms"
+    results = duckdb.sql(query).to_df()
+
+    output = {}
+    for electode in electrodes:
+        output[electode] = results.loc[
+            results.electrode == electode
+        ].value.values.tolist()
     return output
 
 

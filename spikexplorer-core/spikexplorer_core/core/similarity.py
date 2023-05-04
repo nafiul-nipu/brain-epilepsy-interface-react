@@ -40,7 +40,7 @@ def find_similar_pca(
 
     # Find the nearest neighbors for input event
     target = pca_matrix[event_id].reshape(1, -1)
-    neighbor_idxs = knn_model.kneighbors(X=target, return_distance=False)
+    neighbor_idxs = knn_model.kneighbors(X=target, return_distance=False)[0].tolist()
 
     # neighbor indexes match the event id because input data is sorted
     return neighbor_idxs

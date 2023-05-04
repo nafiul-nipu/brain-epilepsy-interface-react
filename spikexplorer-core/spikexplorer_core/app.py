@@ -66,9 +66,11 @@ def fetch_patient_eeg(
         electrodes = [int(el) for el in electrodes.split(",")]
         patient = eeg.Patient(DATADIR, patient_id)
 
-        return services.fetch_eeg_request(
+        output = services.fetch_eeg_request(
             patient, sample_id, start, num_records, electrodes
         )
+        logging.info(output)
+        return jsonify(output)
     except ValueError as exc:
         err_msg = "Wrong parameters"
         logging.error(err_msg, exc_info=True)

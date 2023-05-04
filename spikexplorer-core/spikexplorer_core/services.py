@@ -22,9 +22,9 @@ def fetch_eeg_request(
         "num_records": num_records,
     }
     eeg_dict = eeg.fetch_eeg_data_from_db(patient, sample_id, **filters)
-    # peaks = eeg.fetch_spike_times_by_electrodes(patient, sample_id, **filters)
+    peaks = eeg.fetch_spike_times_by_electrodes(patient, sample_id, **filters)
 
-    return {"eeg": eeg_dict, "peaks": {}, "error": None}
+    return {"eeg": eeg_dict, "peaks": peaks}
 
 
 def fetch_similar(patient: Patient, sample_id: str, event_id: int, n_neighbors: int):
@@ -32,4 +32,4 @@ def fetch_similar(patient: Patient, sample_id: str, event_id: int, n_neighbors: 
     event_ids = similarity.find_similar_pca(
         patient, sample_id, event_id, n_neighbors=n_neighbors
     )
-    return {"neighbhors": event_ids, "error": None}
+    return {"neighbhors": event_ids}

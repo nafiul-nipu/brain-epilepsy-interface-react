@@ -103,7 +103,8 @@ def fetch_spike_times_by_electrodes(
 
     peaks = {}
     for idx, row in temp_df.iterrows():
-        if row.electrode not in peaks:
-            peaks[row.electrode] = []
-        peaks[row.electrode].append({"time": row.time, "event": row.event})
+        electrode_id = int(row.electrode)
+        if electrode_id not in peaks:
+            peaks[electrode_id] = []
+        peaks[electrode_id].append({"time": int(row.time), "event": int(row.event)})
     return peaks

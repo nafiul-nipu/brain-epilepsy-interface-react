@@ -27,6 +27,7 @@ export const GlobalEvent = ({
   setLocalEventDomain,
   roiElectrodes,
   maxTime,
+  setEegInBrain
 }) => {
   // console.log(roiElectrodes)
   return (
@@ -45,6 +46,7 @@ export const GlobalEvent = ({
             rectWidth={rectWidth}
             setLocalEventDomain={setLocalEventDomain}
             roiElectrodes={roiElectrodes}
+            setEegInBrain={setEegInBrain}
           />
         </ChartContainer>
       </div>
@@ -60,6 +62,7 @@ const ChartWrapper = ({
   rectWidth,
   setLocalEventDomain,
   roiElectrodes,
+  setEegInBrain
 }) => {
   // console.log(dataRegistry[id].time)
   const dimensions = useChartContext();
@@ -104,6 +107,7 @@ const ChartWrapper = ({
       Math.round(xScale.invert(rectPos.x)),
       Math.round(xScale.invert(rectPos.x + xScale(rectWidth))),
     ]);
+    setEegInBrain(null)
   };
 
   return (
@@ -146,14 +150,13 @@ const ChartWrapper = ({
                   // width={yScale(d.count)}
                   height={dimensions.boundedHeight}
                   fill={"orange"}
-                  // filter={`saturate(${saturationScale(d.count)})`}
+                // filter={`saturate(${saturationScale(d.count)})`}
                 />
                 <title>{`
-                                Event Id : ${d.index}\nTimepoint : ${
-                  d.time.length > 1
+                                Event Id : ${d.index}\nTimepoint : ${d.time.length > 1
                     ? `${d.time[0]} - ${d.time[d.time.length - 1]}`
                     : `${d.time}`
-                } ms\nElectrodes : ${d.count}
+                  } ms\nElectrodes : ${d.count}
                                 `}</title>
               </g>
             );

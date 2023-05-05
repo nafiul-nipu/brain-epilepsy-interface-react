@@ -15,6 +15,7 @@ export const EEGDataContainer = ({
   const [dataViewer, setDataViewer] = useState(null);
 
   useEffect(() => {
+    // console.log(electrodeListEventWindow)
     async function fetchData() {
       const { data, error } = await fetchEEGperPatient(
         patient.id,
@@ -58,7 +59,7 @@ export const EEGDataContainer = ({
 
   return (
     <>
-      {electrodeListEventWindow.length === eegList.length &&
+      {electrodeListEventWindow.length > 0 && electrodeListEventWindow.length === eegList.length &&
         electrodeListEventWindow
           .sort()
           .every((value, index) => value === eegList[index]) ? (

@@ -131,6 +131,7 @@ function App() {
           setLocalEventDomain={setLocalEventDomain}
           roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
           maxTime={dataRegistry[patientInfo.id].time}
+          setEegInBrain={setEegInBrain}
         />
       ) : null}
 
@@ -155,6 +156,7 @@ function App() {
               roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
               setSimilarRegionEvent={setSimilarRegionEvent}
               setElectrodeListEventWindow={setElectrodeListEventWindow}
+              setEegInBrain={setEegInBrain}
             />
           ) : null}
         </Col>

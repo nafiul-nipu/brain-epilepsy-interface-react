@@ -26,7 +26,8 @@ export const LocalEvent = ({
     roiElectrodes,
     setSimilarRegionEvent,
     seteegPanelRange,
-    setElectrodeListEventWindow
+    setElectrodeListEventWindow,
+    setEegInBrain
 }) => {
     return (
         <ChartContainer {...containerProps}>
@@ -43,6 +44,7 @@ export const LocalEvent = ({
                 setSimilarRegionEvent={setSimilarRegionEvent}
                 seteegPanelRange={seteegPanelRange}
                 setElectrodeListEventWindow={setElectrodeListEventWindow}
+                setEegInBrain={setEegInBrain}
             />
         </ChartContainer>
     );
@@ -61,8 +63,10 @@ const ChartWrapper = ({
     roiElectrodes,
     setSimilarRegionEvent,
     seteegPanelRange,
-    setElectrodeListEventWindow
+    setElectrodeListEventWindow,
+    setEegInBrain
 }) => {
+    // console.log(domain)
     const dimensions = useChartContext();
     const height = locaEventHeight - containerProps.mt - containerProps.mb;
 
@@ -98,15 +102,15 @@ const ChartWrapper = ({
         // console.log("rectwidth", rectWidth, "scale rectWitdh", xScale(rectWidth))
         // console.log("rectpos + rect Width Invert", xScale.invert(rectPos.x + xScale(rectWidth)))
         const start = Math.round(xScale.invert(rectPos.x));
-        const end = Math.round(xScale.invert(rectPos.x + xScale(rectWidth)));
         setIsDragging(false);
-        setSelectedEventRange([start, end]);
-        setEventRangeNetwork([start, end]);
-        seteegPanelRange([start, end]);
+        setSelectedEventRange([start, start + 500]);
+        setEventRangeNetwork([start, start + 500]);
+        seteegPanelRange([start, start + 500]);
         setSimilarRegionEvent(null);
+        setEegInBrain(null);
 
         const filteredDataForEventWindow = data[currentSample]
-            .filter((el) => el.time.some(t => t >= start && t <= end))
+            .filter((el) => el.time.some(t => t >= start && t <= (start + 500)))
 
         const electrodeListEventWindow = [...new Set(filteredDataForEventWindow.reduce((acc, cur) => acc.concat(cur.electrode), []))];
 

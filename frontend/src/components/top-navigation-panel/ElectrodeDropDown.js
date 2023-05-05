@@ -19,7 +19,7 @@ export const ElectrodeDropDown = ({
 
       {/* Patient dropdown */}
       <div className="form-ddl-entry">
-        <label for="patient">Patient:</label>
+        <label htmlFor="patient">Patient:</label>
         <select id="patient" value={id} onChange={onPatientChange}>
           <option value="ep187"> EP187 </option>
           <option value="ep129"> EP129 </option>
@@ -28,7 +28,7 @@ export const ElectrodeDropDown = ({
 
       {/* propagation dropdown */}
       <div className="form-ddl-entry">
-        <label for="sample">Session:</label>
+        <label htmlFor="sample">Session:</label>
         <select id="sample" value={sample} onChange={onSampleChange}>
           <option value="sample1"> Session 1</option>
           <option value="sample2"> Session 2 </option>
@@ -38,7 +38,7 @@ export const ElectrodeDropDown = ({
 
       {/* propagation dropdown */}
       <div className="form-ddl-entry">
-        <label for="range">Range:</label>
+        <label htmlFor="range">Range:</label>
         <select id="range" value={timeRange} onChange={onTimeRangeChange}>
           <option value="50"> 50 ms</option>
           <option value="100"> 100 ms </option>

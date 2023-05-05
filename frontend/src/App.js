@@ -119,33 +119,19 @@ function App() {
         setSimilarRegionEvent={setSimilarRegionEvent}
       />
 
-      <Row>
-        {/* global-event timeline */}
-        <Col
-          md="12"
-          style={{
-            height: "40px",
-            backgroundColor: "#FAFBFC",
-            marginTop: "4px",
-          }}
-        >
-          <div className="globalEventTitle">Global Event Timeline</div>
-          <div className="gloablTime">{`${
-            dataRegistry[patientInfo.id].time
-          } MS`}</div>
-          {allEventData && fullNetwork ? (
-            <GlobalEvent
-              data={allEventData}
-              id={patientInfo.id}
-              currentSample={patientInfo.sample}
-              threshold={barThreshold}
-              rectWidth={globalTimelineRectWidth}
-              setLocalEventDomain={setLocalEventDomain}
-              roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
-            />
-          ) : null}
-        </Col>
-      </Row>
+      {allEventData && fullNetwork ? (
+        <GlobalEvent
+          data={allEventData}
+          id={patientInfo.id}
+          currentSample={patientInfo.sample}
+          threshold={barThreshold}
+          rectWidth={globalTimelineRectWidth}
+          setLocalEventDomain={setLocalEventDomain}
+          roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
+          maxTime={dataRegistry[patientInfo.id].time}
+        />
+      ) : null}
+
       <Row>
         {/* event timeline */}
         <Col style={{ height: "5vh" }}>

@@ -1,6 +1,5 @@
-import { Col, Row } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
 import { Logo } from "../logo/logo";
+import "./nav-bar.css";
 
 export const ElectrodeDropDown = ({
   patientInfo,
@@ -10,83 +9,66 @@ export const ElectrodeDropDown = ({
   direction = "column",
   setRoiFilter,
   setSelectedRoi,
-  setSimilarRegionEvent
+  setSimilarRegionEvent,
 }) => {
+  const { id, sample } = patientInfo;
 
   return (
-    <Row>
-      <Col md='2'>
-        <Logo>SpikeXplorer</Logo>
-      </Col>
-      <Col md='3'>
-        {/* Patient dropdown */}
-        <Form.Group controlId="formHorizontal" className="flex-form-entry">
-          <Form.Label id="selectPosition">Patient:</Form.Label>
-          <Form.Select
-            value={patientInfo.id}
-            id="selectPosition"
-            onChange={onPatientChange}
-          >
-            <option value="ep187"> EP187 </option>
-            <option value="ep129"> EP129 </option>
-          </Form.Select>
-        </Form.Group>
-      </Col>
-      <Col md='3'>
-        {/* propagation dropdown */}
-        <Form.Group controlId="formHorizontal" className="flex-form-entry">
-          <Form.Label id="selectPosition">Session:</Form.Label>
-          <Form.Select
-            value={patientInfo.sample}
-            onChange={onSampleChange}
-            id="selectPositionSession"
-          >
-            <option value="sample1"> Session 1</option>
-            <option value="sample2"> Session 2 </option>
-            <option value="sample3"> Session 3 </option>
-          </Form.Select>
-        </Form.Group>
-      </Col>
-      <Col md='3'>
-        {/* propagation dropdown */}
-        <Form.Group controlId="formHorizontal" className="flex-form-entry">
-          <Form.Label id="selectPosition">Range:</Form.Label>
-          <Form.Select
-            value={timeRange}
-            onChange={ontimerangeUpdate}
-            id="selectPosition"
-          >
-            <option value="50"> 50 ms</option>
-            <option value="100"> 100 ms </option>
-            <option value="200"> 200 ms </option>
-            <option value="500"> 500 ms </option>
-            <option value="1000"> 1000 ms </option>
-          </Form.Select>
-        </Form.Group>
-      </Col>
-    </Row>
+    <div className="nav-bar-top">
+      <Logo>SpikeXplorer</Logo>
+
+      {/* Patient dropdown */}
+      <div className="form-ddl-entry">
+        <label for="patient">Patient:</label>
+        <select id="patient" value={id} onChange={onPatientChange}>
+          <option value="ep187"> EP187 </option>
+          <option value="ep129"> EP129 </option>
+        </select>
+      </div>
+
+      {/* propagation dropdown */}
+      <div className="form-ddl-entry">
+        <label for="sample">Session:</label>
+        <select id="sample" value={sample} onChange={onSampleChange}>
+          <option value="sample1"> Session 1</option>
+          <option value="sample2"> Session 2 </option>
+          <option value="sample3"> Session 3 </option>
+        </select>
+      </div>
+
+      {/* propagation dropdown */}
+      <div className="form-ddl-entry">
+        <label for="range">Range:</label>
+        <select id="range" value={timeRange} onChange={onTimeRangeChange}>
+          <option value="50"> 50 ms</option>
+          <option value="100"> 100 ms </option>
+          <option value="200"> 200 ms </option>
+          <option value="500"> 500 ms </option>
+          <option value="1000"> 1000 ms </option>
+        </select>
+      </div>
+    </div>
   );
 
   function onSampleChange(event) {
     // console.log({ ...patientInfo, sample: event.target.value })
     setPatientInfo({ ...patientInfo, sample: event.target.value });
-    setRoiFilter(null)
-    setSelectedRoi(0)
-    setSimilarRegionEvent(null)
-
+    setRoiFilter(null);
+    setSelectedRoi(0);
+    setSimilarRegionEvent(null);
   }
 
   function onPatientChange(event) {
     setPatientInfo({ ...patientInfo, id: event.target.value });
-    setRoiFilter(null)
-    setSelectedRoi(0)
-    setSimilarRegionEvent(null)
+    setRoiFilter(null);
+    setSelectedRoi(0);
+    setSimilarRegionEvent(null);
   }
 
-  function ontimerangeUpdate(event) {
+  function onTimeRangeChange(event) {
     setTimeRange(event.target.value);
-    setRoiFilter(null)
-    setSelectedRoi(0)
-    setSimilarRegionEvent(null)
+    setRoiFilter(null);
+    setSelectedRoi(0);
+    setSimilarRegionEvent(null);
   }
 };

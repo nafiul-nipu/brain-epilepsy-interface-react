@@ -34,13 +34,13 @@ export const SimilarRegion = ({
     const timeArray = neigborData ? neigborData.neighbhors.map((el) => eventData[el].time) : null
 
     // console.log(timeArray)
-    if (neigborData) {
-        console.log(neigborData.neighbhors)
-        console.log(selectedRoi)
-        console.log(eventNet)
-        console.log(eventNet[neigborData.neighbhors[1]])
-        console.log(eventNet[neigborData.neighbhors[1]][selectedRoi].matrix)
-    }
+    // if (neigborData) {
+    //     console.log(neigborData.neighbhors)
+    //     console.log(selectedRoi)
+    //     console.log(eventNet)
+    //     console.log(eventNet[neigborData.neighbhors[1]])
+    //     console.log(eventNet[neigborData.neighbhors[1]][selectedRoi].matrix)
+    // }
 
 
     return (

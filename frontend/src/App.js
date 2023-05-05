@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { useEffect } from "react";
 
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 // importing components
 import { useElectrodeData } from "./library/useElectrodeData";
 import { useSamples } from "./library/useSamples";
@@ -30,15 +30,17 @@ import { NetworkViewer } from "./components/network-viewer/NetworkViewer";
 import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
 
-
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
 
-const defaultElList = [26, 28, 36, 20, 32, 21, 22, 40, 41, 54, 19, 31, 39, 47, 48, 52, 56, 27, 29, 34, 35, 43, 49, 50, 53, 18, 33, 44, 30, 38, 51, 37, 108, 109, 107, 102, 112, 55, 45, 23, 103, 73, 74, 76, 75, 84, 89];
-
+const defaultElList = [
+  26, 28, 36, 20, 32, 21, 22, 40, 41, 54, 19, 31, 39, 47, 48, 52, 56, 27, 29,
+  34, 35, 43, 49, 50, 53, 18, 33, 44, 30, 38, 51, 37, 108, 109, 107, 102, 112,
+  55, 45, 23, 103, 73, 74, 76, 75, 84, 89,
+];
 
 function App() {
-  const localEventSize = useLocalHeightResize()
+  const localEventSize = useLocalHeightResize();
 
   // first three d
   // console.log(dataRegistry)
@@ -57,7 +59,7 @@ function App() {
   });
   // console.log('sampledata', sampleData)
 
-  const allEventData = useAllEventData({ patientID: patientInfo.id })
+  const allEventData = useAllEventData({ patientID: patientInfo.id });
 
   // console.log(allEventData)
 
@@ -76,49 +78,63 @@ function App() {
 
   const [barThreshold, setBarThreshold] = useState([0, 70]);
 
-  const [localEventDomain, setLocalEventDomain] = useState([0, globalTimelineRectWidth])
-  const [selectedEventRange, setSelectedEventRange] = useState([0, localTimelineRectWidth])
+  const [localEventDomain, setLocalEventDomain] = useState([
+    0,
+    globalTimelineRectWidth,
+  ]);
+  const [selectedEventRange, setSelectedEventRange] = useState([
+    0,
+    localTimelineRectWidth,
+  ]);
   // first event time
-  const [eventRangeNetwork, setEventRangeNetwork] = useState([103, 113])
-  const [eegPanelRange, seteegPanelRange] = useState([0, localTimelineRectWidth])
+  const [eventRangeNetwork, setEventRangeNetwork] = useState([103, 113]);
+  const [eegPanelRange, seteegPanelRange] = useState([
+    0,
+    localTimelineRectWidth,
+  ]);
 
-  const [selectedRoi, setSelectedRoi] = useState(0)
+  const [selectedRoi, setSelectedRoi] = useState(0);
 
   // fist event ID
-  const [similarRegionEvent, setSimilarRegionEvent] = useState(1)
+  const [similarRegionEvent, setSimilarRegionEvent] = useState(1);
 
-  const [roiFilter, setRoiFilter] = useState(null)
+  const [roiFilter, setRoiFilter] = useState(null);
 
-  const [electrodeListEventWindow, setElectrodeListEventWindow] = useState(defaultElList)
-
-
+  const [electrodeListEventWindow, setElectrodeListEventWindow] =
+    useState(defaultElList);
 
   // console.log(fullNetwork)
 
   return (
     // component container
     <Container fluid id="container">
-      <Row>
-        {/* electrode dropdown */}
-        <Col md='12' style={{ height: '5vh' }}>
-          <ElectrodeDropDown
-            patientInfo={patientInfo}
-            setPatientInfo={setPatientInfo}
-            timeRange={timeRange}
-            setTimeRange={setTimeRange}
-            setRoiFilter={setRoiFilter}
-            setSelectedRoi={setSelectedRoi}
-            setSimilarRegionEvent={setSimilarRegionEvent}
-          />
-        </Col>
-      </Row>
+      {/* electrode dropdown */}
+      <ElectrodeDropDown
+        patientInfo={patientInfo}
+        setPatientInfo={setPatientInfo}
+        timeRange={timeRange}
+        setTimeRange={setTimeRange}
+        setRoiFilter={setRoiFilter}
+        setSelectedRoi={setSelectedRoi}
+        setSimilarRegionEvent={setSimilarRegionEvent}
+      />
+
       <Row>
         {/* global-event timeline */}
-        <Col md='12' style={{ height: '4vh', backgroundColor: '#FAFBFC' }}>
+        <Col
+          md="12"
+          style={{
+            height: "40px",
+            backgroundColor: "#FAFBFC",
+            marginTop: "4px",
+          }}
+        >
           <div className="globalEventTitle">Global Event Timeline</div>
-          <div className="gloablTime">{`${dataRegistry[patientInfo.id].time} MS`}</div>
-          {allEventData && fullNetwork ?
-            (<GlobalEvent
+          <div className="gloablTime">{`${
+            dataRegistry[patientInfo.id].time
+          } MS`}</div>
+          {allEventData && fullNetwork ? (
+            <GlobalEvent
               data={allEventData}
               id={patientInfo.id}
               currentSample={patientInfo.sample}
@@ -127,17 +143,17 @@ function App() {
               setLocalEventDomain={setLocalEventDomain}
               roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
             />
-            ) : null}
+          ) : null}
         </Col>
       </Row>
       <Row>
         {/* event timeline */}
-        <Col style={{ height: '5vh' }}>
+        <Col style={{ height: "5vh" }}>
           <div className="localEventTitle">Local Event Timeline</div>
           <div className="localTimestart">{`${localEventDomain[0]} MS`}</div>
           <div className="localTimeEnd">{`${localEventDomain[1]} MS`}</div>
-          {allEventData && fullNetwork ?
-            (<LocalEvent
+          {allEventData && fullNetwork ? (
+            <LocalEvent
               data={allEventData}
               id={patientInfo.id}
               currentSample={patientInfo.sample}
@@ -152,12 +168,12 @@ function App() {
               setSimilarRegionEvent={setSimilarRegionEvent}
               setElectrodeListEventWindow={setElectrodeListEventWindow}
             />
-            ) : null}
+          ) : null}
         </Col>
       </Row>
       <Row>
         {/* left panel */}
-        <Col md="4" >
+        <Col md="4">
           {/* <Row>
             <Col md="12" style={{ height: '15vh', backgroundColor: "#FAFBFC" }}>
               {allEventData ?
@@ -171,7 +187,7 @@ function App() {
             </Col>
           </Row> */}
           <Row>
-            <Col md='12' style={{ height: '45vh', backgroundColor: "#FAFBFC" }}>
+            <Col md="12" style={{ height: "45vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
                 <ENTContainer
                   patientInformation={patientInfo}
@@ -188,26 +204,34 @@ function App() {
             </Col>
           </Row>
           <Row>
-            <Col md='12' className="regionSummaryContainer" style={{ height: '40vh', backgroundColor: '#FAFBFC' }}>
+            <Col
+              md="12"
+              className="regionSummaryContainer"
+              style={{ height: "40vh", backgroundColor: "#FAFBFC" }}
+            >
               <Row>
-                <Col md='12' style={{ height: '5vh', }}>
+                <Col md="12" style={{ height: "5vh" }}>
                   <div>Region Summary</div>
                 </Col>
               </Row>
               <Row>
-                <Col md='12' style={{ height: '35vh', }}>
-                  {fullNetwork && allEventData ?
-                    (<RegionSummary
+                <Col md="12" style={{ height: "35vh" }}>
+                  {fullNetwork && allEventData ? (
+                    <RegionSummary
                       data={fullNetwork}
                       eventData={allEventData[patientInfo.sample]}
                       eventRange={eventRangeNetwork}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
-                      roiCount={dataRegistry[patientInfo.id].roiCount[patientInfo.sample]}
+                      roiCount={
+                        dataRegistry[patientInfo.id].roiCount[
+                          patientInfo.sample
+                        ]
+                      }
                       roiFilter={roiFilter}
                       setRoiFilter={setRoiFilter}
                     />
-                    ) : null}
+                  ) : null}
                 </Col>
               </Row>
             </Col>
@@ -216,17 +240,25 @@ function App() {
         {/* middle panel */}
         <Col md="4">
           <Row>
-            <Col md="12" style={{ height: '7vh', backgroundColor: "#FAFBFC" }}>
+            <Col md="12" style={{ height: "7vh", backgroundColor: "#FAFBFC" }}>
               <Row>
-                <Col md='2' style={{ height: '2vh' }}>{`${selectedEventRange[0]} ms`}</Col>
-                <Col md='8' style={{ height: '2vh' }}>Selected Event Window</Col>
-                <Col md='2' style={{ height: '2vh' }}>{`${selectedEventRange[1]} ms`}</Col>
+                <Col
+                  md="2"
+                  style={{ height: "2vh" }}
+                >{`${selectedEventRange[0]} ms`}</Col>
+                <Col md="8" style={{ height: "2vh" }}>
+                  Selected Event Window
+                </Col>
+                <Col
+                  md="2"
+                  style={{ height: "2vh" }}
+                >{`${selectedEventRange[1]} ms`}</Col>
               </Row>
               <Row>
-                <Col md='12' style={{ height: '5vh' }}>
+                <Col md="12" style={{ height: "5vh" }}>
                   {/* Selected Event Window */}
-                  {allEventData ?
-                    (<SelectedEventWindow
+                  {allEventData ? (
+                    <SelectedEventWindow
                       data={allEventData}
                       id={patientInfo.id}
                       currentSample={patientInfo.sample}
@@ -236,48 +268,47 @@ function App() {
                       setSimilarRegionEvent={setSimilarRegionEvent}
                       similarRegionEvent={similarRegionEvent}
                     />
-                    ) : null}
+                  ) : null}
                 </Col>
               </Row>
             </Col>
           </Row>
           <Row>
-            <Col md="12" style={{ height: '28vh', backgroundColor: "#FAFBFC" }}>
+            <Col md="12" style={{ height: "28vh", backgroundColor: "#FAFBFC" }}>
               <div style={{ width: "30vh", height: "30vh" }}>
-                {fullNetwork && allEventData && fullEventNetwork ?
-                  (<NetworkViewer
+                {fullNetwork && allEventData && fullEventNetwork ? (
+                  <NetworkViewer
                     sessionNetwork={fullNetwork}
                     eventData={allEventData[patientInfo.sample]}
                     eventRange={eventRangeNetwork}
                     eventNet={fullEventNetwork}
                     selectedRoi={selectedRoi}
                   />
-                  ) : null}
+                ) : null}
               </div>
             </Col>
           </Row>
           <Row>
-            <Col md="12" style={{ height: '50vh' }}>
-              <Tabs variant='enclosed' colorScheme='green'>
+            <Col md="12" style={{ height: "50vh" }}>
+              <Tabs variant="enclosed" colorScheme="green">
                 <TabList>
                   <Tab>Similar Regions</Tab>
                   <Tab>Exploration So Far</Tab>
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    {similarRegionEvent && allEventData && fullEventNetwork ?
-                      (
-                        <SimilarRegion
-                          similarRegionEvent={similarRegionEvent}
-                          selectedRoi={selectedRoi}
-                          sessionNetwork={fullNetwork}
-                          eventNet={fullEventNetwork}
-                          eventData={allEventData[patientInfo.sample]}
-                          patient={patientInfo}
-                        />
-                      )
-                      : <p>Select an event</p>
-                    }
+                    {similarRegionEvent && allEventData && fullEventNetwork ? (
+                      <SimilarRegion
+                        similarRegionEvent={similarRegionEvent}
+                        selectedRoi={selectedRoi}
+                        sessionNetwork={fullNetwork}
+                        eventNet={fullEventNetwork}
+                        eventData={allEventData[patientInfo.sample]}
+                        patient={patientInfo}
+                      />
+                    ) : (
+                      <p>Select an event</p>
+                    )}
                   </TabPanel>
                   <TabPanel>
                     <p>Showing Exploration so far</p>
@@ -290,7 +321,7 @@ function App() {
         {/* right panel */}
         <Col md="4" className="fullh">
           <Row>
-            <Col md="12" style={{ height: '60vh', backgroundColor: "#FAFBFC" }}>
+            <Col md="12" style={{ height: "60vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
                 <EEGDataContainer
                   allEventData={allEventData}
@@ -303,20 +334,22 @@ function App() {
             </Col>
           </Row>
           <Row>
-            <Col md="12" style={{ height: '40vh', backgroundColor: "#FAFBFC" }}> Patient Summary</Col>
+            <Col md="12" style={{ height: "40vh", backgroundColor: "#FAFBFC" }}>
+              {" "}
+              Patient Summary
+            </Col>
           </Row>
         </Col>
-      </Row >
-    </Container >
+      </Row>
+    </Container>
   );
 }
-
 
 function useLocalHeightResize() {
   // Initialize state with undefined width/height so server and client renders match
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
   const [localHeight, setLocalHeight] = useState({
-    height: (0.04 * window.innerHeight)
+    height: 0.04 * window.innerHeight,
   });
 
   useEffect(() => {
@@ -324,7 +357,7 @@ function useLocalHeightResize() {
     function handleResize() {
       // Set window width/height to state
       setLocalHeight({
-        height: (0.04 * window.innerHeight),
+        height: 0.04 * window.innerHeight,
       });
     }
     // Add event listener

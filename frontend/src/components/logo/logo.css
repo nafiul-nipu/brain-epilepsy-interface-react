@@ -1,7 +1,9 @@
 .app-logo {
+  display: flex;
+  align-items: center;
   font-size: large;
   font-weight: 800;
-  color: black;
-  padding-left: 2px;
-  margin-bottom: 15px;
+  color: white;
+  padding-left: 6px;  
+  height: 100%;
 }

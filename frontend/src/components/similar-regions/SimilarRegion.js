@@ -12,6 +12,7 @@ export const SimilarRegion = ({
     eventData,
     patient
 }) => {
+    console.log(similarRegionEvent)
     // const neighbors = data.find(obj => obj.eventID === similarRegionEvent)?.neighbors
     const [neigborData, setNeighbors] = useState(null)
 

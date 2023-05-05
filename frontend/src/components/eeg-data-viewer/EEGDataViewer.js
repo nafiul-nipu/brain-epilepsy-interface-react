@@ -10,7 +10,7 @@ const containerProps = {
   ml: 50,
   mr: 20,
   mb: 35,
-  mt: 0,
+  mt: 10,
 };
 
 export const EEGDataViewer = ({
@@ -18,8 +18,10 @@ export const EEGDataViewer = ({
   eventList,
   electrodeListEventWindow,
   electrodeList,
-  xTicks
+  xTicks,
+  selectedEventRange
 }) => {
+  // console.log(eegData)
 
   const extents = Object.keys(eegData.eeg)
     .map(key => [Math.min(...eegData.eeg[key]), Math.max(...eegData.eeg[key])])
@@ -29,7 +31,10 @@ export const EEGDataViewer = ({
 
   const yDomain = [-absMax, absMax];
 
-  console.log(extents)
+  const peakIndex = d3.scaleLinear()
+    .domain(xTicks)
+    .range([0, 500])
+
   return (
     <div className="eeg-container">
       <div className="eeg-title">
@@ -51,6 +56,9 @@ export const EEGDataViewer = ({
                     currenElectrode={el}
                     yDomain={yDomain}
                     xTicks={xTicks}
+                    peaks={eegData.peaks[el] ? eegData.peaks[el] : []}
+                    peakIndex={peakIndex}
+                    selectedEventRange={selectedEventRange}
                   />
                 </ChartContainer>
               </div>
@@ -63,12 +71,12 @@ export const EEGDataViewer = ({
 };
 
 
-const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks }) => {
+const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks, peaks, peakIndex, selectedEventRange }) => {
   // console.log(currenElectrode)
 
   // console.log(data)
 
-  console.log(xTicks)
+  // console.log(xTicks)
   const dimensions = useChartContext();
 
   const xScale = d3.scaleLinear()
@@ -109,6 +117,36 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
         ticks={xtickvalues}
         tickText={xTickText}
       />
+      {
+        peaks.map((el, i) => {
+          // console.log(peakIndex(el.time))
+          return (
+            <g>
+              <circle
+                key={i}
+                cx={xScale(peakIndex(el.time) - 1)}
+                cy={yLineScale(data[peakIndex(el.time) - 1])}
+                r={4}
+                fill="red"
+              /><title>{`Time: ${el.time}`}</title>
+            </g>
+          )
+        })
+      }
+      {
+        selectedEventRange ? (
+          <g>
+            <rect
+              x={xScale(peakIndex(selectedEventRange[0]))}
+              y={0}
+              width={xScale(peakIndex(selectedEventRange[selectedEventRange.length - 1]) - peakIndex(selectedEventRange[0]))}
+              height={dimensions.boundedHeight}
+              fill="red"
+              opacity={0.2}
+            /><title>{`Time: ${selectedEventRange[0]} - ${selectedEventRange[selectedEventRange.length - 1]}`}</title>
+          </g>
+        ) : null
+      }
     </g>
   )
 }

@@ -157,7 +157,7 @@ function App() {
       <Row>
         {/* left panel */}
         <Col md="4" >
-          <Row>
+          {/* <Row>
             <Col md="12" style={{ height: '15vh', backgroundColor: "#FAFBFC" }}>
               {allEventData ?
                 (<EventsDistribution
@@ -168,9 +168,9 @@ function App() {
                 />
                 ) : null}
             </Col>
-          </Row>
+          </Row> */}
           <Row>
-            <Col md='12' style={{ height: '40vh', backgroundColor: "#FAFBFC" }}>
+            <Col md='12' style={{ height: '45vh', backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
                 <ENTContainer
                   patientInformation={patientInfo}
@@ -187,20 +187,28 @@ function App() {
             </Col>
           </Row>
           <Row>
-            <Col md='12' className="regionSummaryContainer" style={{ height: '30vh', backgroundColor: '#FAFBFC' }}>
-              <div className="regionSummary">Region Summary</div>
-              {fullNetwork && allEventData ?
-                (<RegionSummary
-                  data={fullNetwork}
-                  eventData={allEventData[patientInfo.sample]}
-                  eventRange={eventRangeNetwork}
-                  selectedRoi={selectedRoi}
-                  setSelectedRoi={setSelectedRoi}
-                  roiCount={dataRegistry[patientInfo.id].roiCount[patientInfo.sample]}
-                  roiFilter={roiFilter}
-                  setRoiFilter={setRoiFilter}
-                />
-                ) : null}
+            <Col md='12' className="regionSummaryContainer" style={{ height: '40vh', backgroundColor: '#FAFBFC' }}>
+              <Row>
+                <Col md='12' style={{ height: '5vh', }}>
+                  <div>Region Summary</div>
+                </Col>
+              </Row>
+              <Row>
+                <Col md='12' style={{ height: '35vh', }}>
+                  {fullNetwork && allEventData ?
+                    (<RegionSummary
+                      data={fullNetwork}
+                      eventData={allEventData[patientInfo.sample]}
+                      eventRange={eventRangeNetwork}
+                      selectedRoi={selectedRoi}
+                      setSelectedRoi={setSelectedRoi}
+                      roiCount={dataRegistry[patientInfo.id].roiCount[patientInfo.sample]}
+                      roiFilter={roiFilter}
+                      setRoiFilter={setRoiFilter}
+                    />
+                    ) : null}
+                </Col>
+              </Row>
             </Col>
           </Row>
         </Col>

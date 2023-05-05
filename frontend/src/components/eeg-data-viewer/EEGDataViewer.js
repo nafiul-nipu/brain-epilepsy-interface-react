@@ -117,11 +117,26 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
         ticks={xtickvalues}
         tickText={xTickText}
       />
+
+      {
+        selectedEventRange ? (
+          <g>
+            <rect
+              x={xScale(peakIndex(selectedEventRange[0] - 1))}
+              y={0}
+              width={xScale(peakIndex(selectedEventRange[selectedEventRange.length - 1] - 1) - peakIndex(selectedEventRange[0] - 1))}
+              height={dimensions.boundedHeight}
+              fill="red"
+              opacity={0.2}
+            /><title>{`Time: ${selectedEventRange[0]} - ${selectedEventRange[selectedEventRange.length - 1]}`}</title>
+          </g>
+        ) : null
+      }
       {
         peaks.map((el, i) => {
           // console.log(peakIndex(el.time))
           return (
-            <g>
+            <g key={i}>
               <circle
                 key={i}
                 cx={xScale(peakIndex(el.time) - 1)}
@@ -132,20 +147,6 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
             </g>
           )
         })
-      }
-      {
-        selectedEventRange ? (
-          <g>
-            <rect
-              x={xScale(peakIndex(selectedEventRange[0]))}
-              y={0}
-              width={xScale(peakIndex(selectedEventRange[selectedEventRange.length - 1]) - peakIndex(selectedEventRange[0]))}
-              height={dimensions.boundedHeight}
-              fill="red"
-              opacity={0.2}
-            /><title>{`Time: ${selectedEventRange[0]} - ${selectedEventRange[selectedEventRange.length - 1]}`}</title>
-          </g>
-        ) : null
       }
     </g>
   )

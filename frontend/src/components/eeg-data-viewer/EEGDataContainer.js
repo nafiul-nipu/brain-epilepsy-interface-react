@@ -14,7 +14,7 @@ export const EEGDataContainer = ({
     const [dataViewer, setDataViewer] = useState(null);
 
     // console.log("eegPanelRange", eegPanelRange, "electrodeListEventWindow", electrodeListEventWindow, "patient", patient)
-    console.log(eegPanelRange)
+    // console.log(eegPanelRange)
     useEffect(() => {
         // console.log("fetching eeg data", eegPanelRange)
         const url = `http://127.0.0.1:5000//patient/${patient.id}/eeg/${patient.sample}/${eegPanelRange[0]}/${499}/${electrodeListEventWindow.join(",")}`

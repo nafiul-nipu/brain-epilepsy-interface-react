@@ -19,8 +19,8 @@ export const fetchEEGperPatient = async (
   const url = `${API_ENDPOINT}/patient/${patientId}/eeg/${sampleId}/${startMs}/${numRecords}/${strElectrodes}`;
 
   try {
-    const { data } = await run(url, "get", emptyRequestData);
-    return { data, error: null };
+    const { eeg, peaks } = await run(url, "get", emptyRequestData);
+    return { data: { eeg, peaks }, error: null };
   } catch (error) {
     return { data: null, error };
   }

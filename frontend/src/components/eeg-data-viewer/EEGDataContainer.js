@@ -14,7 +14,7 @@ export const EEGDataContainer = ({
 
   useEffect(() => {
     async function fetchData() {
-      const { data, error } = fetchEEGperPatient(
+      const { data, error } = await fetchEEGperPatient(
         patient.id,
         patient.sample,
         eegPanelRange[0],

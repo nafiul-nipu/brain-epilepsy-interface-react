@@ -273,6 +273,7 @@ function App() {
                           sessionNetwork={fullNetwork}
                           eventNet={fullEventNetwork}
                           eventData={allEventData[patientInfo.sample]}
+                          patient={patientInfo}
                         />
                       )
                       : <p>Select an event</p>

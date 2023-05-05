@@ -135,32 +135,27 @@ function App() {
         />
       ) : null}
 
-      <Row>
-        {/* event timeline */}
-        <Col style={{ height: "5vh" }}>
-          <div className="localEventTitle">Local Event Timeline</div>
-          <div className="localTimestart">{`${localEventDomain[0]} MS`}</div>
-          <div className="localTimeEnd">{`${localEventDomain[1]} MS`}</div>
-          {allEventData && fullNetwork ? (
-            <LocalEvent
-              data={allEventData}
-              id={patientInfo.id}
-              currentSample={patientInfo.sample}
-              threshold={barThreshold}
-              domain={localEventDomain}
-              locaEventHeight={localEventSize.height}
-              setSelectedEventRange={setSelectedEventRange}
-              setEventRangeNetwork={setEventRangeNetwork}
-              seteegPanelRange={seteegPanelRange}
-              rectWidth={localTimelineRectWidth}
-              roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
-              setSimilarRegionEvent={setSimilarRegionEvent}
-              setElectrodeListEventWindow={setElectrodeListEventWindow}
-              setEegInBrain={setEegInBrain}
-            />
-          ) : null}
-        </Col>
-      </Row>
+      {/* event timeline */}
+      {allEventData && fullNetwork ? (
+        <LocalEvent
+          data={allEventData}
+          id={patientInfo.id}
+          currentSample={patientInfo.sample}
+          threshold={barThreshold}
+          domain={localEventDomain}
+          locaEventHeight={localEventSize.height}
+          setSelectedEventRange={setSelectedEventRange}
+          setEventRangeNetwork={setEventRangeNetwork}
+          seteegPanelRange={seteegPanelRange}
+          rectWidth={localTimelineRectWidth}
+          roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
+          setSimilarRegionEvent={setSimilarRegionEvent}
+          setElectrodeListEventWindow={setElectrodeListEventWindow}
+          setEegInBrain={setEegInBrain}
+        />
+      ) : null}
+
+
       <Row>
         {/* left panel */}
         <Col md="4">
@@ -198,15 +193,15 @@ function App() {
             <Col
               md="12"
               className="regionSummaryContainer"
-              style={{ height: "40vh", backgroundColor: "#FAFBFC" }}
+              style={{ height: "34vh", backgroundColor: "#FAFBFC" }}
             >
               <Row>
-                <Col md="12" style={{ height: "5vh" }}>
+                <Col md="12" style={{ height: "4vh" }}>
                   <div>Region Summary</div>
                 </Col>
               </Row>
               <Row>
-                <Col md="12" style={{ height: "35vh" }}>
+                <Col md="12" style={{ height: "30vh" }}>
                   {fullNetwork && allEventData ? (
                     <RegionSummary
                       data={fullNetwork}

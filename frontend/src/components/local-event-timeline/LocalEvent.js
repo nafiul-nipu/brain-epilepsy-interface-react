@@ -2,12 +2,12 @@ import * as d3 from 'd3';
 import { useState } from 'react';
 import dataRegistry from "../../data/dataRegistry.json";
 import ChartContainer, { useChartContext } from '../chart-container/chart-container';
-
+import './local-events.css';
 const containerProps = {
     useZoom: false,
-    ml: 10,
-    mr: 10,
-    mb: 5,
+    ml: 0,
+    mr: 0,
+    mb: 0,
     mt: 0,
 };
 
@@ -30,23 +30,32 @@ export const LocalEvent = ({
     setEegInBrain
 }) => {
     return (
-        <ChartContainer {...containerProps}>
-            <ChartWrapper
-                data={data}
-                currentSample={currentSample}
-                threshold={threshold}
-                domain={domain}
-                locaEventHeight={locaEventHeight}
-                setSelectedEventRange={setSelectedEventRange}
-                setEventRangeNetwork={setEventRangeNetwork}
-                rectWidth={rectWidth}
-                roiElectrodes={roiElectrodes}
-                setSimilarRegionEvent={setSimilarRegionEvent}
-                seteegPanelRange={seteegPanelRange}
-                setElectrodeListEventWindow={setElectrodeListEventWindow}
-                setEegInBrain={setEegInBrain}
-            />
-        </ChartContainer>
+        <div>
+            <div className="local-event-title-bar">
+                <div className="local-event-bar-title">{`${domain[0]} MS`}</div>
+                <div className="local-event-bar-title">Local Event Timeline</div>
+                <div className="local-event-bar-title">{`${domain[1]} MS`}</div>
+            </div>
+            <div className="local-event-container">
+                <ChartContainer {...containerProps}>
+                    <ChartWrapper
+                        data={data}
+                        currentSample={currentSample}
+                        threshold={threshold}
+                        domain={domain}
+                        locaEventHeight={locaEventHeight}
+                        setSelectedEventRange={setSelectedEventRange}
+                        setEventRangeNetwork={setEventRangeNetwork}
+                        rectWidth={rectWidth}
+                        roiElectrodes={roiElectrodes}
+                        setSimilarRegionEvent={setSimilarRegionEvent}
+                        seteegPanelRange={seteegPanelRange}
+                        setElectrodeListEventWindow={setElectrodeListEventWindow}
+                        setEegInBrain={setEegInBrain}
+                    />
+                </ChartContainer>
+            </div>
+        </div>
     );
 
 };

@@ -46,7 +46,8 @@ export const ElectrodeNetworkTumor = ({
     view,
     buttonValue,
     eventid,
-    selectedEventRange
+    selectedEventRange,
+    eegInBrain
 }) => {
     // creating canvas reference
     const canvasRef = useRef(null);
@@ -295,7 +296,14 @@ export const ElectrodeNetworkTumor = ({
                 let elecColors = []
                 let elecSize = []
                 for (let top = 0; top < electrodeData.length; top++) {
-                    if (electrodeList.includes(electrodeData[top].electrode_number)) {
+                    if (electrodeData[top].electrode_number === eegInBrain) {
+                        color.setRGB(10 / 255, 245 / 255, 33 / 255);
+                        // color.setRGB(1, 0.435, 0.38);
+                        elecColors.push(color.r, color.g, color.b)
+                        elecSize.push(6)
+
+                    }
+                    else if (electrodeList.includes(electrodeData[top].electrode_number)) {
 
                         color.setRGB(255 / 255, 165 / 255, 0 / 255);
                         // color.setRGB(1, 0.435, 0.38);
@@ -333,7 +341,14 @@ export const ElectrodeNetworkTumor = ({
                 let elecColors = []
                 let elecSize = []
                 for (let top = 0; top < electrodeData.length; top++) {
-                    if (eventData[eventid].electrode.includes(electrodeData[top].electrode_number)) {
+                    if (electrodeData[top].electrode_number === eegInBrain) {
+                        color.setRGB(10 / 255, 245 / 255, 33 / 255);
+                        // color.setRGB(1, 0.435, 0.38);
+                        elecColors.push(color.r, color.g, color.b)
+                        elecSize.push(6)
+
+                    }
+                    else if (eventData[eventid].electrode.includes(electrodeData[top].electrode_number)) {
                         color.setRGB(255 / 255, 165 / 255, 0 / 255);
                         // color.setRGB(1, 0.435, 0.38);
                         elecColors.push(color.r, color.g, color.b)
@@ -403,63 +418,6 @@ export const ElectrodeNetworkTumor = ({
                     // render(renderer, [scene[0], scene[1]], camera)
 
                 }
-                else if (value === 'Play' && document.getElementsByClassName('referenceDIV')[0].id !== 'null') {
-                    // console.log('pause animation and eeg click')
-                    // && document.getElementsByClassName('referenceDIV')[0].id !== 'null')) {
-                    const element = document.getElementsByClassName('referenceDIV')
-                    // console.log(document.getElementsByClassName('referenceDIV')[0].id !== 'null')
-                    let str = element[0].id;
-
-                    const arr = str.split("_").map(num => parseInt(num));
-
-                    // console.log(arr)
-
-                    scene[1].remove(points)
-
-                    let EEachColor = []
-                    let EEachSize = []
-                    for (let top = 0; top < electrodeData.length; top++) {
-                        if (electrodeData[top].electrode_number === arr[1]) {
-                            // color.setRGB(1, 0.435, 0.38);
-                            color.setRGB(57 / 255, 255 / 255, 20 / 255);
-                            // color.setRGB(3 / 255, 218 / 255, 197 / 255);
-                            EEachColor.push(color.r, color.g, color.b)
-                            EEachSize.push(6)
-                        }
-                        else if (eventData[arr[0]].electrode.includes(electrodeData[top].electrode_number)) {
-                            // start electrode
-                            // console.log('start')
-
-                            color.setRGB(255 / 255, 165 / 255, 0 / 255);
-                            // color.setRGB(223 / 255, 223 / 255, 141 / 255);
-
-                            EEachColor.push(color.r, color.g, color.b)
-                            EEachSize.push(6)
-
-                        } else {
-                            // rest electrode
-                            color.setRGB(10 / 255, 10 / 255, 10 / 255);
-                            EEachColor.push(color.r, color.g, color.b);
-                            EEachSize.push(6);
-                        }
-                    }
-
-                    let geometry = new THREE.BufferGeometry();
-                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                    geometry.setAttribute('color', new THREE.Float32BufferAttribute(EEachColor, 3));
-                    // points.geometry.colors.set(new THREE.Float32BufferAttribute(colors[colIdx]));
-                    geometry.setAttribute('size', new THREE.Float32BufferAttribute(EEachSize, 1).setUsage(THREE.DynamicDrawUsage));
-
-                    points = new THREE.Points(geometry, shaderMaterial);
-                    points.geometry.colorsNeedUpdate = true;
-                    points.geometry.translate(centerOther.x, centerOther.y, centerOther.z);
-
-                    scene[1].add(points);
-
-                    // render(renderer, [scene[0], scene[1]], camera)
-
-                    element[0].id = 'null';
-                }
             }, 2500);
 
         }
@@ -470,7 +428,22 @@ export const ElectrodeNetworkTumor = ({
         }
 
 
-    }, [canvasRef, brain, sampleData, timeRange, patientID, sliderObj, bboxCenter, electrodeData, lesions, allnetworkWithEvent, allnetwork, eventData, buttonValue, eventid, selectedEventRange]);
+    }, [canvasRef,
+        brain,
+        sampleData,
+        timeRange,
+        patientID,
+        sliderObj,
+        bboxCenter,
+        electrodeData,
+        lesions,
+        allnetworkWithEvent,
+        allnetwork,
+        eventData,
+        buttonValue,
+        eventid,
+        selectedEventRange,
+        eegInBrain]);
 
     //[canvasRef, drawSVG, electrodeData, patientID, sliderObj,
     //  timeRange, buttonValue, bboxCenter, brain, sampleData,

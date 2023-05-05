@@ -9,7 +9,7 @@ const containerProps = {
   useZoom: false,
   ml: 50,
   mr: 20,
-  mb: 35,
+  mb: 45,
   mt: 10,
 };
 
@@ -19,7 +19,9 @@ export const EEGDataViewer = ({
   electrodeListEventWindow,
   electrodeList,
   xTicks,
-  selectedEventRange
+  selectedEventRange,
+  eegInBrain,
+  setEegInBrain
 }) => {
   // console.log(eegData)
 
@@ -35,6 +37,11 @@ export const EEGDataViewer = ({
     .domain(xTicks)
     .range([0, 500])
 
+  function onEEGClick(el) {
+    // console.log(el)
+    setEegInBrain(el)
+  }
+
   return (
     <div className="eeg-container">
       <div className="eeg-title">
@@ -47,7 +54,14 @@ export const EEGDataViewer = ({
         {
           electrodeListEventWindow.map((el, i) => {
             return (
-              <div style={{ height: '15vh' }} key={i}>
+              <div
+                style={{
+                  height: '16vh',
+                  boxShadow: eegInBrain === el ? "0 0 10px 5px #000000" : "none"
+                }}
+                key={i}
+                onClick={() => onEEGClick(el)}
+              >
                 <div className="electrodeEEGNameDiv">{`E${el}`} </div>
                 <ChartContainer {...containerProps} key={i}>
                   <EEGChartWrapper

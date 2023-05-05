@@ -103,6 +103,8 @@ function App() {
   const [electrodeListEventWindow, setElectrodeListEventWindow] =
     useState(defaultElList);
 
+  const [eegInBrain, setEegInBrain] = useState(null);
+
   // console.log(fullNetwork)
 
   return (
@@ -130,9 +132,8 @@ function App() {
           }}
         >
           <div className="globalEventTitle">Global Event Timeline</div>
-          <div className="gloablTime">{`${
-            dataRegistry[patientInfo.id].time
-          } MS`}</div>
+          <div className="gloablTime">{`${dataRegistry[patientInfo.id].time
+            } MS`}</div>
           {allEventData && fullNetwork ? (
             <GlobalEvent
               data={allEventData}
@@ -199,6 +200,7 @@ function App() {
                   allnetworksWithEvent={fullEventNetwork}
                   eventid={similarRegionEvent}
                   selectedEventRange={selectedEventRange}
+                  eegInBrain={eegInBrain}
                 />
               ) : null}
             </Col>
@@ -225,7 +227,7 @@ function App() {
                       setSelectedRoi={setSelectedRoi}
                       roiCount={
                         dataRegistry[patientInfo.id].roiCount[
-                          patientInfo.sample
+                        patientInfo.sample
                         ]
                       }
                       roiFilter={roiFilter}
@@ -329,6 +331,8 @@ function App() {
                   selectedEventRange={eventRangeNetwork}
                   eegPanelRange={eegPanelRange}
                   electrodeListEventWindow={electrodeListEventWindow}
+                  eegInBrain={eegInBrain}
+                  setEegInBrain={setEegInBrain}
                 />
               ) : null}
             </Col>

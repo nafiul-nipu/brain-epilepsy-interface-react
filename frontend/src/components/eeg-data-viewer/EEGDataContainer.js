@@ -8,6 +8,8 @@ export const EEGDataContainer = ({
   selectedEventRange,
   eegPanelRange,
   electrodeListEventWindow,
+  eegInBrain,
+  setEegInBrain
 }) => {
   const [eegData, seteegData] = useState(null);
   const [dataViewer, setDataViewer] = useState(null);
@@ -57,9 +59,9 @@ export const EEGDataContainer = ({
   return (
     <>
       {electrodeListEventWindow.length === eegList.length &&
-      electrodeListEventWindow
-        .sort()
-        .every((value, index) => value === eegList[index]) ? (
+        electrodeListEventWindow
+          .sort()
+          .every((value, index) => value === eegList[index]) ? (
         <EEGDataViewer
           eegData={eegData}
           eventList={dataViewer.eventList}
@@ -67,6 +69,8 @@ export const EEGDataContainer = ({
           electrodeList={dataViewer.electrodeList}
           xTicks={eegPanelRange}
           selectedEventRange={selectedEventRange}
+          eegInBrain={eegInBrain}
+          setEegInBrain={setEegInBrain}
         />
       ) : null}
     </>

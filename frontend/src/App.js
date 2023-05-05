@@ -108,6 +108,7 @@ function App() {
             setTimeRange={setTimeRange}
             setRoiFilter={setRoiFilter}
             setSelectedRoi={setSelectedRoi}
+            setSimilarRegionEvent={setSimilarRegionEvent}
           />
         </Col>
       </Row>

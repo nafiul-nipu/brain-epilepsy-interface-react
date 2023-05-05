@@ -5,6 +5,8 @@ import { useLesionData } from "../../library/useLesionData";
 import { useBBoxcenter } from "../../library/useBBoxcenter";
 import { useState } from "react";
 import { TimeSliderButton } from "./TimeSliderButton";
+import { Switch, FormControl, FormLabel } from '@chakra-ui/react'
+import './brainViewer.css'
 
 export const ENTContainer = ({
     patientInformation,
@@ -31,6 +33,8 @@ export const ENTContainer = ({
 
     const [buttonValue, setButtonValue] = useState('Play');
 
+    const [seeRoi, setSeeRoi] = useState(false);
+
     function handleClick() {
         if (buttonValue === 'Pause') {
             setButtonValue('Play');
@@ -40,6 +44,10 @@ export const ENTContainer = ({
     }
 
     // console.log(eventid)
+    function roiCheckBoxChange() {
+        setSeeRoi(!seeRoi)
+    }
+
 
     return (
         <>
@@ -56,6 +64,14 @@ export const ENTContainer = ({
             <Row>
                 <Col md='12' style={{ height: '35vh' }}>
                     <Row>
+                        <div id="checkBox">
+                            <FormControl display='flex' alignItems='center'>
+                                <FormLabel htmlFor='email-alerts' mb='0'>
+                                    See ROIs
+                                </FormLabel>
+                                <Switch size='sm' id='email-alerts' onChange={() => { roiCheckBoxChange() }} />
+                            </FormControl>
+                        </div>
                         <div id="titleBrain1">{`${patientInformation.id}: Propagation Over Time`}</div>
                         <ElectrodeNetworkTumor
                             brain={multiBrain.obj1} //ok
@@ -74,6 +90,7 @@ export const ENTContainer = ({
                             eventid={eventid}
                             selectedEventRange={selectedEventRange}
                             eegInBrain={eegInBrain}
+                            seeRoi={seeRoi}
                         />
                     </Row>
                 </Col>

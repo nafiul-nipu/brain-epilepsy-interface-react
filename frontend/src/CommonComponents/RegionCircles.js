@@ -3,6 +3,8 @@ import ChartContainer, {
     useChartContext,
 } from "../components/chart-container/chart-container";
 
+const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f'];
+
 
 const containerProps = {
     useZoom: false,
@@ -96,8 +98,8 @@ const RegionWrapper = ({ data, radiusDomain, roi, roiCount, roiFilter, setRoiFil
                 y={0}
                 width={dimensions.boundedWidth}
                 height={dimensions.boundedHeight}
-                fill="black"
-                opacity={0.05}
+                fill={`${colorslist[roi]}`}
+                opacity={0.2}
                 stroke="black"
             />
             <rect

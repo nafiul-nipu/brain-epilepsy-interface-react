@@ -32,10 +32,11 @@ export const fetchSimilarRegions = async (
   eventId,
   numNeighbors
 ) => {
-  const url = `http://127.0.0.1:5000//patient/${patientId}/similar/${sampleId}/${eventId}/${numNeighbors}`;
+  const url = `${API_ENDPOINT}/patient/${patientId}/similar/${sampleId}/${eventId}/${numNeighbors}`;
   try {
-    const { data } = await run(url, "get", emptyRequestData);
-    return { data, error: null };
+    const { neighbhors } = await run(url, "get", emptyRequestData);
+
+    return { data: neighbhors, error: null };
   } catch (error) {
     return { data: null, error };
   }

@@ -18,7 +18,7 @@ export const AxisLeft = ({ xScale, yScale, scaleOffset, ticks, textPosition }) =
                             <line x1={xStart} x2={xStart - scaleOffset} y1={y} y2={y} />
                             <text
                                 x={xStart - scaleOffset * textPosition}
-                                y={y + scaleOffset * 1.25}
+                                y={y + scaleOffset / 1.25}
                             >
                                 {t}
                             </text>

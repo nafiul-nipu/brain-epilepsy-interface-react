@@ -60,6 +60,7 @@ export const EEGDataContainer = ({
                         eventList={dataViewer.eventList}
                         electrodeListEventWindow={electrodeListEventWindow}
                         electrodeList={dataViewer.electrodeList}
+                        xTicks={eegPanelRange}
                     />
                 ) : null
             }

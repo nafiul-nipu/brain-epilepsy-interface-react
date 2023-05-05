@@ -17,7 +17,8 @@ export const EEGDataViewer = ({
   eegData,
   eventList,
   electrodeListEventWindow,
-  electrodeList
+  electrodeList,
+  xTicks
 }) => {
 
   const extents = Object.keys(eegData.eeg)
@@ -41,7 +42,7 @@ export const EEGDataViewer = ({
         {
           electrodeListEventWindow.map((el, i) => {
             return (
-              <div style={{ height: '10vh' }} key={i}>
+              <div style={{ height: '15vh' }} key={i}>
                 <div className="electrodeEEGNameDiv">{`E${el}`} </div>
                 <ChartContainer {...containerProps} key={i}>
                   <EEGChartWrapper
@@ -49,6 +50,7 @@ export const EEGDataViewer = ({
                     electrodeList={electrodeList}
                     currenElectrode={el}
                     yDomain={yDomain}
+                    xTicks={xTicks}
                   />
                 </ChartContainer>
               </div>
@@ -61,11 +63,12 @@ export const EEGDataViewer = ({
 };
 
 
-const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain }) => {
+const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks }) => {
   // console.log(currenElectrode)
 
   // console.log(data)
 
+  console.log(xTicks)
   const dimensions = useChartContext();
 
   const xScale = d3.scaleLinear()
@@ -79,6 +82,9 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain }) => {
   const yTicks = yLineScale.ticks();
   const tickValues = [yTicks[0], yTicks[Math.floor(yTicks.length * 2 / 4)], yTicks[yTicks.length - 1]];
 
+  const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
+  // console.log(xTickText)
+  const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (500 / 5));
 
   return (
     <g>
@@ -100,6 +106,8 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain }) => {
         scaleOffset={5}
         innerHeight={dimensions.boundedHeight}
         textPosition={3.85}
+        ticks={xtickvalues}
+        tickText={xTickText}
       />
     </g>
   )

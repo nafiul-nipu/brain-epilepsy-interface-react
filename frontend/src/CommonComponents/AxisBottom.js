@@ -1,9 +1,9 @@
 import React from "react";
 
-export const AxisBottom = ({ xScale, yScale, scaleOffset, innerHeight, textPosition }) => {
+export const AxisBottom = ({ xScale, yScale, scaleOffset, innerHeight, textPosition, ticks = xScale.ticks(), tickText = null }) => {
     const [xStart, xEnd] = xScale.range();
     const [, yEnd] = yScale.range();
-    const ticks = xScale.ticks();
+    // const ticks = xScale.ticks();
     return (
         <g transform={`translate(0, ${innerHeight})`}>
             <line className='axisLine' x1={xStart} x2={xEnd} y1={yEnd} y2={yEnd} />
@@ -17,7 +17,7 @@ export const AxisBottom = ({ xScale, yScale, scaleOffset, innerHeight, textPosit
                                 x={x}
                                 y={yEnd + scaleOffset * textPosition}
                             >
-                                {t}
+                                {tickText ? tickText[i] : t}
                             </text>
                         </React.Fragment>
                     );

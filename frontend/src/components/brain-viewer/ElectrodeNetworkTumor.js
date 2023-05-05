@@ -61,7 +61,7 @@ export const ElectrodeNetworkTumor = ({
         let centerBrain;
         let centerOther = bboxCenter;
         // console.log(canvasRef.current);
-        console.log("brain three D view render starts")
+        // console.log("brain three D view render starts")
 
         // size scale for brain network
         let sizeScale = d3.scaleLinear()
@@ -176,14 +176,14 @@ export const ElectrodeNetworkTumor = ({
             // objBbox.setFromObject(obj);
             scene.add(obj);
 
-            console.log("brain loaded");
+            // console.log("brain loaded");
             animate()
         }
 
         // load electrode
         function loadElectrode(scene, electrodeData, sampleData) {
-            console.log("load electrode")
-            console.log("rendering electrodes")
+            // console.log("load electrode")
+            // console.log("rendering electrodes")
 
             let uniforms = {
 
@@ -279,7 +279,7 @@ export const ElectrodeNetworkTumor = ({
             scene[1].add(points);
 
 
-            console.log("loading svg")
+            // console.log("loading svg")
 
             if (eventid === null && selectedEventRange) {
                 // console.log(selectedEventRange)
@@ -375,7 +375,7 @@ export const ElectrodeNetworkTumor = ({
                 let value = buttonValue;
 
                 if (value === 'Pause') {
-                    console.log('play animation')
+                    // console.log('play animation')
                     scene[1].remove(points)
                     // console.log("inter")
                     colIdx = (colIdx + 1) % colors.length;
@@ -404,7 +404,7 @@ export const ElectrodeNetworkTumor = ({
 
                 }
                 else if (value === 'Play' && document.getElementsByClassName('referenceDIV')[0].id !== 'null') {
-                    console.log('pause animation and eeg click')
+                    // console.log('pause animation and eeg click')
                     // && document.getElementsByClassName('referenceDIV')[0].id !== 'null')) {
                     const element = document.getElementsByClassName('referenceDIV')
                     // console.log(document.getElementsByClassName('referenceDIV')[0].id !== 'null')
@@ -465,7 +465,7 @@ export const ElectrodeNetworkTumor = ({
         }
 
         return () => {
-            console.log('cleaning tumor')
+            // console.log('cleaning tumor')
             clearInterval(inter)
         }
 

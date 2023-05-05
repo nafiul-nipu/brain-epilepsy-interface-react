@@ -25,7 +25,8 @@ export const LocalEvent = ({
     rectWidth,
     roiElectrodes,
     setSimilarRegionEvent,
-    seteegPanelRange
+    seteegPanelRange,
+    setElectrodeListEventWindow
 }) => {
     return (
         <ChartContainer {...containerProps}>
@@ -41,6 +42,7 @@ export const LocalEvent = ({
                 roiElectrodes={roiElectrodes}
                 setSimilarRegionEvent={setSimilarRegionEvent}
                 seteegPanelRange={seteegPanelRange}
+                setElectrodeListEventWindow={setElectrodeListEventWindow}
             />
         </ChartContainer>
     );
@@ -58,7 +60,8 @@ const ChartWrapper = ({
     rectWidth,
     roiElectrodes,
     setSimilarRegionEvent,
-    seteegPanelRange
+    seteegPanelRange,
+    setElectrodeListEventWindow
 }) => {
     const dimensions = useChartContext();
     const height = locaEventHeight - containerProps.mt - containerProps.mb;
@@ -94,11 +97,20 @@ const ChartWrapper = ({
         // console.log("rectpos", rectPos.x, "rectpost invert", xScale.invert(rectPos.x));
         // console.log("rectwidth", rectWidth, "scale rectWitdh", xScale(rectWidth))
         // console.log("rectpos + rect Width Invert", xScale.invert(rectPos.x + xScale(rectWidth)))
+        const start = Math.round(xScale.invert(rectPos.x));
+        const end = Math.round(xScale.invert(rectPos.x + xScale(rectWidth)));
         setIsDragging(false);
-        setSelectedEventRange([Math.round(xScale.invert(rectPos.x)), Math.round(xScale.invert(rectPos.x)) + rectWidth]);
-        setEventRangeNetwork([Math.round(xScale.invert(rectPos.x)), Math.round(xScale.invert(rectPos.x)) + rectWidth]);
-        seteegPanelRange([Math.round(xScale.invert(rectPos.x)), Math.round(xScale.invert(rectPos.x)) + rectWidth]);
+        setSelectedEventRange([start, end]);
+        setEventRangeNetwork([start, end]);
+        seteegPanelRange([start, end]);
         setSimilarRegionEvent(null);
+
+        const filteredDataForEventWindow = data[currentSample]
+            .filter((el) => el.time.some(t => t >= start && t <= end))
+
+        const electrodeListEventWindow = [...new Set(filteredDataForEventWindow.reduce((acc, cur) => acc.concat(cur.electrode), []))];
+
+        setElectrodeListEventWindow(electrodeListEventWindow);
     };
     return (
         <g onMouseDown={handleMouseDown} onMouseMove={handleMouseMove}>

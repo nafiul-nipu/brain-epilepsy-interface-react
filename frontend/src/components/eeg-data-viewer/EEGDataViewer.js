@@ -14,27 +14,13 @@ const containerProps = {
 };
 
 export const EEGDataViewer = ({
-  data,
-  selectedEventRange,
-  currentSample,
-  eegPanelRange
+  eegData,
+  eventList,
+  electrodeListEventWindow,
+  electrodeList
 }) => {
-  const filteredData = data[currentSample]
-    .filter((el) => el.time.some(t => t >= selectedEventRange[0] && t <= selectedEventRange[1]))
 
-  const electrodeList = [...new Set(filteredData.reduce((acc, cur) => acc.concat(cur.electrode), []))];
-
-  // console.log(electrodeList)
-
-  const eventList = filteredData.map((el) => el.index);
-
-  const filteredDataForEventWindow = data[currentSample]
-  .filter((el) => el.time.some(t => t >= eegPanelRange[0] && t <= eegPanelRange[1]))
-
-  const electrodeListEventWindow = [...new Set(filteredDataForEventWindow.reduce((acc, cur) => acc.concat(cur.electrode), []))];
-
-  // console.log(electrodeList)
-  // console.log(electrodeListEventWindow)
+  // console.log(eegData)
 
   return (
     <div className="eeg-container">
@@ -52,7 +38,7 @@ export const EEGDataViewer = ({
                 <div className="electrodeEEGNameDiv">{`E${el}`} </div>
                 <ChartContainer {...containerProps} key={i}>
                   <EEGChartWrapper
-                    // data={electrodeList}
+                    data={eegData.eeg[el]}
                     electrodeList={electrodeList}
                     currenElectrode={el}
                   />
@@ -67,7 +53,9 @@ export const EEGDataViewer = ({
 };
 
 
-const EEGChartWrapper = ({ electrodeList, currenElectrode }) => {
+const EEGChartWrapper = ({ data, electrodeList, currenElectrode }) => {
+  // console.log(currenElectrode)
+  // console.log(data)
 
   const dimensions = useChartContext();
 
@@ -86,7 +74,7 @@ const EEGChartWrapper = ({ electrodeList, currenElectrode }) => {
   return (
     <g>
       <LinePlot
-        data={Array.from({ length: 500 }, () => Math.floor(Math.random() * 101))}
+        data={data}
         xScale={xScale}
         yLineScale={yLineScale}
         colorChecker={electrodeList}

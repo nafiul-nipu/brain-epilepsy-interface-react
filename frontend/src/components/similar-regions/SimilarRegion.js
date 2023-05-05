@@ -10,7 +10,7 @@ export const SimilarRegion = ({
     eventNet,
     eventData
 }) => {
-    console.log(similarRegionEvent)
+    // console.log(similarRegionEvent)
     // console.log(eventData)
     const neighbors = data.find(obj => obj.eventID === similarRegionEvent)?.neighbors
     // console.log(neighbors)
@@ -26,12 +26,12 @@ export const SimilarRegion = ({
                                 `${timeArray[0][0]}ms - ${timeArray[0][timeArray[0].length - 1]}ms`
                                 : `${timeArray[0]}`}`}
                     </div>
-                    <div style={{width: '21vh', height:'21vh'}}>
-                    <AdjacencyMatrix
-                        data={eventNet[neighbors[0]][selectedRoi].matrix}
-                        columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
-                        labels={sessionNetwork[selectedRoi].electrodes}
-                    />
+                    <div style={{ width: '21vh', height: '21vh' }}>
+                        <AdjacencyMatrix
+                            data={eventNet[neighbors[0]][selectedRoi].matrix}
+                            columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
+                            labels={sessionNetwork[selectedRoi].electrodes}
+                        />
                     </div>
                 </Col>
                 <Col md='4' style={{ height: '21vh' }}>
@@ -41,12 +41,12 @@ export const SimilarRegion = ({
                                 `${timeArray[1][0]}ms - ${timeArray[1][timeArray[1].length - 1]}ms`
                                 : `${timeArray[1]}`}`}
                     </div>
-                    <div style={{width: '21vh', height:'21vh'}}>
-                    <AdjacencyMatrix
-                        data={eventNet[neighbors[1]][selectedRoi].matrix}
-                        columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
-                        labels={sessionNetwork[selectedRoi].electrodes}
-                    />
+                    <div style={{ width: '21vh', height: '21vh' }}>
+                        <AdjacencyMatrix
+                            data={eventNet[neighbors[1]][selectedRoi].matrix}
+                            columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
+                            labels={sessionNetwork[selectedRoi].electrodes}
+                        />
                     </div>
                 </Col>
             </Row>
@@ -58,12 +58,12 @@ export const SimilarRegion = ({
                                 `${timeArray[2][0]}ms - ${timeArray[2][timeArray[2].length - 1]}ms`
                                 : `${timeArray[2]}`}`}
                     </div>
-                    <div style={{width: '21vh', height:'21vh'}}>
-                    <AdjacencyMatrix
-                        data={eventNet[neighbors[2]][selectedRoi].matrix}
-                        columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
-                        labels={sessionNetwork[selectedRoi].electrodes}
-                    />
+                    <div style={{ width: '21vh', height: '21vh' }}>
+                        <AdjacencyMatrix
+                            data={eventNet[neighbors[2]][selectedRoi].matrix}
+                            columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
+                            labels={sessionNetwork[selectedRoi].electrodes}
+                        />
                     </div>
 
 
@@ -75,12 +75,12 @@ export const SimilarRegion = ({
                                 `${timeArray[3][0]}ms - ${timeArray[3][timeArray[3].length - 1]}ms`
                                 : `${timeArray[3]}`}`}
                     </div>
-                    <div style={{width: '21vh', height:'21vh'}}>
-                    <AdjacencyMatrix
-                        data={eventNet[neighbors[3]][selectedRoi].matrix}
-                        columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
-                        labels={sessionNetwork[selectedRoi].electrodes}
-                    />
+                    <div style={{ width: '21vh', height: '21vh' }}>
+                        <AdjacencyMatrix
+                            data={eventNet[neighbors[3]][selectedRoi].matrix}
+                            columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
+                            labels={sessionNetwork[selectedRoi].electrodes}
+                        />
                     </div>
 
                 </Col>

@@ -37,6 +37,8 @@ import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer"
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
 
+const defaultElList = [26, 28, 36, 20, 32, 21, 22, 40, 41, 54, 19, 31, 39, 47, 48, 52, 56, 27, 29, 34, 35, 43, 49, 50, 53, 18, 33, 44, 30, 38, 51, 37, 108, 109, 107, 102, 112, 55, 45, 23, 103, 73, 74, 76, 75, 84, 89];
+
 
 function App() {
   const localEventSize = useLocalHeightResize()
@@ -94,6 +96,8 @@ function App() {
   const [similarRegionEvent, setSimilarRegionEvent] = useState(1)
 
   const [roiFilter, setRoiFilter] = useState(null)
+
+  const [electrodeListEventWindow, setElectrodeListEventWindow] = useState(defaultElList)
 
 
 
@@ -153,6 +157,7 @@ function App() {
               rectWidth={localTimelineRectWidth}
               roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
               setSimilarRegionEvent={setSimilarRegionEvent}
+              setElectrodeListEventWindow={setElectrodeListEventWindow}
             />
             ) : null}
         </Col>
@@ -291,6 +296,7 @@ function App() {
                   patient={patientInfo}
                   selectedEventRange={eventRangeNetwork}
                   eegPanelRange={eegPanelRange}
+                  electrodeListEventWindow={electrodeListEventWindow}
                 />
               ) : null}
             </Col>

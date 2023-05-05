@@ -83,7 +83,7 @@ export function render(renderer, scenes, camera) {
 
 // return bboxcenter
 export function getbbox(obj) {
-    console.log("changing box center");
+    // console.log("changing box center");
     let objBbox = new THREE.Box3().setFromObject(obj);
     let bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
     bboxCenter.multiplyScalar(-1);

@@ -12,7 +12,6 @@ import { useState } from "react";
 
 import { Container, Row, Col } from "react-bootstrap";
 
-import { EEGDataViewer } from "./components/eeg-data-viewer/EEGDataViewer";
 import { ElectrodeDropDown } from "./components/top-navigation-panel/ElectrodeDropDown";
 
 import { ENTContainer } from "./components/brain-viewer/ENTContainer";
@@ -20,7 +19,6 @@ import { ENTContainer } from "./components/brain-viewer/ENTContainer";
 import { useFullNetwork } from "./library/useFullNetwork";
 import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
 import { EventsDistribution } from "./components/events-distribution/events-distribution";
-import { useFetchEEG } from "./library/useFetch";
 import { useAllEventData } from "./library/useAllEventData";
 import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
 import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
@@ -29,7 +27,6 @@ import dataRegistry from "./data/dataRegistry.json";
 import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
 import { RegionSummary } from "./components/region-summary/RegionSummary";
 import { NetworkViewer } from "./components/network-viewer/NetworkViewer";
-import { useSimilarRegion } from "./library/useSimilarRegion";
 import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
 
@@ -86,11 +83,6 @@ function App() {
   const [eegPanelRange, seteegPanelRange] = useState([0, localTimelineRectWidth])
 
   const [selectedRoi, setSelectedRoi] = useState(0)
-
-  const similarRegionData = useSimilarRegion({
-    patientID: patientInfo.id,
-    sample: patientInfo.sample,
-  });
 
   // fist event ID
   const [similarRegionEvent, setSimilarRegionEvent] = useState(1)
@@ -264,10 +256,9 @@ function App() {
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    {similarRegionData && similarRegionEvent && allEventData && fullEventNetwork ?
+                    {similarRegionEvent && allEventData && fullEventNetwork ?
                       (
                         <SimilarRegion
-                          data={similarRegionData}
                           similarRegionEvent={similarRegionEvent}
                           selectedRoi={selectedRoi}
                           sessionNetwork={fullNetwork}

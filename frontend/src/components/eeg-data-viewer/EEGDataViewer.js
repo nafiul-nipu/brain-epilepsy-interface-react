@@ -20,8 +20,15 @@ export const EEGDataViewer = ({
   electrodeList
 }) => {
 
-  // console.log(eegData)
+  const extents = Object.keys(eegData.eeg)
+    .map(key => [Math.min(...eegData.eeg[key]), Math.max(...eegData.eeg[key])])
+    .flat();
 
+  const absMax = Math.max(...extents.map(Math.abs));
+
+  const yDomain = [-absMax, absMax];
+
+  console.log(extents)
   return (
     <div className="eeg-container">
       <div className="eeg-title">
@@ -41,6 +48,7 @@ export const EEGDataViewer = ({
                     data={eegData.eeg[el]}
                     electrodeList={electrodeList}
                     currenElectrode={el}
+                    yDomain={yDomain}
                   />
                 </ChartContainer>
               </div>
@@ -53,8 +61,9 @@ export const EEGDataViewer = ({
 };
 
 
-const EEGChartWrapper = ({ data, electrodeList, currenElectrode }) => {
+const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain }) => {
   // console.log(currenElectrode)
+
   // console.log(data)
 
   const dimensions = useChartContext();
@@ -64,7 +73,7 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode }) => {
     .range([0, dimensions.boundedWidth])
 
   const yLineScale = d3.scaleLinear()
-    .domain([0, 101])
+    .domain(yDomain)
     .range([dimensions.boundedHeight, 0])
 
   const yTicks = yLineScale.ticks();

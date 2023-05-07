@@ -4,6 +4,7 @@
 }
 
 .global-event-title-bar {
+  height: 3vh;
   display: flex;
   flex-direction: row;
   padding: 0px 2px;

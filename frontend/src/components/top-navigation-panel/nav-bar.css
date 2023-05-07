@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: black;
-  height: 35px;
+  background-color: #f0f0f1;
+  height: 5vh;
 }
 
 .form-ddl-entry {
@@ -15,7 +15,7 @@
 }
 
 .form-ddl-entry > label {
-  color: white;
+  color: black;
   margin-right: 10px;
 }
 

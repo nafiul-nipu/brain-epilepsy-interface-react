@@ -213,14 +213,14 @@ function App() {
         {/* middle panel */}
         <Col md="4">
           <Row>
-            <Col md="12" style={{ height: "7vh", backgroundColor: "#FAFBFC" }}>
+            <Col md="12" style={{ height: "6vh", backgroundColor: "#FAFBFC" }}>
               <Row>
                 <Col
                   md="2"
                   style={{ height: "2vh" }}
                   className="eventWindowTime"
                 >{`${selectedEventRange[0]} ms`}</Col>
-                <Col md="8" className="eventWindowTime" style={{ height: "2vh" }}>
+                <Col md="8" className="eventWindowTime" >
                   Selected Event Window
                 </Col>
                 <Col
@@ -230,7 +230,7 @@ function App() {
                 >{`${selectedEventRange[1]} ms`}</Col>
               </Row>
               <Row>
-                <Col md="12" style={{ height: "5vh" }}>
+                <Col md="12" style={{ height: "4vh" }}>
                   {/* Selected Event Window */}
                   {allEventData ? (
                     <SelectedEventWindow

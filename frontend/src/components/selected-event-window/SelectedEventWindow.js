@@ -9,8 +9,8 @@ const containerProps = {
     useZoom: false,
     ml: 0,
     mr: 0,
-    mb: 5,
-    mt: 5,
+    mb: 0,
+    mt: 0,
 };
 
 

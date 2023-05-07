@@ -10,8 +10,8 @@ import "./global-events.css";
 
 const containerProps = {
   useZoom: false,
-  ml: 0,
-  mr: 0,
+  ml: 3,
+  mr: 3,
   mb: 0,
   mt: 0,
 };

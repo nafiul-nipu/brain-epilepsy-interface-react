@@ -87,7 +87,7 @@ const RegionWrapper = ({ data, radiusDomain, roi, roiCount, roiFilter, setRoiFil
 
     return (
         <g >
-            <text x={0} y={0} fontSize={12} fill="black" textAnchor="start">
+            <text x={0} y={-1} fontSize={12} fill="black" textAnchor="start">
                 {`Roi: ${roi}`}
             </text>
             {/* <text x={0} y={0} fontSize={12} fill="black" textAnchor="start">

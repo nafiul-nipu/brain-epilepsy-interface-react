@@ -183,7 +183,7 @@ function App() {
               style={{ height: "35vh", backgroundColor: "#FAFBFC" }}
             >
               <Row>
-                <Col md="12" style={{ height: "5vh" }}>
+                <Col md="12" style={{ height: "4vh" }}>
                   <div>Region Summary</div>
                 </Col>
               </Row>

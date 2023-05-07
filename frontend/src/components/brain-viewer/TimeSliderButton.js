@@ -25,8 +25,8 @@ export const TimeSliderButton = ({
     const ranges = Array.from({ length: 5 }, (_, i) => (i + 1) * (time / 4));
 
     return (
-        <Col md='12' style={{ height: '8vh' }}>
-            <Row>
+        <Col md='12' style={{ height: '10vh' }}>
+            <Row style={{ marginTop: '2%' }}>
                 <Col md='2'>
                     <button
                         id={`play-pause-btn-${id}`}

@@ -14,5 +14,6 @@
 
 .event-bar-title {
   font-size: small;
-  color: black
+  color: black;
+  padding: 0px 4px;
 }

@@ -58,7 +58,15 @@ export const RegionSummary = ({
         return (
             <Row key={rowKey}>
                 {rowObjects.map((object, i) => (
-                    <Col md='4' key={data[i].roi} style={{ height: `${30 / numRows}vh`, backgroundColor: selectedRoi === (i + rowStartIndex) ? "rgba(202, 204, 202, 0.4)" : "white", }} onClick={() => summaryOnClick(i, rowStartIndex)}>
+                    <Col
+                        md='4'
+                        key={data[i].roi}
+                        style={{
+                            height: `${30 / numRows}vh`,
+                            backgroundColor: selectedRoi === (i + rowStartIndex) ? "rgba(202, 204, 202, 0.4)" : "white",
+                        }}
+                        onClick={() => summaryOnClick(i, rowStartIndex)}
+                    >
                         <RegionCircles
                             data={object}
                             radiusDomain={d3.extent(radiusDomain)}

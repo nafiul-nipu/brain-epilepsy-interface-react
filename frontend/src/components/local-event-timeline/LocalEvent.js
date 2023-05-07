@@ -32,9 +32,9 @@ export const LocalEvent = ({
     return (
         <div>
             <div className="local-event-title-bar">
-                <div className="local-event-bar-title">{`${domain[0]} MS`}</div>
+                <div className="local-event-bar-title-left">{`${domain[0]} ms`}</div>
                 <div className="local-event-bar-title">Local Event Timeline</div>
-                <div className="local-event-bar-title">{`${domain[1]} MS`}</div>
+                <div className="local-event-bar-title-right">{`${domain[1]} ms`}</div>
             </div>
             <div className="local-event-container">
                 <ChartContainer {...containerProps}>

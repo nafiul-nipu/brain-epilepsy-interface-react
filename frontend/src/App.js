@@ -155,7 +155,6 @@ function App() {
         />
       ) : null}
 
-
       <Row>
         {/* left panel */}
         <Col md="4">
@@ -181,10 +180,10 @@ function App() {
             <Col
               md="12"
               className="regionSummaryContainer"
-              style={{ height: "34vh", backgroundColor: "#FAFBFC" }}
+              style={{ height: "35vh", backgroundColor: "#FAFBFC" }}
             >
               <Row>
-                <Col md="12" style={{ height: "4vh" }}>
+                <Col md="12" style={{ height: "5vh" }}>
                   <div>Region Summary</div>
                 </Col>
               </Row>
@@ -219,13 +218,15 @@ function App() {
                 <Col
                   md="2"
                   style={{ height: "2vh" }}
+                  className="eventWindowTime"
                 >{`${selectedEventRange[0]} ms`}</Col>
-                <Col md="8" style={{ height: "2vh" }}>
+                <Col md="8" className="eventWindowTime" style={{ height: "2vh" }}>
                   Selected Event Window
                 </Col>
                 <Col
                   md="2"
-                  style={{ height: "2vh" }}
+                  className="eventWindowTime"
+                  style={{ height: "2vh", textAlign: "end" }}
                 >{`${selectedEventRange[1]} ms`}</Col>
               </Row>
               <Row>
@@ -248,7 +249,7 @@ function App() {
             </Col>
           </Row>
           <Row>
-            <Col md="12" style={{ height: "28vh", backgroundColor: "#FAFBFC" }}>
+            <Col md="12" style={{ height: "30vh", backgroundColor: "#FAFBFC" }}>
               <div style={{ width: "30vh", height: "30vh" }}>
                 {fullNetwork && allEventData && fullEventNetwork ? (
                   <NetworkViewer
@@ -263,7 +264,7 @@ function App() {
             </Col>
           </Row>
           <Row>
-            <Col md="12" style={{ height: "50vh" }}>
+            <Col md="12" style={{ height: "44vh" }}>
               <Tabs variant="enclosed" colorScheme="green">
                 <TabList>
                   <Tab>Similar Regions</Tab>
@@ -293,7 +294,7 @@ function App() {
           </Row>
         </Col>
         {/* right panel */}
-        <Col md="4" className="fullh">
+        <Col md="4">
           <Row>
             <Col md="12" style={{ height: "60vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (

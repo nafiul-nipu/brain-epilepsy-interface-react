@@ -14,5 +14,19 @@
   
   .local-event-bar-title {
     font-size: small;
-    color: black
+    color: black;
+    
+  }
+
+  .local-event-bar-title-left {
+    font-size: small;
+    color: black;
+    
+  }
+
+  .local-event-bar-title-right {
+    font-size: small;
+    color: black;
+    padding: 0px 4px;
+    
   }

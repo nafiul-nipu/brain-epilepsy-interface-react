@@ -58,17 +58,6 @@
     
 }
 
-#titleBrain1 {
-  position: absolute;
-  /* top: 51%; */
-  /* right: 92.5%; */
-  width: 7%;
-  text-align: center;
-  z-index: 100;
-  display: block;
-  color: black;
-  font-size: 0.9em;
-}
 
 #titleBrain2 {
   position: absolute;
@@ -151,6 +140,10 @@
 .regionSummary{
   position: absolute;
   bottom: 31%;
+}
+
+.eventWindowTime{
+  font-size: small;
 }
 
 .regionSummaryContainer{

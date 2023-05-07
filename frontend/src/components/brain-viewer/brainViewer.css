@@ -2,3 +2,16 @@
     position: absolute;
     left: 24%;
 }
+
+
+#titleBrain1 {
+    position: absolute;
+    /* top: 51%; */
+    /* right: 92.5%; */
+    width: 7%;
+    text-align: center;
+    z-index: 100;
+    display: block;
+    color: black;
+    font-size: 0.9em;
+  }

@@ -51,67 +51,71 @@ export const SimilarRegion = ({
                 (neigborData && timeArray) ? (
                     <>
                         <Row>
-                            <Col md='4' style={{ height: '20vh' }}>
-                                <div className='firstSimilar'>
-                                    {`EventID: ${neigborData[0]} 
+                            <Col md='6' style={{ height: '20vh' }}>
+                                <div className='similar-text'>
+                                    {`Event: ${neigborData[0]} 
                                 Time: ${timeArray[0].length > 1 ?
                                             `${timeArray[0][0]}ms - ${timeArray[0][timeArray[0].length - 1]}ms`
                                             : `${timeArray[0]}`}`}
                                 </div>
-                                <div style={{ width: '20vh', height: '20vh' }}>
+                                <div style={{ width: '18vh', height: '18vh' }}>
                                     <AdjacencyMatrix
                                         data={eventNet[neigborData[0]][selectedRoi].matrix}
                                         columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
                                         labels={sessionNetwork[selectedRoi].electrodes}
+                                        containerProps={{ useZoom: false, ml: 10, mr: 5, mb: 5, mt: 10 }}
                                     />
                                 </div>
                             </Col>
-                            <Col md='4' style={{ height: '20vh' }}>
-                                <div className='secondSimilar'>
-                                    {`EventID: ${neigborData[1]} 
+                            <Col md='6' style={{ height: '20vh' }}>
+                                <div className='similar-text'>
+                                    {`Event: ${neigborData[1]} 
                                 Time: ${timeArray[1].length > 1 ?
-                                            `${timeArray[1][0]}ms - ${timeArray[1][timeArray[1].length - 1]}ms`
+                                            `${timeArray[1][0]} - ${timeArray[1][timeArray[1].length - 1]}ms`
                                             : `${timeArray[1]}`}`}
                                 </div>
-                                <div style={{ width: '20vh', height: '20vh' }}>
+                                <div style={{ width: '18vh', height: '18vh' }}>
                                     <AdjacencyMatrix
                                         data={eventNet[neigborData[1]][selectedRoi].matrix}
                                         columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
                                         labels={sessionNetwork[selectedRoi].electrodes}
+                                        containerProps={{ useZoom: false, ml: 10, mr: 5, mb: 5, mt: 10 }}
                                     />
                                 </div>
                             </Col>
                         </Row>
                         <Row>
-                            <Col md='4' style={{ height: '20vh' }}>
-                                <div className='thirdSimilar'>
-                                    {`EventID: ${neigborData[2]} 
+                            <Col md='6' style={{ height: '20vh' }}>
+                                <div className='similar-text'>
+                                    {`Event: ${neigborData[2]} 
                                 Time: ${timeArray[2].length > 1 ?
-                                            `${timeArray[2][0]}ms - ${timeArray[2][timeArray[2].length - 1]}ms`
+                                            `${timeArray[2][0]} - ${timeArray[2][timeArray[2].length - 1]}ms`
                                             : `${timeArray[2]}`}`}
                                 </div>
-                                <div style={{ width: '20vh', height: '20vh' }}>
+                                <div style={{ width: '18vh', height: '18vh' }}>
                                     <AdjacencyMatrix
                                         data={eventNet[neigborData[2]][selectedRoi].matrix}
                                         columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
                                         labels={sessionNetwork[selectedRoi].electrodes}
+                                        containerProps={{ useZoom: false, ml: 10, mr: 5, mb: 5, mt: 10 }}
                                     />
                                 </div>
 
 
                             </Col>
-                            <Col md='4' style={{ height: '20vh' }}>
-                                <div className='fourthSimilar'>
-                                    {`EventID: ${neigborData[3]} 
+                            <Col md='6' style={{ height: '20vh' }}>
+                                <div className='similar-text'>
+                                    {`Event: ${neigborData[3]} 
                                 Time: ${timeArray[3].length > 1 ?
-                                            `${timeArray[3][0]}ms - ${timeArray[3][timeArray[3].length - 1]}ms`
+                                            `${timeArray[3][0]} - ${timeArray[3][timeArray[3].length - 1]}ms`
                                             : `${timeArray[3]}`}`}
                                 </div>
-                                <div style={{ width: '20vh', height: '20vh' }}>
+                                <div style={{ width: '18vh', height: '18vh' }}>
                                     <AdjacencyMatrix
                                         data={eventNet[neigborData[3]][selectedRoi].matrix}
                                         columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
                                         labels={sessionNetwork[selectedRoi].electrodes}
+                                        containerProps={{ useZoom: false, ml: 10, mr: 5, mb: 5, mt: 10 }}
                                     />
                                 </div>
 

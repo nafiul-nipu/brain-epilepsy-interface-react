@@ -60,7 +60,7 @@ export const NetworkViewer = ({
                 totalMatrix ? (
                     <>
                         <div className="networkEvents">
-                             {`EventID: ${filteredEventIds} Roi: ${selectedRoi}`}
+                            {`Network View - Event Id: ${filteredEventIds} Roi: ${selectedRoi}`}
                         </div>
                         <AdjacencyMatrix
                             data={totalMatrix[selectedRoi].matrix}

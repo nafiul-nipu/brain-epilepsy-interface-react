@@ -3,20 +3,21 @@ import ChartContainer, {
     useChartContext,
 } from "../components/chart-container/chart-container";
 
-const containerProps = {
-    useZoom: false,
-    ml: 20,
-    mr: 20,
-    mb: 20,
-    mt: 20,
-};
+// const containerProps = {
+//     useZoom: false,
+//     ml: 20,
+//     mr: 20,
+//     mb: 20,
+//     mt: 20,
+// };
 
 export const AdjacencyMatrix = ({
     data,
     columns,
     colorRange = ["#fcbba1", "#a50f15"],
     fontSize = "0.45em",
-    labels
+    labels,
+    containerProps = { useZoom: false, ml: 20, mr: 20, mb: 20, mt: 20 }
 }) => {
 
     // const containerProps = {
@@ -28,12 +29,12 @@ export const AdjacencyMatrix = ({
     // };
     return (
         <ChartContainer {...containerProps}>
-            <Wrapper data={data} columns={columns} colorRange={colorRange} fontSize={fontSize} labels={labels} />
+            <Wrapper containerProps={containerProps} data={data} columns={columns} colorRange={colorRange} fontSize={fontSize} labels={labels} />
         </ChartContainer>
     )
 };
 
-const Wrapper = ({ data, columns, colorRange, fontSize, labels }) => {
+const Wrapper = ({ containerProps, data, columns, colorRange, fontSize, labels }) => {
     // console.log(data)
     // console.log(columns)
     const dimensions = useChartContext();

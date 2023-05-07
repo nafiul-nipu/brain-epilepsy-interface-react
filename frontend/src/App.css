@@ -158,6 +158,9 @@
   overflow-x: auto;
 }
 
+#tab-panel{
+  padding: 0px;
+}
 
 .eventWindowEndText{
   display: flex;

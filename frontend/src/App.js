@@ -217,7 +217,6 @@ function App() {
               <Row>
                 <Col
                   md="2"
-                  style={{ height: "2vh" }}
                   className="eventWindowTime"
                 >{`${selectedEventRange[0]} ms`}</Col>
                 <Col md="8" className="eventWindowTime" >
@@ -226,11 +225,11 @@ function App() {
                 <Col
                   md="2"
                   className="eventWindowTime"
-                  style={{ height: "2vh", textAlign: "end" }}
+                  style={{ textAlign: "end" }}
                 >{`${selectedEventRange[1]} ms`}</Col>
               </Row>
               <Row>
-                <Col md="12" style={{ height: "4vh" }}>
+                <Col md="12" style={{ height: "6vh" }}>
                   {/* Selected Event Window */}
                   {allEventData ? (
                     <SelectedEventWindow
@@ -265,13 +264,13 @@ function App() {
           </Row>
           <Row>
             <Col md="12" style={{ height: "44vh" }}>
-              <Tabs variant="enclosed" colorScheme="green">
+              <Tabs variant="enclosed" colorScheme="green" size='sm'>
                 <TabList>
                   <Tab>Similar Regions</Tab>
                   <Tab>Exploration So Far</Tab>
                 </TabList>
                 <TabPanels>
-                  <TabPanel>
+                  <TabPanel style={{ padding: '0px' }}>
                     {similarRegionEvent && allEventData && fullEventNetwork ? (
                       <SimilarRegion
                         similarRegionEvent={similarRegionEvent}
@@ -285,7 +284,7 @@ function App() {
                       <p>Select an event</p>
                     )}
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel style={{ padding: '0px' }}>
                     <p>Showing Exploration so far</p>
                   </TabPanel>
                 </TabPanels>

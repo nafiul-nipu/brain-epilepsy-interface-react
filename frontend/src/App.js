@@ -159,18 +159,6 @@ function App() {
       <Row>
         {/* left panel */}
         <Col md="4">
-          {/* <Row>
-            <Col md="12" style={{ height: '15vh', backgroundColor: "#FAFBFC" }}>
-              {allEventData ?
-                (<EventsDistribution
-                  id={patientInfo.id}
-                  currentSample={patientInfo.sample}
-                  data={allEventData}
-                  setBarThreshold={setBarThreshold}
-                />
-                ) : null}
-            </Col>
-          </Row> */}
           <Row>
             <Col md="12" style={{ height: "45vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (

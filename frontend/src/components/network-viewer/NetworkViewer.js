@@ -1,5 +1,6 @@
 import { AdjacencyMatrix } from "../../CommonComponents/AdjacencyMatrix";
 import "./NetworkViewer.css";
+import * as d3 from "d3";
 
 export const NetworkViewer = ({
     sessionNetwork,
@@ -52,6 +53,7 @@ export const NetworkViewer = ({
     }
 
     // console.log(totalMatrix);
+    let maxValue = totalMatrix ? d3.max(totalMatrix[selectedRoi].matrix, d => d3.max(d)) : 0;
 
 
     return (
@@ -61,6 +63,17 @@ export const NetworkViewer = ({
                     <>
                         <div className="networkEvents">
                             {`Network View - Event Id: ${filteredEventIds} Roi: ${selectedRoi}`}
+                        </div>
+                        <div className="legendNetwork">
+                            <svg width="100" height="10">
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#fcbba1" />
+                                    <stop offset="100%" stop-color="#a50f15" />
+                                </linearGradient>
+                                <rect x="10" y="0" width="80" height="10" fill="url(#gradient)" />
+                                <text x="0" y="10" fill="black" fontSize="10px">0</text>
+                                <text x="92" y="10" fill="black" fontSize="10px">{maxValue === 0 ? 1 : maxValue}</text>
+                            </svg>
                         </div>
                         <AdjacencyMatrix
                             data={totalMatrix[selectedRoi].matrix}
@@ -74,27 +87,3 @@ export const NetworkViewer = ({
 
     )
 }
-
-
-// {
-//     adjaData ? (
-//       adjaData.map((data, index) => {
-//         if (index === 2) {
-//           return (
-//             <AdjacencyMatrix
-//               data={data.matrix}
-//               columns={Array.from({ length: data.electrodes.length }, (_, i) => i)}
-//               labels={data.electrodes}
-//             />
-//           )
-//         }
-//       })
-
-//     ) : null
-//   }
-
-// const adjaData = useMergedRois({
-//     network: fullNetwork,
-//     networkWithEvent: fullEventNetwork,
-//     eventid: 10
-//   })

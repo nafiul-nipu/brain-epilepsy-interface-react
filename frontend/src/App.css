@@ -158,6 +158,27 @@
   overflow-x: auto;
 }
 
+.form-numCom-entry {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 200px;
+  padding-left: 20px;
+  position: absolute;
+    left: 56%;
+    top: 55%;
+}
+
+.form-numCom-entry > label {
+  color: black;
+  margin-right: 10px;
+}
+
+.form-numCom-entry > select {
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.25rem;
+}
+
 #tab-panel{
   padding: 0px;
 }

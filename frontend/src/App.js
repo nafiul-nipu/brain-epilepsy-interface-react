@@ -105,6 +105,12 @@ function App() {
 
   const [eegInBrain, setEegInBrain] = useState(null);
 
+  const [numComponents, setNumComponents] = useState(4);
+
+  function onNumComponentChange(event) {
+    setNumComponents(event.target.value);
+  }
+
   // console.log(fullNetwork)
 
   return (
@@ -271,6 +277,15 @@ function App() {
                 </TabList>
                 <TabPanels>
                   <TabPanel style={{ padding: '0px' }}>
+                    <div className="form-numCom-entry">
+                      <label htmlFor="numCom">Num_Com:</label>
+                      <select id="numCom" value={numComponents} onChange={onNumComponentChange}>
+                        <option value="3"> 3</option>
+                        <option value="4"> 4</option>
+                        <option value="5"> 5 </option>
+                        <option value="6"> 6 </option>
+                      </select>
+                    </div>
                     {similarRegionEvent && allEventData && fullEventNetwork ? (
                       <SimilarRegion
                         similarRegionEvent={similarRegionEvent}
@@ -279,6 +294,7 @@ function App() {
                         eventNet={fullEventNetwork}
                         eventData={allEventData[patientInfo.sample]}
                         patient={patientInfo}
+                        numComponents={numComponents}
                       />
                     ) : (
                       <p>Select an event</p>

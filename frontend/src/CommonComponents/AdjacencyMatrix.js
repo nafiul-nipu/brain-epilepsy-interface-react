@@ -66,7 +66,7 @@ const Wrapper = ({ containerProps, data, columns, colorRange, fontSize, labels }
                                 textAnchor="middle"
                                 fontSize={fontSize}
                             >
-                                {labels[i]}
+                                {labels[i] === 0 ? "" : labels[i]}
                             </text>
                             <text
                                 key={`left_${i}`}
@@ -75,7 +75,7 @@ const Wrapper = ({ containerProps, data, columns, colorRange, fontSize, labels }
                                 textAnchor="middle"
                                 fontSize={fontSize}
                             >
-                                {labels[i]}
+                                {labels[i] === 0 ? "" : labels[i]}
                             </text>
                         </g>
 

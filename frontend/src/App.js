@@ -127,6 +127,7 @@ function App() {
         setSimilarRegionEvent={setSimilarRegionEvent}
       />
 
+      {/* global event timeline*/}
       {allEventData && fullNetwork ? (
         <GlobalEvent
           data={allEventData}
@@ -182,38 +183,24 @@ function App() {
               ) : null}
             </Col>
           </Row>
+
           <Row>
-            <Col
-              md="12"
-              className="regionSummaryContainer"
-              style={{ height: "35vh", backgroundColor: "#FAFBFC" }}
-            >
-              <Row>
-                <Col md="12" style={{ height: "4vh" }}>
-                  <div>Region Summary</div>
-                </Col>
-              </Row>
-              <Row>
-                <Col md="12" style={{ height: "30vh" }}>
-                  {fullNetwork && allEventData ? (
-                    <RegionSummary
-                      data={fullNetwork}
-                      eventData={allEventData[patientInfo.sample]}
-                      eventRange={eventRangeNetwork}
-                      selectedRoi={selectedRoi}
-                      setSelectedRoi={setSelectedRoi}
-                      roiCount={
-                        dataRegistry[patientInfo.id].roiCount[
-                        patientInfo.sample
-                        ]
-                      }
-                      roiFilter={roiFilter}
-                      setRoiFilter={setRoiFilter}
-                    />
-                  ) : null}
-                </Col>
-              </Row>
-            </Col>
+            {fullNetwork && allEventData ? (
+              <RegionSummary
+                data={fullNetwork}
+                eventData={allEventData[patientInfo.sample]}
+                eventRange={eventRangeNetwork}
+                selectedRoi={selectedRoi}
+                setSelectedRoi={setSelectedRoi}
+                roiCount={
+                  dataRegistry[patientInfo.id].roiCount[
+                  patientInfo.sample
+                  ]
+                }
+                roiFilter={roiFilter}
+                setRoiFilter={setRoiFilter}
+              />
+            ) : null}
           </Row>
         </Col>
         {/* middle panel */}

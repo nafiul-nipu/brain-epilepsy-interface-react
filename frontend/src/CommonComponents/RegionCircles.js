@@ -16,7 +16,7 @@ const containerProps = {
 
 export const RegionCircles = ({
     data,
-    radiusDomain,
+    circleRadius,
     roi,
     roiCount,
     roiFilter,
@@ -26,7 +26,7 @@ export const RegionCircles = ({
         <ChartContainer {...containerProps}>
             <RegionWrapper
                 data={data}
-                radiusDomain={radiusDomain}
+                circleRadius={circleRadius}
                 roi={roi}
                 roiCount={roiCount}
                 roiFilter={roiFilter}
@@ -36,7 +36,7 @@ export const RegionCircles = ({
     )
 };
 
-const RegionWrapper = ({ data, radiusDomain, roi, roiCount, roiFilter, setRoiFilter }) => {
+const RegionWrapper = ({ data, circleRadius, roi, roiCount, roiFilter, setRoiFilter }) => {
     // console.log(data.activeElectrode)
     const dimensions = useChartContext();
 
@@ -49,9 +49,6 @@ const RegionWrapper = ({ data, radiusDomain, roi, roiCount, roiFilter, setRoiFil
     // Calculate number of rows needed
     const numRows = Math.ceil(count / circlesPerRow);
 
-    const circleRadius = d3.scaleLinear()
-        .domain([0, d3.max(radiusDomain) === 0 ? 1 : d3.max(radiusDomain)])
-        .range([2, 6])
 
     // const circleRadius = (50 / circlesPerRow) / 2;
     // console.log(d3.extent(data.frequency))

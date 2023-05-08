@@ -42,6 +42,10 @@ export const RegionSummary = ({
         radiusDomain.push(...d3.extent(result.frequency))
     }
 
+    const circleRadius = d3.scaleLinear()
+        .domain([0, d3.max(radiusDomain) === 0 ? 1 : d3.max(radiusDomain)])
+        .range([2, 8])
+
     // console.log(regionCiclesData)
     // console.log(radiusDomain)
 
@@ -69,7 +73,7 @@ export const RegionSummary = ({
                     >
                         <RegionCircles
                             data={object}
-                            radiusDomain={d3.extent(radiusDomain)}
+                            circleRadius={circleRadius}
                             roi={i + rowStartIndex}
                             roiCount={roiCount}
                             roiFilter={roiFilter}
@@ -82,8 +86,72 @@ export const RegionSummary = ({
         );
     });
 
+    const tickList = circleRadius.ticks();
+    const ticks = [tickList[0], tickList[tickList.length - 1]];
+    // console.log(ticks)
+    const maxValue = ticks[ticks.length - 1];
+    const dimension = circleRadius(maxValue) * 2; // height and width of the biggest circle
+    const DASH_WIDTH = 50;
+
+    const allCircles = ticks.map((tick, i) => {
+        const xCenter = dimension / 2;
+        const yCircleTop = dimension - 2 * circleRadius(tick);
+        const yCircleCenter = dimension - circleRadius(tick);
+
+        return (
+            <g key={i} transform="translate(5,5)">
+                <circle
+                    cx={xCenter}
+                    cy={yCircleCenter}
+                    r={circleRadius(tick)}
+                    fill="none"
+                    stroke="black"
+                />
+                <line
+                    x1={xCenter}
+                    x2={xCenter + DASH_WIDTH}
+                    y1={yCircleTop}
+                    y2={yCircleTop}
+                    stroke="black"
+                    strokeDasharray={"2,2"}
+                />
+                <text
+                    x={xCenter + DASH_WIDTH + 4}
+                    y={yCircleTop}
+                    fontSize={10}
+                    alignmentBaseline="middle"
+                >
+                    {tick}
+                </text>
+            </g>
+        );
+    });
+
     return (
-        <>{rows}</>
+        <Col
+            md="12"
+            className="regionSummaryContainer"
+            style={{ height: "35vh", backgroundColor: "#FAFBFC" }}
+        >
+            <Row>
+                <Col md="12" style={{ height: "4vh" }}>
+                    <Row>
+                        <Col>Region Summary</Col>
+                        <Col>
+                            <svg width={100} height={20} overflow='visible'>
+                                {allCircles}
+                            </svg>
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
+            <Row>
+                <Col md="12" style={{ height: "30vh" }}>
+                    <>{rows}</>
+                </Col>
+            </Row>
+        </Col>
+
     );
 };
 

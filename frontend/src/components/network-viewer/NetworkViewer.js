@@ -65,6 +65,7 @@ export const NetworkViewer = ({
                             {`Network View - Event Id: ${filteredEventIds} Roi: ${selectedRoi}`}
                         </div>
                         <div className="legendNetwork">
+                            <div style={{ fontSize: 'small' }}>Count</div>
                             <svg width="100" height="10">
                                 <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
                                     <stop offset="0%" stop-color="#fcbba1" />

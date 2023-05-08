@@ -1,6 +1,7 @@
 import { RegionCircles } from "../../CommonComponents/RegionCircles";
 import { Col, Row } from "react-bootstrap";
 import * as d3 from 'd3';
+import './RegionSummary.css'
 const rowSize = 3;
 
 export const RegionSummary = ({
@@ -137,6 +138,7 @@ export const RegionSummary = ({
                 <Col md="12" style={{ height: "4vh" }}>
                     <Row>
                         <Col>Region Summary</Col>
+                        <Col><div className="regionLabel">Frequency</div></Col>
                         <Col>
                             <svg width={100} height={20} overflow='visible'>
                                 {allCircles}

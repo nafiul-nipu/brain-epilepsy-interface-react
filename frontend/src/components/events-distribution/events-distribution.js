@@ -23,7 +23,7 @@ const containerProps = {
 const countAccessor = (d) => d.count;
 
 export const EventsDistribution = ({ data, id, currentSample, setBarThreshold }) => {
-  const maxBin = dataRegistry[id].maxEvent;
+  const maxBin = dataRegistry[id].maxElectrodesInAnEvent;
 
   return (
     <ChartContainer {...containerProps}>

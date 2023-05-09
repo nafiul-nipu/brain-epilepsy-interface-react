@@ -193,11 +193,7 @@ function App() {
                 eventRange={eventRangeNetwork}
                 selectedRoi={selectedRoi}
                 setSelectedRoi={setSelectedRoi}
-                roiCount={
-                  dataRegistry[patientInfo.id].roiCount[
-                  patientInfo.sample
-                  ]
-                }
+                roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
                 roiFilter={roiFilter}
                 setRoiFilter={setRoiFilter}
               />
@@ -314,7 +310,15 @@ function App() {
             </Col>
           </Row>
           <Row>
-            <PatientSummary />
+            {
+              allEventData ? (
+                <PatientSummary
+                  patient={patientInfo}
+                  events={Object.keys(allEventData)}
+                />
+              ) : null
+            }
+
           </Row>
         </Col>
       </Row>

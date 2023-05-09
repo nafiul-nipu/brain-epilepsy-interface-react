@@ -6,10 +6,7 @@ import {
     RangeSlider,
     RangeSliderTrack,
     RangeSliderFilledTrack,
-    RangeSliderThumb,
     RangeSliderMark,
-    Box,
-    useRangeSlider
 } from '@chakra-ui/react'
 
 // let button, slider

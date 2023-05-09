@@ -1,9 +1,6 @@
 import * as d3 from 'd3';
-import { useState } from "react";
 
 import ChartContainer, { useChartContext } from '../chart-container/chart-container';
-
-import dataRegistry from "../../data/dataRegistry.json";
 
 const containerProps = {
     useZoom: false,

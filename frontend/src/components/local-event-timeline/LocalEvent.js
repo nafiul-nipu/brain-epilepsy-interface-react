@@ -1,6 +1,5 @@
 import * as d3 from 'd3';
 import { useState } from 'react';
-import dataRegistry from "../../data/dataRegistry.json";
 import ChartContainer, { useChartContext } from '../chart-container/chart-container';
 import './local-events.css';
 const containerProps = {

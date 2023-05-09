@@ -29,6 +29,7 @@ import { RegionSummary } from "./components/region-summary/RegionSummary";
 import { NetworkViewer } from "./components/network-viewer/NetworkViewer";
 import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
+import { PatientSummary } from "./components/patient-summary/patientSummary";
 
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
@@ -313,10 +314,7 @@ function App() {
             </Col>
           </Row>
           <Row>
-            <Col md="12" style={{ height: "40vh", backgroundColor: "#FAFBFC" }}>
-              {" "}
-              Patient Summary
-            </Col>
+            <PatientSummary />
           </Row>
         </Col>
       </Row>

@@ -70,11 +70,11 @@ export const PatientSummary = (({
                                 data: [
                                     {
                                         value: [
-                                            dataRegistry[patient.id][e].lesions,
-                                            dataRegistry[patient.id][e].totalElectrodes,
-                                            dataRegistry[patient.id][e].totalEvents,
-                                            dataRegistry[patient.id][e].peaks,
-                                            dataRegistry[patient.id][e].totalrois
+                                            dataRegistry[patient.id][e] ? dataRegistry[patient.id][e].lesions : 0,
+                                            dataRegistry[patient.id][e] ? dataRegistry[patient.id][e].totalElectrodes : 0,
+                                            dataRegistry[patient.id][e] ? dataRegistry[patient.id][e].totalEvents : 0,
+                                            dataRegistry[patient.id][e] ? dataRegistry[patient.id][e].peaks : 0,
+                                            dataRegistry[patient.id][e] ? dataRegistry[patient.id][e].totalrois : 0,
                                         ],
                                         name: 'Patient Summary'
                                     }

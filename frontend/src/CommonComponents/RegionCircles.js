@@ -70,7 +70,7 @@ const RegionWrapper = ({ data, circleRadius, roi, roiCount, roiFilter, setRoiFil
                             cx={10 + j * (circleSpacing + 2 * 10)}
                             cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
                             r={circleRadius(data.frequency[circleIndex])}
-                            fill="#307362"
+                            fill={`${colorslist[roi]}`}
                         /><title>{`
                         Electrode : E${data.activeElectrode[circleIndex]}\nFrequency : ${data.frequency[circleIndex]}
                         `}</title>

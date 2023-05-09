@@ -62,6 +62,7 @@ export const SimilarRegion = ({
                                     rowObjects.map((object, i) => (
                                         <Col md='4'
                                             style={{ height: '20vh' }}
+                                            key={i}
                                         >
                                             <div className='similar-text'>
                                                 {`E: ${object}

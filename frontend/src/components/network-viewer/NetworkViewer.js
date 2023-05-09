@@ -12,7 +12,7 @@ export const NetworkViewer = ({
     selectedRoi,
     colorRange
 }) => {
-    console.log(selectedRoi)
+    // console.log(selectedRoi)
 
     const filteredEventIds = eventData
         .filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[1]))

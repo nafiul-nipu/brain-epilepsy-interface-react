@@ -40,11 +40,11 @@ export const PatientSummary = (({
                                     { name: '# Peaks', max: dataRegistry.maxPeaks },
                                     { name: '# Rois', max: dataRegistry.maxRois },
                                 ],
-                                name: {
+                                axisName: {
                                     left: 15,
                                     textStyle: {
                                         fontSize: 8,
-                                    }
+                                    },
                                 },
                                 axisNameGap: 1,
                                 splitArea: {
@@ -83,7 +83,7 @@ export const PatientSummary = (({
                         };
 
                         return (
-                            <Col md={12 / events.length} style={{ height: "18vh", backgroundColor: "#FAFBFC" }}>
+                            <Col key={i} md={12 / events.length} style={{ height: "18vh", backgroundColor: "#FAFBFC" }}>
                                 <ReacECharts
                                     option={options}
                                     style={{ height: "18vh", width: "100%" }}

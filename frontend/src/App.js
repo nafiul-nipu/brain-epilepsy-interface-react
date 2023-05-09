@@ -113,6 +113,8 @@ function App() {
   }
 
   // console.log(fullNetwork)
+  // console.log(eventRangeNetwork)
+  // console.log(selectedEventRange)
 
   return (
     // component container
@@ -178,7 +180,7 @@ function App() {
                   allnetworks={fullNetwork}
                   allnetworksWithEvent={fullEventNetwork}
                   eventid={similarRegionEvent}
-                  selectedEventRange={selectedEventRange}
+                  selectedEventRange={eventRangeNetwork}
                   eegInBrain={eegInBrain}
                 />
               ) : null}

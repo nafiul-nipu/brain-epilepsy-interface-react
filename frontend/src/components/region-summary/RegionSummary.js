@@ -16,7 +16,7 @@ export const RegionSummary = ({
 }) => {
     const numRows = Math.ceil((data.length - 1) / rowSize);
 
-    const filteredData = eventData.filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[1]))
+    const filteredData = eventData.filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[eventRange.length - 1]))
 
     // console.log(filteredData)
     // console.log(data)

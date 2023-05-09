@@ -9,6 +9,16 @@
         "lesions": 3,
         "time": 600000, 
         "rois": [100, 101, 201, 300, 301, 400, 401, 501],
+        "roiColor": [
+            ["#BFD2DE", "#03436b"],
+            ["#FFE5CF", "#753804"],
+            ["#D5ECD5", "#078707"],
+            ["#F7D4D4", "#a30707"],
+            ["#EAE1F2", "#6f0ac9"],
+            ["#E8DDDB", "#941b04"],
+            ["#F9E4F3", "#a11077"],
+            ["#bfa3a3", "#f70505"]
+        ],
         "maxElectrodesInAnEvent": 55,
         "sample1":{
             "roiCount": [0, 1822, 2331, 29, 211, 13, 8, 1],
@@ -41,6 +51,11 @@
         "lesions": 2,
         "time": 121000,
         "rois": [0,1,2],
+        "roiColor": [
+            ["#BFD2DE", "#03436b"],
+            ["#FFE5CF", "#753804"],
+            ["#D5ECD5", "#078707"]
+        ],
         "maxElectrodesInAnEvent": 79,
         "sample1":{
             "roiCount": [634, 444, 4025],

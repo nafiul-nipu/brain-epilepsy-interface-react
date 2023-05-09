@@ -13,7 +13,8 @@ export const SimilarRegion = ({
     eventNet,
     eventData,
     patient,
-    numComponents
+    numComponents,
+    colorRange
 }) => {
     // console.log(similarRegionEvent)
     // const neighbors = data.find(obj => obj.eventID === similarRegionEvent)?.neighbors
@@ -74,6 +75,7 @@ export const SimilarRegion = ({
                                                     columns={Array.from({ length: el.length }, (_, i) => i)}
                                                     labels={[el[0], ...Array(el.length - 2).fill(0), el[el.length - 1]]}
                                                     containerProps={{ useZoom: false, ml: 10, mr: 5, mb: 5, mt: 7 }}
+                                                    colorRange={colorRange}
                                                 />
                                             </div>
                                         </Col>

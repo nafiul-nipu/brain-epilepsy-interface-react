@@ -3,7 +3,7 @@ import ChartContainer, {
     useChartContext,
 } from "../components/chart-container/chart-container";
 
-const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f'];
+const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3'];
 
 
 const containerProps = {

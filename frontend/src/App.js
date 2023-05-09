@@ -247,6 +247,7 @@ function App() {
                     eventRange={eventRangeNetwork}
                     eventNet={fullEventNetwork}
                     selectedRoi={selectedRoi}
+                    colorRange={selectedRoi !== null ? dataRegistry[patientInfo.id].roiColor[selectedRoi] : ["#f5f7f5", "#f5f7f5"]}
                   />
                 ) : null}
               </div>
@@ -279,6 +280,7 @@ function App() {
                         eventData={allEventData[patientInfo.sample]}
                         patient={patientInfo}
                         numComponents={numComponents}
+                        colorRange={selectedRoi !== null ? dataRegistry[patientInfo.id].roiColor[selectedRoi] : ["#f5f7f5", "#f5f7f5"]}
                       />
                     ) : (
                       <p>Select an event</p>

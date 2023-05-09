@@ -2,14 +2,17 @@ import { AdjacencyMatrix } from "../../CommonComponents/AdjacencyMatrix";
 import "./NetworkViewer.css";
 import * as d3 from "d3";
 
+import dataRegistry from "../../data/dataRegistry.json"
+
 export const NetworkViewer = ({
     sessionNetwork,
     eventData,
     eventRange,
     eventNet,
-    selectedRoi
+    selectedRoi,
+    colorRange
 }) => {
-    // console.log(eventNet)
+    console.log(selectedRoi)
 
     const filteredEventIds = eventData
         .filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[1]))
@@ -68,8 +71,8 @@ export const NetworkViewer = ({
                             <div style={{ fontSize: 'small' }}>Count</div>
                             <svg width="100" height="10">
                                 <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#fcbba1" />
-                                    <stop offset="100%" stop-color="#a50f15" />
+                                    <stop offset="0%" stopColor={colorRange[0]} />
+                                    <stop offset="100%" stopColor={colorRange[1]} />
                                 </linearGradient>
                                 <rect x="10" y="0" width="80" height="10" fill="url(#gradient)" />
                                 <text x="0" y="10" fill="black" fontSize="10px">0</text>
@@ -80,6 +83,7 @@ export const NetworkViewer = ({
                             data={totalMatrix[selectedRoi].matrix}
                             columns={Array.from({ length: sessionNetwork[selectedRoi].electrodes.length }, (_, i) => i)}
                             labels={sessionNetwork[selectedRoi].electrodes}
+                            colorRange={colorRange}
                         />
                     </>
                 ) : <div>No Network</div>

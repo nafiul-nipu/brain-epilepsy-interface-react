@@ -99,6 +99,8 @@ function App() {
   // fist event ID
   const [similarRegionEvent, setSimilarRegionEvent] = useState(1);
 
+  const [exploration, setExploration] = useState([1]);
+
   const [roiFilter, setRoiFilter] = useState(null);
 
   const [electrodeListEventWindow, setElectrodeListEventWindow] =
@@ -128,6 +130,7 @@ function App() {
         setRoiFilter={setRoiFilter}
         setSelectedRoi={setSelectedRoi}
         setSimilarRegionEvent={setSimilarRegionEvent}
+        setExploration={setExploration}
       />
 
       {/* global event timeline*/}
@@ -233,6 +236,7 @@ function App() {
                       setEventRangeNetwork={setEventRangeNetwork}
                       setSimilarRegionEvent={setSimilarRegionEvent}
                       similarRegionEvent={similarRegionEvent}
+                      setExploration={setExploration}
                     />
                   ) : null}
                 </Col>
@@ -289,7 +293,20 @@ function App() {
                     )}
                   </TabPanel>
                   <TabPanel style={{ padding: '0px' }}>
-                    <p>Showing Exploration so far</p>
+                    <div style={{ height: '40vh', overflow: 'auto' }}>
+                      {
+                        exploration && allEventData ? (
+                          exploration.map((ex, index) => {
+                            let time = allEventData[patientInfo.sample].find(d => d.index === ex)?.time;
+                            return (
+                              <div key={index} style={{ overflow: 'auto' }}>
+                                <p>Event Id: {ex} &nbsp;&nbsp;&nbsp;&nbsp;
+                                  Time : {time.length > 0 ? `${time[0]}-${time[time.length - 1]} ms` : `${time[0]}ms`}</p>
+                              </div>
+                            )
+                          })) : <div> No exploration yet </div>
+                      }
+                    </div>
                   </TabPanel>
                 </TabPanels>
               </Tabs>

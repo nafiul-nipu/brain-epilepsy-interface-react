@@ -10,6 +10,7 @@ export const ElectrodeDropDown = ({
   setRoiFilter,
   setSelectedRoi,
   setSimilarRegionEvent,
+  setExploration
 }) => {
   const { id, sample } = patientInfo;
 
@@ -56,6 +57,7 @@ export const ElectrodeDropDown = ({
     setRoiFilter(null);
     setSelectedRoi(0);
     setSimilarRegionEvent(null);
+    setExploration(null);
   }
 
   function onPatientChange(event) {
@@ -63,6 +65,7 @@ export const ElectrodeDropDown = ({
     setRoiFilter(null);
     setSelectedRoi(0);
     setSimilarRegionEvent(null);
+    setExploration(null);
   }
 
   function onTimeRangeChange(event) {
@@ -70,5 +73,6 @@ export const ElectrodeDropDown = ({
     setRoiFilter(null);
     setSelectedRoi(0);
     setSimilarRegionEvent(null);
+    // setExploration(null);
   }
 };

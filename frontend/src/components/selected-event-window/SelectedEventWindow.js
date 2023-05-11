@@ -101,7 +101,7 @@ const ChartWrapper = ({
                                         y={0}
                                         width={d.time.length > 1 && d.time[d.time.length - 1] - d.time[0] !== 0 ?
                                             widtheScale(d.time[d.time.length - 1]) - widtheScale(d.time[0])
-                                            : 2}
+                                            : 1}
                                         height={dimensions.boundedHeight}
                                         fill={similarRegionEvent === d.index ? 'red' : 'orange'}
                                         onClick={() => onEventClick(d)}

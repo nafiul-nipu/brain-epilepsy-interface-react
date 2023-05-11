@@ -57,10 +57,10 @@ const ChartWrapper = ({
         .range([0, dimensions.boundedWidth])
         .domain([domain[0], domain[1]]);
 
-    const saturationScale = d3
-        .scaleLinear()
-        .range([0, 1])
-        .domain([0, d3.max(data[currentSample], (d) => d.count)]);
+    // const saturationScale = d3
+    //     .scaleLinear()
+    //     .range([0, 1])
+    //     .domain([0, d3.max(data[currentSample], (d) => d.count)]);
 
     const widtheScale = d3
         .scaleLinear()

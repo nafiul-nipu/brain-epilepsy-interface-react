@@ -71,10 +71,10 @@ const ChartWrapper = ({
     .range([0, dimensions.boundedWidth])
     .domain([0, dataRegistry[id].time]);
 
-  const saturationScale = d3
-    .scaleLinear()
-    .range([0, 1])
-    .domain([0, d3.max(data[currentSample], (d) => d.count)]);
+  // const saturationScale = d3
+  //   .scaleLinear()
+  //   .range([0, 1])
+  //   .domain([0, d3.max(data[currentSample], (d) => d.count)]);
 
   const [rectPos, setRectPos] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);

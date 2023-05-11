@@ -18,7 +18,7 @@ import { ENTContainer } from "./components/brain-viewer/ENTContainer";
 
 import { useFullNetwork } from "./library/useFullNetwork";
 import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
-import { EventsDistribution } from "./components/events-distribution/events-distribution";
+// import { EventsDistribution } from "./components/events-distribution/events-distribution";
 import { useAllEventData } from "./library/useAllEventData";
 import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
 import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
@@ -134,7 +134,7 @@ function App() {
         setExploration={setExploration}
       />
 
-      {/* global event timeline*/}
+      {/* globalevent timeline*/}
       {allEventData && fullNetwork ? (
         <GlobalEvent
           data={allEventData}

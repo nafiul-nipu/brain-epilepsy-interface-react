@@ -4,3 +4,4 @@
 *.pyc
 node_modules/
 .env
+.vscode/settings.json

@@ -30,6 +30,7 @@ import { NetworkViewer } from "./components/network-viewer/NetworkViewer";
 import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
 import { PatientSummary } from "./components/patient-summary/patientSummary";
+import { ExplorationSoFar } from "./components/exploration-so-far/ExplorationSoFar";
 
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
@@ -264,7 +265,7 @@ function App() {
               <Tabs variant="enclosed" colorScheme="green" size='sm'>
                 <TabList>
                   <Tab>Similar Regions</Tab>
-                  <Tab>Exploration So Far</Tab>
+                  <Tab>Event Exploration So Far</Tab>
                 </TabList>
                 <TabPanels>
                   <TabPanel style={{ padding: '0px' }}>
@@ -293,18 +294,15 @@ function App() {
                     )}
                   </TabPanel>
                   <TabPanel style={{ padding: '0px' }}>
-                    <div style={{ height: '40vh', overflow: 'auto' }}>
+                    <div style={{ height: '40vh', overflowY: 'auto', overflowX: 'hidden' }}>
                       {
-                        exploration && allEventData ? (
-                          exploration.map((ex, index) => {
-                            let time = allEventData[patientInfo.sample].find(d => d.index === ex)?.time;
-                            return (
-                              <div key={index} style={{ overflow: 'auto' }}>
-                                <p>Event Id: {ex} &nbsp;&nbsp;&nbsp;&nbsp;
-                                  Time : {time.length > 0 ? `${time[0]}-${time[time.length - 1]} ms` : `${time[0]}ms`}</p>
-                              </div>
-                            )
-                          })) : <div> No exploration yet </div>
+                        exploration && allEventData && fullEventNetwork ? (
+                          <ExplorationSoFar
+                            exploration={exploration}
+                            eventData={allEventData[patientInfo.sample]}
+                            eventNet={fullEventNetwork}
+                          />
+                        ) : <div> No exploration yet </div>
                       }
                     </div>
                   </TabPanel>

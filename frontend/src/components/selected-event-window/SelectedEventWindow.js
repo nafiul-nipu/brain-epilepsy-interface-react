@@ -72,8 +72,8 @@ const ChartWrapper = ({
     // console.log(widtheScale(100))
     // console.log(widtheScale(105))
     function onEventClick(el) {
-        // console.log(time)
-        setEventRangeNetwork(el.time.length > 1 ? el.time : [el.time, el.time])
+        // console.log(el.time)
+        setEventRangeNetwork(el.time.length > 1 ? el.time : [el.time[0], el.time[0]])
         setSimilarRegionEvent(el.index)
         setExploration(prevState => [...new Set([...prevState, el.index])]);
 
@@ -99,8 +99,9 @@ const ChartWrapper = ({
                                         key={i}
                                         x={d.time.length > 1 ? xScale(d.time[0]) : xScale(d.time)}
                                         y={0}
-                                        width={d.time.length > 1 ? widtheScale(d.time[d.time.length - 1]) - widtheScale(d.time[0]) : 2}
-                                        // width={yScale(d.count)}
+                                        width={d.time.length > 1 && d.time[d.time.length - 1] - d.time[0] !== 0 ?
+                                            widtheScale(d.time[d.time.length - 1]) - widtheScale(d.time[0])
+                                            : 2}
                                         height={dimensions.boundedHeight}
                                         fill={similarRegionEvent === d.index ? 'red' : 'orange'}
                                         onClick={() => onEventClick(d)}

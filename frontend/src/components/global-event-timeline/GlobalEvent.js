@@ -142,11 +142,9 @@ const ChartWrapper = ({
                   key={i}
                   x={d.time.length > 1 ? xScale(d.time[0]) : xScale(d.time)}
                   y={0}
-                  width={
-                    d.time.length > 1
-                      ? xScale(d.time[d.time.length - 1]) - xScale(d.time[0])
-                      : 1
-                  }
+                  width={d.time.length > 1 && d.time[d.time.length - 1] - d.time[0] !== 0 ?
+                    xScale(d.time[d.time.length - 1]) - xScale(d.time[0])
+                    : 1}
                   // width={yScale(d.count)}
                   height={dimensions.boundedHeight}
                   fill={"orange"}

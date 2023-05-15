@@ -17,13 +17,13 @@ const containerProps = {
   useZoom: false,
   ml: 75,
   mr: 20,
-  mb: 40,
-  mt: 10,
+  mb: 30,
+  mt: 0,
 };
 const countAccessor = (d) => d.count;
 
 export const EventsDistribution = ({ data, id, currentSample, setBarThreshold }) => {
-  const maxBin = dataRegistry[id].maxEvent;
+  const maxBin = dataRegistry[id].maxElectrodesInAnEvent;
 
   return (
     <ChartContainer {...containerProps}>
@@ -102,18 +102,19 @@ const ChartWrapper = ({ data, maxBin, currentSample, setBarThreshold }) => {
       <text
         // className="axis-label"
         textAnchor="middle"
-        transform={`translate(${dimensions.boundedWidth - 50}, ${10} )`}
+        transform={`translate(${dimensions.boundedWidth - 50}, ${15} )`}
       >
         {"Brush to filter"}
       </text>
       <AxisLeft
         xScale={xScale} yScale={yScale} scaleOffset={10}
         ticks={tickValues}
+        textPosition={2.85}
       />
       <text
         // className="axis-label"
         textAnchor="middle"
-        transform={`translate(${-(containerProps.mb + containerProps.mr)}, ${dimensions.boundedHeight / 2} )rotate(-90)`}
+        transform={`translate(${-(containerProps.mb + containerProps.mr)}, ${dimensions.boundedHeight / 1.85} )rotate(-90)`}
       >
         {"# of Events"}
       </text>
@@ -122,6 +123,7 @@ const ChartWrapper = ({ data, maxBin, currentSample, setBarThreshold }) => {
         yScale={yScale}
         scaleOffset={5}
         innerHeight={dimensions.boundedHeight}
+        textPosition={3.85}
       />
       <text
         // className="axis-label"

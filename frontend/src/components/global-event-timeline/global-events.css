@@ -1,0 +1,19 @@
+.global-event-container {
+  width: 100%;
+  height: 4vh;
+}
+
+.global-event-title-bar {
+  /* height: 3vh; */
+  display: flex;
+  flex-direction: row;
+  padding: 0px 2px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.event-bar-title {
+  font-size: small;
+  color: black;
+  padding: 0px 4px;
+}

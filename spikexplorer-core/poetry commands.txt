@@ -1,0 +1,14 @@
+1. check if the python version is >=3.9
+2. check if you have curl installed
+3. go to the backend folder
+4. run 
+    poetry install
+5. first time only 
+    poetry run python spikexplorer_core/preprocessing/eeg_for_duck.py DATADIR(local data directory)
+this transforms the the eeg data to standard duck db type data
+6. set FLASK_APP=spikexplorer_core/app.py
+7. poetry run flask run
+
+
+real python
+linters 

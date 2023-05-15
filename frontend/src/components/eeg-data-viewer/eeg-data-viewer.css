@@ -17,9 +17,13 @@
 }
 
 .eeg-list {
-  height: 100vh;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  height: 55vh;
+  /* display: flex; */
+  /* flex-wrap: wrap; */
+  /* justify-content: space-between; */
   overflow-y: auto
+}
+
+.electrodeEEGNameDiv{
+  margin-left: 2%;
 }

@@ -1,6 +1,6 @@
 import React from "react";
 
-export const AxisLeft = ({ xScale, yScale, scaleOffset, ticks }) => {
+export const AxisLeft = ({ xScale, yScale, scaleOffset, ticks, textPosition }) => {
     // console.log(xScale, yScale, scaleOffset)
     const [xStart,] = xScale.range();
     const [yStart, yEnd] = yScale.range();
@@ -17,8 +17,8 @@ export const AxisLeft = ({ xScale, yScale, scaleOffset, ticks }) => {
                         <React.Fragment key={i}>
                             <line x1={xStart} x2={xStart - scaleOffset} y1={y} y2={y} />
                             <text
-                                x={xStart - scaleOffset * 4}
-                                y={y + scaleOffset * 1.25}
+                                x={xStart - scaleOffset * textPosition}
+                                y={y + scaleOffset / 1.25}
                             >
                                 {t}
                             </text>

@@ -1,0 +1,25 @@
+.nav-bar-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #f0f0f1;
+  height: 6vh;
+}
+
+.form-ddl-entry {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 200px;
+  padding-left: 20px;
+}
+
+.form-ddl-entry > label {
+  color: black;
+  margin-right: 10px;
+}
+
+.form-ddl-entry > select {
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.25rem;
+}

@@ -17,6 +17,7 @@ export const AdjacencyMatrix = ({
     colorRange = ["#fcbba1", "#a50f15"],
     fontSize = "0.36em",
     labels,
+    eListTooltip = null,
     containerProps = { useZoom: false, ml: 20, mr: 10, mb: 10, mt: 18 }
 }) => {
 
@@ -29,12 +30,20 @@ export const AdjacencyMatrix = ({
     // };
     return (
         <ChartContainer {...containerProps}>
-            <Wrapper containerProps={containerProps} data={data} columns={columns} colorRange={colorRange} fontSize={fontSize} labels={labels} />
+            <Wrapper
+                containerProps={containerProps}
+                data={data}
+                columns={columns}
+                colorRange={colorRange}
+                fontSize={fontSize}
+                labels={labels}
+                eListTooltip={eListTooltip}
+            />
         </ChartContainer>
     )
 };
 
-const Wrapper = ({ containerProps, data, columns, colorRange, fontSize, labels }) => {
+const Wrapper = ({ containerProps, data, columns, colorRange, fontSize, labels, eListTooltip }) => {
     // console.log(data)
     // console.log(columns)
     const dimensions = useChartContext();
@@ -100,9 +109,12 @@ const Wrapper = ({ containerProps, data, columns, colorRange, fontSize, labels }
                                                     fill={color(col)}
                                                     rx={2}
                                                     ry={2}
-                                                /><title>{`
-                                                Source: ${labels[i]}\nTarget : ${labels[j]} \nFrequency : ${col}
-                                                `}</title>
+                                                /><title>{eListTooltip === null ?
+                                                    `Source: ${labels[i]}\nTarget : ${labels[j]} \nFrequency : ${col}`
+                                                    :
+                                                    `Source: ${eListTooltip[i]}\nTarget : ${eListTooltip[j]} \nFrequency : ${col}\n${eListTooltip[i][j]}`
+                                                }
+                                                </title>
                                             </g>
 
                                         )

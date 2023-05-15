@@ -55,7 +55,8 @@ export const SimilarRegion = ({
                         const rowStartIndex = rowIndex * rowSize;
                         const rowObjects = neigborData.slice(rowStartIndex, rowStartIndex + rowSize);
                         const rowKey = `row-${rowIndex}`;
-                        // console.log(rowObjects)
+                        console.log(rowObjects)
+                        // console.log(rowIndex)
                         return (
                             <Row key={rowKey}>
                                 {
@@ -75,6 +76,7 @@ export const SimilarRegion = ({
                                                     data={eventNet[object][selectedRoi].matrix}
                                                     columns={Array.from({ length: el.length }, (_, i) => i)}
                                                     labels={[el[0], ...Array(el.length - 2).fill(0), el[el.length - 1]]}
+                                                    eListTooltip={sessionNetwork[selectedRoi].electrodes}
                                                     containerProps={{ useZoom: false, ml: 10, mr: 5, mb: 5, mt: 7 }}
                                                     colorRange={colorRange}
                                                 />

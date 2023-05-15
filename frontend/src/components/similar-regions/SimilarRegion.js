@@ -13,7 +13,7 @@ export const SimilarRegion = ({
     eventNet,
     eventData,
     patient,
-    numComponents,
+    numCompWithSelEvent,
     colorRange
 }) => {
     // console.log(similarRegionEvent)
@@ -28,18 +28,18 @@ export const SimilarRegion = ({
                 patient.id,
                 patient.sample,
                 similarRegionEvent,
-                numComponents
+                numCompWithSelEvent
             );
 
             // TODO: if error do something
-            setNeighbors(data);
+            setNeighbors(data.slice(1));
             // console.log(data)
             let numRows = Math.ceil((data.length) / rowSize)
             // console.log(numRows)
             setrows([...Array(numRows)]);
         }
         fetchData();
-    }, [eventData, numComponents, patient, similarRegionEvent])
+    }, [eventData, numCompWithSelEvent, patient, similarRegionEvent])
 
     const timeArray = neigborData ? neigborData.map((el) => eventData[el].time) : null
 
@@ -55,8 +55,8 @@ export const SimilarRegion = ({
                         const rowStartIndex = rowIndex * rowSize;
                         const rowObjects = neigborData.slice(rowStartIndex, rowStartIndex + rowSize);
                         const rowKey = `row-${rowIndex}`;
-                        console.log(rowObjects)
-                        // console.log(rowIndex)
+                        // console.log(rowObjects)
+                        // console.log(rowStartIndex)
                         return (
                             <Row key={rowKey}>
                                 {
@@ -67,9 +67,9 @@ export const SimilarRegion = ({
                                         >
                                             <div className='similar-text'>
                                                 {`E: ${object}
-                                                T: ${timeArray[i].length > 1 ?
-                                                        `${timeArray[i][0]}-${timeArray[i][timeArray[i].length - 1]}ms`
-                                                        : `${timeArray[i]}`}`}
+                                                T: ${timeArray[i + rowStartIndex].length > 1 ?
+                                                        `${timeArray[i + rowStartIndex][0]}-${timeArray[i + rowStartIndex][timeArray[i + rowStartIndex].length - 1]}ms`
+                                                        : `${timeArray[i + rowStartIndex]}`}`}
                                             </div>
                                             <div style={{ width: '18vh', height: '18vh' }}>
                                                 <AdjacencyMatrix

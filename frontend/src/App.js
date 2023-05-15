@@ -109,10 +109,10 @@ function App() {
 
   const [eegInBrain, setEegInBrain] = useState(null);
 
-  const [numComponents, setNumComponents] = useState(4);
+  const [numCompWithSelEvent, setNumCompWithSelEvent] = useState(5);
 
   function onNumComponentChange(event) {
-    setNumComponents(event.target.value);
+    setNumCompWithSelEvent(event.target.value);
   }
 
   // console.log(fullNetwork)
@@ -271,11 +271,12 @@ function App() {
                   <TabPanel style={{ padding: '0px' }}>
                     <div className="form-numCom-entry">
                       <label htmlFor="numCom">Num_Com:</label>
-                      <select id="numCom" value={numComponents} onChange={onNumComponentChange}>
-                        <option value="3"> 3</option>
-                        <option value="4"> 4</option>
-                        <option value="5"> 5 </option>
-                        <option value="6"> 6 </option>
+                      <select id="numCom" value={numCompWithSelEvent} onChange={onNumComponentChange}>
+                        {/* value is +1 because the backend sends the array including the event and its similar neigbors */}
+                        <option value="4"> 3</option>
+                        <option value="5"> 4</option>
+                        <option value="6"> 5 </option>
+                        <option value="7"> 6 </option>
                       </select>
                     </div>
                     {similarRegionEvent && allEventData && fullEventNetwork ? (
@@ -286,7 +287,7 @@ function App() {
                         eventNet={fullEventNetwork}
                         eventData={allEventData[patientInfo.sample]}
                         patient={patientInfo}
-                        numComponents={numComponents}
+                        numCompWithSelEvent={numCompWithSelEvent}
                         colorRange={selectedRoi !== null ? dataRegistry[patientInfo.id].roiColor[selectedRoi] : ["#f5f7f5", "#f5f7f5"]}
                       />
                     ) : (

@@ -3,3 +3,5 @@
 *.pyc
 *.pyc
 node_modules/
+.vscode/settings.json
+frontend/.env

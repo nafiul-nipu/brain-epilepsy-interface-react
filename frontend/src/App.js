@@ -31,6 +31,7 @@ import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
 import { PatientSummary } from "./components/patient-summary/patientSummary";
 import { ExplorationSoFar } from "./components/exploration-so-far/ExplorationSoFar";
+import { BrainViewer } from "./components/brain-viewer/BrainViewer";
 
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
@@ -193,16 +194,18 @@ function App() {
 
           <Row>
             {fullNetwork && allEventData ? (
-              <RegionSummary
-                data={fullNetwork}
-                eventData={allEventData[patientInfo.sample]}
-                eventRange={eventRangeNetwork}
-                selectedRoi={selectedRoi}
-                setSelectedRoi={setSelectedRoi}
-                roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
-                roiFilter={roiFilter}
-                setRoiFilter={setRoiFilter}
-              />
+              // <RegionSummary
+              //   data={fullNetwork}
+              //   eventData={allEventData[patientInfo.sample]}
+              //   eventRange={eventRangeNetwork}
+              //   selectedRoi={selectedRoi}
+              //   setSelectedRoi={setSelectedRoi}
+              //   roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
+              //   roiFilter={roiFilter}
+              //   setRoiFilter={setRoiFilter}
+              // />
+
+              <BrainViewer />
             ) : null}
           </Row>
         </Col>

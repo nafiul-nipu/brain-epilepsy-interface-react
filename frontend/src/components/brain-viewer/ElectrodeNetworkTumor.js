@@ -172,6 +172,7 @@ export const ElectrodeNetworkTumor = ({
                 centerBrain = getbbox(obj)
             }
 
+            console.log(obj)
             // material manipulation
             obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
 

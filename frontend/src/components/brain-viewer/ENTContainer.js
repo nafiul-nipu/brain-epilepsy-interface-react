@@ -24,6 +24,7 @@ export const ENTContainer = ({
     const [sliderValue, setSliderValue] = useState([0, 0])
     // loading brain and lesions
     const multiBrain = useOBJThreeStates({ patient: patientInformation.id, objType: 'brain.obj' });
+    console.log(multiBrain)
     // console.log('brain', multiBrain)
     const lesions = useLesionData({ patient: patientInformation.id })
     // console.log('lesions', lesions)

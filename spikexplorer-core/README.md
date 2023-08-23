@@ -66,3 +66,44 @@ a 500 Internal Server Error.
   "neighbhors": [1,22,12,32,43], // sample list of events
 }
 ```
+
+#### Backend
+
+##### Poetry
+
+Poetry
+
+1. check if the python version is >=3.9
+2. check if you have curl installed
+3. go to the backend folder
+4. run
+   poetry install
+5. first time only
+   poetry run python spikexplorer_core/preprocessing/eeg_for_duck.py DATADIR(local data directory)
+   this transforms the the eeg data to standard duck db type data
+6. set FLASK_APP=spikexplorer_core/app.py
+7. poetry run flask run
+
+real python
+linters
+
+#### python venv
+
+1. Go to spikeexplorer-core folder
+2. Create a virtual environment
+   `python -m venv venv`
+3. Activate the virtual environment
+   `.\venv\Scripts\activate`
+4. Install dependencies from requirements.txt
+   `pip install -r requirements.txt`
+5. create a .env file with the following variables
+   `DATADIR=local path to data directory`
+   `ROOT=endpoint for deployment`
+6. go to spikexplorer-core folder and
+   set up flask app
+   `set FLASK_APP=app.py`
+7. run flask
+   `flask run`
+
+8. if new dependencies are added, update requirements.txt
+   `pip freeze > requirements.txt`

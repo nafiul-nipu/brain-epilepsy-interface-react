@@ -167,12 +167,13 @@ export const ElectrodeNetworkTumor = ({
             transparency
         }) {
             if (centerBrain === undefined) {
+                // console.log("centerBrain undefined", obj)
                 // [bboxCenter, objBbox] = getbbox(obj)
                 // get bboxcenter
                 centerBrain = getbbox(obj)
             }
 
-            console.log(obj)
+            // console.log(obj)
             // material manipulation
             obj = objMaterialManipulation(obj, color, opacity, transparency, centerBrain);
 

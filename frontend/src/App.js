@@ -205,7 +205,9 @@ function App() {
               //   setRoiFilter={setRoiFilter}
               // />
 
-              <BrainViewer />
+              <BrainViewer
+                patientInformation={patientInfo}
+              />
             ) : null}
           </Row>
         </Col>

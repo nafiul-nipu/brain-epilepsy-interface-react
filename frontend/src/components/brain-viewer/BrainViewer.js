@@ -10,7 +10,7 @@ import { useBBoxcenter } from "../../library/useBBoxcenter";
 
 const width = (window.innerWidth / 3) - 10;
 const height = window.innerHeight / 2.6 - 10
-const partURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/models/'
+const partURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/frontend/src/models/'
 
 export const BrainViewer = ({
     patientInformation,
@@ -39,12 +39,27 @@ export const BrainViewer = ({
 
                     <group>
                         <CustomOBJModel
-                            url={`${partURL}${patientInformation.id}/${patientInformation.id}_brain.obj`}
+                            // url={`${partURL}${patientInformation.id}/${patientInformation.id}_brain.obj`}
+                            url={'brain.obj'}
                             color="#505050"
                             opacity={0.15}
                             transparent={true}
                         />
-                        {
+                        <CustomOBJModel
+                            // url={`${partURL}${patientInformation.id}/${patientInformation.id}_brain.obj`}
+                            url={'lesion1.obj'}
+                            color="#505050"
+                            opacity={1}
+                            transparent={false}
+                        />
+                        <CustomOBJModel
+                            // url={`${partURL}${patientInformation.id}/${patientInformation.id}_brain.obj`}
+                            url={'lesion2.obj'}
+                            color="#505050"
+                            opacity={1}
+                            transparent={false}
+                        />
+                        {/* {
                             dataRegisty[patientInformation.id].lesionArray.map((lesion, index) => {
                                 return (
                                     <CustomOBJModel
@@ -53,12 +68,11 @@ export const BrainViewer = ({
                                         color="#505050"
                                         opacity={1}
                                         transparent={false}
-                                        boxURL={`${partURL}${patientInformation.id}/${patientInformation.id}_brain.obj`}
                                     // center={bboxCenter}
                                     />
                                 )
                             })
-                        }
+                        } */}
                     </group>
                     <OrbitControls enablePan={false} />
                 </Suspense>

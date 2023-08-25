@@ -25,32 +25,14 @@ const CustomOBJModel = ({
       child.material.color = new THREE.Color(color);
       child.material.opacity = opacity;
       child.material.transparent = transparent;
-
-      if (boxURL === null) { //load brain
-        let objBbox = new THREE.Box3().setFromObject(obj);
-        let boundingBoxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
-        boundingBoxCenter.multiplyScalar(-1);
-        child.geometry.translate(boundingBoxCenter.x, boundingBoxCenter.y, boundingBoxCenter.z);
-      } else {
-        let loader = new OBJLoader();
-        // load the OBJ
-        loader.load(boxURL, function (bobj) {
-          // create box
-          let objBbox = new THREE.Box3().setFromObject(bobj);
-          // get the center of the box and set it
-          let bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
-          bboxCenter.multiplyScalar(-1);
-          console.log(bboxCenter)
-          child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
-        })
-
-      }
     }
 
   });
 
   return (
-    <primitive object={obj} />
+    <group>
+      <primitive object={obj} />
+    </group>
   );
 };
 

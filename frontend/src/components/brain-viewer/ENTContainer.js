@@ -32,6 +32,7 @@ export const ENTContainer = ({
     // getting the center of the objtects
     const bboxCenter = useBBoxcenter({ patient: patientInformation.id, objType: 'brain.obj' });
 
+    // console.log(bboxCenter)
     const [buttonValue, setButtonValue] = useState('Play');
 
     const [seeRoi, setSeeRoi] = useState(false);

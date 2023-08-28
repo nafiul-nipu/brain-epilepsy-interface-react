@@ -16,7 +16,7 @@ const CustomOBJModel = ({
 
   // const box = useLoader(OBJLoader, boxURL);
 
-  console.log(obj)
+  // console.log(obj)
   // console.log(center)
   // If you want to manipulate the material properties of the loaded model
   obj.traverse((child) => {

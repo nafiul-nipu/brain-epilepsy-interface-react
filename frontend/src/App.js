@@ -208,8 +208,15 @@ function App() {
 
               <BrainViewer
                 patientInformation={patientInfo}
-                sampleData={sampleData}
                 electrodeData={electrodeDataCsv}
+                sample={sampleData}
+                time={timeRange}
+                events={allEventData[patientInfo.sample]}
+                allnetworks={fullNetwork}
+                allnetworksWithEvent={fullEventNetwork}
+                eventid={similarRegionEvent}
+                selectedEventRange={eventRangeNetwork}
+                eegInBrain={eegInBrain}
               />
             ) : null}
           </Row>

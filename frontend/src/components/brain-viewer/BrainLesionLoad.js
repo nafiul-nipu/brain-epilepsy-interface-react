@@ -9,6 +9,7 @@ export function BrainLesionLoad(props) {
                 color="#505050"
                 opacity={0.15}
                 transparent={true}
+                type="brain"
             />
             {props.lesionArray.map((lesion, index) => {
                 return (
@@ -18,6 +19,7 @@ export function BrainLesionLoad(props) {
                         color="#505050"
                         opacity={1}
                         transparent={false}
+                        type="lesion"
                     />);
             })}
         </group>

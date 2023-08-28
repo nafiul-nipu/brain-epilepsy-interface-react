@@ -62,6 +62,7 @@ export const ElectrodeNetworkTumor = ({
         // for others take the center from parent
         let centerBrain;
         let centerOther = bboxCenter;
+        // console.log("centerOther", centerOther)
         // console.log(canvasRef.current);
         // console.log("brain three D view render starts")
 

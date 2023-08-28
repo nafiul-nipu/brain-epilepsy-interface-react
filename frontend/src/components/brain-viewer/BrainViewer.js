@@ -15,12 +15,19 @@ const height = window.innerHeight / 2.6 - 10
 
 export const BrainViewer = ({
     patientInformation,
-    sampleData,
     electrodeData,
+    sample,
+    time,
+    events,
+    allnetworks,
+    allnetworksWithEvent,
+    eventid,
+    selectedEventRange,
+    eegInBrain,
 }) => {
-    console.log(sampleData)
+    // console.log(sampleData)
 
-    console.log(electrodeData)
+    // console.log(electrodeData)
 
     return (
         <Col md='12' style={{ height: height, width: width }}>
@@ -44,10 +51,19 @@ export const BrainViewer = ({
                     />
                     <ElectrodeLoad
                         electrodeData={electrodeData}
-                        sampleData={sampleData}
+                        sampleData={sample}
                         bbox={dataRegisty[patientInformation.id].bbox}
+                        eegInBrain={eegInBrain}
+                        selectedEventRange={selectedEventRange}
+                        timeRange={time}
+                        eventData={events}
+                        allnetwork={allnetworks}
+                        allnetworkWithEvent={allnetworksWithEvent}
+                        patientID={patientInformation.id}
+                        eventid={eventid}
+                        seeRoi={false}
                     />
-                    <OrbitControls enablePan={false} />
+                    <OrbitControls enablePan={true} />
                 </Suspense>
             </Canvas>
         </Col >

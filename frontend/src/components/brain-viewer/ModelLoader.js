@@ -9,10 +9,16 @@ const CustomOBJModel = ({
   opacity,
   transparent,
   boxURL = null,
-  center
+  type
 }) => {
 
   const obj = useLoader(OBJLoader, url);
+
+  let objBbox = new THREE.Box3().setFromObject(obj);
+  let bboxCenter = objBbox.getCenter(new THREE.Vector3()).clone();
+  bboxCenter.multiplyScalar(-1);
+
+  // console.log(type, bboxCenter)
 
   // const box = useLoader(OBJLoader, boxURL);
 

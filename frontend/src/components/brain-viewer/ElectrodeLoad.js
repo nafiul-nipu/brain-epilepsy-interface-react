@@ -4,7 +4,8 @@ import { Color, Object3D } from "three"
 const object = new Object3D();
 export const ElectrodeLoad = ({
     electrodeData,
-    sampleData
+    sampleData,
+    bbox
 }) => {
     const isMountedRef = useRef(false)
     const meshRef = useRef()
@@ -20,6 +21,7 @@ export const ElectrodeLoad = ({
     // instancing
     useLayoutEffect(() => {
         if (!isMountedRef.current) return;
+        console.log(bbox)
 
         electrodeData.forEach((electrode, index) => {
             object.position.set(
@@ -31,14 +33,16 @@ export const ElectrodeLoad = ({
             meshRef.current.setMatrixAt(index, object.matrix);
         });
         meshRef.current.instanceMatrix.needsUpdate = true;
-    }, [electrodeData])
+        // meshRef.current.geometry.translate(0, 0, 0)
+        // meshRef.current.geometry.translate(bbox.x, bbox.y, bbox.z);
+    }, [bbox, electrodeData])
 
     return (
         <instancedMesh
             ref={meshRef}
             args={[null, null, electrodeData.length]}
         >
-            <sphereBufferGeometry args={[2, 32, 32]} />
+            <sphereBufferGeometry args={[1, 32, 32]} />
             <meshBasicMaterial color={"red"} />
         </instancedMesh>
     )

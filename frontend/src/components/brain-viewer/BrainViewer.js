@@ -45,6 +45,7 @@ export const BrainViewer = ({
                     <ElectrodeLoad
                         electrodeData={electrodeData}
                         sampleData={sampleData}
+                        bbox={dataRegisty[patientInformation.id].bbox}
                     />
                     <OrbitControls enablePan={false} />
                 </Suspense>

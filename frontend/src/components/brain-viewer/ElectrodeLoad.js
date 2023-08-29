@@ -19,6 +19,8 @@ export const ElectrodeLoad = ({
     patientID,
     eventid,
     seeRoi,
+    buttonValue,
+    sliderObj
 }) => {
     const isMountedRef = useRef(false)
     const meshRef = useRef()
@@ -36,6 +38,7 @@ export const ElectrodeLoad = ({
     // instancing
     useLayoutEffect(() => {
         if (!isMountedRef.current) return;
+        if (buttonValue === 'Pause') return;
         let filteredData, freqData, freqDomain, circleRadius;
         if (selectedEventRange) {
             filteredData = eventData
@@ -99,6 +102,7 @@ export const ElectrodeLoad = ({
                             object.scale.set(1, 1, 1)
                         }
                     }
+                    sliderObj([selectedEventRange[0], selectedEventRange[selectedEventRange.length - 1]])
                 }
             }
 
@@ -116,9 +120,59 @@ export const ElectrodeLoad = ({
         meshRef.current.instanceMatrix.needsUpdate = true;
         meshRef.current.instanceColor.needsUpdate = true;
 
-    }, [allnetwork, eegInBrain, electrodeData, eventData, seeRoi, selectedEventRange])
+    }, [allnetwork, buttonValue, eegInBrain, electrodeData, eventData, seeRoi, selectedEventRange])
+
+    useEffect(() => {
+        if (!isMountedRef.current) return;
+        let interval;
+        console.log(sampleData)
+        if (buttonValue === 'Pause') {
+            let currentIndex = 0;
+            interval = setInterval(() => {
+                if (currentIndex >= sampleData.length) {
+                    clearInterval(interval);
+                } else {
+                    const currentSample = sampleData[currentIndex];
+                    // console.log(currentSample)
+                    let startElec = [...new Set(currentSample.slice(0, Math.round(currentSample.length)).map(item => item.start))]
+                    // console.log(startElec)
+                    electrodeData.forEach((electrode, index) => {
+                        if (startElec.includes(electrode['electrode_number'])) {
+                            meshRef.current.setColorAt(index, new Color(0x0AF521));
+                            object.scale.set(1.25, 1.25, 1.25)
+                        } else {
+                            meshRef.current.setColorAt(index, new Color(0x000000));
+                            object.scale.set(1, 1, 1)
+                        }
+
+                        object.position.set(
+                            electrode.position[0],
+                            electrode.position[1],
+                            electrode.position[2]
+                        );
+                        object.updateMatrix();
+                        meshRef.current.setMatrixAt(index, object.matrix);
+                    });
+
+                    meshRef.current.instanceMatrix.needsUpdate = true;
+
+                    currentIndex = (currentIndex + 1) % sampleData.length;
+                    meshRef.current.instanceColor.needsUpdate = true;
 
 
+                    if (currentIndex === 0) {
+                        sliderObj([0, 0]);
+                    } else {
+                        sliderObj([(currentIndex - 1) * timeRange, currentIndex * timeRange]);
+                    }
+
+                }
+
+            }, 1000);
+
+        }
+        return () => clearInterval(interval);
+    }, [buttonValue, electrodeData, sampleData])
     return (
         <instancedMesh
             ref={meshRef}

@@ -193,7 +193,7 @@ function App() {
           </Row>
 
           <Row>
-            {/* {fullNetwork && allEventData ? (
+            {fullNetwork && allEventData ? (
               <RegionSummary
                 data={fullNetwork}
                 eventData={allEventData[patientInfo.sample]}
@@ -203,21 +203,21 @@ function App() {
                 roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
                 roiFilter={roiFilter}
                 setRoiFilter={setRoiFilter}
-              /> */}
-            {patientInfo && sampleData && electrodeDataCsv ? (
-
-              <BrainViewer
-                patientInformation={patientInfo}
-                electrodeData={electrodeDataCsv}
-                sample={sampleData}
-                time={timeRange}
-                events={allEventData[patientInfo.sample]}
-                allnetworks={fullNetwork}
-                allnetworksWithEvent={fullEventNetwork}
-                eventid={similarRegionEvent}
-                selectedEventRange={eventRangeNetwork}
-                eegInBrain={eegInBrain}
               />
+              // {patientInfo && sampleData && electrodeDataCsv ? (
+
+              //   <BrainViewer
+              //     patientInformation={patientInfo}
+              //     electrodeData={electrodeDataCsv}
+              //     sample={sampleData}
+              //     time={timeRange}
+              //     events={allEventData[patientInfo.sample]}
+              //     allnetworks={fullNetwork}
+              //     allnetworksWithEvent={fullEventNetwork}
+              //     eventid={similarRegionEvent}
+              //     selectedEventRange={eventRangeNetwork}
+              //     eegInBrain={eegInBrain}
+              //   />
             ) : null}
           </Row>
         </Col>

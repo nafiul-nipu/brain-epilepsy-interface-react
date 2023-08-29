@@ -24,6 +24,9 @@ export const BrainViewer = ({
     eventid,
     selectedEventRange,
     eegInBrain,
+    sliderObj,
+    buttonValue,
+    seeRoi
 }) => {
     // console.log(sampleData)
 
@@ -61,7 +64,9 @@ export const BrainViewer = ({
                         allnetworkWithEvent={allnetworksWithEvent}
                         patientID={patientInformation.id}
                         eventid={eventid}
-                        seeRoi={false}
+                        seeRoi={seeRoi}
+                        buttonValue={buttonValue}
+                        sliderObj={sliderObj}
                     />
                     <OrbitControls enablePan={true} />
                 </Suspense>

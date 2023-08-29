@@ -6,6 +6,7 @@ import { useBBoxcenter } from "../../library/useBBoxcenter";
 import { useState } from "react";
 import { TimeSliderButton } from "./TimeSliderButton";
 import { Switch, FormControl, FormLabel } from '@chakra-ui/react'
+import { BrainViewer } from "./BrainViewer";
 import './brainViewer.css'
 
 export const ENTContainer = ({
@@ -75,7 +76,7 @@ export const ENTContainer = ({
                             </FormControl>
                         </div>
                         <div id="titleBrain1">{`${patientInformation.id}: Propagation Over Time`}</div>
-                        <ElectrodeNetworkTumor
+                        {/* <ElectrodeNetworkTumor
                             brain={multiBrain.obj1} //ok
                             electrodeData={electrodeData} //ok
                             sampleData={sample} //ok
@@ -92,6 +93,21 @@ export const ENTContainer = ({
                             eventid={eventid}
                             selectedEventRange={selectedEventRange}
                             eegInBrain={eegInBrain}
+                            seeRoi={seeRoi}
+                        /> */}
+                        <BrainViewer
+                            patientInformation={patientInformation}
+                            electrodeData={electrodeData}
+                            sample={sample}
+                            time={time}
+                            events={events}
+                            allnetworks={allnetworks}
+                            allnetworksWithEvent={allnetworks}
+                            eventid={eventid}
+                            selectedEventRange={selectedEventRange}
+                            eegInBrain={eegInBrain}
+                            sliderObj={setSliderValue}
+                            buttonValue={buttonValue}
                             seeRoi={seeRoi}
                         />
                     </Row>

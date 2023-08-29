@@ -75,7 +75,13 @@ const ChartWrapper = ({
         // console.log(el.time)
         setEventRangeNetwork(el.time.length > 1 ? el.time : [el.time[0], el.time[0]])
         setSimilarRegionEvent(el.index)
-        setExploration(prevState => [...new Set([...prevState, el.index])]);
+        setExploration(prevState => {
+            if(prevState === null){
+                return [el.index]
+            }else{
+                return [...new Set([...prevState, el.index])]
+            }
+        });
 
     }
     return (

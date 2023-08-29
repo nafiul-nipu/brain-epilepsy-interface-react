@@ -1,8 +1,10 @@
-import { Row, Col, Form } from "react-bootstrap"
 import { ElectrodeNetworkTumor } from "./ElectrodeNetworkTumor"
 import { useOBJThreeStates } from "../../library/useOBJThreeStates";
 import { useLesionData } from "../../library/useLesionData";
 import { useBBoxcenter } from "../../library/useBBoxcenter";
+
+
+import { Row, Col, } from "react-bootstrap"
 import { useState } from "react";
 import { TimeSliderButton } from "./TimeSliderButton";
 import { Switch, FormControl, FormLabel } from '@chakra-ui/react'
@@ -16,22 +18,22 @@ export const ENTContainer = ({
     time,
     events,
     allnetworks,
-    allnetworksWithEvent,
-    view,
     eventid,
     selectedEventRange,
     eegInBrain
 }) => {
     const [sliderValue, setSliderValue] = useState([0, 0])
-    // loading brain and lesions
-    const multiBrain = useOBJThreeStates({ patient: patientInformation.id, objType: 'brain.obj' });
-    // console.log(multiBrain)
-    // console.log('brain', multiBrain)
-    const lesions = useLesionData({ patient: patientInformation.id })
-    // console.log('lesions', lesions)
 
-    // getting the center of the objtects
-    const bboxCenter = useBBoxcenter({ patient: patientInformation.id, objType: 'brain.obj' });
+
+        // loading brain and lesions
+        const multiBrain = useOBJThreeStates({ patient: patientInformation.id, objType: 'brain.obj' });
+        // console.log(multiBrain)
+        // console.log('brain', multiBrain)
+        const lesions = useLesionData({ patient: patientInformation.id })
+        // console.log('lesions', lesions)
+    
+        // getting the center of the objtects
+        const bboxCenter = useBBoxcenter({ patient: patientInformation.id, objType: 'brain.obj' });
 
     // console.log(bboxCenter)
     const [buttonValue, setButtonValue] = useState('Play');
@@ -56,7 +58,6 @@ export const ENTContainer = ({
         <>
             <Row >
                 <TimeSliderButton
-                    id={view}
                     buttonValue={buttonValue}
                     handleClick={handleClick}
                     sliderValue={sliderValue}
@@ -67,14 +68,6 @@ export const ENTContainer = ({
             <Row>
                 <Col md='12' style={{ height: '35vh' }}>
                     <Row>
-                        <div id="checkBox">
-                            <FormControl display='flex' alignItems='center'>
-                                <FormLabel htmlFor='email-alerts' mb='0'>
-                                    See ROIs
-                                </FormLabel>
-                                <Switch size='sm' id='email-alerts' onChange={() => { roiCheckBoxChange() }} />
-                            </FormControl>
-                        </div>
                         <div id="titleBrain1">{`${patientInformation.id}: Propagation Over Time`}</div>
                         {/* <ElectrodeNetworkTumor
                             brain={multiBrain.obj1} //ok
@@ -86,9 +79,7 @@ export const ENTContainer = ({
                             lesions={lesions} //ok
                             eventData={events}
                             allnetwork={allnetworks}
-                            allnetworkWithEvent={allnetworksWithEvent}
                             patientID={patientInformation.id}
-                            view={view}
                             buttonValue={buttonValue}
                             eventid={eventid}
                             selectedEventRange={selectedEventRange}
@@ -110,6 +101,15 @@ export const ENTContainer = ({
                             buttonValue={buttonValue}
                             seeRoi={seeRoi}
                         />
+
+                        <div id="checkBox">
+                            <FormControl display='flex' alignItems='center'>
+                                <FormLabel htmlFor='email-alerts' mb='0'>
+                                    See ROIs
+                                </FormLabel>
+                                <Switch size='sm' id='email-alerts' onChange={() => { roiCheckBoxChange() }} />
+                            </FormControl>
+                        </div>
                     </Row>
                 </Col>
             </Row>

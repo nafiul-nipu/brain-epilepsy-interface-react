@@ -2,7 +2,6 @@ import { AdjacencyMatrix } from "../../CommonComponents/AdjacencyMatrix";
 import "./NetworkViewer.css";
 import * as d3 from "d3";
 
-import dataRegistry from "../../data/dataRegistry.json"
 
 export const NetworkViewer = ({
     sessionNetwork,

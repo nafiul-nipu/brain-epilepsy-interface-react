@@ -1,7 +1,7 @@
 import { Col } from "react-bootstrap";
 import CustomOBJModel from "./ModelLoader";
 import { Canvas, useLoader } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, Stats } from "@react-three/drei";
 import { Suspense, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import dataRegisty from '../../data/dataRegistry.json'
@@ -70,6 +70,7 @@ export const BrainViewer = ({
                     />
                     <OrbitControls enablePan={true} />
                 </Suspense>
+                <Stats />
             </Canvas>
         </Col >
     )

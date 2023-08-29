@@ -204,20 +204,6 @@ function App() {
                 roiFilter={roiFilter}
                 setRoiFilter={setRoiFilter}
               />
-              // {patientInfo && sampleData && electrodeDataCsv ? (
-
-              //   <BrainViewer
-              //     patientInformation={patientInfo}
-              //     electrodeData={electrodeDataCsv}
-              //     sample={sampleData}
-              //     time={timeRange}
-              //     events={allEventData[patientInfo.sample]}
-              //     allnetworks={fullNetwork}
-              //     allnetworksWithEvent={fullEventNetwork}
-              //     eventid={similarRegionEvent}
-              //     selectedEventRange={eventRangeNetwork}
-              //     eegInBrain={eegInBrain}
-              //   />
             ) : null}
           </Row>
         </Col>

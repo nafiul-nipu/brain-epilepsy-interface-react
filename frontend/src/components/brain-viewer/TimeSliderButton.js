@@ -11,7 +11,6 @@ import {
 
 // let button, slider
 export const TimeSliderButton = ({
-    id,
     buttonValue,
     handleClick,
     sliderValue,
@@ -26,7 +25,7 @@ export const TimeSliderButton = ({
             <Row style={{ marginTop: '2%' }}>
                 <Col md='2'>
                     <button
-                        id={`play-pause-btn-${id}`}
+                        id={`play-pause-btn`}
                         className="btn btn-light btn-sm"
                         style={{ marginLeft: '5px' }}
                         value={buttonValue}
@@ -38,7 +37,7 @@ export const TimeSliderButton = ({
                 {/* <Col md='9' ref={sliderRef}></Col> */}
                 <Col md='7'>
                     <RangeSlider
-                        aria-label={['min', 'max']}
+                        aria-label={'min-max-slider'}
                         // defaultValue={[30, 80]}
                         onChange={(val) => setSliderValue(val)}
                         max={time}

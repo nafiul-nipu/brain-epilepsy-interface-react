@@ -27,9 +27,9 @@ export const ElectrodeLoad = ({
     useLayoutEffect(() => {
         isMountedRef.current = true;
         meshRef.current.setColorAt(0, new Color());
-        console.log(electrodeData)
+        // console.log(electrodeData)
 
-        console.log(selectedEventRange)
+        // console.log(selectedEventRange)
         return () => {
             isMountedRef.current = false;
         }
@@ -91,7 +91,7 @@ export const ElectrodeLoad = ({
                             if (freqData[r].frequency[freqData[r].activeElectrode.indexOf(electrode.electrode_number)] > 0) {
                                 meshRef.current.setColorAt(index, new Color(colorslist[r]));
                                 const size = circleRadius(freqData[r].frequency[freqData[r].activeElectrode.indexOf(electrode.electrode_number)]);
-                                console.log(size)
+                                // console.log(size)
                                 object.scale.set(size, size, size)
                                 inside = true;
                                 break;
@@ -125,7 +125,7 @@ export const ElectrodeLoad = ({
     useEffect(() => {
         if (!isMountedRef.current) return;
         let interval;
-        console.log(sampleData)
+        // console.log(sampleData)
         if (buttonValue === 'Pause') {
             let currentIndex = 0;
             interval = setInterval(() => {

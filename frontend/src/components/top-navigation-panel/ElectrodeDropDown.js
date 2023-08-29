@@ -1,6 +1,9 @@
 import { Logo } from "../logo/logo";
 import "./nav-bar.css";
 
+const globalTimelineRectWidth = 10000;
+const localTimelineRectWidth = 500;
+
 export const ElectrodeDropDown = ({
   patientInfo,
   setPatientInfo,

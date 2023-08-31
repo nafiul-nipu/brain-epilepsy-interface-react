@@ -97,6 +97,7 @@ def fetch_similar_events(patient_id: str, sample_id: str, event_id: int, n_neigh
         n_neigh = int(n_neigh)
         event_id = int(event_id)
         patient = eeg.Patient(DATADIR, patient_id)
+        # print(patient, sample_id, event_id, n_neigh)
         return services.fetch_similar(patient, sample_id, event_id, n_neigh)
     except ValueError as exc:
         err_msg = "Wrong parameters"
@@ -104,6 +105,7 @@ def fetch_similar_events(patient_id: str, sample_id: str, event_id: int, n_neigh
         raise BadRequest(err_msg) from exc
     except FileNotFoundError as exc:
         err_msg = "Patient data not found"
+        # print(patient_id, sample_id, event_id, n_neigh)
         logging.error("%s: %s %s", err_msg, patient_id, sample_id)
         raise BadRequest(err_msg) from exc
     # pylint: disable=broad-exception-caught

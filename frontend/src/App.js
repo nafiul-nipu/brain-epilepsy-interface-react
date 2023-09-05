@@ -265,7 +265,7 @@ function App() {
             <Col md="12" style={{ height: "44vh" }}>
               <Tabs variant="enclosed" colorScheme="green" size='sm'>
                 <TabList>
-                  <Tab>Similar Regions</Tab>
+                  <Tab>Similar Graphs</Tab>
                   <Tab>Event Exploration So Far</Tab>
                 </TabList>
                 <TabPanels>

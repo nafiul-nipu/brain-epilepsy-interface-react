@@ -12,8 +12,11 @@ export const RegionSummary = ({
     setSelectedRoi,
     roiCount,
     roiFilter,
-    setRoiFilter
+    setRoiFilter,
+    electrodeData
 }) => {
+
+    console.log(electrodeData)
     const numRows = Math.ceil((data.length - 1) / rowSize);
 
     const filteredData = eventData.filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[eventRange.length - 1]))
@@ -59,7 +62,7 @@ export const RegionSummary = ({
         const rowStartIndex = rowIndex * rowSize;
         const rowObjects = regionCiclesData.slice(rowStartIndex, rowStartIndex + rowSize);
         const rowKey = `row-${rowIndex}`;
-        // console.log(rowStartIndex)
+        // console.log(rowObjects)
         return (
             <Row key={rowKey}>
                 {rowObjects.map((object, i) => (
@@ -79,11 +82,13 @@ export const RegionSummary = ({
                             roiCount={roiCount}
                             roiFilter={roiFilter}
                             setRoiFilter={setRoiFilter}
+                            electrodeData={electrodeData}
                         />
                     </Col>
 
-                ))}
-            </Row>
+                ))
+                }
+            </Row >
         );
     });
 
@@ -94,7 +99,7 @@ export const RegionSummary = ({
     const dimension = circleRadius(maxValue) * 2; // height and width of the biggest circle
     const DASH_WIDTH = 50;
 
-    const allCircles = ticks.map((tick, i) => {
+    const circleLegend = ticks.map((tick, i) => {
         const xCenter = dimension / 2;
         const yCircleTop = dimension - 2 * circleRadius(tick);
         const yCircleCenter = dimension - circleRadius(tick);
@@ -141,7 +146,7 @@ export const RegionSummary = ({
                         <Col><div className="regionLabel">Frequency</div></Col>
                         <Col>
                             <svg width={100} height={20} overflow='visible'>
-                                {allCircles}
+                                {circleLegend}
                             </svg>
                         </Col>
                     </Row>

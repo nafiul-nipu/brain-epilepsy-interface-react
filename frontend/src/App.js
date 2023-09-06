@@ -193,7 +193,7 @@ function App() {
           </Row>
 
           <Row>
-            {fullNetwork && allEventData ? (
+            {fullNetwork && allEventData && electrodeDataCsv ? (
               <RegionSummary
                 data={fullNetwork}
                 eventData={allEventData[patientInfo.sample]}
@@ -203,6 +203,7 @@ function App() {
                 roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
                 roiFilter={roiFilter}
                 setRoiFilter={setRoiFilter}
+                electrodeData={electrodeDataCsv}
               />
             ) : null}
           </Row>

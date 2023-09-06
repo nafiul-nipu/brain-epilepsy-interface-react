@@ -37,7 +37,7 @@ export const SimilarRegion = ({
             let numRows = Math.ceil((data.length) / rowSize)
             console.log(numRows)
             setrows([...Array(numRows)]);
-            
+
         }
         fetchData();
     }, [eventData, numCompWithSelEvent, patient, similarRegionEvent])
@@ -53,7 +53,7 @@ export const SimilarRegion = ({
                 (neigborData && timeArray && rows) ? (
                     rows.map((_, rowIndex) => {
                         const el = sessionNetwork[selectedRoi].electrodes;
-                        console.log(el)
+                        // console.log(el)
                         const rowStartIndex = rowIndex * rowSize;
                         const rowObjects = neigborData.slice(rowStartIndex, rowStartIndex + rowSize);
                         const rowKey = `row-${rowIndex}`;
@@ -77,7 +77,7 @@ export const SimilarRegion = ({
                                                 <AdjacencyMatrix
                                                     data={eventNet[object][selectedRoi].matrix}
                                                     columns={Array.from({ length: el.length }, (_, i) => i)}
-                                                    labels={el.length > 2 ? [el[0], ...Array(el.length - 2).fill(0), el[el.length - 1]]: el}
+                                                    labels={el.length > 2 ? [el[0], ...Array(el.length - 2).fill(0), el[el.length - 1]] : el}
                                                     eListTooltip={sessionNetwork[selectedRoi].electrodes}
                                                     containerProps={{ useZoom: false, ml: 10, mr: 5, mb: 5, mt: 7 }}
                                                     colorRange={colorRange}

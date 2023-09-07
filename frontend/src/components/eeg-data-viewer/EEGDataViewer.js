@@ -9,7 +9,7 @@ const containerProps = {
   useZoom: false,
   ml: 50,
   mr: 20,
-  mb: 45,
+  mb: 10,
   mt: 10,
 };
 
@@ -57,13 +57,13 @@ export const EEGDataViewer = ({
             return (
               <div
                 style={{
-                  height: '16vh',
+                  height: '10vh',
                   boxShadow: eegInBrain === el ? "0 0 10px 5px #000000" : "none"
                 }}
                 key={i}
                 onClick={() => onEEGClick(el)}
               >
-                <div className="electrodeEEGNameDiv">{`E${el}`} </div>
+                {/* <div className="electrodeEEGNameDiv">{`E${el}`} </div> */}
                 <ChartContainer {...containerProps} key={i}>
                   <EEGChartWrapper
                     data={eegData.eeg[el]}
@@ -103,15 +103,15 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
     .range([dimensions.boundedHeight, 0])
 
   const yTicks = yLineScale.ticks();
-  const tickValues = [yTicks[0], yTicks[Math.floor(yTicks.length * 2 / 4)], yTicks[yTicks.length - 1]];
-
-  const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
-  // console.log(xTickText)
-  const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (500 / 5));
+  const tickValues = [yTicks[0],  yTicks[yTicks.length - 1]];
 
 
   return (
     <g>
+      <text
+        x={-containerProps.ml + 10}
+        y={dimensions.boundedHeight /2} 
+      >E{currenElectrode}</text>
       <LinePlot
         data={data}
         xScale={xScale}
@@ -123,15 +123,6 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
         xScale={xScale} yScale={yLineScale} scaleOffset={10}
         ticks={tickValues}
         textPosition={2.85}
-      />
-      <AxisBottom
-        xScale={xScale}
-        yScale={yLineScale}
-        scaleOffset={5}
-        innerHeight={dimensions.boundedHeight}
-        textPosition={3.85}
-        ticks={xtickvalues}
-        tickText={xTickText}
       />
 
       {

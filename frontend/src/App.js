@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect } from "react";
 
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import { Switch, FormControl, FormLabel } from '@chakra-ui/react'
+
 // importing components
 import { useElectrodeData } from "./library/useElectrodeData";
 import { useSamples } from "./library/useSamples";
@@ -247,7 +249,7 @@ function App() {
             </Col>
           </Row>
           <Row>
-            <Col md="12" style={{ height: "30vh", backgroundColor: "#FAFBFC" }}>
+            <Col md="8" style={{ height: "30vh", backgroundColor: "#FAFBFC" }}>
               <div style={{ width: "30vh", height: "30vh" }}>
                 {fullNetwork && allEventData && fullEventNetwork ? (
                   <NetworkViewer
@@ -259,6 +261,16 @@ function App() {
                     colorRange={selectedRoi !== null ? dataRegistry[patientInfo.id].roiColor[selectedRoi] : ["#f5f7f5", "#f5f7f5"]}
                   />
                 ) : null}
+              </div>
+            </Col>
+            <Col md="4" style={{ height: "30vh", backgroundColor: "#FAFBFC" }}>
+              <div>
+                  <FormControl display='flex' alignItems='center'>
+                      <FormLabel htmlFor='region' mb='0'>
+                          All regions
+                      </FormLabel>
+                      <Switch size='sm' id='region' />
+                  </FormControl>
               </div>
             </Col>
           </Row>

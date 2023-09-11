@@ -14,9 +14,10 @@ export const SimilarRegion = ({
     eventData,
     patient,
     numCompWithSelEvent,
-    colorRange
+    colorRange,
+    showAllRoi
 }) => {
-    // console.log(similarRegionEvent)
+    console.log(showAllRoi)
     // const neighbors = data.find(obj => obj.eventID === similarRegionEvent)?.neighbors
     const [neigborData, setNeighbors] = useState(null)
     const [rows, setrows] = useState(null)
@@ -28,7 +29,7 @@ export const SimilarRegion = ({
                 patient.id,
                 patient.sample,
                 similarRegionEvent,
-                selectedRoi,
+                showAllRoi ? "all" : selectedRoi,
                 numCompWithSelEvent
             );
 
@@ -41,7 +42,7 @@ export const SimilarRegion = ({
 
         }
         fetchData();
-    }, [eventData, numCompWithSelEvent, patient, selectedRoi, similarRegionEvent])
+    }, [eventData, numCompWithSelEvent, patient, selectedRoi, showAllRoi, similarRegionEvent])
 
     const timeArray = neigborData ? neigborData.map((el) => eventData[el].time) : null
 

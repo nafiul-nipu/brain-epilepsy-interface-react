@@ -100,6 +100,8 @@ function App() {
 
   const [selectedRoi, setSelectedRoi] = useState(0);
 
+  const [showAllRoi, setShowAllRoi] = useState(false);
+
   // fist event ID
   const [similarRegionEvent, setSimilarRegionEvent] = useState(1);
 
@@ -265,12 +267,12 @@ function App() {
             </Col>
             <Col md="4" style={{ height: "30vh", backgroundColor: "#FAFBFC" }}>
               <div>
-                  <FormControl display='flex' alignItems='center'>
-                      <FormLabel htmlFor='region' mb='0'>
-                          All regions
-                      </FormLabel>
-                      <Switch size='sm' id='region' />
-                  </FormControl>
+                <FormControl display='flex' alignItems='center'>
+                  <FormLabel htmlFor='region' mb='0'>
+                    All regions
+                  </FormLabel>
+                  <Switch size='sm' id='region' onChange={() => { setShowAllRoi(!showAllRoi) }} />
+                </FormControl>
               </div>
             </Col>
           </Row>
@@ -303,6 +305,7 @@ function App() {
                         patient={patientInfo}
                         numCompWithSelEvent={numCompWithSelEvent}
                         colorRange={selectedRoi !== null ? dataRegistry[patientInfo.id].roiColor[selectedRoi] : ["#f5f7f5", "#f5f7f5"]}
+                        showAllRoi={showAllRoi}
                       />
                     ) : (
                       <p>Select an event</p>

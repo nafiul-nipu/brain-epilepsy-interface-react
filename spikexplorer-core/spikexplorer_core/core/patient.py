@@ -32,6 +32,10 @@ class Patient:
     def sorted_data(self, sample_id: str):
         """TODO: this needs a better name, there are events and network data here"""
         return self.patient_path / sample_id / f"{self.patient_id}_sorted_data.json"
+    
+    def network_rois_without_matrix(self, sample_id: str):
+        """network data without matrix"""
+        return self.patient_path / sample_id / f"{self.patient_id}_{sample_id}_network_rois_without_matrix.json"
 
     def fetch_electrodes(self) -> List[int]:
         """List of electrode numbers"""
@@ -39,6 +43,13 @@ class Patient:
         f_path = f_path / f"{self.patient_id}_electrodes_new.csv"
         df_electrodes = read_csv(f_path)
         return df_electrodes["electrode_number"].tolist()
+    
+    def fetch_electrodes_rois(self, roi_id) -> List[int]:
+        """List of electrode numbers based on rois"""
+        f_path = Path(self.datadir) / "patients" / self.patient_id
+        f_path = f_path / f"{self.patient_id}_rois.csv"
+        df_electrodes = read_csv(f_path)
+        return df_electrodes[df_electrodes["label"] == roi_id]["electrode_number"].tolist()
 
     def egg_duckdb_path(self, sample_id) -> str:
         """EEG data for duckdb"""

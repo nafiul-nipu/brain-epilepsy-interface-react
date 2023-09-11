@@ -53,11 +53,12 @@ a 500 Internal Server Error.
 }
 ```
 
-`/patient/<patient_id>/similar/<sample_id>/<event_id>/<n_neigh>`
+`/patient/<patient_id>/similar/<sample_id>/<event_id>/<similar_check>/<n_neigh>`
 
 - patient*id: str (e.g., \_ep128*)
 - sample*id: str (e.g., \_sample1*)
 - event_id: int target event
+- similar_check: str (e.g., which roi to check for similarity or all)
 - n_neigh: int number of neighbors to return
 
 ```

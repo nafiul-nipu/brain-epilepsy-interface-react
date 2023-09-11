@@ -28,6 +28,7 @@ export const SimilarRegion = ({
                 patient.id,
                 patient.sample,
                 similarRegionEvent,
+                selectedRoi,
                 numCompWithSelEvent
             );
 
@@ -40,7 +41,7 @@ export const SimilarRegion = ({
 
         }
         fetchData();
-    }, [eventData, numCompWithSelEvent, patient, similarRegionEvent])
+    }, [eventData, numCompWithSelEvent, patient, selectedRoi, similarRegionEvent])
 
     const timeArray = neigborData ? neigborData.map((el) => eventData[el].time) : null
 

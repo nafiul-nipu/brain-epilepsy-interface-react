@@ -27,9 +27,9 @@ def fetch_eeg_request(
     return {"eeg": eeg_dict, "peaks": peaks}
 
 
-def fetch_similar(patient: Patient, sample_id: str, event_id: int, n_neighbors: int):
+def fetch_similar(patient: Patient, sample_id: str, event_id: int,similar_check: str, n_neighbors: int, ):
     """Return n_neighbors most similar graphs based on all nodes, PCA and KNN"""
     event_ids = similarity.find_similar_pca(
-        patient, sample_id, event_id, n_neighbors=n_neighbors
+        patient, sample_id, event_id, similar_check, n_neighbors=n_neighbors
     )
     return {"neighbhors": event_ids}

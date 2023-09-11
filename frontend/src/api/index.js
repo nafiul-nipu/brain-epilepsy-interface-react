@@ -30,9 +30,10 @@ export const fetchSimilarRegions = async (
   patientId,
   sampleId,
   eventId,
+  roi,
   numNeighbors
 ) => {
-  const url = `${API_ENDPOINT}/patient/${patientId}/similar/${sampleId}/${eventId}/${numNeighbors}`;
+  const url = `${API_ENDPOINT}/patient/${patientId}/similar/${sampleId}/${eventId}/${roi}/${numNeighbors}`;
   try {
     const { neighbhors } = await run(url, "get", emptyRequestData);
 

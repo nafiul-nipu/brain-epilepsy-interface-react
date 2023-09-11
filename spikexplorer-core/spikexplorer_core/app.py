@@ -87,18 +87,18 @@ def fetch_patient_eeg(
 
 @cross_origin()
 @app.route(
-    ROOT + "/patient/<patient_id>/similar/<sample_id>/<event_id>/<n_neigh>",
+    ROOT + "/patient/<patient_id>/similar/<sample_id>/<event_id>/<similar_check>/<n_neigh>",
     methods=["GET"],
 )
-def fetch_similar_events(patient_id: str, sample_id: str, event_id: int, n_neigh: int):
+def fetch_similar_events(patient_id: str, sample_id: str, event_id: int, similar_check:str, n_neigh: int):
     """Fetch most similar events using PCA"""
 
     try:
         n_neigh = int(n_neigh)
         event_id = int(event_id)
         patient = eeg.Patient(DATADIR, patient_id)
-        # print(patient, sample_id, event_id, n_neigh)
-        return services.fetch_similar(patient, sample_id, event_id, n_neigh)
+        # print(patient, sample_id, event_id, similar_check, n_neigh)
+        return services.fetch_similar(patient, sample_id, event_id, similar_check, n_neigh)
     except ValueError as exc:
         err_msg = "Wrong parameters"
         logging.error(err_msg, exc_info=True)

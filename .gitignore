@@ -39,3 +39,4 @@ ipython_config.py
 pyvenv.cfg
 .venv
 pip-selfcheck.json
+spikexplorer-core/DATADIR.zip

@@ -38,7 +38,7 @@ export const BrainViewer = ({
                 <Suspense fallback={null}>
                     <PerspectiveCamera
                         makeDefault
-                        position={[-250, -50, -50]}
+                        position={[-250, -10, 0]}
                         up={[0, 0, 1]}
                         aspect={width / height}
                         near={1}

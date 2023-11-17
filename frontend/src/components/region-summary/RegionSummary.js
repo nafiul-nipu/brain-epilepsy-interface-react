@@ -16,7 +16,7 @@ export const RegionSummary = ({
     electrodeData
 }) => {
 
-    console.log(electrodeData)
+    // console.log(electrodeData)
     const numRows = Math.ceil((data.length - 1) / rowSize);
 
     const filteredData = eventData.filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[eventRange.length - 1]))

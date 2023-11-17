@@ -39,12 +39,12 @@ export const RegionCircles = ({
 };
 
 const RegionWrapper = ({ data, circleRadius, roi, roiCount, roiFilter, setRoiFilter, electrodeData }) => {
-    console.log(data)
+    // console.log(data)
     // Filter the objects based on electrode number
     const filteredObjects = electrodeData.filter((obj) =>
         data.activeElectrode.includes(obj.electrode_number)
     );
-    console.log(filteredObjects)
+    // console.log(filteredObjects)
     // console.log(data.activeElectrode)
     const dimensions = useChartContext();
 

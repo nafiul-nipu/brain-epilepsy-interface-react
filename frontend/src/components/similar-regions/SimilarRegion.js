@@ -17,7 +17,7 @@ export const SimilarRegion = ({
     colorRange,
     showAllRoi
 }) => {
-    console.log(showAllRoi)
+    // console.log(showAllRoi)
     // const neighbors = data.find(obj => obj.eventID === similarRegionEvent)?.neighbors
     const [neigborData, setNeighbors] = useState(null)
     const [rows, setrows] = useState(null)
@@ -35,9 +35,9 @@ export const SimilarRegion = ({
 
             // TODO: if error do something
             setNeighbors(data.slice(1));
-            console.log(data)
+            // console.log(data)
             let numRows = Math.ceil((data.length) / rowSize)
-            console.log(numRows)
+            // console.log(numRows)
             setrows([...Array(numRows)]);
 
         }

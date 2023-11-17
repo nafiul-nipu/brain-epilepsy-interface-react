@@ -63,6 +63,7 @@ export const BrainViewer = ({
                         allnetwork={allnetworks}
                         allnetworkWithEvent={allnetworksWithEvent}
                         patientID={patientInformation.id}
+                        currSample={patientInformation.sample}
                         eventid={eventid}
                         seeRoi={seeRoi}
                         buttonValue={buttonValue}

@@ -26,7 +26,8 @@ export const BrainViewer = ({
     eegInBrain,
     sliderObj,
     buttonValue,
-    seeRoi
+    seeRoi,
+    dataTOshow = 'null'
 }) => {
     // console.log(sampleData)
 
@@ -68,6 +69,7 @@ export const BrainViewer = ({
                         seeRoi={seeRoi}
                         buttonValue={buttonValue}
                         sliderObj={sliderObj}
+                        dataTOshow={dataTOshow}
                     />
                     <OrbitControls enablePan={true} />
                 </Suspense>

@@ -25,7 +25,8 @@ export const ElectrodeLoad = ({
     eventid,
     seeRoi,
     buttonValue,
-    sliderObj
+    sliderObj,
+    dataTOshow
 }) => {
     const isMountedRef = useRef(false)
     const meshRef = useRef()
@@ -70,37 +71,60 @@ export const ElectrodeLoad = ({
                 if (currentIndex >= sampleData.length) {
                     clearInterval(interval);
                 } else {
-                    // console.log(patientID, currSample)
-                    const currentSample = sampleData[currentIndex].communities;
-                    // console.log(currentSample)
-                    // console.log(currentSample[2])
-                    // let startElec = [...new Set(currentSample.slice(0, Math.round(currentSample.length)).map(item => item.start))]
-                    // let startElec = [1]
-                    // console.log(electrodeData)
-                    electrodeData.forEach((electrode, index) => {
-                        let found = false;
-                        for (let i = 0; i < currentSample.length; i++) {
-                            // console.log(currentSample[i])
-                            // console.log(new Color(comColor[`${patientID}_${currSample}`][currentSample[i].community]))
-                            if (currentSample[i].members.includes(electrode['electrode_number'])) {
-                                meshRef.current.setColorAt(index, new Color(comColor[`${patientID}_${currSample}`][currentSample[i].community]));
-                                object.scale.set(1.25, 1.25, 1.25)
-                                found = true
-                                break;
+                    if (dataTOshow === 'null') {
+                        console.log(currentIndex)
+                        const currentSample = sampleData[currentIndex].communities;
+                        electrodeData.forEach((electrode, index) => {
+                            let found = false;
+                            for (let i = 0; i < currentSample.length; i++) {
+                                // console.log(currentSample[i])
+                                // console.log(new Color(comColor[`${patientID}_${currSample}`][currentSample[i].community]))
+                                if (currentSample[i].members.includes(electrode['electrode_number'])) {
+                                    meshRef.current.setColorAt(index, new Color(comColor[`${patientID}_${currSample}`][currentSample[i].community]));
+                                    object.scale.set(1.25, 1.25, 1.25)
+                                    found = true
+                                    break;
+                                }
                             }
-                        }
-                        if (found === false) {
-                            meshRef.current.setColorAt(index, new Color("#FFFFFF"));
-                            object.scale.set(1, 1, 1)
-                        }
-                        object.position.set(
-                            electrode.position[0],
-                            electrode.position[1],
-                            electrode.position[2]
-                        );
-                        object.updateMatrix();
-                        meshRef.current.setMatrixAt(index, object.matrix);
-                    });
+                            if (found === false) {
+                                meshRef.current.setColorAt(index, new Color("#FFFFFF"));
+                                object.scale.set(1, 1, 1)
+                            }
+                            object.position.set(
+                                electrode.position[0],
+                                electrode.position[1],
+                                electrode.position[2]
+                            );
+                            object.updateMatrix();
+                            meshRef.current.setMatrixAt(index, object.matrix);
+                        });
+
+                    } else {
+                        // console.log(currentIndex)
+                        const currentSample = sampleData[currentIndex - 1];
+                        // console.log(sampleData)
+                        let startElec = [...new Set(currentSample.slice(0, Math.round(currentSample.length)).map(item => item.start))]
+                        // console.log(startElec)
+                        // console.log(startElec)
+                        electrodeData.forEach((electrode, index) => {
+                            if (startElec.includes(electrode['electrode_number'])) {
+                                meshRef.current.setColorAt(index, new Color("#FF0000"));
+                                object.scale.set(1.25, 1.25, 1.25)
+                            } else {
+                                meshRef.current.setColorAt(index, new Color(0x000000));
+                                object.scale.set(1, 1, 1)
+                            }
+
+                            object.position.set(
+                                electrode.position[0],
+                                electrode.position[1],
+                                electrode.position[2]
+                            );
+                            object.updateMatrix();
+                            meshRef.current.setMatrixAt(index, object.matrix);
+                        });
+                    }
+                    // console.log(patientID, currSample)
 
                     meshRef.current.instanceMatrix.needsUpdate = true;
 

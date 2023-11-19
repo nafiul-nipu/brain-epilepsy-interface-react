@@ -34,6 +34,7 @@ import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer"
 import { PatientSummary } from "./components/patient-summary/patientSummary";
 import { ExplorationSoFar } from "./components/exploration-so-far/ExplorationSoFar";
 import { BrainViewer } from "./components/brain-viewer/BrainViewer";
+import { useCommunity } from "./library/useCommunity";
 
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
@@ -62,6 +63,12 @@ function App() {
     sampleName: patientInfo.sample,
     range: timeRange,
   });
+
+  const comData = useCommunity({
+    patientID: patientInfo.id,
+    sampleName: patientInfo.sample,
+    range: timeRange,
+  })
   // console.log('sampledata', sampleData)
 
   const allEventData = useAllEventData({ patientID: patientInfo.id });
@@ -178,12 +185,13 @@ function App() {
         {/* left panel */}
         <Col md="4">
           <Row>
-            <Col md="12" style={{ height: "45vh", backgroundColor: "#FAFBFC" }}>
+            <Col md="12" style={{ height: "90vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
                 <ENTContainer
                   patientInformation={patientInfo}
                   electrodeData={electrodeDataCsv}
                   sample={sampleData}
+                  community={comData}
                   time={timeRange}
                   events={allEventData[patientInfo.sample]}
                   allnetworks={fullNetwork}
@@ -196,7 +204,7 @@ function App() {
             </Col>
           </Row>
 
-          <Row>
+          {/* <Row>
             {fullNetwork && allEventData && electrodeDataCsv ? (
               <RegionSummary
                 data={fullNetwork}
@@ -210,7 +218,7 @@ function App() {
                 electrodeData={electrodeDataCsv}
               />
             ) : null}
-          </Row>
+          </Row> */}
         </Col>
         {/* middle panel */}
         <Col md="4">

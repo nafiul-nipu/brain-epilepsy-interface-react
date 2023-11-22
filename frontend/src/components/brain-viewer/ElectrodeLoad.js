@@ -72,8 +72,9 @@ export const ElectrodeLoad = ({
                     clearInterval(interval);
                 } else {
                     if (dataTOshow === 'null') {
-                        console.log(currentIndex)
+                        // console.log("community: ", currentIndex)
                         const currentSample = sampleData[currentIndex].communities;
+                        console.log(currentSample)
                         electrodeData.forEach((electrode, index) => {
                             let found = false;
                             for (let i = 0; i < currentSample.length; i++) {
@@ -99,11 +100,14 @@ export const ElectrodeLoad = ({
                             meshRef.current.setMatrixAt(index, object.matrix);
                         });
 
+                        currentIndex = (currentIndex + 1) % sampleData.length;
+
                     } else {
-                        // console.log(currentIndex)
+                        // console.log("propagation: ", currentIndex)
                         const currentSample = sampleData[currentIndex - 1];
-                        // console.log(sampleData)
-                        let startElec = [...new Set(currentSample.slice(0, Math.round(currentSample.length)).map(item => item.start))]
+                        // console.log(currentSample)
+                        // let startElec = [...new Set(currentSample.slice(0, Math.round(currentSample.length)).map(item => item.start))]
+                        let startElec = currentSample.electrodes;
                         // console.log(startElec)
                         // console.log(startElec)
                         electrodeData.forEach((electrode, index) => {
@@ -127,15 +131,15 @@ export const ElectrodeLoad = ({
                     // console.log(patientID, currSample)
 
                     meshRef.current.instanceMatrix.needsUpdate = true;
-
-                    currentIndex = (currentIndex + 1) % sampleData.length;
+                    // currentIndex = (currentIndex + 1) % sampleData.length;
                     meshRef.current.instanceColor.needsUpdate = true;
 
 
+                    // console.log("last ", currentIndex)
                     if (currentIndex === 0) {
                         sliderObj([0, 0]);
                     } else {
-                        sliderObj([(currentIndex - 1) * timeRange, currentIndex * timeRange]);
+                        sliderObj([(currentIndex - 1) * timeRange, (currentIndex) * timeRange]);
                     }
 
                 }

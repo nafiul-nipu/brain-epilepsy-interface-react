@@ -7,6 +7,8 @@ import comColor from '../../data/communityColor.json'
 const object = new Object3D();
 
 const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3'];
+// const catColor = ["#a6cee3", "#ff7f00", "#cab2d6", "#ffff99", "#b15928", "#33a02c", "#fdbf6f", "#1f78b4", "#fb9a99", "#bfa3a3", "#6a3d9a"]
+const catColor = ["#00A5E3", "#8DD7BF", "#FF96C5", "#FF5768", "#FFBF65", "#33a02c", "#fdbf6f", "#1f78b4", "#fb9a99", "#bfa3a3", "#6a3d9a"]
 
 let currentIndex = 0;
 
@@ -74,21 +76,23 @@ export const ElectrodeLoad = ({
                     if (dataTOshow === 'null') {
                         // console.log("community: ", currentIndex)
                         const currentSample = sampleData[currentIndex].communities;
-                        console.log(currentSample)
+                        // console.log(currentSample)
+                        const coms = sampleData[currentIndex].communityList;
+
                         electrodeData.forEach((electrode, index) => {
                             let found = false;
                             for (let i = 0; i < currentSample.length; i++) {
-                                // console.log(currentSample[i])
+                                // console.log(coms.indexOf(currentSample[i].community))
                                 // console.log(new Color(comColor[`${patientID}_${currSample}`][currentSample[i].community]))
                                 if (currentSample[i].members.includes(electrode['electrode_number'])) {
-                                    meshRef.current.setColorAt(index, new Color(comColor[`${patientID}_${currSample}`][currentSample[i].community]));
+                                    meshRef.current.setColorAt(index, new Color(catColor[coms.indexOf(currentSample[i].community)]));
                                     object.scale.set(1.25, 1.25, 1.25)
                                     found = true
                                     break;
                                 }
                             }
                             if (found === false) {
-                                meshRef.current.setColorAt(index, new Color("#FFFFFF"));
+                                meshRef.current.setColorAt(index, new Color("#000000"));
                                 object.scale.set(1, 1, 1)
                             }
                             object.position.set(

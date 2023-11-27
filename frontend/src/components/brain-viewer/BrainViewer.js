@@ -22,12 +22,13 @@ export const BrainViewer = ({
     allnetworks,
     allnetworksWithEvent,
     eventid,
-    selectedEventRange,
+    // selectedEventRange,
     eegInBrain,
     sliderObj,
     buttonValue,
     seeRoi,
-    dataTOshow = 'null'
+    dataTOshow = 'null',
+    setEventRangeNetwork
 }) => {
     // console.log(sampleData)
 
@@ -58,7 +59,7 @@ export const BrainViewer = ({
                         sampleData={sample}
                         bbox={dataRegisty[patientInformation.id].bbox}
                         eegInBrain={eegInBrain}
-                        selectedEventRange={selectedEventRange}
+                        // selectedEventRange={selectedEventRange}
                         timeRange={time}
                         eventData={events}
                         allnetwork={allnetworks}
@@ -70,6 +71,7 @@ export const BrainViewer = ({
                         buttonValue={buttonValue}
                         sliderObj={sliderObj}
                         dataTOshow={dataTOshow}
+                        setEventRangeNetwork={setEventRangeNetwork}
                     />
                     <OrbitControls enablePan={true} />
                 </Suspense>

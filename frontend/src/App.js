@@ -99,7 +99,7 @@ function App() {
     localTimelineRectWidth,
   ]);
   // first event time
-  const [eventRangeNetwork, setEventRangeNetwork] = useState([103, 113]);
+  const [eventRangeNetwork, setEventRangeNetwork] = useState([0, 0]);
   const [eegPanelRange, seteegPanelRange] = useState([
     0,
     localTimelineRectWidth,
@@ -197,8 +197,9 @@ function App() {
                   allnetworks={fullNetwork}
                   allnetworksWithEvent={fullEventNetwork}
                   eventid={similarRegionEvent}
-                  selectedEventRange={eventRangeNetwork}
+                  // selectedEventRange={eventRangeNetwork}
                   eegInBrain={eegInBrain}
+                  setEventRangeNetwork={setEventRangeNetwork}
                 />
               ) : null}
             </Col>

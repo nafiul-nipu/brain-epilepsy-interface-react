@@ -20,8 +20,9 @@ export const ENTContainer = ({
     events,
     allnetworks,
     eventid,
-    selectedEventRange,
-    eegInBrain
+    // selectedEventRange,
+    eegInBrain,
+    setEventRangeNetwork
 }) => {
     const [sliderValue, setSliderValue] = useState([0, 0])
 
@@ -79,11 +80,12 @@ export const ENTContainer = ({
                             allnetworks={allnetworks}
                             allnetworksWithEvent={allnetworks}
                             eventid={eventid}
-                            selectedEventRange={selectedEventRange}
+                            // selectedEventRange={selectedEventRange}
                             eegInBrain={eegInBrain}
                             sliderObj={setSliderValue}
                             buttonValue={buttonValue}
                             seeRoi={seeRoi}
+                            setEventRangeNetwork={setEventRangeNetwork}
                         />
 
                         <div id="checkBox">
@@ -110,7 +112,7 @@ export const ENTContainer = ({
                             allnetworks={allnetworks}
                             allnetworksWithEvent={allnetworks}
                             eventid={eventid}
-                            selectedEventRange={selectedEventRange}
+                            // selectedEventRange={selectedEventRange}
                             eegInBrain={eegInBrain}
                             sliderObj={setSliderValue}
                             buttonValue={buttonValue}

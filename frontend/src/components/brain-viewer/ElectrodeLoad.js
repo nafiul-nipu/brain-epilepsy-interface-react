@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { Color, Object3D } from "three";
 import { extent, scaleLinear, max } from "d3";
 
-import comColor from '../../data/communityColor.json'
+// import comColor from '../../data/communityColor.json'
 
 const object = new Object3D();
 
@@ -28,7 +28,8 @@ export const ElectrodeLoad = ({
     seeRoi,
     buttonValue,
     sliderObj,
-    dataTOshow
+    dataTOshow,
+    setEventRangeNetwork
 }) => {
     const isMountedRef = useRef(false)
     const meshRef = useRef()
@@ -105,6 +106,7 @@ export const ElectrodeLoad = ({
                         });
 
                         currentIndex = (currentIndex + 1) % sampleData.length;
+                        setEventRangeNetwork([(currentIndex - 1) * timeRange, (currentIndex) * timeRange])
 
                     } else {
                         // console.log("propagation: ", currentIndex)
@@ -142,8 +144,10 @@ export const ElectrodeLoad = ({
                     // console.log("last ", currentIndex)
                     if (currentIndex === 0) {
                         sliderObj([0, 0]);
+                        // setEventRangeNetwork([0, 0])
                     } else {
                         sliderObj([(currentIndex - 1) * timeRange, (currentIndex) * timeRange]);
+
                     }
 
                 }

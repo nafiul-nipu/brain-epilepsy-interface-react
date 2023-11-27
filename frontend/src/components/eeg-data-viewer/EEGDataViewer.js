@@ -24,7 +24,7 @@ export const EEGDataViewer = ({
   setEegInBrain
 }) => {
   // console.log(eegData)
-  // console.log(selectedEventRange)
+  console.log(selectedEventRange)
 
   const extents = Object.keys(eegData.eeg)
     .map(key => [Math.min(...eegData.eeg[key]), Math.max(...eegData.eeg[key])])
@@ -103,14 +103,14 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
     .range([dimensions.boundedHeight, 0])
 
   const yTicks = yLineScale.ticks();
-  const tickValues = [yTicks[0],  yTicks[yTicks.length - 1]];
+  const tickValues = [yTicks[0], yTicks[yTicks.length - 1]];
 
 
   return (
     <g>
       <text
         x={-containerProps.ml + 10}
-        y={dimensions.boundedHeight /2} 
+        y={dimensions.boundedHeight / 2}
       >E{currenElectrode}</text>
       <LinePlot
         data={data}

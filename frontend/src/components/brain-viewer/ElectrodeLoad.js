@@ -152,11 +152,12 @@ export const ElectrodeLoad = ({
 
                 }
 
-            }, 1200);
+            }, 1700);
 
         }
         return () => clearInterval(interval);
-    }, [buttonValue, electrodeData, sampleData])
+    }, [buttonValue, electrodeData, sampleData, timeRange])
+    // [buttonValue, electrodeData, sampleData]
     return (
         <instancedMesh
             ref={meshRef}

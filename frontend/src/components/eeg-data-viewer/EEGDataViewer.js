@@ -24,7 +24,15 @@ export const EEGDataViewer = ({
   setEegInBrain
 }) => {
   // console.log(eegData)
-  console.log(selectedEventRange)
+  // console.log(selectedEventRange)
+  // console.log(electrodeList)
+
+  // Convert arrays to sets to remove duplicates
+  // Create a set from the concatenated arrays to remove duplicates
+  const uniqueSet = new Set([...electrodeList, ...electrodeListEventWindow]);
+
+  // Convert the set back to an array
+  const sortedArray = Array.from(uniqueSet);
 
   const extents = Object.keys(eegData.eeg)
     .map(key => [Math.min(...eegData.eeg[key]), Math.max(...eegData.eeg[key])])
@@ -53,7 +61,7 @@ export const EEGDataViewer = ({
 
       <div className="eeg-list">
         {
-          electrodeListEventWindow.map((el, i) => {
+          sortedArray.map((el, i) => {
             return (
               <div
                 style={{

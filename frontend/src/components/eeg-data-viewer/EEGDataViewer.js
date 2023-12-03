@@ -33,6 +33,7 @@ export const EEGDataViewer = ({
   const absMax = Math.max(...extents.map(Math.abs));
 
   const yDomain = [-absMax, absMax];
+  // const yDomain = [-2000, 2000];
 
   const peakIndex = d3.scaleLinear()
     .domain(xTicks)
@@ -103,14 +104,14 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
     .range([dimensions.boundedHeight, 0])
 
   const yTicks = yLineScale.ticks();
-  const tickValues = [yTicks[0],  yTicks[yTicks.length - 1]];
+  const tickValues = [yTicks[0], yTicks[yTicks.length - 1]];
 
 
   return (
     <g>
       <text
         x={-containerProps.ml + 10}
-        y={dimensions.boundedHeight /2} 
+        y={dimensions.boundedHeight / 2}
       >E{currenElectrode}</text>
       <LinePlot
         data={data}

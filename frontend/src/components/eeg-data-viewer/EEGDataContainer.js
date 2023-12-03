@@ -86,22 +86,22 @@ export const EEGDataContainer = ({
           setEegInBrain={setEegInBrain}
         />
       ) : null}
-      <div 
-        style={{width: "100%", height: "5vh", backgroundColor:"white"}}
+      <div
+        style={{ width: "100%", height: "5vh", backgroundColor: "white" }}
 
       >
         <ChartContainer {...containerProps}>
-            <CommonAxisWrapper
-              xTicks={eegPanelRange}
-            />
-          </ChartContainer>
+          <CommonAxisWrapper
+            xTicks={eegPanelRange}
+          />
+        </ChartContainer>
       </div>
     </>
   );
 };
 
 
-const CommonAxisWrapper = ({xTicks}) => {
+const CommonAxisWrapper = ({ xTicks }) => {
   const dimensions = useChartContext();
   const xScale = d3.scaleLinear()
     .domain([0, 500])
@@ -115,7 +115,7 @@ const CommonAxisWrapper = ({xTicks}) => {
 
   const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
 
-  return(
+  return (
     <g>
       <AxisBottom
         xScale={xScale}
@@ -125,7 +125,7 @@ const CommonAxisWrapper = ({xTicks}) => {
         textPosition={3.85}
         ticks={xtickvalues}
         tickText={xTickText}
-        />
+      />
     </g>
 
   )

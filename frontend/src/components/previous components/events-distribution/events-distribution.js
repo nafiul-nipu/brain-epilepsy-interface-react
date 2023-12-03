@@ -2,11 +2,11 @@ import * as d3 from "d3";
 // import { useRef, useEffect, useState } from "react";
 import ChartContainer, {
   useChartContext,
-} from "../chart-container/chart-container";
-import { AxisBottom } from "../../CommonComponents/AxisBottom";
-import { AxisLeft } from "../../CommonComponents/AxisLeft";
+} from "../../chart-container/chart-container";
+import { AxisBottom } from "../../../CommonComponents/AxisBottom";
+import { AxisLeft } from "../../../CommonComponents/AxisLeft";
 
-import dataRegistry from "../../data/dataRegistry.json"
+import dataRegistry from "../../../data/dataRegistry.json"
 
 /**
  * See EventBarViewer for definition of EventDatum

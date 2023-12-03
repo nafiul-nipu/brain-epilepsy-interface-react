@@ -145,7 +145,7 @@ function App() {
         <Col md="7">
           <Row>
             {/* brain - 55vh */}
-            <Col md="12" style={{ height: "55vh", backgroundColor: "#FAFBFC" }}>
+            <Col md="12" style={{ height: "58vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
                 <ENTContainer
                   patientInformation={patientInfo}
@@ -183,7 +183,7 @@ function App() {
         {/* right panel */}
         <Col md="5">
           <Row>
-            {/* eeg 94 */}
+            {/* eeg 94vh */}
             <Col md="12" style={{ height: "94vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
                 <EEGDataContainer

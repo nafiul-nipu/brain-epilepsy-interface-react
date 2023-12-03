@@ -10,8 +10,8 @@ import { useBBoxcenter } from "../../library/useBBoxcenter";
 import { BrainLesionLoad } from "./BrainLesionLoad";
 import { ElectrodeLoad } from "./ElectrodeLoad";
 
-const width = (window.innerWidth / 3) - 10;
-const height = window.innerHeight / 2.6 - 10
+const width = (window.innerWidth / 2.2) - 10;
+const height = window.innerHeight / 2.2 - 10
 
 export const BrainViewer = ({
     patientInformation,

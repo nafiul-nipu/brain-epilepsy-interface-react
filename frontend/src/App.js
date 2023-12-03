@@ -22,14 +22,14 @@ import { useFullNetwork } from "./library/useFullNetwork";
 import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
 // import { EventsDistribution } from "./components/events-distribution/events-distribution";
 import { useAllEventData } from "./library/useAllEventData";
-import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
-import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
+// import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
+// import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
 
 import dataRegistry from "./data/dataRegistry.json";
 import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
 import { RegionSummary } from "./components/region-summary/RegionSummary";
 import { NetworkViewer } from "./components/previous components/network-viewer/NetworkViewer";
-import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
+// import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
 import { PatientSummary } from "./components/patient-summary/patientSummary";
 import { ExplorationSoFar } from "./components/previous components/exploration-so-far/ExplorationSoFar";
@@ -128,6 +128,7 @@ function App() {
     // component container
     <Container fluid id="container">
       {/* electrode dropdown */}
+      {/* 6vh */}
       <ElectrodeDropDown
         patientInfo={patientInfo}
         setPatientInfo={setPatientInfo}
@@ -139,10 +140,12 @@ function App() {
         setExploration={setExploration}
       />
       <Row>
+        {/* 94vh */}
         {/* left panel */}
         <Col md="7">
           <Row>
-            <Col md="12" style={{ height: "45vh", backgroundColor: "#FAFBFC" }}>
+            {/* brain - 55vh */}
+            <Col md="12" style={{ height: "55vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
                 <ENTContainer
                   patientInformation={patientInfo}
@@ -161,6 +164,7 @@ function App() {
           </Row>
 
           <Row>
+            {/* region - 35vh */}
             {fullNetwork && allEventData && electrodeDataCsv ? (
               <RegionSummary
                 data={fullNetwork}
@@ -179,7 +183,8 @@ function App() {
         {/* right panel */}
         <Col md="5">
           <Row>
-            <Col md="12" style={{ height: "100vh", backgroundColor: "#FAFBFC" }}>
+            {/* eeg 94 */}
+            <Col md="12" style={{ height: "94vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
                 <EEGDataContainer
                   allEventData={allEventData}

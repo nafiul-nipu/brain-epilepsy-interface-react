@@ -1,6 +1,6 @@
 import { Row, Col } from 'react-bootstrap'
 import { AdjacencyMatrix } from '../../CommonComponents/AdjacencyMatrix'
-import './SimilarRegion.css'
+import "./SimilarRegion.css"
 import { useEffect, useState } from 'react'
 import { fetchSimilarRegions } from '../../api'
 

@@ -6,7 +6,7 @@ import ChartContainer, {
 } from "../chart-container/chart-container";
 
 import dataRegistry from "../../data/dataRegistry.json";
-import "./global-events.css";
+import './global-events.css'
 
 const containerProps = {
   useZoom: false,

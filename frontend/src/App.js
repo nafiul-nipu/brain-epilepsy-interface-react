@@ -183,7 +183,7 @@ function App() {
 
       <Row>
         {/* left panel */}
-        <Col md="4">
+        <Col md="8">
           <Row>
             <Col md="12" style={{ height: "90vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
@@ -222,7 +222,7 @@ function App() {
           </Row> */}
         </Col>
         {/* middle panel */}
-        <Col md="4">
+        {/* <Col md="4">
           <Row>
             <Col md="12" style={{ height: "6vh", backgroundColor: "#FAFBFC" }}>
               <Row>
@@ -241,7 +241,6 @@ function App() {
               </Row>
               <Row>
                 <Col md="12" style={{ height: "6vh" }}>
-                  {/* Selected Event Window */}
                   {allEventData ? (
                     <SelectedEventWindow
                       data={allEventData}
@@ -297,7 +296,6 @@ function App() {
                     <div className="form-numCom-entry">
                       <label htmlFor="numCom">Num_Com:</label>
                       <select id="numCom" value={numCompWithSelEvent} onChange={onNumComponentChange}>
-                        {/* value is +1 because the backend sends the array including the event and its similar neigbors */}
                         <option value="4"> 3</option>
                         <option value="5"> 4</option>
                         <option value="6"> 5 </option>
@@ -337,7 +335,7 @@ function App() {
               </Tabs>
             </Col>
           </Row>
-        </Col>
+        </Col> */}
         {/* right panel */}
         <Col md="4">
           <Row>

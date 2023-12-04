@@ -58,7 +58,7 @@ export const ENTContainer = ({
 
     return (
         <>
-            <Row >
+            {/* <Row >
                 <TimeSliderButton
                     buttonValue={buttonValue}
                     handleClick={handleClick}
@@ -66,15 +66,15 @@ export const ENTContainer = ({
                     setSliderValue={setSliderValue}
                     patientID={patientInformation.id}
                 />
-            </Row>
+            </Row> */}
             <Row>
-                <Col md='12' style={{ height: '35vh' }}>
+                <Col md='6' style={{ height: '35vh' }}>
                     <Row>
-                        <div id="titleBrain1">{`${patientInformation.id}: Communities Over Time`}</div>
+                        <div id="titleBrain1">{`${patientInformation.id}: Sample 1 Community: ${community[0].communityList.length}`}</div>
                         <BrainViewer
                             patientInformation={patientInformation}
                             electrodeData={electrodeData}
-                            sample={community}
+                            sample={community[0]}
                             time={time}
                             events={events}
                             allnetworks={allnetworks}
@@ -88,25 +88,23 @@ export const ENTContainer = ({
                             setEventRangeNetwork={setEventRangeNetwork}
                         />
 
-                        <div id="checkBox">
+                        {/* <div id="checkBox">
                             <FormControl display='flex' alignItems='center'>
                                 <FormLabel htmlFor='email-alerts' mb='0'>
                                     See ROIs
                                 </FormLabel>
                                 <Switch size='sm' id='email-alerts' onChange={() => { roiCheckBoxChange() }} />
                             </FormControl>
-                        </div>
+                        </div> */}
                     </Row>
                 </Col>
-            </Row>
-            <Row>
-                <Col md='12' style={{ height: '35vh' }}>
+                <Col md='6' style={{ height: '35vh' }}>
                     <Row>
-                        <div id="titleBrain1">{`${patientInformation.id}: Propagation Over Time`}</div>
+                        <div id="titleBrain1">{`${patientInformation.id}: Sample 2 Community : ${community[1].communityList.length}`}</div>
                         <BrainViewer
                             patientInformation={patientInformation}
                             electrodeData={electrodeData}
-                            sample={sample}
+                            sample={community[1]}
                             time={time}
                             events={events}
                             allnetworks={allnetworks}
@@ -117,8 +115,35 @@ export const ENTContainer = ({
                             sliderObj={setSliderValue}
                             buttonValue={buttonValue}
                             seeRoi={seeRoi}
-                            dataTOshow={'sample'}
+                            setEventRangeNetwork={setEventRangeNetwork}
                         />
+                    </Row>
+                </Col>
+            </Row>
+            <Row>
+                <Col md='12' style={{ height: '35vh' }}>
+                    <Row>
+                        {community[2] ?
+                            (<>
+                                <div id="titleBrain1">{`${patientInformation.id}: Sample 3 Community: ${community[2].communityList.length}`}</div>
+                                <BrainViewer
+                                    patientInformation={patientInformation}
+                                    electrodeData={electrodeData}
+                                    sample={community[2]}
+                                    time={time}
+                                    events={events}
+                                    allnetworks={allnetworks}
+                                    allnetworksWithEvent={allnetworks}
+                                    eventid={eventid}
+                                    // selectedEventRange={selectedEventRange}
+                                    eegInBrain={eegInBrain}
+                                    sliderObj={setSliderValue}
+                                    buttonValue={buttonValue}
+                                    seeRoi={seeRoi}
+                                    dataTOshow={'sample'}
+                                />
+                            </>) : null
+                        }
                     </Row>
                 </Col>
             </Row>

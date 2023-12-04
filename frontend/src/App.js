@@ -26,12 +26,12 @@ import { useAllEventData } from "./library/useAllEventData";
 // import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
 
 import dataRegistry from "./data/dataRegistry.json";
-import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
+// import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
 import { RegionSummary } from "./components/region-summary/RegionSummary";
 import { NetworkViewer } from "./components/previous components/network-viewer/NetworkViewer";
 // import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
-import { PatientSummary } from "./components/patient-summary/patientSummary";
+// import { PatientSummary } from "./components/patient-summary/patientSummary";
 import { ExplorationSoFar } from "./components/previous components/exploration-so-far/ExplorationSoFar";
 import { BrainViewer } from "./components/brain-viewer/BrainViewer";
 

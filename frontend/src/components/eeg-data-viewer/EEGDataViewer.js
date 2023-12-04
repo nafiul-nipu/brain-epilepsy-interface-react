@@ -11,7 +11,7 @@ const containerProps = {
   useZoom: false,
   ml: 50,
   mr: 20,
-  mb: 10,
+  mb: 30,
   mt: 10,
 };
 
@@ -41,6 +41,7 @@ export const EEGDataViewer = ({
   const absMax = Math.max(...extents.map(Math.abs));
 
   const yDomain = [-absMax, absMax];
+  // const yDomain = [-2000, 2000];
 
   const peakIndex = d3.scaleLinear()
     .domain(xTicks)
@@ -120,7 +121,7 @@ export const EEGDataViewer = ({
             return (
               <div
                 style={{
-                  height: '10vh',
+                  height: '12vh',
                   boxShadow: eegInBrain === el ? "0 0 10px 5px #000000" : "none"
                 }}
                 ref={el => itemRefs.current[i] = el}
@@ -167,14 +168,19 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
     .range([dimensions.boundedHeight, 0])
 
   const yTicks = yLineScale.ticks();
-  const tickValues = [yTicks[0],  yTicks[yTicks.length - 1]];
+  const tickValues = [yTicks[0], yTicks[yTicks.length - 1]];
+
+  const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
+  // console.log(xTickText)
+  const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (500 / 5));
+
 
 
   return (
     <g>
       <text
         x={-containerProps.ml + 10}
-        y={dimensions.boundedHeight /2} 
+        y={dimensions.boundedHeight / 2}
       >E{currenElectrode}</text>
       <LinePlot
         data={data}
@@ -187,6 +193,16 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
         xScale={xScale} yScale={yLineScale} scaleOffset={10}
         ticks={tickValues}
         textPosition={2.85}
+      />
+
+      <AxisBottom
+        xScale={xScale}
+        yScale={yLineScale}
+        scaleOffset={5}
+        innerHeight={dimensions.boundedHeight}
+        textPosition={3.85}
+        ticks={xtickvalues}
+        tickText={xTickText}
       />
 
       {

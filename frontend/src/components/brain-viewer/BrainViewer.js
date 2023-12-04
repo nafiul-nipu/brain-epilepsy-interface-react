@@ -10,8 +10,8 @@ import { useBBoxcenter } from "../../library/useBBoxcenter";
 import { BrainLesionLoad } from "./BrainLesionLoad";
 import { ElectrodeLoad } from "./ElectrodeLoad";
 
-const width = (window.innerWidth / 3) - 10;
-const height = window.innerHeight / 2.6 - 10
+const width = (window.innerWidth / 2.2) - 10;
+const height = window.innerHeight / 2.2 - 10
 
 export const BrainViewer = ({
     patientInformation,
@@ -38,7 +38,7 @@ export const BrainViewer = ({
                 <Suspense fallback={null}>
                     <PerspectiveCamera
                         makeDefault
-                        position={[-250, -50, -50]}
+                        position={[-250, -10, 0]}
                         up={[0, 0, 1]}
                         aspect={width / height}
                         near={1}
@@ -48,6 +48,20 @@ export const BrainViewer = ({
                     {/* <color attach="background" args={['#000']} /> */}
                     <ambientLight intensity={0.5} />
                     <pointLight position={[10, 10, 10]} />
+                    <directionalLight
+                        castShadow
+                        position={[0, 5, 5]}
+                        intensity={1}
+                        shadow-mapSize-width={2048}
+                        shadow-mapSize-height={2048}
+                        shadow-camera-near={0.5}
+                        shadow-camera-far={500}
+                        shadow-camera-left={-5}
+                        shadow-camera-right={5}
+                        shadow-camera-top={5}
+                        shadow-camera-bottom={-5}
+                    />
+                    <directionalLight position={[-250, -10, 0]} />
                     <BrainLesionLoad
                         patientInformation={patientInformation}
                         lesionArray={dataRegisty[patientInformation.id].lesionArray}

@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { useState } from 'react';
 import ChartContainer, { useChartContext } from '../chart-container/chart-container';
-import './local-events.css';
+import './local-events.css'
 const containerProps = {
     useZoom: false,
     ml: 3,

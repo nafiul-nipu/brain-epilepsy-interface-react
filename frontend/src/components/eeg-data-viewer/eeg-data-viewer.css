@@ -1,7 +1,7 @@
 .eeg-container {
   padding-top: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  height: 55vh;
+  height: 92vh;
 }
 
 .eeg-title {
@@ -18,7 +18,7 @@
 }
 
 .eeg-list {
-  height: 50vh;
+  height: 84vh;
   /* display: flex; */
   /* flex-wrap: wrap; */
   /* justify-content: space-between; */

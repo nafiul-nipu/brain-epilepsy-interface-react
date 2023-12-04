@@ -1,4 +1,4 @@
-import { AdjacencyMatrix } from "../../CommonComponents/AdjacencyMatrix";
+import { AdjacencyMatrix } from "../../../CommonComponents/AdjacencyMatrix";
 import "./NetworkViewer.css";
 import * as d3 from "d3";
 

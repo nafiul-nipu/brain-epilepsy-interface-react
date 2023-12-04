@@ -86,47 +86,47 @@ export const EEGDataContainer = ({
           setEegInBrain={setEegInBrain}
         />
       ) : null}
-      <div 
-        style={{width: "100%", height: "5vh", backgroundColor:"white"}}
+      {/* <div
+        style={{ width: "100%", height: "4vh", backgroundColor: "white" }}
 
       >
         <ChartContainer {...containerProps}>
-            <CommonAxisWrapper
-              xTicks={eegPanelRange}
-            />
-          </ChartContainer>
-      </div>
+          <CommonAxisWrapper
+            xTicks={eegPanelRange}
+          />
+        </ChartContainer>
+      </div> */}
     </>
   );
 };
 
 
-const CommonAxisWrapper = ({xTicks}) => {
-  const dimensions = useChartContext();
-  const xScale = d3.scaleLinear()
-    .domain([0, 500])
-    .range([0, dimensions.boundedWidth])
+// const CommonAxisWrapper = ({ xTicks }) => {
+//   const dimensions = useChartContext();
+//   const xScale = d3.scaleLinear()
+//     .domain([0, 500])
+//     .range([0, dimensions.boundedWidth])
 
-  const yScale = d3.scaleLinear()
-    .domain([0, 1])
-    .range([0, dimensions.boundedHeight])
+//   const yScale = d3.scaleLinear()
+//     .domain([0, 1])
+//     .range([0, dimensions.boundedHeight])
 
-  const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (500 / 5));
+//   const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (500 / 5));
 
-  const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
+//   const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
 
-  return(
-    <g>
-      <AxisBottom
-        xScale={xScale}
-        yScale={yScale}
-        scaleOffset={5}
-        innerHeight={-35}
-        textPosition={3.85}
-        ticks={xtickvalues}
-        tickText={xTickText}
-        />
-    </g>
+//   return (
+//     <g>
+//       <AxisBottom
+//         xScale={xScale}
+//         yScale={yScale}
+//         scaleOffset={5}
+//         innerHeight={-15}
+//         textPosition={3.85}
+//         ticks={xtickvalues}
+//         tickText={xTickText}
+//       />
+//     </g>
 
-  )
-};
+//   )
+// };

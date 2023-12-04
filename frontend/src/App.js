@@ -22,17 +22,17 @@ import { useFullNetwork } from "./library/useFullNetwork";
 import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
 // import { EventsDistribution } from "./components/events-distribution/events-distribution";
 import { useAllEventData } from "./library/useAllEventData";
-import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
-import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
+// import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
+// import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
 
 import dataRegistry from "./data/dataRegistry.json";
-import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
+// import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
 import { RegionSummary } from "./components/region-summary/RegionSummary";
-import { NetworkViewer } from "./components/network-viewer/NetworkViewer";
-import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
+import { NetworkViewer } from "./components/previous components/network-viewer/NetworkViewer";
+// import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
-import { PatientSummary } from "./components/patient-summary/patientSummary";
-import { ExplorationSoFar } from "./components/exploration-so-far/ExplorationSoFar";
+// import { PatientSummary } from "./components/patient-summary/patientSummary";
+import { ExplorationSoFar } from "./components/previous components/exploration-so-far/ExplorationSoFar";
 import { BrainViewer } from "./components/brain-viewer/BrainViewer";
 
 const globalTimelineRectWidth = 10000;
@@ -128,6 +128,7 @@ function App() {
     // component container
     <Container fluid id="container">
       {/* electrode dropdown */}
+      {/* 6vh */}
       <ElectrodeDropDown
         patientInfo={patientInfo}
         setPatientInfo={setPatientInfo}
@@ -138,47 +139,13 @@ function App() {
         setSimilarRegionEvent={setSimilarRegionEvent}
         setExploration={setExploration}
       />
-
-      {/* globalevent timeline*/}
-      {allEventData && fullNetwork ? (
-        <GlobalEvent
-          data={allEventData}
-          id={patientInfo.id}
-          currentSample={patientInfo.sample}
-          threshold={barThreshold}
-          rectWidth={globalTimelineRectWidth}
-          setLocalEventDomain={setLocalEventDomain}
-          roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
-          maxTime={dataRegistry[patientInfo.id].time}
-          setEegInBrain={setEegInBrain}
-        />
-      ) : null}
-
-      {/* event timeline */}
-      {allEventData && fullNetwork ? (
-        <LocalEvent
-          data={allEventData}
-          id={patientInfo.id}
-          currentSample={patientInfo.sample}
-          threshold={barThreshold}
-          domain={localEventDomain}
-          locaEventHeight={localEventSize.height}
-          setSelectedEventRange={setSelectedEventRange}
-          setEventRangeNetwork={setEventRangeNetwork}
-          seteegPanelRange={seteegPanelRange}
-          rectWidth={localTimelineRectWidth}
-          roiElectrodes={fullNetwork[roiFilter]?.electrodes ?? null}
-          setSimilarRegionEvent={setSimilarRegionEvent}
-          setElectrodeListEventWindow={setElectrodeListEventWindow}
-          setEegInBrain={setEegInBrain}
-        />
-      ) : null}
-
       <Row>
+        {/* 94vh */}
         {/* left panel */}
-        <Col md="4">
+        <Col md="7">
           <Row>
-            <Col md="12" style={{ height: "45vh", backgroundColor: "#FAFBFC" }}>
+            {/* brain - 55vh */}
+            <Col md="12" style={{ height: "58vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
                 <ENTContainer
                   patientInformation={patientInfo}
@@ -197,6 +164,7 @@ function App() {
           </Row>
 
           <Row>
+            {/* region - 35vh */}
             {fullNetwork && allEventData && electrodeDataCsv ? (
               <RegionSummary
                 data={fullNetwork}
@@ -212,127 +180,11 @@ function App() {
             ) : null}
           </Row>
         </Col>
-        {/* middle panel */}
-        <Col md="4">
-          <Row>
-            <Col md="12" style={{ height: "6vh", backgroundColor: "#FAFBFC" }}>
-              <Row>
-                <Col
-                  md="2"
-                  className="eventWindowTime"
-                >{`${selectedEventRange[0]} ms`}</Col>
-                <Col md="8" className="eventWindowTime" >
-                  Selected Event Window
-                </Col>
-                <Col
-                  md="2"
-                  className="eventWindowTime"
-                  style={{ textAlign: "end" }}
-                >{`${selectedEventRange[1]} ms`}</Col>
-              </Row>
-              <Row>
-                <Col md="12" style={{ height: "6vh" }}>
-                  {/* Selected Event Window */}
-                  {allEventData ? (
-                    <SelectedEventWindow
-                      data={allEventData}
-                      id={patientInfo.id}
-                      currentSample={patientInfo.sample}
-                      domain={selectedEventRange}
-                      threshold={barThreshold}
-                      setEventRangeNetwork={setEventRangeNetwork}
-                      setSimilarRegionEvent={setSimilarRegionEvent}
-                      similarRegionEvent={similarRegionEvent}
-                      setExploration={setExploration}
-                    />
-                  ) : null}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row>
-            <Col md="8" style={{ height: "30vh", backgroundColor: "#FAFBFC" }}>
-              <div style={{ width: "30vh", height: "30vh" }}>
-                {fullNetwork && allEventData && fullEventNetwork ? (
-                  <NetworkViewer
-                    sessionNetwork={fullNetwork}
-                    eventData={allEventData[patientInfo.sample]}
-                    eventRange={eventRangeNetwork}
-                    eventNet={fullEventNetwork}
-                    selectedRoi={selectedRoi}
-                    colorRange={selectedRoi !== null ? dataRegistry[patientInfo.id].roiColor[selectedRoi] : ["#f5f7f5", "#f5f7f5"]}
-                  />
-                ) : null}
-              </div>
-            </Col>
-            <Col md="4" style={{ height: "30vh", backgroundColor: "#FAFBFC" }}>
-              <div>
-                <FormControl display='flex' alignItems='center'>
-                  <FormLabel htmlFor='region' mb='0'>
-                    All regions
-                  </FormLabel>
-                  <Switch size='sm' id='region' onChange={() => { setShowAllRoi(!showAllRoi) }} />
-                </FormControl>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col md="12" style={{ height: "44vh" }}>
-              <Tabs variant="enclosed" colorScheme="green" size='sm'>
-                <TabList>
-                  <Tab>Similar Graphs</Tab>
-                  <Tab>Event Exploration So Far</Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel style={{ padding: '0px' }}>
-                    <div className="form-numCom-entry">
-                      <label htmlFor="numCom">Num_Com:</label>
-                      <select id="numCom" value={numCompWithSelEvent} onChange={onNumComponentChange}>
-                        {/* value is +1 because the backend sends the array including the event and its similar neigbors */}
-                        <option value="4"> 3</option>
-                        <option value="5"> 4</option>
-                        <option value="6"> 5 </option>
-                        <option value="7"> 6 </option>
-                      </select>
-                    </div>
-                    {similarRegionEvent && allEventData && fullEventNetwork ? (
-                      <SimilarRegion
-                        similarRegionEvent={similarRegionEvent}
-                        selectedRoi={selectedRoi}
-                        sessionNetwork={fullNetwork}
-                        eventNet={fullEventNetwork}
-                        eventData={allEventData[patientInfo.sample]}
-                        patient={patientInfo}
-                        numCompWithSelEvent={numCompWithSelEvent}
-                        colorRange={selectedRoi !== null ? dataRegistry[patientInfo.id].roiColor[selectedRoi] : ["#f5f7f5", "#f5f7f5"]}
-                        showAllRoi={showAllRoi}
-                      />
-                    ) : (
-                      <p>Select an event</p>
-                    )}
-                  </TabPanel>
-                  <TabPanel style={{ padding: '0px' }}>
-                    <div style={{ height: '40vh', overflowY: 'auto', overflowX: 'hidden' }}>
-                      {
-                        exploration && allEventData && fullEventNetwork ? (
-                          <ExplorationSoFar
-                            exploration={exploration}
-                            eventData={allEventData[patientInfo.sample]}
-                            eventNet={fullEventNetwork}
-                          />
-                        ) : <div> No exploration yet </div>
-                      }
-                    </div>
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            </Col>
-          </Row>
-        </Col>
         {/* right panel */}
-        <Col md="4">
+        <Col md="5">
           <Row>
-            <Col md="12" style={{ height: "60vh", backgroundColor: "#FAFBFC" }}>
+            {/* eeg 94vh */}
+            <Col md="12" style={{ height: "94vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
                 <EEGDataContainer
                   allEventData={allEventData}
@@ -345,17 +197,6 @@ function App() {
                 />
               ) : null}
             </Col>
-          </Row>
-          <Row>
-            {
-              allEventData ? (
-                <PatientSummary
-                  patient={patientInfo}
-                  events={Object.keys(allEventData)}
-                />
-              ) : null
-            }
-
           </Row>
         </Col>
       </Row>

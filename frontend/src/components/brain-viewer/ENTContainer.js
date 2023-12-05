@@ -55,6 +55,8 @@ export const ENTContainer = ({
         setSeeRoi(!seeRoi)
     }
 
+    // console.log(community[0])
+
 
     return (
         <>

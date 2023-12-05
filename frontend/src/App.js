@@ -186,7 +186,7 @@ function App() {
         <Col md="8">
           <Row>
             <Col md="12" style={{ height: "90vh", backgroundColor: "#FAFBFC" }}>
-              {allEventData ? (
+              {allEventData && comData ? (
                 <ENTContainer
                   patientInformation={patientInfo}
                   electrodeData={electrodeDataCsv}

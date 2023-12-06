@@ -144,8 +144,8 @@ function App() {
         {/* left panel */}
         <Col md="7">
           <Row>
-            {/* brain - 55vh */}
-            <Col md="12" style={{ height: "58vh", backgroundColor: "#FAFBFC" }}>
+            {/* brain - 50vh */}
+            <Col md="12" style={{ height: "54vh", backgroundColor: "#FAFBFC" }}>
               {allEventData ? (
                 <ENTContainer
                   patientInformation={patientInfo}
@@ -164,20 +164,44 @@ function App() {
           </Row>
 
           <Row>
-            {/* region - 35vh */}
-            {fullNetwork && allEventData && electrodeDataCsv ? (
-              <RegionSummary
-                data={fullNetwork}
-                eventData={allEventData[patientInfo.sample]}
-                eventRange={eventRangeNetwork}
-                selectedRoi={selectedRoi}
-                setSelectedRoi={setSelectedRoi}
-                roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
-                roiFilter={roiFilter}
-                setRoiFilter={setRoiFilter}
-                electrodeData={electrodeDataCsv}
-              />
-            ) : null}
+            <Tabs variant="enclosed" colorScheme="green" size='sm'>
+              <TabList>
+                <Tab>Similar Graphs</Tab>
+                <Tab>Patches</Tab>
+                <Tab>Network</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel style={{ padding: '0px' }}>
+                  {/* region - 35vh */}
+                  {/* this will be 2D similar view */}
+                  {fullNetwork && allEventData && electrodeDataCsv ? (
+                    <RegionSummary
+                      data={fullNetwork}
+                      eventData={allEventData[patientInfo.sample]}
+                      eventRange={eventRangeNetwork}
+                      selectedRoi={selectedRoi}
+                      setSelectedRoi={setSelectedRoi}
+                      roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
+                      roiFilter={roiFilter}
+                      setRoiFilter={setRoiFilter}
+                      electrodeData={electrodeDataCsv}
+                    />
+                  ) : null}
+                </TabPanel>
+                <TabPanel style={{ padding: '0px' }}>
+                  {/* TODO: add the patch component here */}
+                  Patches to visualize
+
+                </TabPanel>
+
+                <TabPanel style={{ padding: '0px' }}>
+                  {/* TODO: add the network component here */}
+                  network to visualize
+
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+
           </Row>
         </Col>
         {/* right panel */}

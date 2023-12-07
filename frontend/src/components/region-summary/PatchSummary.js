@@ -16,10 +16,21 @@ export const PatchSummary = ({
   setRoiFilter,
   electrodeData,
 }) => {
-  const colorList = [
-    "#3CA7D3",
+  const roiBackgroundColor = [
+    "#1f77b4",
+    "#ff7f0e",
+    "#2ca02c",
+    "#d62728",
+    "#9467bd",
+    "#8c564b",
+    "#e377c2",
+    "#bfa3a3",
+  ];
+
+  const electrodeColorList = [
+    "#57B4DB",
     "#E7AC5C",
-    "#60C95D",
+    "#7BD370",
     "#d62728",
     "#9467bd",
     "#8c564b",
@@ -33,7 +44,6 @@ export const PatchSummary = ({
     y: 0,
   });
   // data is the all electrodes
-  console.log(data, eventData, patchData, "????????");
   const numRows = Math.ceil((data.length - 1) / rowSize);
 
   // tooltip controller
@@ -45,6 +55,9 @@ export const PatchSummary = ({
       y: e.clientY,
     });
   };
+  function patchOnClick(roi) {
+    setSelectedRoi(Number(roi));
+  }
 
   const handleMouseLeave = () => {
     setTooltip({ ...tooltip, visible: false });
@@ -57,10 +70,10 @@ export const PatchSummary = ({
     if (patchData.hasOwnProperty(key)) {
       processedPatchData[key] = patchData[key].map((subArray) =>
         subArray.map((num) => {
-            const occurrences = eventData.reduce((acc, dataItem) => {
-                return acc + dataItem.electrode.filter(x => x === num).length;
-              }, 0);
-            return { [num]: occurrences };
+          const occurrences = eventData.reduce((acc, dataItem) => {
+            return acc + dataItem.electrode.filter((x) => x === num).length;
+          }, 0);
+          return { [num]: occurrences };
         })
       );
     }
@@ -87,7 +100,7 @@ export const PatchSummary = ({
   const circleRadius = d3
     .scaleLinear()
     .domain([0, maxOccurrence])
-    .range([2, 8]);
+    .range([2, 15]);
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey];
@@ -103,17 +116,24 @@ export const PatchSummary = ({
     const roiScale = d3
       .scaleLinear()
       .domain([0, d3.max(roiCount)])
-      .range([0, svgWidth]);
+      .range([0, svgWidth - roiLabelWidth]);
 
-    const colorIndex = roiIndex % colorList.length;
-    const fillColor = colorList[colorIndex];
+    const colorIndex = roiIndex % electrodeColorList.length;
+    const fillColor = electrodeColorList[colorIndex];
     return (
-      <Col md="4" key={roiKey} style={{ height: `${30 / numRows}vh` }}>
-        <svg
-          width="100%"
-          height="100%"
-          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-        >
+      <Col
+        md="4"
+        key={roiKey}
+        style={{
+          height: `${30 / numRows}vh`,
+          backgroundColor:
+            selectedRoi === Number(roiKey)
+              ? "rgba(202, 204, 202, 0.4)"
+              : "white",
+        }}
+        onClick={() => patchOnClick(roiKey)}
+      >
+        <svg width="100%" height={10}>
           <g>
             <text x={0} y={10} fontSize={12} fill="black" textAnchor="start">
               {`Roi: ${roiKey}`}
@@ -125,11 +145,19 @@ export const PatchSummary = ({
               height={10}
               opacity={1}
             />
-            <title>{`
-                    Roi : ${roiKey}\n Frequency : ${roiCount[roiKey]}
-                `}</title>
+            <title>
+              {`
+                Roi : ${roiKey}\n Frequency : ${roiCount[roiKey]}
+            `}
+            </title>
           </g>
-
+        </svg>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+        //   style={{ backgroundColor: roiBackgroundColor[Number(roiKey)], opacity: 1 }}
+        >
           {roiMatrix.map((rowArray, rowIndex) => {
             const shift = columnsPerRow - rowArray.length;
             return rowArray.map((electrodeObj, columnIndex) => {

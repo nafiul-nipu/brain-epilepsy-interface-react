@@ -1,7 +1,7 @@
-import { RegionCircles } from "../../CommonComponents/RegionCircles";
 import { Col, Row } from "react-bootstrap";
+import { useEffect, useState } from "react";
 import * as d3 from "d3";
-import "./RegionSummary.css";
+
 const rowSize = 3;
 
 export const PatchSummary = ({
@@ -16,18 +16,47 @@ export const PatchSummary = ({
   setRoiFilter,
   electrodeData,
 }) => {
-  const colorList = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3'];
+  const colorList = [
+    "#3CA7D3",
+    "#E7AC5C",
+    "#60C95D",
+    "#d62728",
+    "#9467bd",
+    "#8c564b",
+    "#e377c2",
+    "#bfa3a3",
+  ];
+  const [tooltip, setTooltip] = useState({
+    visible: false,
+    content: "",
+    x: 0,
+    y: 0,
+  });
   // data is the all electrodes
   console.log(data, eventData, patchData, "????????");
   const numRows = Math.ceil((data.length - 1) / rowSize);
 
-  // for finding which electrode is actived
+  // tooltip controller
+  const handleMouseEnter = (electrodeId, electrodeValue, e) => {
+    setTooltip({
+      visible: true,
+      content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue}`,
+      x: e.clientX,
+      y: e.clientY,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setTooltip({ ...tooltip, visible: false });
+  };
+
+  //   for finding which electrode is actived
   const filteredData = eventData.filter((el) =>
     el.time.some(
       (t) => t >= eventRange[0] && t <= eventRange[eventRange.length - 1]
     )
   );
-
+  //   const filteredData = eventData;
   const processedPatchData = {};
 
   for (const key in patchData) {
@@ -76,7 +105,7 @@ export const PatchSummary = ({
     const svgWidth = columnsPerRow * 50;
     const svgHeight = numRowsInSVG * 50;
 
-    const colorIndex = roiIndex % colorList.length; 
+    const colorIndex = roiIndex % colorList.length;
     const fillColor = colorList[colorIndex];
     return (
       <Col md="4" key={roiKey} style={{ height: `${30 / numRows}vh` }}>
@@ -92,23 +121,20 @@ export const PatchSummary = ({
             return rowArray.map((electrodeObj, columnIndex) => {
               const electrodeId = Object.keys(electrodeObj)[0];
               const electrodeValue = electrodeObj[electrodeId];
-              console.log(electrodeId, electrodeValue, "看一下");
 
               const cx = 25 + 50 * (columnIndex + shift);
               const cy = 25 + 50 * rowIndex;
 
               return (
-                <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
-                  <circle
-                    cx={cx}
-                    cy={cy}
-                    r={circleRadius(electrodeValue)}
-                    fill={fillColor}
-                  />
-                  <text x={cx} y={cy + 5} textAnchor="middle" fontSize={10}>
-                    {electrodeId}
-                  </text>
-                </g>
+                <circle
+                  key={`${roiKey}-${rowIndex}-${columnIndex}`}
+                  cx={cx}
+                  cy={cy}
+                  onMouseEnter={(e) => handleMouseEnter(electrodeId, electrodeValue, e)}
+                  onMouseLeave={handleMouseLeave}
+                  r={circleRadius(electrodeValue)}
+                  fill={fillColor}
+                />
               );
             });
           })}
@@ -167,7 +193,7 @@ export const PatchSummary = ({
       <Row>
         <Col md="12" style={{ height: "4vh" }}>
           <Row>
-            <Col>Region Summary</Col>
+            <Col>Patch Summary</Col>
             <Col>
               <div className="regionLabel">Frequency</div>
             </Col>
@@ -181,6 +207,22 @@ export const PatchSummary = ({
       </Row>
       <Row>
         <>{rows}</>
+        {tooltip.visible && (
+          <div
+            style={{
+              width: 150,
+              position: "absolute",
+              left: `${tooltip.x}px`,
+              top: `${tooltip.y}px`,
+              backgroundColor: "white",
+              border: "1px solid black",
+              padding: "5px",
+              pointerEvents: "none",
+            }}
+          >
+            {tooltip.content}
+          </div>
+        )}
       </Row>
     </Col>
   );

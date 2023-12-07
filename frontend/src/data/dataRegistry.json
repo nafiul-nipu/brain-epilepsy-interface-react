@@ -8,7 +8,7 @@
     "ep187": {
         "lesions": 3,
         "lesionArray": [1, 2, 3],
-        "brainPartition": false,
+        "brainPartition": true,
         "bbox": {
             "x": -98.18610191345215,
             "y": -108.80819797515869,
@@ -57,7 +57,7 @@
     "ep129":{
         "lesions": 2,
         "lesionArray": [1, 2],
-        "brainPartition": true,
+        "brainPartition": false,
         "bbox": {
             "x": -118.61639976501465,
             "y": -105.94320249557495,

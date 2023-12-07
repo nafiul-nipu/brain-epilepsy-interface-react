@@ -1,5 +1,5 @@
 import CustomOBJModel from "./ModelLoader";
-const partURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/frontend/src/models/'
+const partURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/convert-to-siyuan-interface/frontend/src/models/'
 
 export function BrainLesionLoad(props) {
     return (
@@ -23,17 +23,26 @@ export function BrainLesionLoad(props) {
                     />);
             })}
             {props.brainPartition === true ? (
-                props.lesionArray.map((lesion, index) => {
-                    return (
-                        <CustomOBJModel
-                            key={index}
-                            url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_lesion${lesion}.obj`}
-                            color="#00000"
-                            opacity={1}
-                            transparent={false}
-                            type="lesion"
-                        />);
-                })
+                <CustomOBJModel
+                    url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_brain_left.obj`}
+                    color="#F6D5A2"
+                    opacity={props.leftBrainOpacity}
+                    transparent={true}
+                    type={"leftBrain"}
+                />
+
+            ) : null}
+
+            {props.brainPartition === true ? (
+                <CustomOBJModel
+                    url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_brain_right.obj`}
+                    color="#D6D0BA"
+                    opacity={props.rightBrainOpacity}
+                    transparent={true}
+                    type={"rightBrain"}
+
+                />
+
             ) : null}
         </group>
     );

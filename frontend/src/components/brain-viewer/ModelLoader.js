@@ -27,7 +27,7 @@ const CustomOBJModel = ({
 
   return (
     <group>
-      <primitive object={obj} />
+      <primitive object={obj.clone()} />
     </group>
   );
 };

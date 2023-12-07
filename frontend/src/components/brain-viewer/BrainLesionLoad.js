@@ -22,6 +22,19 @@ export function BrainLesionLoad(props) {
                         type="lesion"
                     />);
             })}
+            {props.brainPartition === true ? (
+                props.lesionArray.map((lesion, index) => {
+                    return (
+                        <CustomOBJModel
+                            key={index}
+                            url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_lesion${lesion}.obj`}
+                            color="#00000"
+                            opacity={1}
+                            transparent={false}
+                            type="lesion"
+                        />);
+                })
+            ) : null}
         </group>
     );
 }

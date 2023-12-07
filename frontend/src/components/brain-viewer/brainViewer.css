@@ -16,3 +16,31 @@
     color: black;
     font-size: 0.9em;
   }
+
+  .brainViewerCard .ant-card-body {
+    width: 100%;
+    padding: 5px !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .leftBrainControlCard .ant-card-body {
+    padding: 10px !important
+  }
+  
+  .rightBrainControlCard .ant-card-body {
+    padding: 10px !important
+  }
+  
+  .roiBrainCard .ant-card-body {
+    padding: 0 !important;
+    max-height: 170px;
+    min-height: 140px;
+  }
+  
+  .projectionNodeViewerClass .ant-card-body {
+    padding: 0 !important
+  }
+  

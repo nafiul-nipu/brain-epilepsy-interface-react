@@ -27,7 +27,8 @@ export const BrainViewer = ({
     eegInBrain,
     sliderObj,
     buttonValue,
-    visualPanel
+    visualPanel,
+    setSampleValue
 }) => {
     // console.log(sampleData)
 
@@ -83,6 +84,7 @@ export const BrainViewer = ({
                         visualPanel={visualPanel}
                         buttonValue={buttonValue}
                         sliderObj={sliderObj}
+                        setSampleValue={setSampleValue}
                     />
                     <OrbitControls enablePan={true} />
                 </Suspense>

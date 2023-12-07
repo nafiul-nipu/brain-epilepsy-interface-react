@@ -18,12 +18,13 @@ export const ENTContainer = ({
     selectedEventRange,
     eegInBrain
 }) => {
-    const [sliderValue, setSliderValue] = useState([0, 0])
+    const [sliderValue, setSliderValue] = useState([0, 1000])
+    const [sampleValue, setSampleValue] = useState(0)
 
     // console.log(bboxCenter)
     const [buttonValue, setButtonValue] = useState('Play');
 
-    const [segment, setSegment] = useState('ROI')
+    const [segment, setSegment] = useState('Patches')
 
     // const [seeRoi, setSeeRoi] = useState(false);
 
@@ -47,7 +48,7 @@ export const ENTContainer = ({
             <Row>
                 <Col md='12' style={{ height: '5vh' }}>
                     <Segmented
-                        options={["Patches", "Frequncy", "Community", "Curve"]}
+                        options={["Patches", "Frequency", "Community", "Curve"]}
                         onChange={onSegmentChange}
                         defaultValue={'Patches'}
                     >
@@ -61,6 +62,8 @@ export const ENTContainer = ({
                     sliderValue={sliderValue}
                     setSliderValue={setSliderValue}
                     patientID={patientInformation.id}
+                    visualPanel={segment}
+                    sampleValue={sampleValue}
                 />
             </Row>
             <Row>
@@ -82,6 +85,7 @@ export const ENTContainer = ({
                             sliderObj={setSliderValue}
                             buttonValue={buttonValue}
                             visualPanel={segment}
+                            setSampleValue={setSampleValue}
                         />
                     </Row>
                 </Col>

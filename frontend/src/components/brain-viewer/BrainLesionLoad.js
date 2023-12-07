@@ -4,13 +4,13 @@ const partURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-in
 export function BrainLesionLoad(props) {
     return (
         <group>
-            <CustomOBJModel
+            {/* <CustomOBJModel
                 url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_brain.obj`}
                 color="#505050"
                 opacity={0.15}
                 transparent={true}
                 type="brain"
-            />
+            /> */}
             {props.lesionArray.map((lesion, index) => {
                 return (
                     <CustomOBJModel

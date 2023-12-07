@@ -1,5 +1,7 @@
 import { LinePlot } from "../../CommonComponents/LinePlot";
 import ChartContainer, { useChartContext } from "../chart-container/chart-container";
+import {useState, useEffect, useRef} from 'react';
+import { FaThumbsUp, FaPause, FaPlay } from 'react-icons/fa';
 import "./eeg-data-viewer.css";
 import { AxisBottom } from "../../CommonComponents/AxisBottom";
 import { AxisLeft } from "../../CommonComponents/AxisLeft";
@@ -26,6 +28,12 @@ export const EEGDataViewer = ({
   // console.log(eegData)
   // console.log(selectedEventRange)
 
+  const [view, setView] = useState(false)
+  const [curElId,setCurElId] = useState(0)
+  const elIdRef = useRef(null);
+  const containerRef = useRef(null);
+  const itemRefs = useRef([]);
+
   const extents = Object.keys(eegData.eeg)
     .map(key => [Math.min(...eegData.eeg[key]), Math.max(...eegData.eeg[key])])
     .flat();
@@ -40,19 +48,74 @@ export const EEGDataViewer = ({
     .range([0, 500])
 
   function onEEGClick(el) {
-    // console.log(el)
     setEegInBrain(el)
+    stopTimer()
   }
+
+  // start play PPG data
+  const handleClick = () => {
+    console.log('make a test')
+    if (!view) { 
+      elIdRef.current = setInterval(() => {
+        setCurElId(prevCurElId => {
+          if(prevCurElId < electrodeListEventWindow.length) { 
+            setEegInBrain(electrodeListEventWindow[prevCurElId]);
+            return prevCurElId + 1;
+          }
+          return prevCurElId;
+        });
+      }, 1000);
+    }
+    setView(true)
+  }
+
+  // stop play PPG data
+  const stopTimer = () => {
+    console.log('stop')
+    setView(false);
+    if(view) {
+      clearInterval(elIdRef.current);
+    }
+  }
+
+  // calculates the position and sets the scrollTop property of the container
+  const scrollToCenter = (index) => {
+    const container = containerRef.current;
+    const selectedItem = itemRefs.current[index];
+  
+    if (container && selectedItem) {
+      const containerHeight = container.clientHeight;
+      const selectedItemHeight = selectedItem.clientHeight;
+  
+      // Calculate the position to scroll to, centering the selected item
+      const scrollPosition = 
+        selectedItem.offsetTop - 
+        (containerHeight) + 
+        (selectedItemHeight);
+  
+      container.scrollTop = scrollPosition;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      scrollToCenter(curElId)
+    };
+  }, [curElId]);
 
   return (
     <div className="eeg-container">
       <div className="eeg-title">
         <div>EEGs </div>
-        <div className="referenceDIV" id="null"></div>
+        {/* <div className="referenceDIV" id="null"></div> */}
+        <div className="controlPlayPause" style={{'display':'flex'}}>
+          <FaPlay onClick={handleClick} style={{'margin':'0 10 0 0', 'color': view ? '#999' : '#333', 'cursor': 'pointer'}} />
+          <FaPause onClick={stopTimer} style={{'margin':'0 0 0 10', 'color': '#333', 'cursor': 'pointer'}}/>
+        </div>
         <div>Event {!eventList ? "loading" : `${eventList}`}</div>
       </div>
 
-      <div className="eeg-list">
+      <div className="eeg-list" ref={containerRef}>
         {
           electrodeListEventWindow.map((el, i) => {
             return (
@@ -61,6 +124,7 @@ export const EEGDataViewer = ({
                   height: '12vh',
                   boxShadow: eegInBrain === el ? "0 0 10px 5px #000000" : "none"
                 }}
+                ref={el => itemRefs.current[i] = el}
                 key={i}
                 onClick={() => onEEGClick(el)}
               >

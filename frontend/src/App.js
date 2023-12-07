@@ -24,10 +24,11 @@ import { useFullNetworkPerEvent } from "./library/useFullNetworkPerEvent";
 import { useAllEventData } from "./library/useAllEventData";
 // import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
 // import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
-
+import { usePatchData } from "./library/usePatchData";
 import dataRegistry from "./data/dataRegistry.json";
 // import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
 import { RegionSummary } from "./components/region-summary/RegionSummary";
+import { PatchSummary } from "./components/region-summary/PatchSummary"
 import { NetworkViewer } from "./components/previous components/network-viewer/NetworkViewer";
 // import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
@@ -80,6 +81,8 @@ function App() {
 
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
+
+  const patchData = usePatchData({ patientID: patientInfo.id })
 
   const [barThreshold, setBarThreshold] = useState([0, 70]);
 
@@ -189,9 +192,20 @@ function App() {
                   ) : null}
                 </TabPanel>
                 <TabPanel style={{ padding: '0px' }}>
-                  {/* TODO: add the patch component here */}
-                  Patches to visualize
-
+                {fullNetwork && allEventData && electrodeDataCsv && patchData ? (
+                    <PatchSummary
+                      patchData={patchData}
+                      data={fullNetwork}
+                      eventData={allEventData[patientInfo.sample]}
+                      eventRange={eventRangeNetwork}
+                      selectedRoi={selectedRoi}
+                      setSelectedRoi={setSelectedRoi}
+                      roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
+                      roiFilter={roiFilter}
+                      setRoiFilter={setRoiFilter}
+                      electrodeData={electrodeDataCsv}
+                    />
+                  ) : null}
                 </TabPanel>
 
                 <TabPanel style={{ padding: '0px' }}>

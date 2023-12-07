@@ -28,12 +28,13 @@ import { useAllEventData } from "./library/useAllEventData";
 import dataRegistry from "./data/dataRegistry.json";
 // import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
 import { RegionSummary } from "./components/region-summary/RegionSummary";
-import { NetworkViewer } from "./components/previous components/network-viewer/NetworkViewer";
+// import { NetworkViewer } from "./components/previous components/network-viewer/NetworkViewer";
 // import { SimilarRegion } from "./components/similar-regions/SimilarRegion";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
 // import { PatientSummary } from "./components/patient-summary/patientSummary";
-import { ExplorationSoFar } from "./components/previous components/exploration-so-far/ExplorationSoFar";
-import { BrainViewer } from "./components/brain-viewer/BrainViewer";
+// import { ExplorationSoFar } from "./components/previous components/exploration-so-far/ExplorationSoFar";
+// import { BrainViewer } from "./components/brain-viewer/BrainViewer";
+import { useCommunity } from "./library/useCommunity";
 
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
@@ -63,6 +64,12 @@ function App() {
     range: timeRange,
   });
   // console.log('sampledata', sampleData)
+
+  const comData = useCommunity({
+    patientID: patientInfo.id,
+    sampleName: patientInfo.sample,
+    range: timeRange,
+  })
 
   const allEventData = useAllEventData({ patientID: patientInfo.id });
 
@@ -146,11 +153,12 @@ function App() {
           <Row>
             {/* brain - 50vh */}
             <Col md="12" style={{ height: "54vh", backgroundColor: "#FAFBFC" }}>
-              {allEventData ? (
+              {allEventData && comData ? (
                 <ENTContainer
                   patientInformation={patientInfo}
                   electrodeData={electrodeDataCsv}
                   sample={sampleData}
+                  community={comData}
                   time={timeRange}
                   events={allEventData[patientInfo.sample]}
                   allnetworks={fullNetwork}

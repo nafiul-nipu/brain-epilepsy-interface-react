@@ -17,6 +17,7 @@ export const BrainViewer = ({
     patientInformation,
     electrodeData,
     sample,
+    community,
     time,
     events,
     allnetworks,
@@ -69,6 +70,7 @@ export const BrainViewer = ({
                     <ElectrodeLoad
                         electrodeData={electrodeData}
                         sampleData={sample}
+                        community={community}
                         bbox={dataRegisty[patientInformation.id].bbox}
                         eegInBrain={eegInBrain}
                         selectedEventRange={selectedEventRange}

@@ -10,6 +10,7 @@ export const ENTContainer = ({
     patientInformation,
     electrodeData,
     sample,
+    community,
     time,
     events,
     allnetworks,
@@ -24,7 +25,7 @@ export const ENTContainer = ({
 
     const [segment, setSegment] = useState('ROI')
 
-    const [seeRoi, setSeeRoi] = useState(false);
+    // const [seeRoi, setSeeRoi] = useState(false);
 
     function onSegmentChange(value) {
         setSegment(value)
@@ -46,9 +47,9 @@ export const ENTContainer = ({
             <Row>
                 <Col md='12' style={{ height: '5vh' }}>
                     <Segmented
-                        options={["ROI", "Frequncy", "Community", "Curve"]}
+                        options={["Patches", "Frequncy", "Community", "Curve"]}
                         onChange={onSegmentChange}
-                        defaultValue={'ROI'}
+                        defaultValue={'Patches'}
                     >
                     </Segmented>
                 </Col>
@@ -70,6 +71,7 @@ export const ENTContainer = ({
                             patientInformation={patientInformation}
                             electrodeData={electrodeData}
                             sample={sample}
+                            community={community}
                             time={time}
                             events={events}
                             allnetworks={allnetworks}

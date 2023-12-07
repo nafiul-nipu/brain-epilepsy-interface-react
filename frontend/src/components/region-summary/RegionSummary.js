@@ -15,14 +15,15 @@ export const RegionSummary = ({
     setRoiFilter,
     electrodeData
 }) => {
-
-    console.log(electrodeData)
+// console.log("eventData",eventData);
+// console.log("eventRange",eventRange);
+    // console.log(electrodeData)
     const numRows = Math.ceil((data.length - 1) / rowSize);
 
     const filteredData = eventData.filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[eventRange.length - 1]))
 
     // console.log(filteredData)
-    // console.log(data)
+    console.log("regionsummary",data)
     // console.log(roiCount)
 
     const regionCiclesData = [];
@@ -77,6 +78,7 @@ export const RegionSummary = ({
                     >
                         <RegionCircles
                             data={object}
+                            eventNetworkData={data}
                             circleRadius={circleRadius}
                             roi={i + rowStartIndex}
                             roiCount={roiCount}

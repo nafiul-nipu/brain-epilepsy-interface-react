@@ -50,23 +50,17 @@ export const PatchSummary = ({
     setTooltip({ ...tooltip, visible: false });
   };
 
-  //   for finding which electrode is actived
-  const filteredData = eventData.filter((el) =>
-    el.time.some(
-      (t) => t >= eventRange[0] && t <= eventRange[eventRange.length - 1]
-    )
-  );
-  //   const filteredData = eventData;
+  // For getting each electrode frequency
   const processedPatchData = {};
 
   for (const key in patchData) {
     if (patchData.hasOwnProperty(key)) {
       processedPatchData[key] = patchData[key].map((subArray) =>
         subArray.map((num) => {
-          const occurrences = filteredData[0].electrode.filter(
-            (x) => x === num
-          ).length;
-          return { [num]: occurrences };
+            const occurrences = eventData.reduce((acc, dataItem) => {
+                return acc + dataItem.electrode.filter(x => x === num).length;
+              }, 0);
+            return { [num]: occurrences };
         })
       );
     }
@@ -102,8 +96,14 @@ export const PatchSummary = ({
     // For finding the rows
     const numRowsInSVG = roiMatrix.length;
 
+    const roiLabelWidth = 20;
+    const roiLabelHeight = 10;
     const svgWidth = columnsPerRow * 50;
-    const svgHeight = numRowsInSVG * 50;
+    const svgHeight = numRowsInSVG * 50 + roiLabelHeight;
+    const roiScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(roiCount)])
+      .range([0, svgWidth]);
 
     const colorIndex = roiIndex % colorList.length;
     const fillColor = colorList[colorIndex];
@@ -114,27 +114,44 @@ export const PatchSummary = ({
           height="100%"
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
         >
-          {roiMatrix.map((rowArray, rowIndex) => {
-            console.log(rowArray, "leileleile");
+          <g>
+            <text x={0} y={10} fontSize={12} fill="black" textAnchor="start">
+              {`Roi: ${roiKey}`}
+            </text>
+            <rect
+              x={35}
+              y={0}
+              width={roiScale(roiCount[roiKey]) - roiLabelWidth}
+              height={10}
+              opacity={1}
+            />
+            <title>{`
+                    Roi : ${roiKey}\n Frequency : ${roiCount[roiKey]}
+                `}</title>
+          </g>
 
+          {roiMatrix.map((rowArray, rowIndex) => {
             const shift = columnsPerRow - rowArray.length;
             return rowArray.map((electrodeObj, columnIndex) => {
               const electrodeId = Object.keys(electrodeObj)[0];
               const electrodeValue = electrodeObj[electrodeId];
 
               const cx = 25 + 50 * (columnIndex + shift);
-              const cy = 25 + 50 * rowIndex;
+              const cy = 25 + 50 * rowIndex + roiLabelHeight;
 
               return (
-                <circle
-                  key={`${roiKey}-${rowIndex}-${columnIndex}`}
-                  cx={cx}
-                  cy={cy}
-                  onMouseEnter={(e) => handleMouseEnter(electrodeId, electrodeValue, e)}
-                  onMouseLeave={handleMouseLeave}
-                  r={circleRadius(electrodeValue)}
-                  fill={fillColor}
-                />
+                <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    onMouseEnter={(e) =>
+                      handleMouseEnter(electrodeId, electrodeValue, e)
+                    }
+                    onMouseLeave={handleMouseLeave}
+                    r={circleRadius(electrodeValue)}
+                    fill={fillColor}
+                  />
+                </g>
               );
             });
           })}

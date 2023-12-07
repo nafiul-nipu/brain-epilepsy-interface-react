@@ -15,7 +15,7 @@ export const RegionSummary = ({
     setRoiFilter,
     electrodeData
 }) => {
-// console.log("eventData",eventData);
+ console.log("eventData",eventData);
 // console.log("eventRange",eventRange);
     // console.log(electrodeData)
     const numRows = Math.ceil((data.length - 1) / rowSize);

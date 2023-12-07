@@ -18,7 +18,7 @@ export const ElectrodeLoad = ({
     allnetworkWithEvent,
     patientID,
     eventid,
-    seeRoi,
+    visualPanel,
     buttonValue,
     sliderObj
 }) => {
@@ -71,7 +71,7 @@ export const ElectrodeLoad = ({
         }
         electrodeData.forEach((electrode, index) => {
 
-            if (seeRoi) {
+            if (visualPanel === 'ROI') {
                 allnetwork.forEach((network, netIndex) => {
                     if (network.roi !== "roi"
                         && network.electrodes.includes(electrode['electrode_number'])
@@ -120,7 +120,7 @@ export const ElectrodeLoad = ({
         meshRef.current.instanceMatrix.needsUpdate = true;
         meshRef.current.instanceColor.needsUpdate = true;
 
-    }, [allnetwork, buttonValue, eegInBrain, electrodeData, eventData, seeRoi, selectedEventRange])
+    }, [allnetwork, buttonValue, eegInBrain, electrodeData, eventData, visualPanel, selectedEventRange])
 
     useEffect(() => {
         if (!isMountedRef.current) return;

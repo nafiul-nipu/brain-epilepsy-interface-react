@@ -11,7 +11,7 @@ import { BrainLesionLoad } from "./BrainLesionLoad";
 import { ElectrodeLoad } from "./ElectrodeLoad";
 
 const width = (window.innerWidth / 2.2) - 10;
-const height = window.innerHeight / 2.2 - 10
+const height = window.innerHeight / 2.3 - 10
 
 export const BrainViewer = ({
     patientInformation,
@@ -26,7 +26,7 @@ export const BrainViewer = ({
     eegInBrain,
     sliderObj,
     buttonValue,
-    seeRoi
+    visualPanel
 }) => {
     // console.log(sampleData)
 
@@ -78,7 +78,7 @@ export const BrainViewer = ({
                         allnetworkWithEvent={allnetworksWithEvent}
                         patientID={patientInformation.id}
                         eventid={eventid}
-                        seeRoi={seeRoi}
+                        visualPanel={visualPanel}
                         buttonValue={buttonValue}
                         sliderObj={sliderObj}
                     />

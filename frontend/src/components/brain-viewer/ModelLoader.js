@@ -36,6 +36,7 @@ const CustomOBJModel = ({
     }
 
   });
+  console.log(type, obj.position.x, obj.position.y, obj.position.z)
 
   return (
     <group>

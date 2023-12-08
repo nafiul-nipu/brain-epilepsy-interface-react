@@ -4,13 +4,6 @@ const partURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-in
 export function BrainLesionLoad(props) {
     return (
         <group>
-            {/* <CustomOBJModel
-                url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_brain.obj`}
-                color="#505050"
-                opacity={0.15}
-                transparent={true}
-                type="brain"
-            /> */}
             {props.lesionArray.map((lesion, index) => {
                 return (
                     <CustomOBJModel
@@ -22,13 +15,14 @@ export function BrainLesionLoad(props) {
                         type="lesion"
                     />);
             })}
-            {props.brainPartition === true ? (
+            {/* {props.brainPartition === true ? (
                 <CustomOBJModel
                     url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_brain_left.obj`}
                     color="#F6D5A2"
                     opacity={props.leftBrainOpacity}
                     transparent={true}
-                    type={"leftBrain"}
+                    type={"left"}
+                    renderOrer={1}
                 />
 
             ) : null}
@@ -39,11 +33,21 @@ export function BrainLesionLoad(props) {
                     color="#D6D0BA"
                     opacity={props.rightBrainOpacity}
                     transparent={true}
-                    type={"rightBrain"}
+                    type={"right"}
+                    renderOrer={2}
 
                 />
 
-            ) : null}
+            ) : null} */}
+
+            <CustomOBJModel
+                url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_brain.obj`}
+                color="#505050"
+                opacity={0.15}
+                transparent={true}
+                type="brain"
+                renderOrer={3}
+            />
         </group>
     );
 }

@@ -10,9 +10,21 @@ const CustomOBJModel = ({
   opacity,
   transparent,
   type,
+  renderOrer,
 }) => {
 
   const obj = useLoader(OBJLoader, url);
+
+  // useEffect(() => {
+  //   if (type === "left") {
+  //     obj.position.x -= 28;
+  //     obj.position.z += 10;
+  //   } else if (type === "right") {
+  //     obj.position.x += 0;
+  //     obj.position.z += 10;
+  //   }
+  //   obj.renderOrer = renderOrer;
+  // }, [type, renderOrer]);
 
   // If you want to manipulate the material properties of the loaded model
   obj.traverse((child) => {

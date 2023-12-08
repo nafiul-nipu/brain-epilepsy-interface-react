@@ -48,7 +48,12 @@ export const PatchSummary = ({
   const numRows = Math.ceil((data.length - 1) / rowSize);
 
   // tooltip controller
-  const handleMouseEnter = (electrodeId, electrodeValue,propagationCounts, e) => {
+  const handleMouseEnter = (
+    electrodeId,
+    electrodeValue,
+    propagationCounts,
+    e
+  ) => {
     setTooltip({
       visible: true,
       content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue} \n Propagation: ${propagationCounts}`,
@@ -66,6 +71,9 @@ export const PatchSummary = ({
 
   // For getting each electrode frequency
   const processedPatchData = {};
+  const maxPropagationCounts = samplePropagationData.reduce((max, current) => {
+    return current.propagation > max ? current.propagation : max;
+  }, 0);
 
   for (const key in patchData) {
     if (patchData.hasOwnProperty(key)) {
@@ -102,6 +110,11 @@ export const PatchSummary = ({
     .scaleLinear()
     .domain([0, maxOccurrence])
     .range([2, 15]);
+
+  const propagationRadius = d3
+    .scaleLinear()
+    .domain([0, maxPropagationCounts])
+    .range([2, 5]);
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey];
@@ -163,8 +176,12 @@ export const PatchSummary = ({
             const shift = columnsPerRow - rowArray.length;
             return rowArray.map((electrodeObj, columnIndex) => {
               const electrodeId = Object.keys(electrodeObj)[0];
-              const electrodePropagation = samplePropagationData.find(e => e.electrode_id == electrodeId);
-              const propagationCounts = electrodePropagation ? electrodePropagation.propagation : 0;
+              const electrodePropagation = samplePropagationData.find(
+                (e) => e.electrode_id == electrodeId
+              );
+              const propagationCounts = electrodePropagation
+                ? electrodePropagation.propagation
+                : 0;
 
               const electrodeValue = electrodeObj[electrodeId];
 
@@ -176,23 +193,24 @@ export const PatchSummary = ({
                   <circle
                     cx={cx}
                     cy={cy}
-                    onMouseEnter={(e) =>
-                      handleMouseEnter(electrodeId, electrodeValue, propagationCounts, e)
-                    }
-                    onMouseLeave={handleMouseLeave}
                     r={circleRadius(electrodeValue)}
                     fill="none"
                     stroke={fillColor}
-                    strokeWidth="1" 
+                    strokeWidth="1"
                   />
                   <circle
                     cx={cx}
                     cy={cy}
                     onMouseEnter={(e) =>
-                      handleMouseEnter(electrodeId, electrodeValue, propagationCounts, e)
+                      handleMouseEnter(
+                        electrodeId,
+                        electrodeValue,
+                        propagationCounts,
+                        e
+                      )
                     }
                     onMouseLeave={handleMouseLeave}
-                    r={circleRadius(propagationCounts)}
+                    r={propagationRadius(propagationCounts)}
                     fill={fillColor}
                     // fill="red"
                   />
@@ -275,11 +293,12 @@ export const PatchSummary = ({
               width: 150,
               position: "absolute",
               left: `${tooltip.x}px`,
-              top: `${tooltip.y}px`,
+              top: `${tooltip.y - 20}px`,
               backgroundColor: "white",
               border: "1px solid black",
               padding: "5px",
               pointerEvents: "none",
+              fontSize: "14px",
             }}
           >
             {tooltip.content}

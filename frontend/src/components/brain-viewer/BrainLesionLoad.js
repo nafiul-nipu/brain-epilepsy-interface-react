@@ -15,7 +15,7 @@ export function BrainLesionLoad(props) {
                         type="lesion"
                     />);
             })}
-            {/* {props.brainPartition === true ? (
+            {props.brainPartition === true ? (
                 <CustomOBJModel
                     url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_brain_left.obj`}
                     color="#F6D5A2"
@@ -38,7 +38,7 @@ export function BrainLesionLoad(props) {
 
                 />
 
-            ) : null} */}
+            ) : null}
 
             <CustomOBJModel
                 url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_brain.obj`}

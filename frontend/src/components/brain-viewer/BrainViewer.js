@@ -125,13 +125,6 @@ export const BrainViewer = ({
                             shadow-camera-bottom={-5}
                         />
                         <directionalLight position={[-250, -10, 0]} />
-                        <BrainLesionLoad
-                            patientInformation={patientInformation}
-                            lesionArray={dataRegisty[patientInformation.id].lesionArray}
-                            brainPartition={dataRegisty[patientInformation.id].brainPartition}
-                            leftBrainOpacity={leftBrainOpacity}
-                            rightBrainOpacity={rightBrainOpacity}
-                        />
                         <ElectrodeLoad
                             electrodeData={electrodeData}
                             sampleData={sample}
@@ -149,6 +142,13 @@ export const BrainViewer = ({
                             buttonValue={buttonValue}
                             sliderObj={sliderObj}
                             setSampleValue={setSampleValue}
+                        />
+                        <BrainLesionLoad
+                            patientInformation={patientInformation}
+                            lesionArray={dataRegisty[patientInformation.id].lesionArray}
+                            brainPartition={dataRegisty[patientInformation.id].brainPartition}
+                            leftBrainOpacity={leftBrainOpacity}
+                            rightBrainOpacity={rightBrainOpacity}
                         />
                         <OrbitControls enablePan={true} />
                     </Suspense>

@@ -4,17 +4,6 @@ const partURL = 'https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-in
 export function BrainLesionLoad(props) {
     return (
         <group>
-            {props.lesionArray.map((lesion, index) => {
-                return (
-                    <CustomOBJModel
-                        key={index}
-                        url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_lesion${lesion}.obj`}
-                        color="#505050"
-                        opacity={1}
-                        transparent={false}
-                        type="lesion"
-                    />);
-            })}
             {props.brainPartition === true ? (
                 <CustomOBJModel
                     url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_brain_left.obj`}
@@ -48,6 +37,17 @@ export function BrainLesionLoad(props) {
                 type="brain"
                 renderOrer={3}
             />
+            {props.lesionArray.map((lesion, index) => {
+                return (
+                    <CustomOBJModel
+                        key={index}
+                        url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_lesion${lesion}.obj`}
+                        color="#505050"
+                        opacity={1}
+                        transparent={false}
+                        type="lesion"
+                    />);
+            })}
         </group>
     );
 }

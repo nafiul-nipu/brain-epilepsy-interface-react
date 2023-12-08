@@ -177,9 +177,9 @@ function App() {
           <Row>
             <Tabs variant="enclosed" colorScheme="green" size='sm'>
               <TabList>
-                <Tab>Similar Graphs</Tab>
-                <Tab>Patches</Tab>
                 <Tab>Network</Tab>
+                <Tab>Patches</Tab>
+                <Tab></Tab>
               </TabList>
               <TabPanels>
                 <TabPanel style={{ padding: '0px' }}>

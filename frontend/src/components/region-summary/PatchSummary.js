@@ -12,6 +12,7 @@ export const PatchSummary = ({
   selectedRoi,
   setSelectedRoi,
   roiCount,
+  samplePropagationData,
   roiFilter,
   setRoiFilter,
   electrodeData,
@@ -47,10 +48,10 @@ export const PatchSummary = ({
   const numRows = Math.ceil((data.length - 1) / rowSize);
 
   // tooltip controller
-  const handleMouseEnter = (electrodeId, electrodeValue, e) => {
+  const handleMouseEnter = (electrodeId, electrodeValue,propagationCounts, e) => {
     setTooltip({
       visible: true,
-      content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue}`,
+      content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue} \n Propagation: ${propagationCounts}`,
       x: e.clientX,
       y: e.clientY,
     });
@@ -156,12 +157,15 @@ export const PatchSummary = ({
           width="100%"
           height="100%"
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-        //   style={{ backgroundColor: roiBackgroundColor[Number(roiKey)], opacity: 1 }}
+          //   style={{ backgroundColor: roiBackgroundColor[Number(roiKey)], opacity: 1 }}
         >
           {roiMatrix.map((rowArray, rowIndex) => {
             const shift = columnsPerRow - rowArray.length;
             return rowArray.map((electrodeObj, columnIndex) => {
               const electrodeId = Object.keys(electrodeObj)[0];
+              const electrodePropagation = samplePropagationData.find(e => e.electrode_id == electrodeId);
+              const propagationCounts = electrodePropagation ? electrodePropagation.propagation : 0;
+
               const electrodeValue = electrodeObj[electrodeId];
 
               const cx = 25 + 50 * (columnIndex + shift);
@@ -173,11 +177,24 @@ export const PatchSummary = ({
                     cx={cx}
                     cy={cy}
                     onMouseEnter={(e) =>
-                      handleMouseEnter(electrodeId, electrodeValue, e)
+                      handleMouseEnter(electrodeId, electrodeValue, propagationCounts, e)
                     }
                     onMouseLeave={handleMouseLeave}
                     r={circleRadius(electrodeValue)}
+                    fill="none"
+                    stroke={fillColor}
+                    strokeWidth="1" 
+                  />
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    onMouseEnter={(e) =>
+                      handleMouseEnter(electrodeId, electrodeValue, propagationCounts, e)
+                    }
+                    onMouseLeave={handleMouseLeave}
+                    r={circleRadius(propagationCounts)}
                     fill={fillColor}
+                    // fill="red"
                   />
                 </g>
               );

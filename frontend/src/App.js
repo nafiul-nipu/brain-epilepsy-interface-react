@@ -25,6 +25,7 @@ import { useAllEventData } from "./library/useAllEventData";
 // import { GlobalEvent } from "./components/global-event-timeline/GlobalEvent";
 // import { LocalEvent } from "./components/local-event-timeline/LocalEvent";
 import { usePatchData } from "./library/usePatchData";
+import { useSamplePropagation } from "./library/useSamplePropagation"
 import dataRegistry from "./data/dataRegistry.json";
 // import { SelectedEventWindow } from "./components/selected-event-window/SelectedEventWindow";
 import { RegionSummary } from "./components/region-summary/RegionSummary";
@@ -90,6 +91,10 @@ function App() {
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
 
   const patchData = usePatchData({ patientID: patientInfo.id })
+  const samplePropagationData = useSamplePropagation({
+    patientID: patientInfo.id,
+    sampleID: patientInfo.sample,
+  })
 
   const [barThreshold, setBarThreshold] = useState([0, 70]);
 
@@ -200,10 +205,11 @@ function App() {
                   ) : null}
                 </TabPanel>
                 <TabPanel style={{ padding: '0px' }}>
-                  {fullNetwork && allEventData && electrodeDataCsv && patchData ? (
+                  {fullNetwork && allEventData && electrodeDataCsv && patchData && samplePropagationData ? (
                     <PatchSummary
                       patchData={patchData}
                       data={fullNetwork}
+                      samplePropagationData={samplePropagationData}
                       eventData={allEventData[patientInfo.sample]}
                       eventRange={eventRangeNetwork}
                       selectedRoi={selectedRoi}

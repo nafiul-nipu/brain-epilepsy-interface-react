@@ -81,10 +81,10 @@ function App() {
     sample: patientInfo.sample,
   });
 
-  const fullEventNetwork = useFullNetworkPerEvent({
-    patientID: patientInfo.id,
-    sample: patientInfo.sample,
-  });
+  // const fullEventNetwork = useFullNetworkPerEvent({
+  //   patientID: patientInfo.id,
+  //   sample: patientInfo.sample,
+  // });
 
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
@@ -165,7 +165,6 @@ function App() {
                   time={timeRange}
                   events={allEventData[patientInfo.sample]}
                   allnetworks={fullNetwork}
-                  allnetworksWithEvent={fullEventNetwork}
                   eventid={similarRegionEvent}
                   selectedEventRange={eventRangeNetwork}
                   eegInBrain={eegInBrain}

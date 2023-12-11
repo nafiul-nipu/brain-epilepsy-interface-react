@@ -150,10 +150,10 @@ export const PatchSummary = ({
         <svg width="100%" height={10}>
           <g>
             <text x={0} y={10} fontSize={12} fill="black" textAnchor="start">
-              {`Roi: ${roiKey}`}
+              {`Patch: ${roiKey}`}
             </text>
             <rect
-              x={35}
+              x={50}
               y={0}
               width={roiScale(roiCount[roiKey]) - roiLabelWidth}
               height={10}
@@ -161,7 +161,7 @@ export const PatchSummary = ({
             />
             <title>
               {`
-                Roi : ${roiKey}\n Frequency : ${roiCount[roiKey]}
+                Patch : ${roiKey}\n Frequency : ${roiCount[roiKey]}
             `}
             </title>
           </g>
@@ -170,7 +170,6 @@ export const PatchSummary = ({
           width="100%"
           height="100%"
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-          //   style={{ backgroundColor: roiBackgroundColor[Number(roiKey)], opacity: 1 }}
         >
           {roiMatrix.map((rowArray, rowIndex) => {
             const shift = columnsPerRow - rowArray.length;
@@ -227,7 +226,7 @@ export const PatchSummary = ({
   const ticks = [tickList[0], tickList[tickList.length - 1]];
   // console.log(ticks)
   const maxValue = ticks[ticks.length - 1];
-  const dimension = circleRadius(maxValue) * 2; // height and width of the biggest circle
+  const dimension = circleRadius(maxValue) * 2;
   const DASH_WIDTH = 50;
 
   const circleLegend = ticks.map((tick, i) => {

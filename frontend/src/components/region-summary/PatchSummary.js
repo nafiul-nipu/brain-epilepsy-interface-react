@@ -94,7 +94,7 @@ export const PatchSummary = ({
   const circleRadius = d3
     .scaleLinear()
     .domain([0, maxOccurrence])
-    .range([2, 15]);
+    .range([2, 8]);
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey];

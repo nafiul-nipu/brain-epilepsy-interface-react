@@ -10,7 +10,7 @@ export const useSamplePropagation = ({
 
     useEffect(() => {
         if (patientID && sampleID) {
-            const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/syUpdateBranch/frontend/src/data/electrodes/${patientID}/${sampleID}/${patientID}_${sampleID}_propagation.json`
+            const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/syUpdateBranch/frontend/src/data/electrodes/${patientID}/${sampleID}/${patientID}_${sampleID}_propagation_new.json`
             json(url).then(jData => {
                 setData(jData)
             })

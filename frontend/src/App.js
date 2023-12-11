@@ -91,16 +91,6 @@ function App() {
 
   const patchData = usePatchData({ patientID: patientInfo.id })
 
-  const [barThreshold, setBarThreshold] = useState([0, 70]);
-
-  const [localEventDomain, setLocalEventDomain] = useState([
-    0,
-    globalTimelineRectWidth,
-  ]);
-  const [selectedEventRange, setSelectedEventRange] = useState([
-    0,
-    localTimelineRectWidth,
-  ]);
   // first event time
   const [eventRangeNetwork, setEventRangeNetwork] = useState([103, 113]);
   const [eegPanelRange, seteegPanelRange] = useState([
@@ -109,8 +99,6 @@ function App() {
   ]);
 
   const [selectedRoi, setSelectedRoi] = useState(0);
-
-  const [showAllRoi, setShowAllRoi] = useState(false);
 
   // fist event ID
   const [similarRegionEvent, setSimilarRegionEvent] = useState(1);

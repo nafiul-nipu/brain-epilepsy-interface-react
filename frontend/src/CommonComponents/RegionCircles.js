@@ -16,9 +16,8 @@ export const RegionCircles = ({
     data,
     electrodes,
     sample,
-    sampleCount,
-    currsample
-
+    topPercent,
+    colorTheLine
 }) => {
     return (
         <ChartContainer {...containerProps}>
@@ -27,14 +26,14 @@ export const RegionCircles = ({
                 data={data}
                 electrodes={electrodes}
                 sample={sample}
-                sampleCount={sampleCount}
-                currsample={currsample}
+                topPercent={topPercent}
+                colorTheLine={colorTheLine}
             />
         </ChartContainer>
     );
 };
 
-const RegionWrapper = ({ colorIndex, data, electrodes, sample, sampleCount, currsample }) => {
+const RegionWrapper = ({ colorIndex, data, electrodes, sample, topPercent, colorTheLine }) => {
     // console.log(data)
     // console.log(electrodes)
 
@@ -78,6 +77,38 @@ const RegionWrapper = ({ colorIndex, data, electrodes, sample, sampleCount, curr
     }
 
     // console.log(Object.keys(electrode_positions).length)
+    // console.log(data)
+    const edgeCounter = {}
+    let edges = 0
+    for (const connection of data) {
+        if (connection.network.length === 0) {
+            continue;
+        }
+        for (const network of connection.network) {
+            edges += 1;
+            const source = network.source;
+            const target = network.target;
+            const key = `${source}_${target}`
+            if (key in edgeCounter) {
+                edgeCounter[key] += 1;
+            } else {
+                edgeCounter[key] = 1;
+            }
+        }
+    }
+    // console.log(edgeCounter)
+
+    const sortedEdges = Object.entries(edgeCounter)
+        .sort((a, b) => b[1] - a[1]);
+
+    // console.log(sortedEdges)
+
+    const topCount = Math.ceil(edges * topPercent);
+
+    // Extract the top 5% edges
+    const topEdges = sortedEdges.slice(0, topCount);
+    // console.log("Top", topPercent, "edges:", topEdges);
+
 
     const lineGenerator = d3.line()
         .x(d => electrode_positions[d].x)
@@ -87,30 +118,55 @@ const RegionWrapper = ({ colorIndex, data, electrodes, sample, sampleCount, curr
     const lineColor = d3.scaleSequential(d3.interpolateReds)
         .domain([data[0].index, data[data.length - 1].index])
 
+    const lineWidth = d3.scaleLinear()
+        .domain([sortedEdges[sortedEdges.length - 1][1], sortedEdges[0][1]])
+        .range([0.001, 3])
 
-    // console.log(data)
-    const lines = data.map((connection, i) => {
-        if (connection.network.length === 0) {
-            return null;
-        }
-        let lines = []
-        for (const network of connection.network) {
-            const source = network.source;
-            const target = network.target;
+    let lines = []
+    if (colorTheLine === 'width') {
+        for (const edge of topEdges) {
+            const source = edge[0].split('_')[0];
+            const target = edge[0].split('_')[1];
             const linePath = lineGenerator([source, target]);
             lines.push(
                 <path
-                    key={`${sample}_${i}_${source}_${target}`}
+                    key={`${sample}_${source}_${target}`}
                     d={linePath}
-                    stroke={lineColor(connection.index)}
-                    strokeWidth={0.1}
+                    stroke={'red'}
+                    strokeWidth={lineWidth(edge[1])}
                     fill="none"
                 />
             );
         }
-        return lines;
-    });
+    } else {
+        const edgeLists = topEdges.map(edge => edge[0])
+        // console.log(edgeLists)
+        lines = data.map((connection, i) => {
+            if (connection.network.length === 0) {
+                return null;
+            }
+            let allLines = []
+            for (const network of connection.network) {
+                const source = network.source;
+                const target = network.target;
+                const key = `${source}_${target}`
+                if (edgeLists.includes(key)) {
+                    const linePath = lineGenerator([source, target]);
+                    allLines.push(
+                        <path
+                            key={`${sample}_${i}_${source}_${target}`}
+                            d={linePath}
+                            stroke={lineColor(connection.index)}
+                            strokeWidth={0.1}
+                            fill="none"
+                        />
+                    );
+                }
+            }
+            return allLines;
 
+        })
+    }
 
     return (
         <g>

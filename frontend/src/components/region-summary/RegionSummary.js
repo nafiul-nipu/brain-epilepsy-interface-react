@@ -2,25 +2,27 @@ import { RegionCircles } from "../../CommonComponents/RegionCircles";
 import { Col, Row } from "react-bootstrap";
 import * as d3 from 'd3';
 import './RegionSummary.css'
+import { useState } from "react";
 const rowSize = 3;
 
 export const RegionSummary = ({
     networks,
     sampleName,
-    data,
-    eventData,
-    eventRange,
-    selectedRoi,
     setSelectedRoi,
-    roiCount,
-    roiFilter,
-    setRoiFilter,
     electrodeData
 }) => {
-    // console.log("eventData",eventData);
-    // console.log("eventRange",eventRange);
-    // console.log(electrodeData)
-    // console.log(data)
+
+    const [topPercent, setTopPercent] = useState(0.01)
+    const [colorTheLine, setColorTheLine] = useState('width')
+
+    const topOnChange = (event) => {
+        setTopPercent(event.target.value)
+    }
+
+    const colorOnChange = (event) => {
+        setColorTheLine(event.target.value)
+    }
+
     // data - data to show
     // numRows how many views to show
     const samples = Object.keys(networks);
@@ -49,8 +51,8 @@ export const RegionSummary = ({
         // setRoiFilter(rowStartIndex + index)
     }
     const rows = [...Array(numRows)].map((_, rowIndex) => {
-        const rowStartIndex = rowIndex * rowSize;
-        const rowObjects = regionCiclesData.slice(rowStartIndex, rowStartIndex + rowSize);
+        const rowStartIndex = rowIndex * rowLength;
+        const rowObjects = regionCiclesData.slice(rowStartIndex, rowStartIndex + rowLength);
         // console.log(rowObjects)
         const rowKey = `row-${rowIndex}`;
         // console.log(rowStartIndex, rowObjects, rowKey)
@@ -58,7 +60,7 @@ export const RegionSummary = ({
             <Row key={rowKey}>
                 {rowObjects.map((object, i) => (
                     <Col
-                        md='4'
+                        md={`${12 / rowLength}`}
                         key={i}
                         style={{
                             height: `${34 / numRows}vh`,
@@ -73,6 +75,8 @@ export const RegionSummary = ({
                             electrodes={electrodes}
                             sampleCount={rowLength}
                             currsample={sampleName}
+                            topPercent={topPercent}
+                            colorTheLine={colorTheLine}
                         />
                     </Col>
 
@@ -89,8 +93,26 @@ export const RegionSummary = ({
             className="regionSummaryContainer"
             style={{ height: "35vh", backgroundColor: "#FAFBFC" }}
         >
-            <Row>
-            </Row>
+            {/* Patient dropdown */}
+            <div id="region-topPercent">
+                <label htmlFor="percent">Top:</label>
+                <select id="percent" value={topPercent} onChange={topOnChange}>
+                    <option value="0.01"> 1% </option>
+                    <option value="0.02"> 2% </option>
+                    <option value="0.05"> 5% </option>
+                    <option value="0.1"> 10% </option>
+                </select>
+            </div>
+
+            {/* propagation dropdown */}
+            <div id="region-color">
+                <label htmlFor="color">Color:</label>
+                <select id="color" value={colorTheLine} onChange={colorOnChange}>
+                    <option value="width"> width</option>
+                    <option value="time"> time </option>
+                </select>
+            </div>
+
             <Row>
                 <Col md="12" style={{ height: "35vh" }}>
                     <>{rows}</>

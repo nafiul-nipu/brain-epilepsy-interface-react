@@ -12,7 +12,6 @@ const containerProps = {
     mt: 10,
 };
 export const RegionCircles = ({
-    colorIndex,
     data,
     electrodes,
     sample,
@@ -22,7 +21,6 @@ export const RegionCircles = ({
     return (
         <ChartContainer {...containerProps}>
             <RegionWrapper
-                colorIndex={colorIndex}
                 data={data}
                 electrodes={electrodes}
                 sample={sample}
@@ -33,7 +31,7 @@ export const RegionCircles = ({
     );
 };
 
-const RegionWrapper = ({ colorIndex, data, electrodes, sample, topPercent, colorTheLine }) => {
+const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine }) => {
     // console.log(data)
     // console.log(electrodes)
 
@@ -128,7 +126,7 @@ const RegionWrapper = ({ colorIndex, data, electrodes, sample, topPercent, color
 
     // console.log(electrodes)
     // console.log(electrode_positions)
-    console.log(topEdges)
+    // console.log(topEdges)
     let lines = []
     if (colorTheLine === 'width') {
         for (const edge of topEdges) {

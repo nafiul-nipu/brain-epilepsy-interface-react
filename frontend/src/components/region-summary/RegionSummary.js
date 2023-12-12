@@ -63,8 +63,8 @@ export const RegionSummary = ({
                     <Row>
                         {
                             Object.keys(networks).map((sample, index) => {
-                                console.log(sample)
-                                console.log(index)
+                                // console.log(sample)
+                                // console.log(index)
                                 const rowLength = Object.keys(networks).length;
                                 return (
                                     <Col
@@ -78,7 +78,6 @@ export const RegionSummary = ({
                                     >
                                         <RegionCircles
                                             sample={sample}
-                                            colorIndex={index}
                                             data={networks[sample]}
                                             electrodes={electrodeData.map((obj) => obj.electrode_number)}
                                             sampleCount={rowLength}

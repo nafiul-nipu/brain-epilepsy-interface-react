@@ -94,7 +94,7 @@ export const PatchSummary = ({
   const circleRadius = d3
     .scaleLinear()
     .domain([0, maxOccurrence])
-    .range([2, 8]);
+    .range([2, 12]);
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey];
@@ -174,6 +174,14 @@ export const PatchSummary = ({
                   : propagationCounts.source_counts /
                     (propagationCounts.source_counts +
                       propagationCounts.target_counts);
+              const targetRatio =
+                propagationCounts.source_counts +
+                  propagationCounts.target_counts ===
+                0
+                  ? 0
+                  : propagationCounts.target_counts /
+                    (propagationCounts.source_counts +
+                      propagationCounts.target_counts);
               return (
                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
                   <circle
@@ -206,7 +214,7 @@ export const PatchSummary = ({
                     <circle
                       r={circleRadius(electrodeValue) + 5}
                       fill="none"
-                      stroke={sourceRatio === 0 ? "grey" : "#5e4fa2"}
+                      stroke={sourceRatio === 0 && targetRatio === 0 ? "grey" : "#5e4fa2"}
                       strokeWidth="10"
                     />
                     {sourceRatio > 0 && (
@@ -217,6 +225,21 @@ export const PatchSummary = ({
                         strokeWidth="10"
                         strokeDasharray={`${
                           sourceRatio.toFixed(2) *
+                          3.14 *
+                          2 *
+                          (circleRadius(electrodeValue) + 5)
+                        } 100`}
+                        transform={`rotate(-90)`}
+                      />
+                    )}
+                    {targetRatio > 0 && sourceRatio == 0 && (
+                      <circle
+                        r={circleRadius(electrodeValue) + 5}
+                        fill="none"
+                        stroke="#5e4fa2"
+                        strokeWidth="10"
+                        strokeDasharray={`${
+                          targetRatio.toFixed(2) *
                           3.14 *
                           2 *
                           (circleRadius(electrodeValue) + 5)

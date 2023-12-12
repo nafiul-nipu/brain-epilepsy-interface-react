@@ -36,6 +36,7 @@ import { PatchSummary } from "./components/region-summary/PatchSummary";
 // import { ExplorationSoFar } from "./components/previous components/exploration-so-far/ExplorationSoFar";
 // import { BrainViewer } from "./components/brain-viewer/BrainViewer";
 import { useCommunity } from "./library/useCommunity";
+import { useAllNetwork } from "./library/useAllNetwork";
 
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
@@ -80,6 +81,10 @@ function App() {
     patientID: patientInfo.id,
     sample: patientInfo.sample,
   });
+
+  const allNetwork = useAllNetwork({ patientID: patientInfo.id });
+
+  // console.log(allNetwork)
 
   // const fullEventNetwork = useFullNetworkPerEvent({
   //   patientID: patientInfo.id,
@@ -172,8 +177,10 @@ function App() {
                 <TabPanel style={{ padding: '0px' }}>
                   {/* region - 35vh */}
                   {/* this will be 2D similar view */}
-                  {fullNetwork && allEventData && electrodeDataCsv ? (
+                  {allNetwork && fullNetwork && allEventData && electrodeDataCsv ? (
                     <RegionSummary
+                      networks={allNetwork}
+                      sampleName={patientInfo.sample}
                       data={fullNetwork}
                       eventData={allEventData[patientInfo.sample]}
                       eventRange={eventRangeNetwork}

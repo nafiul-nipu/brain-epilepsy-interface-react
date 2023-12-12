@@ -2,8 +2,6 @@ import { Col, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import * as d3 from "d3";
 
-const rowSize = 3;
-
 export const PatchSummary = ({
   data,
   patchData,
@@ -12,21 +10,11 @@ export const PatchSummary = ({
   selectedRoi,
   setSelectedRoi,
   roiCount,
+  samplePropagationData,
   roiFilter,
   setRoiFilter,
   electrodeData,
 }) => {
-  const roiBackgroundColor = [
-    "#1f77b4",
-    "#ff7f0e",
-    "#2ca02c",
-    "#d62728",
-    "#9467bd",
-    "#8c564b",
-    "#e377c2",
-    "#bfa3a3",
-  ];
-
   const electrodeColorList = [
     "#57B4DB",
     "#E7AC5C",
@@ -43,16 +31,19 @@ export const PatchSummary = ({
     x: 0,
     y: 0,
   });
-  // data is the all electrodes
-  const numRows = Math.ceil((data.length - 1) / rowSize);
 
   // tooltip controller
-  const handleMouseEnter = (electrodeId, electrodeValue, e) => {
+  const handleMouseEnter = (
+    electrodeId,
+    electrodeValue,
+    propagationCounts,
+    e
+  ) => {
     setTooltip({
       visible: true,
-      content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue}`,
-      x: e.clientX,
-      y: e.clientY,
+      content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue}\n Source\u00A0counts: ${propagationCounts.source_counts}\n Target\u00A0counts: ${propagationCounts.target_counts}`,
+      x: e.clientX + 20,
+      y: e.clientY - 20,
     });
   };
   function patchOnClick(roi) {
@@ -65,6 +56,9 @@ export const PatchSummary = ({
 
   // For getting each electrode frequency
   const processedPatchData = {};
+  const maxPropagationCounts = samplePropagationData.reduce((max, current) => {
+    return current.propagation > max ? current.propagation : max;
+  }, 0);
 
   for (const key in patchData) {
     if (patchData.hasOwnProperty(key)) {
@@ -100,7 +94,7 @@ export const PatchSummary = ({
   const circleRadius = d3
     .scaleLinear()
     .domain([0, maxOccurrence])
-    .range([2, 15]);
+    .range([2, 12]);
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey];
@@ -125,7 +119,7 @@ export const PatchSummary = ({
         md="4"
         key={roiKey}
         style={{
-          height: `${30 / numRows}vh`,
+          height: "30vh",
           backgroundColor:
             selectedRoi === Number(roiKey)
               ? "rgba(202, 204, 202, 0.4)"
@@ -136,10 +130,10 @@ export const PatchSummary = ({
         <svg width="100%" height={10}>
           <g>
             <text x={0} y={10} fontSize={12} fill="black" textAnchor="start">
-              {`Roi: ${roiKey}`}
+              {`Patch: ${roiKey}`}
             </text>
             <rect
-              x={35}
+              x={50}
               y={0}
               width={roiScale(roiCount[roiKey]) - roiLabelWidth}
               height={10}
@@ -147,7 +141,7 @@ export const PatchSummary = ({
             />
             <title>
               {`
-                Roi : ${roiKey}\n Frequency : ${roiCount[roiKey]}
+                Patch : ${roiKey}\n Frequency : ${roiCount[roiKey]}
             `}
             </title>
           </g>
@@ -156,29 +150,104 @@ export const PatchSummary = ({
           width="100%"
           height="100%"
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-        //   style={{ backgroundColor: roiBackgroundColor[Number(roiKey)], opacity: 1 }}
         >
           {roiMatrix.map((rowArray, rowIndex) => {
             const shift = columnsPerRow - rowArray.length;
             return rowArray.map((electrodeObj, columnIndex) => {
               const electrodeId = Object.keys(electrodeObj)[0];
+              const electrodePropagation = samplePropagationData.find(
+                (e) => e.electrode_id == electrodeId
+              );
+              const propagationCounts = electrodePropagation
+                ? electrodePropagation
+                : { source_counts: 0, target_counts: 0 };
+
               const electrodeValue = electrodeObj[electrodeId];
 
               const cx = 25 + 50 * (columnIndex + shift);
               const cy = 25 + 50 * rowIndex + roiLabelHeight;
-
+              const sourceRatio =
+                propagationCounts.source_counts +
+                  propagationCounts.target_counts ===
+                0
+                  ? 0
+                  : propagationCounts.source_counts /
+                    (propagationCounts.source_counts +
+                      propagationCounts.target_counts);
+              const targetRatio =
+                propagationCounts.source_counts +
+                  propagationCounts.target_counts ===
+                0
+                  ? 0
+                  : propagationCounts.target_counts /
+                    (propagationCounts.source_counts +
+                      propagationCounts.target_counts);
               return (
                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
                   <circle
                     cx={cx}
                     cy={cy}
-                    onMouseEnter={(e) =>
-                      handleMouseEnter(electrodeId, electrodeValue, e)
-                    }
-                    onMouseLeave={handleMouseLeave}
                     r={circleRadius(electrodeValue)}
                     fill={fillColor}
+                    onMouseEnter={(e) =>
+                      handleMouseEnter(
+                        electrodeId,
+                        electrodeValue,
+                        propagationCounts,
+                        e
+                      )
+                    }
+                    onMouseLeave={handleMouseLeave}
                   />
+                  <g
+                    transform={`translate(${cx},${cy})`}
+                    onMouseEnter={(e) =>
+                      handleMouseEnter(
+                        electrodeId,
+                        electrodeValue,
+                        propagationCounts,
+                        e
+                      )
+                    }
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <circle
+                      r={circleRadius(electrodeValue) + 5}
+                      fill="none"
+                      stroke={sourceRatio === 0 && targetRatio === 0 ? "grey" : "#5e4fa2"}
+                      strokeWidth="10"
+                    />
+                    {sourceRatio > 0 && (
+                      <circle
+                        r={circleRadius(electrodeValue) + 5}
+                        fill="none"
+                        stroke="#9e0142"
+                        strokeWidth="10"
+                        strokeDasharray={`${
+                          sourceRatio.toFixed(2) *
+                          3.14 *
+                          2 *
+                          (circleRadius(electrodeValue) + 5)
+                        } 100`}
+                        transform={`rotate(-90)`}
+                      />
+                    )}
+                    {targetRatio > 0 && sourceRatio == 0 && (
+                      <circle
+                        r={circleRadius(electrodeValue) + 5}
+                        fill="none"
+                        stroke="#5e4fa2"
+                        strokeWidth="10"
+                        strokeDasharray={`${
+                          targetRatio.toFixed(2) *
+                          3.14 *
+                          2 *
+                          (circleRadius(electrodeValue) + 5)
+                        } 100`}
+                        transform={`rotate(-90)`}
+                      />
+                    )}
+                  </g>
                 </g>
               );
             });
@@ -192,7 +261,7 @@ export const PatchSummary = ({
   const ticks = [tickList[0], tickList[tickList.length - 1]];
   // console.log(ticks)
   const maxValue = ticks[ticks.length - 1];
-  const dimension = circleRadius(maxValue) * 2; // height and width of the biggest circle
+  const dimension = circleRadius(maxValue) * 2;
   const DASH_WIDTH = 50;
 
   const circleLegend = ticks.map((tick, i) => {
@@ -225,6 +294,16 @@ export const PatchSummary = ({
         >
           {tick}
         </text>
+        <g>
+          <rect x={200} y={0} fill="#9e0142" width={10} height={10} />
+          <text x={220} y={5} fontSize={10} alignmentBaseline="middle">
+            Source counts
+          </text>
+          <rect x={200} y={20} fill="#5e4fa2" width={10} height={10} />
+          <text x={220} y={25} fontSize={10} alignmentBaseline="middle">
+            Target counts
+          </text>
+        </g>
       </g>
     );
   });
@@ -250,19 +329,20 @@ export const PatchSummary = ({
           </Row>
         </Col>
       </Row>
-      <Row>
+      <Row style={{ height: "35vh", overflowY: "auto" }}>
         <>{rows}</>
         {tooltip.visible && (
           <div
             style={{
-              width: 150,
+              width: 180,
               position: "absolute",
               left: `${tooltip.x}px`,
-              top: `${tooltip.y}px`,
+              top: `${tooltip.y - 20}px`,
               backgroundColor: "white",
               border: "1px solid black",
               padding: "5px",
               pointerEvents: "none",
+              fontSize: "14px",
             }}
           >
             {tooltip.content}

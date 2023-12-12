@@ -43,7 +43,7 @@ export const PatchSummary = ({
       visible: true,
       content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue}\n Source\u00A0counts: ${propagationCounts.source_counts}\n Target\u00A0counts: ${propagationCounts.target_counts}`,
       x: e.clientX + 20,
-      y: e.clientY,
+      y: e.clientY - 20,
     });
   };
   function patchOnClick(roi) {
@@ -191,7 +191,18 @@ export const PatchSummary = ({
                     }
                     onMouseLeave={handleMouseLeave}
                   />
-                  <g transform={`translate(${cx},${cy})`}>
+                  <g
+                    transform={`translate(${cx},${cy})`}
+                    onMouseEnter={(e) =>
+                      handleMouseEnter(
+                        electrodeId,
+                        electrodeValue,
+                        propagationCounts,
+                        e
+                      )
+                    }
+                    onMouseLeave={handleMouseLeave}
+                  >
                     <circle
                       r={circleRadius(electrodeValue) + 5}
                       fill="none"

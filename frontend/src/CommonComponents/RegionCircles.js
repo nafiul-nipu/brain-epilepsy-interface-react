@@ -118,8 +118,12 @@ const RegionWrapper = ({ colorIndex, data, electrodes, sample, topPercent, color
     const lineColor = d3.scaleSequential(d3.interpolateReds)
         .domain([data[0].index, data[data.length - 1].index])
 
+    // const lineWidth = d3.scaleLinear()
+    //     .domain([sortedEdges[sortedEdges.length - 1][1], sortedEdges[0][1]])
+    //     .range([0.001, 3])
+
     const lineWidth = d3.scaleLinear()
-        .domain([sortedEdges[sortedEdges.length - 1][1], sortedEdges[0][1]])
+        .domain([topEdges[topEdges.length - 1][1], topEdges[0][1]])
         .range([0.001, 3])
 
     let lines = []

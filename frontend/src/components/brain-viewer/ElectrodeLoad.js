@@ -1,10 +1,9 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { Color, Object3D } from "three";
-import { extent, scaleLinear, max } from "d3";
 
 const object = new Object3D();
 
-const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#a6cee3', '#fb9a99', '#fdbf6f'];
+const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
 const catColor = {
     1: "#00A5E3",
     2: "#8DD7BF",

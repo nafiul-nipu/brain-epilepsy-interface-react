@@ -2,7 +2,7 @@ import React from 'react';
 import * as d3 from 'd3';
 import ChartContainer, { useChartContext } from '../components/chart-container/chart-container';
 
-const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3'];
+const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
 
 const containerProps = {
     useZoom: false,
@@ -16,7 +16,9 @@ export const RegionCircles = ({
     electrodes,
     sample,
     topPercent,
-    colorTheLine
+    colorTheLine,
+    show,
+    labels
 }) => {
     return (
         <ChartContainer {...containerProps}>
@@ -26,12 +28,14 @@ export const RegionCircles = ({
                 sample={sample}
                 topPercent={topPercent}
                 colorTheLine={colorTheLine}
+                show={show}
+                labels={labels}
             />
         </ChartContainer>
     );
 };
 
-const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine }) => {
+const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, show, labels }) => {
     // console.log(data)
     // console.log(electrodes)
 
@@ -62,7 +66,7 @@ const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine }) =
                             cx={10 + j * (circleSpacing + 2 * 10)}
                             cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
                             r={5}
-                            fill={`#1f77b4`}
+                            fill={show === true ? colorslist[labels[circleIndex]] : `#1f77b4`}
                         />
                         <title>{`
                         Electrode : E${electrodes[circleIndex]}

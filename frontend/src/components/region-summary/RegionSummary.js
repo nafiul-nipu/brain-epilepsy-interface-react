@@ -3,6 +3,9 @@ import { Col, Row } from "react-bootstrap";
 import * as d3 from 'd3';
 import './RegionSummary.css'
 import { useEffect, useMemo, useState } from "react";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+
+
 const rowSize = 3;
 
 export const RegionSummary = ({
@@ -14,6 +17,12 @@ export const RegionSummary = ({
 
     const [topPercent, setTopPercent] = useState(0.01)
     const [colorTheLine, setColorTheLine] = useState('width')
+
+    const [isVisible, setIsVisible] = useState(false);
+
+    const handleClick = () => {
+        setIsVisible((prev) => !prev);
+    };
 
     const topOnChange = (event) => {
         setTopPercent(event.target.value)
@@ -38,6 +47,9 @@ export const RegionSummary = ({
             className="regionSummaryContainer"
             style={{ height: "35vh", backgroundColor: "#FAFBFC" }}
         >
+            <div onClick={handleClick} id="viewPatch">
+                {isVisible ? <IoEyeOutline size={20} /> : <IoEyeOffOutline size={20} />}
+            </div>
             {/* Patient dropdown */}
             <div id="region-topPercent">
                 <label htmlFor="percent">Top:</label>
@@ -84,6 +96,8 @@ export const RegionSummary = ({
                                             currsample={sampleName}
                                             topPercent={topPercent}
                                             colorTheLine={colorTheLine}
+                                            show={isVisible}
+                                            labels={electrodeData.map((obj) => obj.label)}
                                         />
                                     </Col>
                                 )

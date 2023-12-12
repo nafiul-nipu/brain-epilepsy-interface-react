@@ -41,8 +41,8 @@ export const PatchSummary = ({
   ) => {
     setTooltip({
       visible: true,
-      content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue} \n Source counts: ${propagationCounts.source_counts} \n Target counts: ${propagationCounts.target_counts}`,
-      x: e.clientX,
+      content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue}\n Source\u00A0counts: ${propagationCounts.source_counts}\n Target\u00A0counts: ${propagationCounts.target_counts}`,
+      x: e.clientX + 20,
       y: e.clientY,
     });
   };
@@ -166,7 +166,14 @@ export const PatchSummary = ({
 
               const cx = 25 + 50 * (columnIndex + shift);
               const cy = 25 + 50 * rowIndex + roiLabelHeight;
-
+              const sourceRatio =
+                propagationCounts.source_counts +
+                  propagationCounts.target_counts ===
+                0
+                  ? 0
+                  : propagationCounts.source_counts /
+                    (propagationCounts.source_counts +
+                      propagationCounts.target_counts);
               return (
                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
                   <circle
@@ -188,22 +195,24 @@ export const PatchSummary = ({
                     <circle
                       r={circleRadius(electrodeValue) + 5}
                       fill="none"
-                      stroke="#9e0142"
+                      stroke={sourceRatio === 0 ? "grey" : "#5e4fa2"}
                       strokeWidth="10"
                     />
-                    <circle
-                      r={circleRadius(electrodeValue) + 5}
-                      fill="none"
-                      stroke="#5e4fa2"
-                      strokeWidth="10"
-                      strokeDasharray={`${(
-                        (propagationCounts.source_counts /
-                          (propagationCounts.source_counts +
-                            propagationCounts.target_counts)) *
-                        100
-                      ).toFixed(2)} 100`}
-                      transform={`rotate(-90)`}
-                    />
+                    {sourceRatio > 0 && (
+                      <circle
+                        r={circleRadius(electrodeValue) + 5}
+                        fill="none"
+                        stroke="#9e0142"
+                        strokeWidth="10"
+                        strokeDasharray={`${
+                          sourceRatio.toFixed(2) *
+                          3.14 *
+                          2 *
+                          (circleRadius(electrodeValue) + 5)
+                        } 100`}
+                        transform={`rotate(-90)`}
+                      />
+                    )}
                   </g>
                 </g>
               );
@@ -291,7 +300,7 @@ export const PatchSummary = ({
         {tooltip.visible && (
           <div
             style={{
-              width: 150,
+              width: 180,
               position: "absolute",
               left: `${tooltip.x}px`,
               top: `${tooltip.y - 20}px`,

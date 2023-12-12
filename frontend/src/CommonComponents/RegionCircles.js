@@ -64,7 +64,7 @@ const RegionWrapper = ({ colorIndex, data, electrodes, sample, topPercent, color
                             cx={10 + j * (circleSpacing + 2 * 10)}
                             cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
                             r={5}
-                            fill={`${colorslist[colorIndex]}`}
+                            fill={`#1f77b4`}
                         />
                         <title>{`
                         Electrode : E${electrodes[circleIndex]}
@@ -111,8 +111,8 @@ const RegionWrapper = ({ colorIndex, data, electrodes, sample, topPercent, color
 
 
     const lineGenerator = d3.line()
-        .x(d => electrode_positions[d].x)
-        .y(d => electrode_positions[d].y)
+        .x(d => electrode_positions[d] ? electrode_positions[d].x : 0)
+        .y(d => electrode_positions[d] ? electrode_positions[d].y : 0)
         .curve(d3.curveLinear);
 
     const lineColor = d3.scaleSequential(d3.interpolateReds)
@@ -126,11 +126,16 @@ const RegionWrapper = ({ colorIndex, data, electrodes, sample, topPercent, color
         .domain([topEdges[topEdges.length - 1][1], topEdges[0][1]])
         .range([0.001, 3])
 
+    // console.log(electrodes)
+    // console.log(electrode_positions)
+    console.log(topEdges)
     let lines = []
     if (colorTheLine === 'width') {
         for (const edge of topEdges) {
             const source = edge[0].split('_')[0];
             const target = edge[0].split('_')[1];
+            // console.log(source, target)
+            // console.log(electrode_positions[source], electrode_positions[target])
             const linePath = lineGenerator([source, target]);
             lines.push(
                 <path
@@ -182,9 +187,9 @@ const RegionWrapper = ({ colorIndex, data, electrodes, sample, topPercent, color
                 y={0}
                 width={dimensions.boundedWidth}
                 height={dimensions.boundedHeight}
-                fill={`${colorslist[colorIndex]}`}
+                fill={`#dddddd`}
                 opacity={0.2}
-                stroke="black"
+            // stroke="black"
             />
             {lines}
             {rows}

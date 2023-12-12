@@ -2,7 +2,7 @@ import { RegionCircles } from "../../CommonComponents/RegionCircles";
 import { Col, Row } from "react-bootstrap";
 import * as d3 from 'd3';
 import './RegionSummary.css'
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 const rowSize = 3;
 
 export const RegionSummary = ({
@@ -22,70 +22,15 @@ export const RegionSummary = ({
     const colorOnChange = (event) => {
         setColorTheLine(event.target.value)
     }
-
-    // data - data to show
-    // numRows how many views to show
-    const samples = Object.keys(networks);
-    const rowLength = samples.length;
-    const numRows = Math.ceil((rowLength - 1) / rowSize);
-    // console.log(rowLength)
-
-    const electrodes = electrodeData.map((obj) => obj.electrode_number);
-
-    // console.log(filteredData)
-    // console.log("regionsummary", data)
-    // console.log(roiCount)
-
-    const regionCiclesData = [];
-    for (let i = 0; i < rowLength; i++) {
-        const result = networks[samples[i]]
-        regionCiclesData.push(result);
-    }
-
-    // console.log(regionCiclesData)
-    // console.log(radiusDomain)
+    // console.log(networks)
+    // console.log(sampleName)
+    // console.log(electrodeData)
 
     function summaryOnClick(index, rowStartIndex) {
         // console.log('clicked', rowStartIndex + index)
         setSelectedRoi(rowStartIndex + index)
         // setRoiFilter(rowStartIndex + index)
     }
-    const rows = [...Array(numRows)].map((_, rowIndex) => {
-        const rowStartIndex = rowIndex * rowLength;
-        const rowObjects = regionCiclesData.slice(rowStartIndex, rowStartIndex + rowLength);
-        // console.log(rowObjects)
-        const rowKey = `row-${rowIndex}`;
-        // console.log(rowStartIndex, rowObjects, rowKey)
-        return (
-            <Row key={rowKey}>
-                {rowObjects.map((object, i) => (
-                    <Col
-                        md={`${12 / rowLength}`}
-                        key={i}
-                        style={{
-                            height: `${34 / numRows}vh`,
-                            backgroundColor: sampleName === samples[i] ? "rgba(202, 204, 202, 0.4)" : "white",
-                        }}
-                        onClick={() => summaryOnClick(i, rowStartIndex)}
-                    >
-                        <RegionCircles
-                            sample={samples[i]}
-                            colorIndex={i}
-                            data={object}
-                            electrodes={electrodes}
-                            sampleCount={rowLength}
-                            currsample={sampleName}
-                            topPercent={topPercent}
-                            colorTheLine={colorTheLine}
-                        />
-                    </Col>
-
-                ))
-                }
-            </Row >
-        );
-    });
-
 
     return (
         <Col
@@ -115,7 +60,37 @@ export const RegionSummary = ({
 
             <Row>
                 <Col md="12" style={{ height: "35vh" }}>
-                    <>{rows}</>
+                    <Row>
+                        {
+                            Object.keys(networks).map((sample, index) => {
+                                console.log(sample)
+                                console.log(index)
+                                const rowLength = Object.keys(networks).length;
+                                return (
+                                    <Col
+                                        md={`${12 / rowLength}`}
+                                        key={index}
+                                        style={{
+                                            height: `${34 / Math.ceil((rowLength - 1) / rowSize)}vh`,
+                                            backgroundColor: sampleName === sample ? "rgba(202, 204, 202, 0.4)" : "white",
+                                        }}
+                                        onClick={() => summaryOnClick(index, 0)}
+                                    >
+                                        <RegionCircles
+                                            sample={sample}
+                                            colorIndex={index}
+                                            data={networks[sample]}
+                                            electrodes={electrodeData.map((obj) => obj.electrode_number)}
+                                            sampleCount={rowLength}
+                                            currsample={sampleName}
+                                            topPercent={topPercent}
+                                            colorTheLine={colorTheLine}
+                                        />
+                                    </Col>
+                                )
+                            })
+                        }
+                    </Row>
                 </Col>
             </Row>
         </Col>

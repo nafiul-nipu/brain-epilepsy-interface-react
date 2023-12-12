@@ -48,7 +48,7 @@ export const RegionSummary = ({
             style={{ height: "35vh", backgroundColor: "#FAFBFC" }}
         >
             <div onClick={handleClick} id="viewPatch">
-                {isVisible ? <IoEyeOutline size={20} /> : <IoEyeOffOutline size={20} />}
+                <span style={{ marginRight: '5px' }}>View Patch</span> {isVisible ? <IoEyeOutline size={20} /> : <IoEyeOffOutline size={20} />}
             </div>
             {/* Patient dropdown */}
             <div id="region-topPercent">

@@ -4,7 +4,7 @@ import { extent, scaleLinear, max } from "d3";
 
 const object = new Object3D();
 
-const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3'];
+const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#a6cee3', '#fb9a99', '#fdbf6f'];
 const catColor = {
     1: "#00A5E3",
     2: "#8DD7BF",
@@ -59,17 +59,12 @@ export const ElectrodeLoad = ({
         if (!isMountedRef.current) return;
         if (buttonValue === 'Pause') return;
         if (visualPanel === 'Patches') {
+            console.log(electrodeData)
             // console.log("patches")
             electrodeData.forEach((electrode, index) => {
+                meshRef.current.setColorAt(index, new Color(colorslist[electrode.label]));
+                object.scale.set(1, 1, 1)
 
-                allnetwork.forEach((network, netIndex) => {
-                    if (network.roi !== "roi"
-                        && network.electrodes.includes(electrode['electrode_number'])
-                    ) {
-                        meshRef.current.setColorAt(index, new Color(colorslist[netIndex]));
-                        object.scale.set(1, 1, 1)
-                    }
-                })
                 object.position.set(
                     electrode.position[0],
                     electrode.position[1],

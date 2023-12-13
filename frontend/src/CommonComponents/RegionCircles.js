@@ -2,7 +2,7 @@ import React from 'react';
 import * as d3 from 'd3';
 import ChartContainer, { useChartContext } from '../components/chart-container/chart-container';
 
-const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3'];
+const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
 
 const containerProps = {
     useZoom: false,
@@ -13,47 +13,40 @@ const containerProps = {
 };
 export const RegionCircles = ({
     data,
-    circleRadius,
-    roi,
-    roiCount,
-    roiFilter,
-    setRoiFilter,
-    electrodeData,
-    eventNetworkData
+    electrodes,
+    sample,
+    topPercent,
+    colorTheLine,
+    show,
+    labels
 }) => {
     return (
         <ChartContainer {...containerProps}>
             <RegionWrapper
                 data={data}
-                circleRadius={circleRadius}
-                roi={roi}
-                roiCount={roiCount}
-                roiFilter={roiFilter}
-                setRoiFilter={setRoiFilter}
-                electrodeData={electrodeData}
-                eventNetworkData={eventNetworkData}
+                electrodes={electrodes}
+                sample={sample}
+                topPercent={topPercent}
+                colorTheLine={colorTheLine}
+                show={show}
+                labels={labels}
             />
         </ChartContainer>
     );
 };
 
-const RegionWrapper = ({ data, eventNetworkData, circleRadius, roi, roiCount, roiFilter, electrodeData, setRoiFilter }) => {
+const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, show, labels }) => {
+    // console.log(data)
+    // console.log(electrodes)
 
-    const filteredObjects = electrodeData.filter((obj) =>
-        data.activeElectrode.includes(obj.electrode_number)
-    );
     // console.log(filteredObjects)
 
     const dimensions = useChartContext();
 
     const circlesPerRow = 8;
-    const count = data.activeElectrode.length;
+    const count = electrodes.length;
     const circleSpacing = (dimensions.boundedWidth - 2 * 10 * circlesPerRow) / (circlesPerRow - 1);
     const numRows = Math.ceil(count / circlesPerRow);
-
-    const roiScale = d3.scaleLinear()
-        .domain([0, d3.max(roiCount)])
-        .range([0, dimensions.boundedWidth - 40]);
 
     const electrode_positions = {}
     const rows = [];
@@ -62,21 +55,21 @@ const RegionWrapper = ({ data, eventNetworkData, circleRadius, roi, roiCount, ro
         for (let j = 0; j < circlesPerRow; j++) {
             const circleIndex = i * circlesPerRow + j;
             if (circleIndex < count) {
-                electrode_positions[data.activeElectrode[circleIndex]] = {
+                electrode_positions[electrodes[circleIndex]] = {
                     "x": 10 + j * (circleSpacing + 2 * 10),
                     "y": (i + 0.5) * (dimensions.boundedHeight / numRows)
                 }
                 circles.push(
-                    <g key={`${i}_${j}`}>
+                    <g key={`${sample}_${i}_${j}`}>
                         <circle
                             key={circleIndex}
                             cx={10 + j * (circleSpacing + 2 * 10)}
                             cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
                             r={5}
-                            fill={`${colorslist[roi]}`}
+                            fill={show === true ? colorslist[labels[circleIndex]] : `#1f77b4`}
                         />
                         <title>{`
-                        Electrode : E${data.activeElectrode[circleIndex]}\nFrequency : ${data.frequency[circleIndex]}
+                        Electrode : E${electrodes[circleIndex]}
                     `}</title>
                     </g>
                 );
@@ -85,84 +78,121 @@ const RegionWrapper = ({ data, eventNetworkData, circleRadius, roi, roiCount, ro
         rows.push(<g key={i}>{circles}</g>);
     }
 
-    // console.log(electrode_positions)
+    // console.log(Object.keys(electrode_positions).length)
+    // console.log(data)
+    const edgeCounter = {}
+    let edges = 0
+    for (const connection of data) {
+        if (connection.network.length === 0) {
+            continue;
+        }
+        for (const network of connection.network) {
+            edges += 1;
+            const source = network.source;
+            const target = network.target;
+            const key = `${source}_${target}`
+            if (key in edgeCounter) {
+                edgeCounter[key] += 1;
+            } else {
+                edgeCounter[key] = 1;
+            }
+        }
+    }
+    // console.log(edgeCounter)
+
+    const sortedEdges = Object.entries(edgeCounter)
+        .sort((a, b) => b[1] - a[1]);
+
+    // console.log(sortedEdges)
+
+    const topCount = Math.ceil(edges * topPercent);
+
+    // Extract the top 5% edges
+    const topEdges = sortedEdges.slice(0, topCount);
+    // console.log("Top", topPercent, "edges:", topEdges);
+
 
     const lineGenerator = d3.line()
-        .x(d => electrode_positions[d].x)
-        .y(d => electrode_positions[d].y)
+        .x(d => electrode_positions[d] ? electrode_positions[d].x : 0)
+        .y(d => electrode_positions[d] ? electrode_positions[d].y : 0)
         .curve(d3.curveLinear);
 
-    // console.log(eventNetworkData)
-    const lines = eventNetworkData.map((connection, i) => {
-        const connectionNetworkSource = connection.network.map(item => item.source);
-        const connectionNetworkTarget = connection.network.map(item => item.target);
+    const lineColor = d3.scaleSequential(d3.interpolateReds)
+        .domain([data[0].index, data[data.length - 1].index])
 
-        // Flatten the arrays
-        const flattenedSource = connectionNetworkSource.flat();
-        const flattenedTarget = connectionNetworkTarget.flat();
+    // const lineWidth = d3.scaleLinear()
+    //     .domain([sortedEdges[sortedEdges.length - 1][1], sortedEdges[0][1]])
+    //     .range([0.001, 3])
 
-        const sourceObjects = filteredObjects.filter(obj => flattenedSource.includes(obj.electrode_number));
-        const targetObjects = filteredObjects.filter(obj => flattenedTarget.includes(obj.electrode_number));
+    const lineWidth = d3.scaleLinear()
+        .domain([topEdges[topEdges.length - 1][1], topEdges[0][1]])
+        .range([0.001, 3])
 
-        // Add these lines for debugging
-        // console.log('Connection:', connection);
-        // console.log('Filtered Objects:', filteredObjects);
-        // console.log('Source Objects:', sourceObjects);
-        // console.log('Target Objects:', targetObjects);
-
-        // Check if source and target are not empty before proceeding
-        if (sourceObjects.length > 0 && targetObjects.length > 0) {
-            // Create a line for every pair of points
-            const lines = [];
-            for (const source of sourceObjects) {
-                // console.log(source);
-                for (const target of targetObjects) {
-                    // console.log(target)
-                    // Use the lineGenerator to create a line path
-                    const linePath = lineGenerator([source.electrode_number, target.electrode_number]);
-                    lines.push(
+    // console.log(electrodes)
+    // console.log(electrode_positions)
+    // console.log(topEdges)
+    let lines = []
+    if (colorTheLine === 'width') {
+        for (const edge of topEdges) {
+            const source = edge[0].split('_')[0];
+            const target = edge[0].split('_')[1];
+            // console.log(source, target)
+            // console.log(electrode_positions[source], electrode_positions[target])
+            const linePath = lineGenerator([source, target]);
+            lines.push(
+                <path
+                    key={`${sample}_${source}_${target}`}
+                    d={linePath}
+                    stroke={'red'}
+                    strokeWidth={lineWidth(edge[1])}
+                    fill="none"
+                />
+            );
+        }
+    } else {
+        const edgeLists = topEdges.map(edge => edge[0])
+        // console.log(edgeLists)
+        lines = data.map((connection, i) => {
+            if (connection.network.length === 0) {
+                return null;
+            }
+            let allLines = []
+            for (const network of connection.network) {
+                const source = network.source;
+                const target = network.target;
+                const key = `${source}_${target}`
+                if (edgeLists.includes(key)) {
+                    const linePath = lineGenerator([source, target]);
+                    allLines.push(
                         <path
-                            key={`${source.electrode_number}_${target.electrode_number}`}
+                            key={`${sample}_${i}_${source}_${target}`}
                             d={linePath}
-                            stroke="gray"
+                            stroke={lineColor(connection.index)}
                             strokeWidth={0.1}
                             fill="none"
                         />
                     );
                 }
             }
-            return lines;
-        } else {
-            return null;
-        }
-    });
+            return allLines;
 
+        })
+    }
 
     return (
         <g>
             <text x={0} y={-1} fontSize={12} fill="black" textAnchor="start">
-                {`Roi: ${roi}`}
+                {`Sample: ${sample}`}
             </text>
             <rect
                 x={0}
                 y={0}
                 width={dimensions.boundedWidth}
                 height={dimensions.boundedHeight}
-                fill={`${colorslist[roi]}`}
+                fill={`#dddddd`}
                 opacity={0.2}
-                stroke="black"
+            // stroke="black"
             />
-            <rect
-                x={35}
-                y={-10}
-                width={roiScale(roiCount[roi])}
-                height={containerProps.mt - containerProps.ml}
-                fill={roi === roiFilter ? '#FFA500' : '#2b2b2a'}
-                onClick={() => setRoiFilter(roi)}
-            />
-            <title>{`
-            Roi : ${roi}\nFrequency : ${roiCount[roi]}
-        `}</title>
             {lines}
             {rows}
         </g>

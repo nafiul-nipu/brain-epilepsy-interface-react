@@ -37,6 +37,7 @@ import { PatchSummary } from "./components/region-summary/PatchSummary";
 // import { ExplorationSoFar } from "./components/previous components/exploration-so-far/ExplorationSoFar";
 // import { BrainViewer } from "./components/brain-viewer/BrainViewer";
 import { useCommunity } from "./library/useCommunity";
+import { useAllNetwork } from "./library/useAllNetwork";
 
 const globalTimelineRectWidth = 10000;
 const localTimelineRectWidth = 500;
@@ -82,10 +83,14 @@ function App() {
     sample: patientInfo.sample,
   });
 
-  const fullEventNetwork = useFullNetworkPerEvent({
-    patientID: patientInfo.id,
-    sample: patientInfo.sample,
-  });
+  const allNetwork = useAllNetwork({ patientID: patientInfo.id });
+
+  // console.log(allNetwork)
+
+  // const fullEventNetwork = useFullNetworkPerEvent({
+  //   patientID: patientInfo.id,
+  //   sample: patientInfo.sample,
+  // });
 
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
@@ -96,16 +101,6 @@ function App() {
     sampleID: patientInfo.sample,
   })
 
-  const [barThreshold, setBarThreshold] = useState([0, 70]);
-
-  const [localEventDomain, setLocalEventDomain] = useState([
-    0,
-    globalTimelineRectWidth,
-  ]);
-  const [selectedEventRange, setSelectedEventRange] = useState([
-    0,
-    localTimelineRectWidth,
-  ]);
   // first event time
   const [eventRangeNetwork, setEventRangeNetwork] = useState([103, 113]);
   const [eegPanelRange, seteegPanelRange] = useState([
@@ -114,8 +109,6 @@ function App() {
   ]);
 
   const [selectedRoi, setSelectedRoi] = useState(0);
-
-  const [showAllRoi, setShowAllRoi] = useState(false);
 
   // fist event ID
   const [similarRegionEvent, setSimilarRegionEvent] = useState(1);
@@ -170,7 +163,6 @@ function App() {
                   time={timeRange}
                   events={allEventData[patientInfo.sample]}
                   allnetworks={fullNetwork}
-                  allnetworksWithEvent={fullEventNetwork}
                   eventid={similarRegionEvent}
                   selectedEventRange={eventRangeNetwork}
                   eegInBrain={eegInBrain}
@@ -190,8 +182,10 @@ function App() {
                 <TabPanel style={{ padding: '0px' }}>
                   {/* region - 35vh */}
                   {/* this will be 2D similar view */}
-                  {fullNetwork && allEventData && electrodeDataCsv ? (
+                  {allNetwork && fullNetwork && allEventData && electrodeDataCsv ? (
                     <RegionSummary
+                      networks={allNetwork}
+                      sampleName={patientInfo.sample}
                       data={fullNetwork}
                       eventData={allEventData[patientInfo.sample]}
                       eventRange={eventRangeNetwork}

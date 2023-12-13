@@ -9,3 +9,21 @@
 .regionSummaryContainer{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   }
+
+  #region-topPercent{
+    position: absolute;
+    left: 35%;
+    bottom: 37%;
+  }
+  #region-color{
+    position: absolute;
+    left: 46%;
+    bottom: 37%;
+  }
+  #viewPatch{
+    position: absolute;
+    left: 18%;
+    bottom: 36.5%;
+    display: flex;
+    align-items: center;
+  }

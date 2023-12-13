@@ -2,91 +2,44 @@ import { RegionCircles } from "../../CommonComponents/RegionCircles";
 import { Col, Row } from "react-bootstrap";
 import * as d3 from 'd3';
 import './RegionSummary.css'
+import { useEffect, useMemo, useState } from "react";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+
+
 const rowSize = 3;
 
 export const RegionSummary = ({
-    data,
-    eventData,
-    eventRange,
-    selectedRoi,
+    networks,
+    sampleName,
     setSelectedRoi,
-    roiCount,
-    roiFilter,
-    setRoiFilter,
     electrodeData
 }) => {
-    // console.log("eventData",eventData);
-    // console.log("eventRange",eventRange);
-    // console.log(electrodeData)
-    const numRows = Math.ceil((data.length - 1) / rowSize);
 
-    const filteredData = eventData.filter((el) => el.time.some(t => t >= eventRange[0] && t <= eventRange[eventRange.length - 1]))
+    const [topPercent, setTopPercent] = useState(0.01)
+    const [colorTheLine, setColorTheLine] = useState('width')
 
-    // console.log(filteredData)
-    // console.log("regionsummary", data)
-    // console.log(roiCount)
+    const [isVisible, setIsVisible] = useState(false);
 
-    const regionCiclesData = [];
-    for (let i = 0; i < data.length - 1; i++) {
-        const arr = data[i].electrodes;
-        const result = arr.reduce((acc, curr) => {
-            const frequency = filteredData.reduce((freq, obj) => {
-                if (obj.electrode.includes(curr)) {
-                    freq++;
-                }
-                return freq;
-            }, 0);
+    const handleClick = () => {
+        setIsVisible((prev) => !prev);
+    };
 
-            acc.activeElectrode.push(curr);
-            acc.frequency.push(frequency);
-            return acc;
-        }, { activeElectrode: [], frequency: [] });
-
-        regionCiclesData.push(result);
+    const topOnChange = (event) => {
+        setTopPercent(event.target.value)
     }
 
-    // console.log(regionCiclesData)
-    // console.log(radiusDomain)
+    const colorOnChange = (event) => {
+        setColorTheLine(event.target.value)
+    }
+    // console.log(networks)
+    // console.log(sampleName)
+    // console.log(electrodeData)
 
     function summaryOnClick(index, rowStartIndex) {
         // console.log('clicked', rowStartIndex + index)
         setSelectedRoi(rowStartIndex + index)
         // setRoiFilter(rowStartIndex + index)
     }
-    const rows = [...Array(numRows)].map((_, rowIndex) => {
-        const rowStartIndex = rowIndex * rowSize;
-        const rowObjects = regionCiclesData.slice(rowStartIndex, rowStartIndex + rowSize);
-        const rowKey = `row-${rowIndex}`;
-        // console.log(rowStartIndex, rowObjects, rowKey)
-        return (
-            <Row key={rowKey}>
-                {rowObjects.map((object, i) => (
-                    <Col
-                        md='4'
-                        key={data[i].roi}
-                        style={{
-                            height: `${34 / numRows}vh`,
-                            backgroundColor: selectedRoi === (i + rowStartIndex) ? "rgba(202, 204, 202, 0.4)" : "white",
-                        }}
-                        onClick={() => summaryOnClick(i, rowStartIndex)}
-                    >
-                        <RegionCircles
-                            data={object}
-                            eventNetworkData={data}
-                            roi={i + rowStartIndex}
-                            roiCount={roiCount}
-                            roiFilter={roiFilter}
-                            setRoiFilter={setRoiFilter}
-                            electrodeData={electrodeData}
-                        />
-                    </Col>
-
-                ))
-                }
-            </Row >
-        );
-    });
-
 
     return (
         <Col
@@ -94,11 +47,63 @@ export const RegionSummary = ({
             className="regionSummaryContainer"
             style={{ height: "35vh", backgroundColor: "#FAFBFC" }}
         >
-            <Row>
-            </Row>
+            <div onClick={handleClick} id="viewPatch">
+                <span style={{ marginRight: '5px' }}>View Patch</span> {isVisible ? <IoEyeOutline size={20} /> : <IoEyeOffOutline size={20} />}
+            </div>
+            {/* Patient dropdown */}
+            <div id="region-topPercent">
+                <label htmlFor="percent">Top:</label>
+                <select id="percent" value={topPercent} onChange={topOnChange}>
+                    <option value="0.01"> 1% </option>
+                    <option value="0.02"> 2% </option>
+                    <option value="0.05"> 5% </option>
+                    <option value="0.1"> 10% </option>
+                </select>
+            </div>
+
+            {/* propagation dropdown */}
+            <div id="region-color">
+                <label htmlFor="color">Color:</label>
+                <select id="color" value={colorTheLine} onChange={colorOnChange}>
+                    <option value="width"> width</option>
+                    <option value="time"> time </option>
+                </select>
+            </div>
+
             <Row>
                 <Col md="12" style={{ height: "35vh" }}>
-                    <>{rows}</>
+                    <Row>
+                        {
+                            Object.keys(networks).map((sample, index) => {
+                                // console.log(sample)
+                                // console.log(index)
+                                const rowLength = Object.keys(networks).length;
+                                return (
+                                    <Col
+                                        md={`${12 / rowLength}`}
+                                        key={index}
+                                        style={{
+                                            height: `${34 / Math.ceil((rowLength - 1) / rowSize)}vh`,
+                                            backgroundColor: sampleName === sample ? "rgba(202, 204, 202, 0.4)" : "white",
+                                        }}
+                                        onClick={() => summaryOnClick(index, 0)}
+                                    >
+                                        <RegionCircles
+                                            sample={sample}
+                                            data={networks[sample]}
+                                            electrodes={electrodeData.map((obj) => obj.electrode_number)}
+                                            sampleCount={rowLength}
+                                            currsample={sampleName}
+                                            topPercent={topPercent}
+                                            colorTheLine={colorTheLine}
+                                            show={isVisible}
+                                            labels={electrodeData.map((obj) => obj.label)}
+                                        />
+                                    </Col>
+                                )
+                            })
+                        }
+                    </Row>
                 </Col>
             </Row>
         </Col>

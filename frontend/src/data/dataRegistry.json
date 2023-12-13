@@ -57,7 +57,7 @@
     "ep129":{
         "lesions": 2,
         "lesionArray": [1, 2],
-        "brainPartition": false,
+        "brainPartition": true,
         "bbox": {
             "x": -118.61639976501465,
             "y": -105.94320249557495,

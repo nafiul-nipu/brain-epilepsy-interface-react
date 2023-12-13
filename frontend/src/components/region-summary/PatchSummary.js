@@ -16,23 +16,15 @@ export const PatchSummary = ({
   setRoiFilter,
   electrodeData,
 }) => {
-  const electrodeColorList = [
-    "#57B4DB",
-    "#E7AC5C",
-    "#7BD370",
-    "#d62728",
-    "#9467bd",
-    "#8c564b",
-    "#e377c2",
-    "#bfa3a3",
-  ];
+  const electrodeColorList = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
+
   const [tooltip, setTooltip] = useState({
     visible: false,
     content: "",
     x: 0,
     y: 0,
   });
-
+  
   // tooltip controller
   const handleMouseEnter = (
     electrodeId,

@@ -13,7 +13,7 @@ export const ElectrodeDropDown = ({
   setRoiFilter,
   setSelectedRoi,
   setSimilarRegionEvent,
-  setExploration
+  setExploration,
 }) => {
   const { id, sample } = patientInfo;
 
@@ -33,11 +33,18 @@ export const ElectrodeDropDown = ({
       {/* propagation dropdown */}
       <div className="form-ddl-entry">
         <label htmlFor="sample">Session:</label>
-        <select id="sample" value={sample} onChange={onSampleChange}>
-          <option value="sample1"> Session 1</option>
-          <option value="sample2"> Session 2 </option>
-          <option value="sample3"> Session 3 </option>
-        </select>
+        {id === "ep129" ? (
+          <select id="sample" value={sample} onChange={onSampleChange}>
+            <option value="sample1">Session 1</option>
+            <option value="sample2">Session 2</option>
+          </select>
+        ) : (
+          <select id="sample" value={sample} onChange={onSampleChange}>
+            <option value="sample1">Session 1</option>
+            <option value="sample2">Session 2</option>
+            <option value="sample3">Session 3</option>
+          </select>
+        )}
       </div>
 
       {/* propagation dropdown */}

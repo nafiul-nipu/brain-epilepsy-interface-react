@@ -91,7 +91,6 @@ export const PatchSummary = ({
   }
 
   const maxOccurrence = findMaxInObject(processedPatchData);
-  console.log(maxOccurrence, "why it si different ????");
   const circleRadius = d3
     .scaleLinear()
     .domain([0, maxOccurrence])

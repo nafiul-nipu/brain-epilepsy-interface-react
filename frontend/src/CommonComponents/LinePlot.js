@@ -13,6 +13,7 @@ export const LinePlot = ({
     // console.log(yAxisScale)
     // console.log(`${keyNumber}_${each}`)
     const bands = data.map((value) => [value, -value])
+    // console.log(bands)
     return (
         <g>
 

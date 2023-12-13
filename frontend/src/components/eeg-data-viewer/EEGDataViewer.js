@@ -1,6 +1,6 @@
 import { LinePlot } from "../../CommonComponents/LinePlot";
 import ChartContainer, { useChartContext } from "../chart-container/chart-container";
-import {useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FaThumbsUp, FaPause, FaPlay } from 'react-icons/fa';
 import "./eeg-data-viewer.css";
 import { AxisBottom } from "../../CommonComponents/AxisBottom";
@@ -29,7 +29,7 @@ export const EEGDataViewer = ({
   // console.log(selectedEventRange)
 
   const [view, setView] = useState(false)
-  const [curElId,setCurElId] = useState(0)
+  const [curElId, setCurElId] = useState(0)
   const elIdRef = useRef(null);
   const containerRef = useRef(null);
   const itemRefs = useRef([]);
@@ -55,10 +55,10 @@ export const EEGDataViewer = ({
   // start play PPG data
   const handleClick = () => {
     console.log('make a test')
-    if (!view) { 
+    if (!view) {
       elIdRef.current = setInterval(() => {
         setCurElId(prevCurElId => {
-          if(prevCurElId < electrodeListEventWindow.length) { 
+          if (prevCurElId < electrodeListEventWindow.length) {
             setEegInBrain(electrodeListEventWindow[prevCurElId]);
             return prevCurElId + 1;
           }
@@ -73,7 +73,7 @@ export const EEGDataViewer = ({
   const stopTimer = () => {
     console.log('stop')
     setView(false);
-    if(view) {
+    if (view) {
       clearInterval(elIdRef.current);
     }
   }
@@ -82,17 +82,17 @@ export const EEGDataViewer = ({
   const scrollToCenter = (index) => {
     const container = containerRef.current;
     const selectedItem = itemRefs.current[index];
-  
+
     if (container && selectedItem) {
       const containerHeight = container.clientHeight;
       const selectedItemHeight = selectedItem.clientHeight;
-  
+
       // Calculate the position to scroll to, centering the selected item
-      const scrollPosition = 
-        selectedItem.offsetTop - 
-        (containerHeight) + 
+      const scrollPosition =
+        selectedItem.offsetTop -
+        (containerHeight) +
         (selectedItemHeight);
-  
+
       container.scrollTop = scrollPosition;
     }
   };
@@ -108,9 +108,9 @@ export const EEGDataViewer = ({
       <div className="eeg-title">
         <div>EEGs </div>
         {/* <div className="referenceDIV" id="null"></div> */}
-        <div className="controlPlayPause" style={{'display':'flex'}}>
-          <FaPlay onClick={handleClick} style={{'margin':'0 10 0 0', 'color': view ? '#999' : '#333', 'cursor': 'pointer'}} />
-          <FaPause onClick={stopTimer} style={{'margin':'0 0 0 10', 'color': '#333', 'cursor': 'pointer'}}/>
+        <div className="controlPlayPause" style={{ 'display': 'flex' }}>
+          <FaPlay onClick={handleClick} style={{ 'margin': '0 10 0 0', 'color': view ? '#999' : '#333', 'cursor': 'pointer' }} />
+          <FaPause onClick={stopTimer} style={{ 'margin': '0 0 0 10', 'color': '#333', 'cursor': 'pointer' }} />
         </div>
         <div>Event {!eventList ? "loading" : `${eventList}`}</div>
       </div>
@@ -118,31 +118,35 @@ export const EEGDataViewer = ({
       <div className="eeg-list" ref={containerRef}>
         {
           electrodeListEventWindow.map((el, i) => {
-            return (
-              <div
-                style={{
-                  height: '12vh',
-                  boxShadow: eegInBrain === el ? "0 0 10px 5px #000000" : "none"
-                }}
-                ref={el => itemRefs.current[i] = el}
-                key={i}
-                onClick={() => onEEGClick(el)}
-              >
-                {/* <div className="electrodeEEGNameDiv">{`E${el}`} </div> */}
-                <ChartContainer {...containerProps} key={i}>
-                  <EEGChartWrapper
-                    data={eegData.eeg[el]}
-                    electrodeList={electrodeList}
-                    currenElectrode={el}
-                    yDomain={yDomain}
-                    xTicks={xTicks}
-                    peaks={eegData.peaks[el] ? eegData.peaks[el] : []}
-                    peakIndex={peakIndex}
-                    selectedEventRange={selectedEventRange}
-                  />
-                </ChartContainer>
-              </div>
-            )
+            if (eegData.eeg[el].length > 0) {
+              return (
+                <div
+                  style={{
+                    height: '12vh',
+                    boxShadow: eegInBrain === el ? "0 0 10px 5px #000000" : "none"
+                  }}
+                  ref={el => itemRefs.current[i] = el}
+                  key={i}
+                  onClick={() => onEEGClick(el)}
+                >
+                  {/* <div className="electrodeEEGNameDiv">{`E${el}`} </div> */}
+                  <ChartContainer {...containerProps} key={i}>
+                    <EEGChartWrapper
+                      data={eegData.eeg[el]}
+                      electrodeList={electrodeList}
+                      currenElectrode={el}
+                      yDomain={yDomain}
+                      xTicks={xTicks}
+                      peaks={eegData.peaks[el] ? eegData.peaks[el] : []}
+                      peakIndex={peakIndex}
+                      selectedEventRange={selectedEventRange}
+                    />
+                  </ChartContainer>
+                </div>
+              )
+            } else {
+              return null
+            }
           })
         }
       </div>
@@ -205,7 +209,7 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
         tickText={xTickText}
       />
 
-      {
+      {/* {
         selectedEventRange ? (
           <g>
             <rect
@@ -219,9 +223,9 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
             /><title>{`Time: ${selectedEventRange[0]} - ${selectedEventRange[selectedEventRange.length - 1]}`}</title>
           </g>
         ) : null
-      }
+      } */}
       {
-        peaks.map((el, i) => {
+        peaks.length > 0 ? peaks.map((el, i) => {
           // console.log(peakIndex(el.time))
           return (
             <g key={i}>
@@ -234,7 +238,7 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
               /><title>{`Time: ${el.time}`}</title>
             </g>
           )
-        })
+        }) : null
       }
     </g>
   )

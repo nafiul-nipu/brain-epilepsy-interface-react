@@ -52,22 +52,20 @@ def handle_bad_request(error):
 # Routes #######################################################################
 @cross_origin()
 @app.route(
-    ROOT + "/patient/<patient_id>/eeg/<sample_id>/<start>/<num_records>/<electrodes>",
+    ROOT + "/patient/<patient_id>/eeg/<sample_id>/<start>/<num_records>",
     methods=["GET"],
 )
 def fetch_patient_eeg(
-    patient_id: str, sample_id: str, start: int, num_records: int, electrodes: str
+    patient_id: str, sample_id: str, start: int, num_records: int
 ):
     """Index patient dataset to retrieve subset of EEG data"""
     try:
         start = int(start)
         num_records = int(num_records)
-        electrodes = escape(electrodes)
-        electrodes = [int(el) for el in electrodes.split(",")]
         patient = eeg.Patient(DATADIR, patient_id)
 
         output = services.fetch_eeg_request(
-            patient, sample_id, start, num_records, electrodes
+            patient, sample_id, start, num_records
         )
         logging.info(output)
         return jsonify(output)

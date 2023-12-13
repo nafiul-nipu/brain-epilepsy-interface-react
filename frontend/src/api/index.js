@@ -13,10 +13,8 @@ export const fetchEEGperPatient = async (
   sampleId,
   startMs,
   numRecords,
-  electrodes // List of int
 ) => {
-  const strElectrodes = electrodes.join(",");
-  const url = `${API_ENDPOINT}/patient/${patientId}/eeg/${sampleId}/${startMs}/${numRecords}/${strElectrodes}`;
+  const url = `${API_ENDPOINT}/patient/${patientId}/eeg/${sampleId}/${startMs}/${numRecords}`;
 
   try {
     const { eeg, peaks } = await run(url, "get", emptyRequestData);

@@ -45,27 +45,29 @@ def egg_df_to_dict(input_df: pd.DataFrame) -> Dict[int, List[float]]:
 def fetch_eeg_data_from_db(
     patient: Patient,
     sample_id: str,
-    electrodes: List[int],
     start_ms: Optional[int],
     num_records: Optional[int],
 ):
     """Fetch the data for EEGs by querying duckdb"""
     start_ms = 0 if not start_ms else start_ms
-    electrodes_filter = ",".join([str(el) for el in electrodes])
 
     query = f"""
         SELECT electrode, ms, value FROM '{patient.egg_duckdb_path(sample_id)}'
-        WHERE electrode in ({electrodes_filter}) AND ms >= {start_ms}
+        WHERE ms >= {start_ms}
     """
     if num_records:
         query += f" AND ms <= {start_ms+num_records} "
     query += " ORDER BY electrode, ms"
     results = duckdb.sql(query).to_df()
-
+    # print(results)
+    
+    electrodes = patient.fetch_electrodes()
+    # print(electrodes)
+    
     output = {}
     for electode in electrodes:
         output[electode] = results.loc[
-            results.electrode == electode
+            results.electrode == electode - 1
         ].value.values.tolist()
     return output
 
@@ -80,13 +82,16 @@ def fetch_spike_times_by_events(patient: Patient, event_ids: List[int]):
 def fetch_spike_times_by_electrodes(
     patient: Patient,
     sample_id: str,
-    electrodes: List[int],
     start_ms: int,
     num_records: int,
 ):
     """Fetch events with peaks"""
     with open(patient.events_path(sample_id), "r", encoding="utf-8") as f_in:
         all_events = json.load(f_in)
+        
+    electrodes = patient.fetch_electrodes()
+    # print(electrodes)
+    
     inputs = []
     end_ms = start_ms + num_records
     for event in all_events:

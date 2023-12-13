@@ -11,13 +11,11 @@ def fetch_eeg_request(
     sample_id: str,
     start_ms: Optional[int],
     num_records: int,
-    electrodes: List[int],
 ):
     """Service for fetching the patient EEG data and peaks at time period"""
     start_ms = None if start_ms == -1 else start_ms
 
     filters = {
-        "electrodes": electrodes,
         "start_ms": start_ms,
         "num_records": num_records,
     }

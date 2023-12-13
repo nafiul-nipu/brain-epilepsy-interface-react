@@ -172,7 +172,7 @@ function App() {
           </Row>
 
           <Row>
-            <Tabs variant="enclosed" colorScheme="green" size='sm'>
+            <Tabs variant="enclosed" colorScheme="green" size='sm' style={{paddingRight: 0}}>
               <TabList>
                 <Tab>Network</Tab>
                 <Tab>Patches</Tab>

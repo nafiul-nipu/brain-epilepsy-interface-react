@@ -24,7 +24,7 @@ export const PatchSummary = ({
     x: 0,
     y: 0,
   });
-  
+
   // tooltip controller
   const handleMouseEnter = (
     electrodeId,
@@ -99,6 +99,7 @@ export const PatchSummary = ({
     const roiLabelHeight = 10;
     const svgWidth = columnsPerRow * 50;
     const svgHeight = numRowsInSVG * 50 + roiLabelHeight;
+    console.log(svgWidth, '????')
     const roiScale = d3
       .scaleLinear()
       .domain([0, d3.max(roiCount)])
@@ -112,6 +113,7 @@ export const PatchSummary = ({
         key={roiKey}
         style={{
           height: "30vh",
+          padding: 0,
           backgroundColor:
             selectedRoi === Number(roiKey)
               ? "rgba(202, 204, 202, 0.4)"
@@ -301,7 +303,7 @@ export const PatchSummary = ({
       style={{ height: "35vh", backgroundColor: "#FAFBFC" }}
     >
       <Row>
-        <Col md="12" style={{ height: "4vh" }}>
+        <Col md="12" style={{ height: "4vh"}}>
           <Row style={{ height: "100%" }}>
             <Col className="summary">Patch Summary</Col>
             <Col className="summary">
@@ -352,7 +354,7 @@ export const PatchSummary = ({
           </Row>
         </Col>
       </Row>
-      <Row style={{ height: "35vh", overflowY: "auto" }}>
+      <Row style={{ height: "35vh", overflowY: "auto", width: "100%" }}>
         <>{rows}</>
         {tooltip.visible && (
           <div

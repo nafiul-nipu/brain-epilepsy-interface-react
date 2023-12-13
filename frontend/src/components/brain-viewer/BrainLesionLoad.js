@@ -29,14 +29,14 @@ export function BrainLesionLoad(props) {
 
             ) : null}
 
-            <CustomOBJModel
+            {/* <CustomOBJModel
                 url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_brain.obj`}
                 color="#505050"
                 opacity={0.15}
                 transparent={true}
                 type="brain"
                 renderOrer={3}
-            />
+            /> */}
             {props.lesionArray.map((lesion, index) => {
                 return (
                     <CustomOBJModel

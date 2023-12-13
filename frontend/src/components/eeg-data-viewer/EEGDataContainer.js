@@ -32,9 +32,9 @@ export const EEGDataContainer = ({
       const { data, error } = await fetchEEGperPatient(
         patient.id,
         patient.sample,
-        eegPanelRange[0],
-        500,
-        electrodeListEventWindow
+        eegPanelRange[0],  // time start next 500 prev
+        500,  // range
+        electrodeListEventWindow //electrode list for event window
       );
       // TODO: if error do something
       seteegData(data);

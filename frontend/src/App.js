@@ -172,7 +172,7 @@ function App() {
           </Row>
 
           <Row>
-            <Tabs variant="enclosed" colorScheme="green" size='sm' style={{paddingRight: 0}}>
+            <Tabs variant="enclosed" colorScheme="green" size='sm' style={{ paddingRight: 0 }}>
               <TabList>
                 <Tab>Network</Tab>
                 <Tab>Patches</Tab>
@@ -233,11 +233,8 @@ function App() {
             <Col md="12" style={{ height: "94vh", backgroundColor: "#FAFBFC" }}>
               {allEventData && electrodeDataCsv ? (
                 <EEGDataContainer
-                  allEventData={allEventData}
                   patient={patientInfo}
-                  selectedEventRange={eventRangeNetwork}
-                  eegPanelRange={eegPanelRange}
-                  electrodeListEventWindow={electrodeDataCsv.map((el) => el.electrode_number)}
+                  electrodeList={electrodeDataCsv.map((el) => el.electrode_number)}
                   eegInBrain={eegInBrain}
                   setEegInBrain={setEegInBrain}
                 />

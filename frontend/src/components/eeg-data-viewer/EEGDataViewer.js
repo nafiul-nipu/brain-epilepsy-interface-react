@@ -1,7 +1,7 @@
 import { LinePlot } from "../../CommonComponents/LinePlot";
 import ChartContainer, { useChartContext } from "../chart-container/chart-container";
 import { useState, useEffect, useRef } from 'react';
-import { FaThumbsUp, FaPause, FaPlay } from 'react-icons/fa';
+import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
 import "./eeg-data-viewer.css";
 import { AxisBottom } from "../../CommonComponents/AxisBottom";
 import { AxisLeft } from "../../CommonComponents/AxisLeft";
@@ -17,15 +17,13 @@ const containerProps = {
 
 export const EEGDataViewer = ({
   eegData,
-  eventList,
-  electrodeListEventWindow,
-  electrodeList,
   xTicks,
-  selectedEventRange,
+  electrodeList,
   eegInBrain,
-  setEegInBrain
+  setEegInBrain,
+  timeToFecth,
 }) => {
-  // console.log(eegData)
+  console.log(eegData)
   // console.log(selectedEventRange)
 
   const [view, setView] = useState(false)
@@ -49,75 +47,76 @@ export const EEGDataViewer = ({
 
   function onEEGClick(el) {
     setEegInBrain(el)
-    stopTimer()
+    // stopTimer()
   }
 
   // start play PPG data
-  const handleClick = () => {
-    console.log('make a test')
-    if (!view) {
-      elIdRef.current = setInterval(() => {
-        setCurElId(prevCurElId => {
-          if (prevCurElId < electrodeListEventWindow.length) {
-            setEegInBrain(electrodeListEventWindow[prevCurElId]);
-            return prevCurElId + 1;
-          }
-          return prevCurElId;
-        });
-      }, 1000);
-    }
-    setView(true)
-  }
+  // const handleClick = () => {
+  //   console.log('make a test')
+  //   if (!view) {
+  //     elIdRef.current = setInterval(() => {
+  //       setCurElId(prevCurElId => {
+  //         if (prevCurElId < electrodeListEventWindow.length) {
+  //           setEegInBrain(electrodeListEventWindow[prevCurElId]);
+  //           return prevCurElId + 1;
+  //         }
+  //         return prevCurElId;
+  //       });
+  //     }, 1000);
+  //   }
+  //   setView(true)
+  // }
 
   // stop play PPG data
-  const stopTimer = () => {
-    console.log('stop')
-    setView(false);
-    if (view) {
-      clearInterval(elIdRef.current);
-    }
-  }
+  // const stopTimer = () => {
+  //   console.log('stop')
+  //   setView(false);
+  //   if (view) {
+  //     clearInterval(elIdRef.current);
+  //   }
+  // }
 
   // calculates the position and sets the scrollTop property of the container
-  const scrollToCenter = (index) => {
-    const container = containerRef.current;
-    const selectedItem = itemRefs.current[index];
+  // const scrollToCenter = (index) => {
+  //   const container = containerRef.current;
+  //   const selectedItem = itemRefs.current[index];
 
-    if (container && selectedItem) {
-      const containerHeight = container.clientHeight;
-      const selectedItemHeight = selectedItem.clientHeight;
+  //   if (container && selectedItem) {
+  //     const containerHeight = container.clientHeight;
+  //     const selectedItemHeight = selectedItem.clientHeight;
 
-      // Calculate the position to scroll to, centering the selected item
-      const scrollPosition =
-        selectedItem.offsetTop -
-        (containerHeight) +
-        (selectedItemHeight);
+  //     // Calculate the position to scroll to, centering the selected item
+  //     const scrollPosition =
+  //       selectedItem.offsetTop -
+  //       (containerHeight) +
+  //       (selectedItemHeight);
 
-      container.scrollTop = scrollPosition;
-    }
-  };
+  //     container.scrollTop = scrollPosition;
+  //   }
+  // };
 
-  useEffect(() => {
-    return () => {
-      scrollToCenter(curElId)
-    };
-  }, [curElId]);
+  // useEffect(() => {
+  //   return () => {
+  //     scrollToCenter(curElId)
+  //   };
+  // }, [curElId]);
 
   return (
     <div className="eeg-container">
       <div className="eeg-title">
-        <div>EEGs </div>
+        <div title="Previous" onClick={() => timeToFecth('prev')}><TbPlayerTrackPrevFilled /></div>
+        <div><strong>EEGs</strong> </div>
         {/* <div className="referenceDIV" id="null"></div> */}
-        <div className="controlPlayPause" style={{ 'display': 'flex' }}>
+        {/* <div className="controlPlayPause" style={{ 'display': 'flex' }}>
           <FaPlay onClick={handleClick} style={{ 'margin': '0 10 0 0', 'color': view ? '#999' : '#333', 'cursor': 'pointer' }} />
           <FaPause onClick={stopTimer} style={{ 'margin': '0 0 0 10', 'color': '#333', 'cursor': 'pointer' }} />
-        </div>
-        <div>Event {!eventList ? "loading" : `${eventList}`}</div>
+        </div> */}
+        <div title="Next" onClick={() => timeToFecth('next')}><TbPlayerTrackNextFilled /></div>
       </div>
 
       <div className="eeg-list" ref={containerRef}>
         {
-          electrodeListEventWindow.map((el, i) => {
+          electrodeList.map((el, i) => {
             if (eegData.eeg[el].length > 0) {
               return (
                 <div
@@ -139,7 +138,6 @@ export const EEGDataViewer = ({
                       xTicks={xTicks}
                       peaks={eegData.peaks[el] ? eegData.peaks[el] : []}
                       peakIndex={peakIndex}
-                      selectedEventRange={selectedEventRange}
                     />
                   </ChartContainer>
                 </div>
@@ -155,7 +153,7 @@ export const EEGDataViewer = ({
 };
 
 
-const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks, peaks, peakIndex, selectedEventRange }) => {
+const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks, peaks, peakIndex }) => {
   // console.log(currenElectrode)
 
   // console.log(data)

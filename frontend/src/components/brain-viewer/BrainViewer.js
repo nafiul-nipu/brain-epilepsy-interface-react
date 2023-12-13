@@ -50,14 +50,14 @@ export const BrainViewer = ({
                 <Card
                     className="brainViewerCard"
                     style={{
-                        width: width * 0.32,
+                        width: width * 0.2,
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
                         position: "absolute",
                         top: "10%",
-                        left: `calc(100% - ${width * 1.25}px)`,
+                        left: `calc(100% - ${width * 1.12}px)`,
                         zIndex: 100,
                     }}
                 >

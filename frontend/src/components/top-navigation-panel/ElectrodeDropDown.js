@@ -71,7 +71,7 @@ export const ElectrodeDropDown = ({
   }
 
   function onPatientChange(event) {
-    setPatientInfo({ ...patientInfo, id: event.target.value });
+    setPatientInfo({ ...patientInfo, id: event.target.value, sample: "sample1" });
     setRoiFilter(null);
     setSelectedRoi(0);
     setSimilarRegionEvent(null);

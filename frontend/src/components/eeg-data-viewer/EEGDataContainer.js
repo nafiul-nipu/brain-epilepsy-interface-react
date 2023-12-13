@@ -33,11 +33,11 @@ export const EEGDataContainer = ({
         patient.id,
         patient.sample,
         eegPanelRange[0],  // time start next 500 prev
-        500,  // range
-        electrodeListEventWindow //electrode list for event window
+        500  // range
       );
       // TODO: if error do something
       seteegData(data);
+      console.log(data)
 
       const filteredData = allEventData[patient.sample].filter((el) =>
         el.time.some(

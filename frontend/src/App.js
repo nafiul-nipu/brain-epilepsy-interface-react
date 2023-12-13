@@ -231,13 +231,13 @@ function App() {
           <Row>
             {/* eeg 94vh */}
             <Col md="12" style={{ height: "94vh", backgroundColor: "#FAFBFC" }}>
-              {allEventData ? (
+              {allEventData && electrodeDataCsv ? (
                 <EEGDataContainer
                   allEventData={allEventData}
                   patient={patientInfo}
                   selectedEventRange={eventRangeNetwork}
                   eegPanelRange={eegPanelRange}
-                  electrodeListEventWindow={electrodeListEventWindow}
+                  electrodeListEventWindow={electrodeDataCsv.map((el) => el.electrode_number)}
                   eegInBrain={eegInBrain}
                   setEegInBrain={setEegInBrain}
                 />

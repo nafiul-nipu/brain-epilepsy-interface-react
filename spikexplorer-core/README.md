@@ -31,13 +31,12 @@ DATADIR/
 On success, return 200 and payload. In case of errors, raise a 400 BadRequest or
 a 500 Internal Server Error.
 
-`/patient/<patient_id>/eeg/<sample_id>/<start>/<num_records>/<electrodes>`
+`/patient/<patient_id>/eeg/<sample_id>/<start>/<num_records>`
 
 - patient*id: str (e.g., \_ep128*)
 - sample*id: str (e.g., \_sample1*)
 - start: int starting millisecond
 - num*records: int num milliseconds after \_start*
-- electrodes: str electrodes of interest as concat list of ints (e.g., _1,5,10_)
 
 ```
 // Successful payload

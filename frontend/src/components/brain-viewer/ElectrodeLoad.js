@@ -58,7 +58,7 @@ export const ElectrodeLoad = ({
         if (!isMountedRef.current) return;
         if (buttonValue === 'Pause') return;
         if (visualPanel === 'Patches') {
-            console.log(electrodeData)
+            // console.log(electrodeData)
             // console.log("patches")
             electrodeData.forEach((electrode, index) => {
                 meshRef.current.setColorAt(index, new Color(colorslist[electrode.label]));

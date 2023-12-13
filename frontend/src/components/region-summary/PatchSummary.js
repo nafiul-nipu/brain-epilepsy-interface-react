@@ -1,6 +1,7 @@
 import { Col, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import * as d3 from "d3";
+import "./PatchSummary.css";
 
 export const PatchSummary = ({
   data,
@@ -90,7 +91,7 @@ export const PatchSummary = ({
   }
 
   const maxOccurrence = findMaxInObject(processedPatchData);
-
+  console.log(maxOccurrence, "why it si different ????");
   const circleRadius = d3
     .scaleLinear()
     .domain([0, maxOccurrence])
@@ -214,7 +215,11 @@ export const PatchSummary = ({
                     <circle
                       r={circleRadius(electrodeValue) + 5}
                       fill="none"
-                      stroke={sourceRatio === 0 && targetRatio === 0 ? "grey" : "#5e4fa2"}
+                      stroke={
+                        sourceRatio === 0 && targetRatio === 0
+                          ? "grey"
+                          : "#5e4fa2"
+                      }
                       strokeWidth="10"
                     />
                     {sourceRatio > 0 && (
@@ -257,15 +262,15 @@ export const PatchSummary = ({
     );
   });
 
-  const tickList = circleRadius.ticks();
+  const customTicks = [0, maxOccurrence];
+  const tickList = circleRadius.ticks().concat(customTicks);
   const ticks = [tickList[0], tickList[tickList.length - 1]];
-  // console.log(ticks)
   const maxValue = ticks[ticks.length - 1];
   const dimension = circleRadius(maxValue) * 2;
   const DASH_WIDTH = 50;
 
   const circleLegend = ticks.map((tick, i) => {
-    const xCenter = dimension / 2;
+    const xCenter = 14 * dimension;
     const yCircleTop = dimension - 2 * circleRadius(tick);
     const yCircleCenter = dimension - circleRadius(tick);
 
@@ -294,16 +299,6 @@ export const PatchSummary = ({
         >
           {tick}
         </text>
-        <g>
-          <rect x={200} y={0} fill="#9e0142" width={10} height={10} />
-          <text x={220} y={5} fontSize={10} alignmentBaseline="middle">
-            Source counts
-          </text>
-          <rect x={200} y={20} fill="#5e4fa2" width={10} height={10} />
-          <text x={220} y={25} fontSize={10} alignmentBaseline="middle">
-            Target counts
-          </text>
-        </g>
       </g>
     );
   });
@@ -316,14 +311,51 @@ export const PatchSummary = ({
     >
       <Row>
         <Col md="12" style={{ height: "4vh" }}>
-          <Row>
-            <Col>Patch Summary</Col>
-            <Col>
-              <div className="regionLabel">Frequency</div>
-            </Col>
-            <Col>
-              <svg width={100} height={20} overflow="visible">
+          <Row style={{ height: "100%" }}>
+            <Col className="summary">Patch Summary</Col>
+            <Col className="summary">
+              <svg width="100%" height="100%" overflow="visible">
+                <text
+                  x={11 * dimension}
+                  y={18}
+                  fontSize={11}
+                  alignmentBaseline="middle"
+                >
+                  Frequency:
+                </text>
                 {circleLegend}
+                <g>
+                  <rect
+                    x={14 * dimension + 100}
+                    y={0}
+                    fill="#9e0142"
+                    width={10}
+                    height={10}
+                  />
+                  <text
+                    x={14 * dimension + 120}
+                    y={5}
+                    fontSize={10}
+                    alignmentBaseline="middle"
+                  >
+                    Source counts
+                  </text>
+                  <rect
+                    x={14 * dimension + 100}
+                    y={20}
+                    fill="#5e4fa2"
+                    width={10}
+                    height={10}
+                  />
+                  <text
+                    x={14 * dimension + 120}
+                    y={25}
+                    fontSize={10}
+                    alignmentBaseline="middle"
+                  >
+                    Target counts
+                  </text>
+                </g>
               </svg>
             </Col>
           </Row>

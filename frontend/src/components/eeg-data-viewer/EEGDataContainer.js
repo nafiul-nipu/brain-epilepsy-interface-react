@@ -46,7 +46,7 @@ export const EEGDataContainer = ({
       );
       // TODO: if error do something
       seteegData(data);
-      console.log(data)
+      // console.log(data)
 
     }
     fetchData();

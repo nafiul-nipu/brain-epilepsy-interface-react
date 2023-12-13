@@ -238,18 +238,20 @@ export const ElectrodeLoad = ({
         return () => clearInterval(interval);
     }, [buttonValue, electrodeData, sampleData, community])
     return (
-        <instancedMesh
-            ref={meshRef}
-            args={[null, null, electrodeData.length]}
-            position={[bbox.x, bbox.y, bbox.z]}
-        >
-            <sphereBufferGeometry args={[1.5, 32, 32]} />
-            <meshStandardMaterial
-                attach="material"
-                color="#fff"
-                emissive={"#000"}
+        <group renderOrder={0}>
+            <instancedMesh
+                ref={meshRef}
+                args={[null, null, electrodeData.length]}
+                position={[bbox.x, bbox.y, bbox.z]}
+            >
+                <sphereBufferGeometry args={[1.5, 32, 32]} />
+                <meshStandardMaterial
+                    attach="material"
+                    color="#fff"
+                    emissive={"#000"}
 
-            />
-        </instancedMesh>
+                />
+            </instancedMesh>
+        </group>
     )
 }

@@ -23,7 +23,7 @@ export const EEGDataViewer = ({
   setEegInBrain,
   timeToFecth,
 }) => {
-  console.log(eegData)
+  // console.log(eegData)
   // console.log(selectedEventRange)
 
   const containerRef = useRef(null);

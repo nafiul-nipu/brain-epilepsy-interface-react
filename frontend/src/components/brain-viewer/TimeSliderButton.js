@@ -17,7 +17,8 @@ export const TimeSliderButton = ({
     setSliderValue,
     patientID,
     visualPanel,
-    sampleValue
+    totalSamples,
+    totalCommunities,
 }) => {
     const time = dataRegistry[patientID].time
     const ranges = Array.from({ length: 5 }, (_, i) => (i + 1) * (time / 4));
@@ -37,19 +38,21 @@ export const TimeSliderButton = ({
                             >{buttonValue}
                             </button>
                         </Col>
-                    ) :
-                        visualPanel === 'Community' ? (
-                            <Col md='2'>
-                                <button
-                                    id={`play-pause-btn`}
-                                    className="btn btn-light btn-sm"
-                                    style={{ marginLeft: '5px' }}
-                                    value={buttonValue}
-                                    onClick={handleClick}
-                                >{buttonValue}
-                                </button>
-                            </Col>
-                        ) : null
+                    )
+                        // :
+                        //     visualPanel === 'Community' ? (
+                        //         <Col md='2'>
+                        //             <button
+                        //                 id={`play-pause-btn`}
+                        //                 className="btn btn-light btn-sm"
+                        //                 style={{ marginLeft: '5px' }}
+                        //                 value={buttonValue}
+                        //                 onClick={handleClick}
+                        //             >{buttonValue}
+                        //             </button>
+                        //         </Col>
+                        //     ) 
+                        : null
                 }
                 {
                     visualPanel === 'Frequency' ?
@@ -138,7 +141,17 @@ export const TimeSliderButton = ({
                             </>
                         ) :
                         visualPanel === 'Community' ? (
-                            <>Sample : {sampleValue + 1}</>
+
+                            totalSamples.map((sample, index) => (
+                                <Col
+                                    key={index}
+                                    md={12 / totalSamples.length}
+                                >
+                                    Sample: {sample + 1}
+                                    Com: {totalCommunities[index]}
+                                </Col>
+                            ))
+
                         ) : null
                 }
             </Row>

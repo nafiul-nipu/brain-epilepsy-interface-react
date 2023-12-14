@@ -24,6 +24,7 @@ export const EEGDataViewer = ({
   timeToFecth,
 }) => {
   // console.log(eegData)
+  // console.log(electrodeList)
   // console.log(selectedEventRange)
 
   const containerRef = useRef(null);
@@ -59,7 +60,7 @@ export const EEGDataViewer = ({
       <div className="eeg-list" ref={containerRef}>
         {
           electrodeList.map((el, i) => {
-            if (eegData.eeg[el].length > 0) {
+            if (eegData.eeg[el] !== undefined && eegData.eeg[el].length > 0) {
               return (
                 <div
                   style={{

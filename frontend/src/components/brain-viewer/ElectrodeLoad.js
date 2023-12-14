@@ -19,7 +19,6 @@ const catColor = {
     14: "#ff7f0e",
 }
 let currentIndex = 0;
-let currentSampleID = 0;
 
 export const ElectrodeLoad = ({
     electrodeData,
@@ -76,7 +75,7 @@ export const ElectrodeLoad = ({
         } else if (visualPanel === 'Community') {
             // console.log("community")
             // console.log(community)
-            const currentSample = community[currentSampleID].communities;
+            const currentSample = community.communities;
             // console.log(currentSample)
             // const coms = community[0].communityList;
             // console.log(coms)
@@ -184,50 +183,6 @@ export const ElectrodeLoad = ({
                         // } else {
                         //     sliderObj([(currentIndex - 1) * timeRange, currentIndex * timeRange]);
                         // }
-
-                    }
-                } else if (visualPanel === 'Community') {
-                    // console.log("inter val community")
-                    if (currentSampleID >= community.length) {
-                        clearInterval(interval);
-                    } else {
-                        currentSampleID = (currentSampleID + 1) % community.length;
-                        // console.log(community)
-                        const currentSample = community[currentSampleID].communities;
-                        // console.log(currentSample)
-                        // const coms = community[0].communityList;
-                        // console.log(coms)
-                        electrodeData.forEach((electrode, index) => {
-                            let found = false;
-                            for (let i = 0; i < currentSample.length; i++) {
-                                // console.log(currentSample[i].community)
-                                // console.log(new Color(comColor[`${patientID}_${currSample}`][currentSample[i].community]))
-                                if (currentSample[i].members.includes(electrode['electrode_number'])) {
-                                    meshRef.current.setColorAt(index, new Color(catColor[currentSample[i].community]));
-                                    object.scale.set(1.25, 1.25, 1.25)
-                                    found = true
-                                    break;
-                                }
-                            }
-                            if (found === false) {
-                                meshRef.current.setColorAt(index, new Color("#FFFFFF"));
-                                object.scale.set(1, 1, 1)
-                            }
-                            object.position.set(
-                                electrode.position[0],
-                                electrode.position[1],
-                                electrode.position[2]
-                            );
-                            object.updateMatrix();
-                            meshRef.current.setMatrixAt(index, object.matrix);
-                        });
-
-                        meshRef.current.instanceMatrix.needsUpdate = true;
-                        // console.log(currentSampleID)
-                        meshRef.current.instanceColor.needsUpdate = true;
-
-                        // currentSampleID = (currentSampleID + 1) % community.length;
-                        setSampleValue(currentSampleID)
 
                     }
                 }

@@ -187,7 +187,7 @@ export const ElectrodeLoad = ({
         return () => clearInterval(interval);
     }, [buttonValue, electrodeData, sampleData, community])
     return (
-        <group renderOrder={0}>
+        <group>
             <instancedMesh
                 ref={meshRef}
                 args={[null, null, electrodeData.length]}

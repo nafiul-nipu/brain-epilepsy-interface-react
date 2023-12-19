@@ -23,7 +23,7 @@ export const BrainViewer = ({
     buttonValue,
     visualPanel,
 }) => {
-    const [leftBrainOpacity, setLeftBrainOpacity] = useState(1);
+    const [leftBrainOpacity, setLeftBrainOpacity] = useState(0.5);
     const [rightBrainOpacity, setRightBrainOpacity] = useState(1);
     const containerRef = useRef();
     const views = [useRef(), useRef(), useRef()];
@@ -65,7 +65,7 @@ export const BrainViewer = ({
                         <p style={{ marginLeft: 15 }}>Opacity:</p>
                         <Slider
                             style={{ width: "100%" }}
-                            defaultValue={1}
+                            defaultValue={0.5}
                             step={0.1}
                             max={1}
                             onChange={changeLeftBrainOpacity}
@@ -197,7 +197,7 @@ export const BrainViewer = ({
                                     shadow-camera-top={5}
                                     shadow-camera-bottom={-5}
                                 />
-                                <directionalLight position={[-250, -10, 0]} />
+                                {/* <directionalLight position={[-250, -10, 0]} /> */}
                                 <BrainLesionLoad
                                     patientInformation={patientInformation}
                                     lesionArray={dataRegisty[patientInformation.id].lesionArray}

@@ -1,9 +1,7 @@
 import { RegionCircles } from "../../CommonComponents/RegionCircles";
 import { Col, Row } from "react-bootstrap";
-import * as d3 from 'd3';
 import './RegionSummary.css'
-import { useEffect, useMemo, useState } from "react";
-import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import { useState } from "react";
 
 
 const rowSize = 3;
@@ -11,17 +9,15 @@ const rowSize = 3;
 export const RegionSummary = ({
     networks,
     sampleName,
-    setSelectedRoi,
     electrodeData
 }) => {
 
     const [topPercent, setTopPercent] = useState(0.01)
     const [colorTheLine, setColorTheLine] = useState('width')
+    const [viewColor, setViewColor] = useState('na')
 
-    const [isVisible, setIsVisible] = useState(false);
-
-    const handleClick = () => {
-        setIsVisible((prev) => !prev);
+    const onViewChange = (event) => {
+        setViewColor(event.target.value);
     };
 
     const topOnChange = (event) => {
@@ -35,20 +31,19 @@ export const RegionSummary = ({
     // console.log(sampleName)
     // console.log(electrodeData)
 
-    function summaryOnClick(index, rowStartIndex) {
-        // console.log('clicked', rowStartIndex + index)
-        setSelectedRoi(rowStartIndex + index)
-        // setRoiFilter(rowStartIndex + index)
-    }
-
     return (
         <Col
             md="12"
             className="regionSummaryContainer"
             style={{ height: "35vh", backgroundColor: "#FAFBFC" }}
         >
-            <div onClick={handleClick} id="viewPatch">
-                <span style={{ marginRight: '5px' }}>View Patch</span> {isVisible ? <IoEyeOutline size={20} /> : <IoEyeOffOutline size={20} />}
+            <div id="viewPatch">
+                <label htmlFor="view">View:</label>
+                <select id="view" value={viewColor} onChange={onViewChange}>
+                    <option value="na"> N/A </option>
+                    <option value="patch"> Patch </option>
+                    <option value="communities"> Communities </option>
+                </select>
             </div>
             {/* Patient dropdown */}
             <div id="region-topPercent">
@@ -86,7 +81,6 @@ export const RegionSummary = ({
                                             height: `${34 / Math.ceil((rowLength - 1) / rowSize)}vh`,
                                             backgroundColor: sampleName === sample ? "rgba(202, 204, 202, 0.4)" : "white",
                                         }}
-                                        onClick={() => summaryOnClick(index, 0)}
                                     >
                                         <RegionCircles
                                             sample={sample}
@@ -96,7 +90,7 @@ export const RegionSummary = ({
                                             currsample={sampleName}
                                             topPercent={topPercent}
                                             colorTheLine={colorTheLine}
-                                            show={isVisible}
+                                            show={viewColor}
                                             labels={electrodeData.map((obj) => obj.label)}
                                         />
                                     </Col>

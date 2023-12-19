@@ -1,30 +1,27 @@
 import { EEGDataViewer } from "./EEGDataViewer";
 import { useEffect, useState } from "react";
 import { fetchEEGperPatient } from "../../api";
-import ChartContainer, { useChartContext } from "../chart-container/chart-container";
-import { AxisBottom } from "../../CommonComponents/AxisBottom";
-
-import * as d3 from "d3";
-
-const containerProps = {
-  useZoom: false,
-  ml: 50,
-  mr: 20,
-  mb: 10,
-  mt: 10,
-};
 
 export const EEGDataContainer = ({
-  allEventData,
   patient,
-  selectedEventRange,
-  eegPanelRange,
-  electrodeListEventWindow,
+  electrodeList,
   eegInBrain,
   setEegInBrain
 }) => {
   const [eegData, seteegData] = useState(null);
-  const [dataViewer, setDataViewer] = useState(null);
+  const [startTime, setstartTime] = useState(0)
+
+  const timeToFecth = (buttonPressed) => {
+    if (buttonPressed === 'next') {
+      setstartTime(startTime + 500)
+    } else if (buttonPressed === 'prev') {
+      if (startTime - 500 > 0) {
+        setstartTime(startTime - 500)
+      } else {
+        setstartTime(0)
+      }
+    }
+  }
 
   useEffect(() => {
     // console.log(electrodeListEventWindow)
@@ -32,60 +29,35 @@ export const EEGDataContainer = ({
       const { data, error } = await fetchEEGperPatient(
         patient.id,
         patient.sample,
-        eegPanelRange[0],  // time start next 500 prev
+        startTime,  // time start next 500 prev
         500  // range
       );
       // TODO: if error do something
       seteegData(data);
-      console.log(data)
+      // console.log(data)
 
-      const filteredData = allEventData[patient.sample].filter((el) =>
-        el.time.some(
-          (t) => t >= selectedEventRange[0] && t <= selectedEventRange[1]
-        )
-      );
-
-      const electrodeList = [
-        ...new Set(
-          filteredData.reduce((acc, cur) => acc.concat(cur.electrode), [])
-        ),
-      ];
-
-      const eventList = filteredData.map((el) => el.index);
-
-      setDataViewer({
-        eventList: eventList,
-        electrodeList: electrodeList,
-      });
     }
     fetchData();
   }, [
-    allEventData,
-    eegPanelRange,
-    electrodeListEventWindow,
-    patient,
-    selectedEventRange,
+    startTime,
+    patient
   ]);
 
-  const eegList = eegData ? Object.keys(eegData.eeg).map(Number).sort() : [];
+  // const eegList = eegData ? Object.keys(eegData.eeg).map(Number).sort() : [];
 
   return (
     <>
-      {electrodeListEventWindow.length > 0 && electrodeListEventWindow.length === eegList.length &&
-        electrodeListEventWindow
-          .sort()
-          .every((value, index) => value === eegList[index]) ? (
+      {eegData &&
         <EEGDataViewer
+          sampleName={patient.sample}
           eegData={eegData}
-          eventList={dataViewer.eventList}
-          electrodeListEventWindow={electrodeListEventWindow}
-          electrodeList={dataViewer.electrodeList}
-          xTicks={eegPanelRange}
-          selectedEventRange={selectedEventRange}
+          xTicks={[startTime, startTime + 500]}
+          electrodeList={electrodeList}
           eegInBrain={eegInBrain}
           setEegInBrain={setEegInBrain}
+          timeToFecth={timeToFecth}
         />
-      ) : null}
+      }
     </>
   );
 };

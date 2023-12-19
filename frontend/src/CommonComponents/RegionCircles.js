@@ -66,7 +66,7 @@ const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, sho
                             cx={10 + j * (circleSpacing + 2 * 10)}
                             cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
                             r={5}
-                            fill={show === true ? colorslist[labels[circleIndex]] : `#1f77b4`}
+                            fill={show === 'patch' ? colorslist[labels[circleIndex]] : `#1f77b4`}
                         />
                         <title>{`
                         Electrode : E${electrodes[circleIndex]}

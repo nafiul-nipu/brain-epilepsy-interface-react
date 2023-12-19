@@ -14,12 +14,9 @@ export const ENTContainer = ({
     time,
     events,
     allnetworks,
-    eventid,
-    selectedEventRange,
     eegInBrain
 }) => {
     const [sliderValue, setSliderValue] = useState([0, 1000])
-    const [sampleValue, setSampleValue] = useState(0)
 
     // console.log(bboxCenter)
     const [buttonValue, setButtonValue] = useState('Play');
@@ -40,7 +37,7 @@ export const ENTContainer = ({
         }
     }
 
-    // console.log(eventid)
+    // console.log(community)
 
 
     return (
@@ -63,13 +60,14 @@ export const ENTContainer = ({
                     setSliderValue={setSliderValue}
                     patientID={patientInformation.id}
                     visualPanel={segment}
-                    sampleValue={sampleValue}
+                    totalSamples={community.map((el) => el.sample)}
+                    totalCommunities={community.map((el) => el.communityList.length)}
                 />
             </Row>
             <Row>
                 <Col md='12' style={{ height: '35vh' }}>
                     <Row>
-                        <div id="titleBrain1">{`${patientInformation.id}: Propagation Over Time`}</div>
+                        {segment === 'Community' ? null : <div id="titleBrain1">{`${patientInformation.id}: Propagation Over Time`}</div>}
                         <BrainViewer
                             patientInformation={patientInformation}
                             electrodeData={electrodeData}
@@ -78,14 +76,10 @@ export const ENTContainer = ({
                             time={time}
                             events={events}
                             allnetworks={allnetworks}
-                            allnetworksWithEvent={allnetworks}
-                            eventid={eventid}
-                            selectedEventRange={selectedEventRange}
                             eegInBrain={eegInBrain}
                             sliderObj={setSliderValue}
                             buttonValue={buttonValue}
                             visualPanel={segment}
-                            setSampleValue={setSampleValue}
                         />
                     </Row>
                 </Col>

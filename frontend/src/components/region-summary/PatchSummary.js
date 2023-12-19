@@ -144,7 +144,7 @@ export const PatchSummary = ({
             return rowArray.map((electrodeObj, columnIndex) => {
               const electrodeId = Object.keys(electrodeObj)[0];
               const electrodePropagation = samplePropagationData.find(
-                (e) => e.electrode_id == electrodeId
+                (e) => e.electrode_id === electrodeId
               );
               const propagationCounts = electrodePropagation
                 ? electrodePropagation
@@ -223,7 +223,7 @@ export const PatchSummary = ({
                         transform={`rotate(-90)`}
                       />
                     )}
-                    {targetRatio > 0 && sourceRatio == 0 && (
+                    {targetRatio > 0 && sourceRatio === 0 && (
                       <circle
                         r={circleRadius(electrodeValue) + 5}
                         fill="none"

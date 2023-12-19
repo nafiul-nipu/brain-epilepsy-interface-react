@@ -2,7 +2,6 @@ import { Row, Col, } from "react-bootstrap"
 import { Segmented } from 'antd'
 import { useState } from "react";
 import { TimeSliderButton } from "./TimeSliderButton";
-import { Switch, FormControl, FormLabel } from '@chakra-ui/react'
 import { BrainViewer } from "./BrainViewer";
 import './brainViewer.css'
 

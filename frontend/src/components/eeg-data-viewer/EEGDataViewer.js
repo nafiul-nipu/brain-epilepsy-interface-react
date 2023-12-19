@@ -1,6 +1,6 @@
 import { LinePlot } from "../../CommonComponents/LinePlot";
 import ChartContainer, { useChartContext } from "../chart-container/chart-container";
-import { useState, useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
 import "./eeg-data-viewer.css";
 import { AxisBottom } from "../../CommonComponents/AxisBottom";

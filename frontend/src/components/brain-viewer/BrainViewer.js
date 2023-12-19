@@ -3,7 +3,6 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Stats, View } from "@react-three/drei";
 import { Suspense, useRef, useState } from "react";
 import dataRegisty from '../../data/dataRegistry.json'
-import { useBBoxcenter } from "../../library/useBBoxcenter";
 import { BrainLesionLoad } from "./BrainLesionLoad";
 import { ElectrodeLoad } from "./ElectrodeLoad";
 import { Card, Slider } from "antd";

@@ -58,9 +58,9 @@ export const TimeSliderButton = ({
                     visualPanel === 'Frequency' ?
                         (
                             <>
-                                <Col md='2'>Time</Col>
+                                <Col md='1'>Time</Col>
                                 {/* <Col md='9' ref={sliderRef}></Col> */}
-                                <Col md='7'>
+                                <Col md='5'>
                                     <RangeSlider
                                         aria-label={'min-max-slider'}
                                         // defaultValue={[30, 80]}

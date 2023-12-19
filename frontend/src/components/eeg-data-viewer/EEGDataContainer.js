@@ -1,18 +1,6 @@
 import { EEGDataViewer } from "./EEGDataViewer";
 import { useEffect, useState } from "react";
 import { fetchEEGperPatient } from "../../api";
-import ChartContainer, { useChartContext } from "../chart-container/chart-container";
-import { AxisBottom } from "../../CommonComponents/AxisBottom";
-
-import * as d3 from "d3";
-
-const containerProps = {
-  useZoom: false,
-  ml: 50,
-  mr: 20,
-  mb: 10,
-  mt: 10,
-};
 
 export const EEGDataContainer = ({
   patient,

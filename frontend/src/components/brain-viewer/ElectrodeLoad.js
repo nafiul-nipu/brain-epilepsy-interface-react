@@ -26,17 +26,12 @@ export const ElectrodeLoad = ({
     community,
     bbox,
     eegInBrain,
-    selectedEventRange,
     timeRange,
     eventData,
     allnetwork,
-    allnetworkWithEvent,
-    patientID,
-    eventid,
     visualPanel,
     buttonValue,
     sliderObj,
-    setSampleValue
 }) => {
     const isMountedRef = useRef(false)
     const meshRef = useRef()
@@ -45,7 +40,6 @@ export const ElectrodeLoad = ({
         meshRef.current.setColorAt(0, new Color());
         // console.log(electrodeData)
 
-        // console.log(selectedEventRange)
         return () => {
             isMountedRef.current = false;
         }
@@ -133,7 +127,7 @@ export const ElectrodeLoad = ({
         meshRef.current.instanceMatrix.needsUpdate = true;
         meshRef.current.instanceColor.needsUpdate = true;
 
-    }, [allnetwork, buttonValue, eegInBrain, electrodeData, eventData, visualPanel, selectedEventRange, community])
+    }, [allnetwork, buttonValue, eegInBrain, electrodeData, eventData, visualPanel, community])
 
     useEffect(() => {
         if (!isMountedRef.current) return;

@@ -1,20 +1,15 @@
 import { Col, Row } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as d3 from "d3";
 import "./PatchSummary.css";
 
 export const PatchSummary = ({
-  data,
   patchData,
   eventData,
-  eventRange,
   selectedRoi,
   setSelectedRoi,
   roiCount,
   samplePropagationData,
-  roiFilter,
-  setRoiFilter,
-  electrodeData,
 }) => {
   const electrodeColorList = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
 
@@ -162,19 +157,19 @@ export const PatchSummary = ({
               const sourceRatio =
                 propagationCounts.source_counts +
                   propagationCounts.target_counts ===
-                0
+                  0
                   ? 0
                   : propagationCounts.source_counts /
-                    (propagationCounts.source_counts +
-                      propagationCounts.target_counts);
+                  (propagationCounts.source_counts +
+                    propagationCounts.target_counts);
               const targetRatio =
                 propagationCounts.source_counts +
                   propagationCounts.target_counts ===
-                0
+                  0
                   ? 0
                   : propagationCounts.target_counts /
-                    (propagationCounts.source_counts +
-                      propagationCounts.target_counts);
+                  (propagationCounts.source_counts +
+                    propagationCounts.target_counts);
               return (
                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
                   <circle
@@ -220,12 +215,11 @@ export const PatchSummary = ({
                         fill="none"
                         stroke="#9e0142"
                         strokeWidth="10"
-                        strokeDasharray={`${
-                          sourceRatio.toFixed(2) *
+                        strokeDasharray={`${sourceRatio.toFixed(2) *
                           3.14 *
                           2 *
                           (circleRadius(electrodeValue) + 5)
-                        } 100`}
+                          } 100`}
                         transform={`rotate(-90)`}
                       />
                     )}
@@ -235,12 +229,11 @@ export const PatchSummary = ({
                         fill="none"
                         stroke="#5e4fa2"
                         strokeWidth="10"
-                        strokeDasharray={`${
-                          targetRatio.toFixed(2) *
+                        strokeDasharray={`${targetRatio.toFixed(2) *
                           3.14 *
                           2 *
                           (circleRadius(electrodeValue) + 5)
-                        } 100`}
+                          } 100`}
                         transform={`rotate(-90)`}
                       />
                     )}
@@ -302,7 +295,7 @@ export const PatchSummary = ({
       style={{ height: "35vh", backgroundColor: "#FAFBFC" }}
     >
       <Row>
-        <Col md="12" style={{ height: "4vh"}}>
+        <Col md="12" style={{ height: "4vh" }}>
           <Row style={{ height: "100%" }}>
             <Col className="summary">Patch Summary</Col>
             <Col className="summary">

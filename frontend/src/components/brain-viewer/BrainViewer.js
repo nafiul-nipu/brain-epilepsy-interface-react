@@ -1,15 +1,12 @@
-import { Row, Col } from "react-bootstrap";
-import CustomOBJModel from "./ModelLoader";
-import { Canvas, useLoader } from "@react-three/fiber";
+import { Col } from "react-bootstrap";
+import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Stats, View } from "@react-three/drei";
-import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
+import { Suspense, useRef, useState } from "react";
 import dataRegisty from '../../data/dataRegistry.json'
-import * as THREE from "three";
 import { useBBoxcenter } from "../../library/useBBoxcenter";
 import { BrainLesionLoad } from "./BrainLesionLoad";
 import { ElectrodeLoad } from "./ElectrodeLoad";
-import { Button, Card, Slider } from "antd";
+import { Card, Slider } from "antd";
 
 const width = (window.innerWidth / 2) - 10;
 const height = window.innerHeight / 2.3 - 10
@@ -22,14 +19,10 @@ export const BrainViewer = ({
     time,
     events,
     allnetworks,
-    allnetworksWithEvent,
-    eventid,
-    selectedEventRange,
     eegInBrain,
     sliderObj,
     buttonValue,
     visualPanel,
-    setSampleValue,
 }) => {
     const [leftBrainOpacity, setLeftBrainOpacity] = useState(1);
     const [rightBrainOpacity, setRightBrainOpacity] = useState(1);
@@ -163,17 +156,12 @@ export const BrainViewer = ({
                                                 community={item}
                                                 bbox={dataRegisty[patientInformation.id].bbox}
                                                 eegInBrain={eegInBrain}
-                                                selectedEventRange={selectedEventRange}
                                                 timeRange={time}
                                                 eventData={events}
                                                 allnetwork={allnetworks}
-                                                allnetworkWithEvent={allnetworksWithEvent}
-                                                patientID={patientInformation.id}
-                                                eventid={eventid}
                                                 visualPanel={visualPanel}
                                                 buttonValue={buttonValue}
                                                 sliderObj={sliderObj}
-                                                setSampleValue={setSampleValue}
                                             />
                                             <OrbitControls enablePan={true} />
                                         </View>
@@ -224,17 +212,12 @@ export const BrainViewer = ({
                                     community={community}
                                     bbox={dataRegisty[patientInformation.id].bbox}
                                     eegInBrain={eegInBrain}
-                                    selectedEventRange={selectedEventRange}
                                     timeRange={time}
                                     eventData={events}
                                     allnetwork={allnetworks}
-                                    allnetworkWithEvent={allnetworksWithEvent}
-                                    patientID={patientInformation.id}
-                                    eventid={eventid}
                                     visualPanel={visualPanel}
                                     buttonValue={buttonValue}
                                     sliderObj={sliderObj}
-                                    setSampleValue={setSampleValue}
                                 />
                                 <OrbitControls enablePan={true} />
                             </Suspense>

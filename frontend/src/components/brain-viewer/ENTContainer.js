@@ -14,8 +14,6 @@ export const ENTContainer = ({
     time,
     events,
     allnetworks,
-    eventid,
-    selectedEventRange,
     eegInBrain
 }) => {
     const [sliderValue, setSliderValue] = useState([0, 1000])
@@ -78,9 +76,6 @@ export const ENTContainer = ({
                             time={time}
                             events={events}
                             allnetworks={allnetworks}
-                            allnetworksWithEvent={allnetworks}
-                            eventid={eventid}
-                            selectedEventRange={selectedEventRange}
                             eegInBrain={eegInBrain}
                             sliderObj={setSliderValue}
                             buttonValue={buttonValue}

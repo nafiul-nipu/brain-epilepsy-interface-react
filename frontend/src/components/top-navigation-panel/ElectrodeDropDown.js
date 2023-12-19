@@ -1,19 +1,13 @@
 import { Logo } from "../logo/logo";
 import "./nav-bar.css";
 
-const globalTimelineRectWidth = 10000;
-const localTimelineRectWidth = 500;
 
 export const ElectrodeDropDown = ({
   patientInfo,
   setPatientInfo,
   timeRange,
   setTimeRange,
-  direction = "column",
-  setRoiFilter,
-  setSelectedRoi,
-  setSimilarRegionEvent,
-  setExploration,
+  setSelectedRoi
 }) => {
   const { id, sample } = patientInfo;
 
@@ -64,25 +58,16 @@ export const ElectrodeDropDown = ({
   function onSampleChange(event) {
     // console.log({ ...patientInfo, sample: event.target.value })
     setPatientInfo({ ...patientInfo, sample: event.target.value });
-    setRoiFilter(null);
     setSelectedRoi(0);
-    setSimilarRegionEvent(null);
-    setExploration(null);
   }
 
   function onPatientChange(event) {
     setPatientInfo({ ...patientInfo, id: event.target.value, sample: "sample1" });
-    setRoiFilter(null);
     setSelectedRoi(0);
-    setSimilarRegionEvent(null);
-    setExploration(null);
   }
 
   function onTimeRangeChange(event) {
     setTimeRange(event.target.value);
-    setRoiFilter(null);
     setSelectedRoi(0);
-    setSimilarRegionEvent(null);
-    // setExploration(null);
   }
 };

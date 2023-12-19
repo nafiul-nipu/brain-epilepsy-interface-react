@@ -55,12 +55,13 @@ export const EEGDataContainer = ({
     patient
   ]);
 
-  const eegList = eegData ? Object.keys(eegData.eeg).map(Number).sort() : [];
+  // const eegList = eegData ? Object.keys(eegData.eeg).map(Number).sort() : [];
 
   return (
     <>
       {eegData &&
         <EEGDataViewer
+          sampleName={patient.sample}
           eegData={eegData}
           xTicks={[startTime, startTime + 500]}
           electrodeList={electrodeList}

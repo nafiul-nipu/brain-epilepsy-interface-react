@@ -16,6 +16,7 @@ const containerProps = {
 };
 
 export const EEGDataViewer = ({
+  sampleName,
   eegData,
   xTicks,
   electrodeList,
@@ -53,7 +54,7 @@ export const EEGDataViewer = ({
     <div className="eeg-container">
       <div className="eeg-title">
         <div title="Previous" onClick={() => timeToFecth('prev')}><TbPlayerTrackPrevFilled /></div>
-        <div><strong>EEGs</strong> </div>
+        <div><strong>EEGs</strong> <span>{sampleName}</span></div>
         <div title="Next" onClick={() => timeToFecth('next')}><TbPlayerTrackNextFilled /></div>
       </div>
 

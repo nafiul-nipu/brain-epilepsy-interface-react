@@ -1,6 +1,6 @@
 import { Col } from "react-bootstrap";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera, Stats, View } from "@react-three/drei";
+import { Hud, OrbitControls, PerspectiveCamera, Stats, View } from "@react-three/drei";
 import { Suspense, useRef, useState } from "react";
 import dataRegisty from '../../data/dataRegistry.json'
 import { BrainLesionLoad } from "./BrainLesionLoad";
@@ -38,6 +38,27 @@ export const BrainViewer = ({
         setRightBrainOpacity(value);
     };
 
+    const Lighting = () => {
+        return (
+            <>
+                <ambientLight intensity={0.5} />
+                <directionalLight
+                    castShadow
+                    position={[0, 10, 55]}
+                    intensity={1}
+                    shadow-mapSize-width={2048}
+                    shadow-mapSize-height={2048}
+                    shadow-camera-near={0.5}
+                    shadow-camera-far={500}
+                    shadow-camera-left={-5}
+                    shadow-camera-right={5}
+                    shadow-camera-top={5}
+                    shadow-camera-bottom={-5}
+                />
+            </>
+        )
+    };
+
     return (
         <>
             <Col md='4'>
@@ -65,7 +86,7 @@ export const BrainViewer = ({
                         <p style={{ marginLeft: 15 }}>Opacity:</p>
                         <Slider
                             style={{ width: "100%" }}
-                            defaultValue={0.5}
+                            defaultValue={1}
                             step={0.1}
                             max={1}
                             onChange={changeLeftBrainOpacity}
@@ -172,53 +193,52 @@ export const BrainViewer = ({
                         :
                         <Canvas>
                             <Suspense fallback={null}>
-                                <PerspectiveCamera
-                                    makeDefault
-                                    position={[-250, -10, 0]}
-                                    up={[0, 0, 1]}
-                                    aspect={width / height}
-                                    near={1}
-                                    far={2000}
-                                    fov={40}
-                                />
-                                {/* <color attach="background" args={['#000']} /> */}
-                                <ambientLight intensity={0.5} />
-                                {/* <pointLight position={[10, 10, 10]} /> */}
-                                <directionalLight
-                                    castShadow
-                                    position={[0, 10, 55]}
-                                    intensity={1}
-                                    shadow-mapSize-width={2048}
-                                    shadow-mapSize-height={2048}
-                                    shadow-camera-near={0.5}
-                                    shadow-camera-far={500}
-                                    shadow-camera-left={-5}
-                                    shadow-camera-right={5}
-                                    shadow-camera-top={5}
-                                    shadow-camera-bottom={-5}
-                                />
-                                {/* <directionalLight position={[-250, -10, 0]} /> */}
-                                <BrainLesionLoad
-                                    patientInformation={patientInformation}
-                                    lesionArray={dataRegisty[patientInformation.id].lesionArray}
-                                    brainPartition={dataRegisty[patientInformation.id].brainPartition}
-                                    leftBrainOpacity={leftBrainOpacity}
-                                    rightBrainOpacity={rightBrainOpacity}
-                                />
-                                <ElectrodeLoad
-                                    electrodeData={electrodeData}
-                                    sampleData={sample}
-                                    community={community}
-                                    bbox={dataRegisty[patientInformation.id].bbox}
-                                    eegInBrain={eegInBrain}
-                                    timeRange={time}
-                                    eventData={events}
-                                    allnetwork={allnetworks}
-                                    visualPanel={visualPanel}
-                                    buttonValue={buttonValue}
-                                    sliderObj={sliderObj}
-                                />
-                                <OrbitControls enablePan={true} />
+                                <Hud renderPriority={1}>
+                                    <PerspectiveCamera
+                                        makeDefault
+                                        position={[-250, -10, 0]}
+                                        up={[0, 0, 1]}
+                                        aspect={width / height}
+                                        near={1}
+                                        far={2000}
+                                        fov={40}
+                                    />
+                                    <Lighting />
+                                    <BrainLesionLoad
+                                        patientInformation={patientInformation}
+                                        lesionArray={dataRegisty[patientInformation.id].lesionArray}
+                                        brainPartition={dataRegisty[patientInformation.id].brainPartition}
+                                        leftBrainOpacity={leftBrainOpacity}
+                                        rightBrainOpacity={rightBrainOpacity}
+                                    />
+                                    <OrbitControls enablePan={true} />
+                                </Hud>
+                                <Hud renderPriority={2}>
+                                    <PerspectiveCamera
+                                        makeDefault
+                                        position={[-250, -10, 0]}
+                                        up={[0, 0, 1]}
+                                        aspect={width / height}
+                                        near={1}
+                                        far={2000}
+                                        fov={40}
+                                    />
+                                    <Lighting />
+                                    <ElectrodeLoad
+                                        electrodeData={electrodeData}
+                                        sampleData={sample}
+                                        community={community}
+                                        bbox={dataRegisty[patientInformation.id].bbox}
+                                        eegInBrain={eegInBrain}
+                                        timeRange={time}
+                                        eventData={events}
+                                        allnetwork={allnetworks}
+                                        visualPanel={visualPanel}
+                                        buttonValue={buttonValue}
+                                        sliderObj={sliderObj}
+                                    />
+                                    <OrbitControls enablePan={true} />
+                                </Hud>
                             </Suspense>
                             <Stats />
                         </Canvas>

@@ -4,6 +4,21 @@ import ChartContainer, { useChartContext } from '../components/chart-container/c
 
 const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
 
+const catColor = {
+    1: "#00A5E3",
+    2: "#8DD7BF",
+    3: "#FF96C5",
+    4: "#FF5768",
+    5: "#FFBF65",
+    6: "#9467bd",
+    7: "#fdbf6f",
+    8: "#ff7f0e",
+    9: "#fb9a99",
+    10: "#8c564b",
+    12: "#9467bd",
+    14: "#ff7f0e",
+}
+
 const containerProps = {
     useZoom: false,
     ml: 2,
@@ -18,7 +33,8 @@ export const RegionCircles = ({
     topPercent,
     colorTheLine,
     show,
-    labels
+    labels,
+    communityObj
 }) => {
     return (
         <ChartContainer {...containerProps}>
@@ -30,12 +46,13 @@ export const RegionCircles = ({
                 colorTheLine={colorTheLine}
                 show={show}
                 labels={labels}
+                communityObj={communityObj}
             />
         </ChartContainer>
     );
 };
 
-const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, show, labels }) => {
+const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, show, labels, communityObj }) => {
     // console.log(data)
     // console.log(electrodes)
 
@@ -66,7 +83,9 @@ const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, sho
                             cx={10 + j * (circleSpacing + 2 * 10)}
                             cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
                             r={5}
-                            fill={show === 'patch' ? colorslist[labels[circleIndex]] : `#1f77b4`}
+                            fill={show === 'patch' ? colorslist[labels[circleIndex]]
+                                : show === 'communities' ? catColor[communityObj[electrodes[circleIndex]]]
+                                    : `#1f77b4`}
                         />
                         <title>{`
                         Electrode : E${electrodes[circleIndex]}

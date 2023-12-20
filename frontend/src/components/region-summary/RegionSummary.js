@@ -9,7 +9,8 @@ const rowSize = 3;
 export const RegionSummary = ({
     networks,
     sampleName,
-    electrodeData
+    electrodeData,
+    communityData
 }) => {
 
     const [topPercent, setTopPercent] = useState(0.01)
@@ -30,6 +31,12 @@ export const RegionSummary = ({
     // console.log(networks)
     // console.log(sampleName)
     // console.log(electrodeData)
+
+    // console.log(communityData)
+
+    // const resultObject = Object.assign({}, ...communityData[0].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))));
+
+    // console.log(resultObject);
 
     return (
         <Col
@@ -92,6 +99,7 @@ export const RegionSummary = ({
                                             colorTheLine={colorTheLine}
                                             show={viewColor}
                                             labels={electrodeData.map((obj) => obj.label)}
+                                            communityObj={Object.assign({}, ...communityData[index].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))}
                                         />
                                     </Col>
                                 )

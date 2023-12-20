@@ -120,11 +120,12 @@ function App() {
                 <TabPanel style={{ padding: '0px' }}>
                   {/* region - 35vh */}
                   {/* this will be 2D similar view */}
-                  {allNetwork && electrodeDataCsv ? (
+                  {allNetwork && electrodeDataCsv && comData ? (
                     <RegionSummary
                       networks={allNetwork}
                       sampleName={patientInfo.sample}
                       electrodeData={electrodeDataCsv}
+                      communityData={comData}
                     />
                   ) : null}
                 </TabPanel>

@@ -32,7 +32,7 @@ export const RegionSummary = ({
     // console.log(sampleName)
     // console.log(electrodeData)
 
-    console.log(communityData)
+    // console.log(communityData)
 
     // const resultObject = Object.assign({}, ...communityData[0].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))));
 

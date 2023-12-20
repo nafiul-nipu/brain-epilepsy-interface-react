@@ -149,7 +149,6 @@ export const BrainViewer = ({
                                                 fov={40}
                                             />
                                             <ambientLight intensity={0.5} />
-                                            <pointLight position={[10, 10, 10]} />
                                             <directionalLight
                                                 castShadow
                                                 position={[0, 5, 5]}

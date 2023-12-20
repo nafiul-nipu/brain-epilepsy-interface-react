@@ -15,11 +15,11 @@ import {
     render,
     getbbox,
     objMaterialManipulation,
-} from '../../library/CommonUtilities'
+} from '../../../library/CommonUtilities'
 
-import dataRegistry from '../../data/dataRegistry.json'
+import dataRegistry from '../../../data/dataRegistry.json'
 
-import { vertexShader, fragmentShader } from '../../library/shadersrc'
+import { vertexShader, fragmentShader } from '../../../library/shadersrc'
 
 let canvas = null;
 // let renderer, scene, scene2, camera, controls, centerBrain, centerOther;

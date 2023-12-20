@@ -23,7 +23,7 @@ export const BrainViewer = ({
     buttonValue,
     visualPanel,
 }) => {
-    const [leftBrainOpacity, setLeftBrainOpacity] = useState(0.5);
+    const [leftBrainOpacity, setLeftBrainOpacity] = useState(1);
     const [rightBrainOpacity, setRightBrainOpacity] = useState(1);
     const containerRef = useRef();
     const views = [useRef(), useRef(), useRef()];
@@ -183,10 +183,10 @@ export const BrainViewer = ({
                                 />
                                 {/* <color attach="background" args={['#000']} /> */}
                                 <ambientLight intensity={0.5} />
-                                <pointLight position={[10, 10, 10]} />
+                                {/* <pointLight position={[10, 10, 10]} /> */}
                                 <directionalLight
                                     castShadow
-                                    position={[0, 5, 5]}
+                                    position={[0, 10, 55]}
                                     intensity={1}
                                     shadow-mapSize-width={2048}
                                     shadow-mapSize-height={2048}

@@ -93,7 +93,8 @@ export const PatchSummary = ({
     const roiLabelWidth = 20;
     const roiLabelHeight = 10;
     const svgWidth = columnsPerRow * 50;
-    const svgHeight = numRowsInSVG * 50 + roiLabelHeight;
+    const svgHeight = numRowsInSVG * 75 + roiLabelHeight;
+    console.log(svgWidth, svgHeight)
     const roiScale = d3
       .scaleLinear()
       .domain([0, d3.max(roiCount)])
@@ -106,7 +107,7 @@ export const PatchSummary = ({
         md="4"
         key={roiKey}
         style={{
-          height: "30vh",
+          height: "22vh",
           padding: 0,
           backgroundColor:
             selectedRoi === Number(roiKey)
@@ -120,7 +121,7 @@ export const PatchSummary = ({
             <text x={0} y={10} fontSize={12} fill="black" textAnchor="start">
               {`Patch: ${roiKey}`}
             </text>
-            <rect
+            {/* <rect
               x={50}
               y={0}
               width={roiScale(roiCount[roiKey]) - roiLabelWidth}
@@ -131,7 +132,7 @@ export const PatchSummary = ({
               {`
                 Patch : ${roiKey}\n Frequency : ${roiCount[roiKey]}
             `}
-            </title>
+            </title> */}
           </g>
         </svg>
         <svg
@@ -255,12 +256,12 @@ export const PatchSummary = ({
   const DASH_WIDTH = 50;
 
   const circleLegend = ticks.map((tick, i) => {
-    const xCenter = 14 * dimension;
+    const xCenter = dimension;
     const yCircleTop = dimension - 2 * circleRadius(tick);
     const yCircleCenter = dimension - circleRadius(tick);
 
     return (
-      <g key={i} transform="translate(5,5)">
+      <g key={i} transform="translate(5,-5)">
         <circle
           cx={xCenter}
           cy={yCircleCenter}
@@ -292,7 +293,7 @@ export const PatchSummary = ({
     <Col
       md="12"
       className="regionSummaryContainer"
-      style={{ height: "35vh", backgroundColor: "#FAFBFC" }}
+      style={{ height: "92vh", backgroundColor: "#FAFBFC" }}
     >
       <Row>
         <Col md="12" style={{ height: "4vh" }}>
@@ -301,8 +302,8 @@ export const PatchSummary = ({
             <Col className="summary">
               <svg width="100%" height="100%" overflow="visible">
                 <text
-                  x={11 * dimension}
-                  y={18}
+                  x={dimension - 70}
+                  y={10}
                   fontSize={11}
                   alignmentBaseline="middle"
                 >
@@ -311,30 +312,30 @@ export const PatchSummary = ({
                 {circleLegend}
                 <g>
                   <rect
-                    x={14 * dimension + 100}
-                    y={0}
+                    x={dimension + 100}
+                    y={-15}
                     fill="#9e0142"
                     width={10}
                     height={10}
                   />
                   <text
-                    x={14 * dimension + 120}
-                    y={5}
+                    x={dimension + 120}
+                    y={-10}
                     fontSize={10}
                     alignmentBaseline="middle"
                   >
                     Source counts
                   </text>
                   <rect
-                    x={14 * dimension + 100}
-                    y={20}
+                    x={dimension + 100}
+                    y={0}
                     fill="#5e4fa2"
                     width={10}
                     height={10}
                   />
                   <text
-                    x={14 * dimension + 120}
-                    y={25}
+                    x={dimension + 120}
+                    y={5}
                     fontSize={10}
                     alignmentBaseline="middle"
                   >
@@ -346,7 +347,7 @@ export const PatchSummary = ({
           </Row>
         </Col>
       </Row>
-      <Row style={{ height: "35vh", overflowY: "auto", width: "100%" }}>
+      <Row style={{ height: "92vh", overflowY: "auto", width: "100%" }}>
         <>{rows}</>
         {tooltip.visible && (
           <div

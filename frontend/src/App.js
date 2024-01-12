@@ -113,8 +113,8 @@ function App() {
             <Tabs variant="enclosed" colorScheme="green" size='sm' style={{ paddingRight: 0 }}>
               <TabList>
                 <Tab>Network</Tab>
-                <Tab>Patches</Tab>
-                <Tab></Tab>
+                {/* <Tab>Patches</Tab> */}
+                {/* <Tab></Tab> */}
               </TabList>
               <TabPanels>
                 <TabPanel style={{ padding: '0px' }}>
@@ -129,6 +129,47 @@ function App() {
                     />
                   ) : null}
                 </TabPanel>
+                {/* <TabPanel style={{ padding: '0px' }}>
+                  {allEventData && patchData && samplePropagationData ? (
+                    <PatchSummary
+                      patchData={patchData}
+                      samplePropagationData={samplePropagationData}
+                      eventData={allEventData[patientInfo.sample]}
+                      selectedRoi={selectedRoi}
+                      setSelectedRoi={setSelectedRoi}
+                      roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
+                    />
+                  ) : null}
+                </TabPanel> */}
+              </TabPanels>
+            </Tabs>
+
+          </Row>
+        </Col>
+        {/* right panel */}
+        <Col md="5">
+          <Row>
+            <Tabs variant="enclosed" colorScheme="green" size='sm' style={{ paddingRight: 0 }}>
+              <TabList>
+                <Tab>EEG</Tab>
+                <Tab>Patches</Tab>
+                <Tab></Tab>
+              </TabList>
+
+              <TabPanels>
+                <TabPanel style={{ padding: '0px' }}>
+                  {/* eeg 94vh */}
+                  <Col md="12" style={{ height: "94vh", backgroundColor: "#FAFBFC" }}>
+                    {allEventData && electrodeDataCsv ? (
+                      <EEGDataContainer
+                        patient={patientInfo}
+                        electrodeList={electrodeDataCsv.map((el) => el.electrode_number)}
+                        eegInBrain={eegInBrain}
+                        setEegInBrain={setEegInBrain}
+                      />
+                    ) : null}
+                  </Col>
+                </TabPanel>
                 <TabPanel style={{ padding: '0px' }}>
                   {allEventData && patchData && samplePropagationData ? (
                     <PatchSummary
@@ -141,31 +182,9 @@ function App() {
                     />
                   ) : null}
                 </TabPanel>
-
-                <TabPanel style={{ padding: '0px' }}>
-                  {/* TODO: add the network component here */}
-                  network to visualize
-
-                </TabPanel>
               </TabPanels>
-            </Tabs>
 
-          </Row>
-        </Col>
-        {/* right panel */}
-        <Col md="5">
-          <Row>
-            {/* eeg 94vh */}
-            <Col md="12" style={{ height: "94vh", backgroundColor: "#FAFBFC" }}>
-              {allEventData && electrodeDataCsv ? (
-                <EEGDataContainer
-                  patient={patientInfo}
-                  electrodeList={electrodeDataCsv.map((el) => el.electrode_number)}
-                  eegInBrain={eegInBrain}
-                  setEegInBrain={setEegInBrain}
-                />
-              ) : null}
-            </Col>
+            </Tabs>
           </Row>
         </Col>
       </Row>

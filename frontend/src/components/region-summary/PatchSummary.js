@@ -118,7 +118,7 @@ export const PatchSummary = ({
       >
         <svg width="100%" height={10}>
           <g>
-            <text x={0} y={10} fontSize={12} fill="black" textAnchor="start">
+            <text x={10} y={10} fontSize={12} fill="black" textAnchor="start">
               {`Patch: ${roiKey}`}
             </text>
             {/* <rect

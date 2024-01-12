@@ -125,7 +125,7 @@ export const BrainViewer = ({
                                             width: width / community.length,
                                             display: "inline-block",
                                             padding: "2px",
-                                            border: "0.5px solid grey",
+                                            // border: "0.5px solid grey",
                                             // backgroundColor: "yellowgreen"
                                         }}
                                     ></div>

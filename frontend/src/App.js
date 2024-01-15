@@ -24,6 +24,7 @@ import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer"
 import { PatchSummary } from "./components/region-summary/PatchSummary";
 import { useCommunity } from "./library/useCommunity";
 import { useAllNetwork } from "./library/useAllNetwork";
+import { PatchNetwork } from "./components/patch-network/PatchNetwork";
 
 function App() {
 
@@ -75,6 +76,23 @@ function App() {
 
   const [eegInBrain, setEegInBrain] = useState(null);
 
+
+  const [topPercent, setTopPercent] = useState(0.01)
+  const [colorTheLine, setColorTheLine] = useState('width')
+  const [viewColor, setViewColor] = useState('na')
+
+  const onViewChange = (event) => {
+    setViewColor(event.target.value);
+  };
+
+  const topOnChange = (event) => {
+    setTopPercent(event.target.value)
+  }
+
+  const colorOnChange = (event) => {
+    setColorTheLine(event.target.value)
+  }
+
   return (
     // component container
     <Container fluid id="container">
@@ -109,14 +127,60 @@ function App() {
             </Col>
           </Row>
 
+          <div id="viewPatch">
+            <label htmlFor="view">View:</label>
+            <select id="view" value={viewColor} onChange={onViewChange}>
+              <option value="na"> N/A </option>
+              <option value="patch"> Patch </option>
+              <option value="communities"> Communities </option>
+            </select>
+          </div>
+          {/* Patient dropdown */}
+          <div id="region-topPercent">
+            <label htmlFor="percent">Top:</label>
+            <select id="percent" value={topPercent} onChange={topOnChange}>
+              <option value="0.01"> 1% </option>
+              <option value="0.02"> 2% </option>
+              <option value="0.05"> 5% </option>
+              <option value="0.1"> 10% </option>
+            </select>
+          </div>
+
+          {/* propagation dropdown */}
+          <div id="region-color">
+            <label htmlFor="color">Color:</label>
+            <select id="color" value={colorTheLine} onChange={colorOnChange}>
+              <option value="width"> width</option>
+              <option value="time"> time </option>
+            </select>
+          </div>
+
           <Row>
             <Tabs variant="enclosed" colorScheme="green" size='sm' style={{ paddingRight: 0 }}>
               <TabList>
-                <Tab>Network</Tab>
-                {/* <Tab>Patches</Tab> */}
+                <Tab>Patch Network</Tab>
+                <Tab>All Networks</Tab>
                 {/* <Tab></Tab> */}
               </TabList>
               <TabPanels>
+                <TabPanel style={{ padding: '0px' }}>
+                  {allNetwork && electrodeDataCsv && comData ? (
+                    <PatchNetwork
+                      networks={allNetwork[patientInfo.sample]}
+                      sampleName={patientInfo.sample}
+                      electrodeData={electrodeDataCsv}
+                      communityData={comData}
+                      viewColor={viewColor}
+                      topPercent={topPercent}
+                      colorTheLine={colorTheLine}
+                      rowLength={Array.from(
+                        new Set(
+                          electrodeDataCsv.map((el) => el.label)
+                        )
+                      ).sort()}
+                    />
+                  ) : null}
+                </TabPanel>
                 <TabPanel style={{ padding: '0px' }}>
                   {/* region - 35vh */}
                   {/* this will be 2D similar view */}
@@ -126,21 +190,12 @@ function App() {
                       sampleName={patientInfo.sample}
                       electrodeData={electrodeDataCsv}
                       communityData={comData}
+                      viewColor={viewColor}
+                      topPercent={topPercent}
+                      colorTheLine={colorTheLine}
                     />
                   ) : null}
                 </TabPanel>
-                {/* <TabPanel style={{ padding: '0px' }}>
-                  {allEventData && patchData && samplePropagationData ? (
-                    <PatchSummary
-                      patchData={patchData}
-                      samplePropagationData={samplePropagationData}
-                      eventData={allEventData[patientInfo.sample]}
-                      selectedRoi={selectedRoi}
-                      setSelectedRoi={setSelectedRoi}
-                      roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
-                    />
-                  ) : null}
-                </TabPanel> */}
               </TabPanels>
             </Tabs>
 

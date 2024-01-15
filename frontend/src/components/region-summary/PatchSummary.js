@@ -94,7 +94,7 @@ export const PatchSummary = ({
     const roiLabelHeight = 10;
     const svgWidth = columnsPerRow * 50;
     const svgHeight = numRowsInSVG * 75 + roiLabelHeight;
-    console.log(svgWidth, svgHeight)
+    // console.log(svgWidth, svgHeight)
     const roiScale = d3
       .scaleLinear()
       .domain([0, d3.max(roiCount)])

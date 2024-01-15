@@ -186,6 +186,24 @@
   flex-direction: row-reverse;
 }
 
+#region-topPercent{
+  position: absolute;
+  left: 35%;
+  bottom: 37%;
+}
+#region-color{
+  position: absolute;
+  left: 46%;
+  bottom: 37%;
+}
+#viewPatch{
+  position: absolute;
+  left: 18%;
+  bottom: 36.5%;
+  display: flex;
+  align-items: center;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 5px;

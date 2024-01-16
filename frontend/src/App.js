@@ -164,9 +164,10 @@ function App() {
               </TabList>
               <TabPanels>
                 <TabPanel style={{ padding: '0px' }}>
-                  {allNetwork && electrodeDataCsv && comData ? (
+                  {allNetwork && electrodeDataCsv && comData && patchData ? (
                     <PatchNetwork
                       networks={allNetwork[patientInfo.sample]}
+                      patchData={patchData}
                       sampleName={patientInfo.sample}
                       electrodeData={electrodeDataCsv}
                       communityData={comData}
@@ -177,7 +178,7 @@ function App() {
                         new Set(
                           electrodeDataCsv.map((el) => el.label)
                         )
-                      ).sort()}
+                      ).sort((a, b) => a - b)}
                     />
                   ) : null}
                 </TabPanel>

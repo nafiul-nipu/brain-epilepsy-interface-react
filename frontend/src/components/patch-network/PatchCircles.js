@@ -29,6 +29,7 @@ const containerProps = {
 export const PatchCircles = ({
     sample,
     data,
+    patchOrder,
     electrodes,
     topPercent,
     colorTheLine,
@@ -38,11 +39,14 @@ export const PatchCircles = ({
     // console.log(sample)
     // // console.log(data)
     // console.log(electrodes)
+    // console.log(patchOrder)
+    // console.log(communityObj)
 
     return (
         <ChartContainer {...containerProps}>
             <RegionWrapper
                 data={data}
+                patchOrder={patchOrder}
                 electrodes={electrodes}
                 sample={sample}
                 topPercent={topPercent}
@@ -54,7 +58,7 @@ export const PatchCircles = ({
     );
 };
 
-const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, show, communityObj }) => {
+const RegionWrapper = ({ data, patchOrder, electrodes, sample, topPercent, colorTheLine, show, communityObj }) => {
     // console.log(data)
     // console.log(electrodes)
 
@@ -62,39 +66,52 @@ const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, sho
 
     const dimensions = useChartContext();
 
-    const circlesPerRow = 8;
-    const count = electrodes.length;
-    const circleSpacing = (dimensions.boundedWidth - 2 * 10 * circlesPerRow) / (circlesPerRow - 1);
-    const numRows = Math.ceil(count / circlesPerRow);
-
-    const electrode_positions = {}
+    let circlesPerRow = patchOrder?.reduce((max, arr) => Math.max(max, arr.length), 0);
+    const electrode_positions = {};
     const rows = [];
-    for (let i = 0; i < numRows; i++) {
+    const numRows = patchOrder ? patchOrder.length : 0;
+
+    // console.log(circlesPerRow)
+    let patchMatrix = []
+    if (circlesPerRow === 1) {
+        patchMatrix.push([].concat(...patchOrder));
+        circlesPerRow = patchMatrix[0].length;
+    } else {
+        patchMatrix = patchOrder
+    }
+    // console.log(patchMatrix)
+
+    for (let i = 0; i < patchMatrix.length; i++) {
         const circles = [];
-        for (let j = 0; j < circlesPerRow; j++) {
-            const circleIndex = i * circlesPerRow + j;
-            if (circleIndex < count) {
-                electrode_positions[electrodes[circleIndex]] = {
-                    "x": 10 + j * (circleSpacing + 2 * 10),
-                    "y": (i + 0.5) * (dimensions.boundedHeight / numRows)
-                }
-                circles.push(
-                    <g key={`${sample}_${i}_${j}`}>
-                        <circle
-                            key={circleIndex}
-                            cx={10 + j * (circleSpacing + 2 * 10)}
-                            cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
-                            r={5}
-                            fill={show === 'patch' ? colorslist[sample]
-                                : show === 'communities' ? catColor[communityObj[electrodes[circleIndex]]]
-                                    : `#1f77b4`}
-                        />
-                        <title>{`
-                        Electrode : E${electrodes[circleIndex]}
-                    `}</title>
-                    </g>
-                );
+        // const circlesPerRow = patchOrder[i].length;
+        const circleSpacing = (dimensions.boundedWidth - 2 * 10 * circlesPerRow) / (circlesPerRow - 1);
+
+        for (let j = 0; j < patchMatrix[i].length; j++) {
+            const temp = circlesPerRow - patchMatrix[i].length;
+
+            const currElectrode = patchMatrix[i][j];
+            // if (circleIndex < count) {
+            electrode_positions[currElectrode] = {
+                "x": 10 + j * (circleSpacing + 2 * 10) + temp * (circleSpacing + 2 * 10),
+                "y": (i + 0.5) * (dimensions.boundedHeight / numRows)
             }
+            circles.push(
+                <g key={`${sample}_${i}_${j}`}>
+                    <circle
+                        key={currElectrode}
+                        cx={10 + j * (circleSpacing + 2 * 10) + temp * (circleSpacing + 2 * 10)}
+                        cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
+                        r={5}
+                        fill={show === 'patch' ? colorslist[sample]
+                            : show === 'communities' ? catColor[communityObj[currElectrode]]
+                                : `#1f77b4`}
+                    />
+                    <title>{`
+                        Electrode : E${currElectrode}
+                    `}</title>
+                </g>
+            );
+            // }
         }
         rows.push(<g key={i}>{circles}</g>);
     }

@@ -6,6 +6,7 @@ const rowSize = 3;
 // Use regular expression to extract the numeric part
 export const PatchNetwork = ({
     networks,
+    patchData,
     sampleName,
     electrodeData,
     communityData,
@@ -16,9 +17,11 @@ export const PatchNetwork = ({
 }) => {
     // console.log(networks)
     // console.log(sampleName)
+    // console.log(samples.indexOf(sampleName))
     // console.log(electrodeData)
     // console.log(communityData)
     // console.log(rowLength)
+    // console.log(patchData)
 
     const numRows = Math.ceil((rowLength.length - 1) / rowSize);
 
@@ -47,27 +50,31 @@ export const PatchNetwork = ({
                                         {rowObjects.map((object, i) => (
                                             <Col
                                                 md='4'
-                                                // key={data[i].roi}
+                                                key={i}
                                                 style={{
-                                                    height: `${33 / numRows}vh`,
+                                                    height: `${35 / numRows}vh`,
                                                     // backgroundColor: selectedRoi === (i + rowStartIndex) ? "rgba(202, 204, 202, 0.4)" : "white",
                                                     // border: "1px solid #E2E8F0",
                                                 }}
 
                                             >
-                                                <PatchCircles
-                                                    sample={object}
-                                                    data={networks}
-                                                    electrodes={electrodeData.filter((obj) => obj.label === object).map((obj) => obj.electrode_number)}
-                                                    topPercent={topPercent}
-                                                    colorTheLine={colorTheLine}
-                                                    show={viewColor}
-                                                    communityObj={communityData[samples.indexOf(sampleName)] !== undefined ?
-                                                        Object.assign({}, ...communityData[samples.indexOf(sampleName)].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
-                                                        : null
-                                                    }
-                                                />
+                                                {patchData[object] ?
+                                                    (<PatchCircles
+                                                        sample={object}
+                                                        data={networks}
+                                                        patchOrder={patchData[object]}
+                                                        electrodes={electrodeData.filter((obj) => obj.label === object).map((obj) => obj.electrode_number)}
+                                                        topPercent={topPercent}
+                                                        colorTheLine={colorTheLine}
+                                                        show={viewColor}
+                                                        communityObj={communityData[samples.indexOf(sampleName)] !== undefined ?
+                                                            Object.assign({}, ...communityData[samples.indexOf(sampleName)].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
+                                                            : null
+                                                        }
+                                                    />)
+                                                    : null}
                                             </Col>
+
 
                                         ))
                                         }

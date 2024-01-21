@@ -152,10 +152,10 @@ const RegionWrapper = ({ data, patchOrder, electrodes, sample, topPercent, color
     // console.log("Top", topPercent, "edges:", topEdges);
 
 
-    const lineGenerator = d3.line()
+    const lineGenerator = d3.link(d3.curveBumpY)
         .x(d => electrode_positions[d] ? electrode_positions[d].x : 0)
         .y(d => electrode_positions[d] ? electrode_positions[d].y : 0)
-        .curve(d3.curveLinear);
+    // .curve(d3.curveNatural);
 
     const lineColor = d3.scaleSequential(d3.interpolateReds)
         .domain([data[0].index, data[data.length - 1].index])
@@ -179,7 +179,8 @@ const RegionWrapper = ({ data, patchOrder, electrodes, sample, topPercent, color
             // console.log(source, target)
             // console.log(electrode_positions[source], electrode_positions[target])
             if (electrodes.includes(parseInt(source)) && electrodes.includes(parseInt(target))) {
-                const linePath = lineGenerator([source, target]);
+                // const linePath = lineGenerator([source, target]);
+                const linePath = lineGenerator({ source, target });
                 lines.push(
                     <path
                         key={`${sample}_${source}_${target}`}

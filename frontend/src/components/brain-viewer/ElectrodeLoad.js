@@ -50,7 +50,7 @@ export const ElectrodeLoad = ({
         // console.log("visual panel", visualPanel)
         if (!isMountedRef.current) return;
         if (buttonValue === 'Pause') return;
-        if (visualPanel === 'Patches') {
+        if (visualPanel === 'Patches' || visualPanel === 'Curve') {
             // console.log(electrodeData)
             // console.log("patches")
             electrodeData.forEach((electrode, index) => {

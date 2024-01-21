@@ -112,7 +112,7 @@ function App() {
           <Row>
             {/* brain - 50vh */}
             <Col md="12" style={{ height: "54vh", backgroundColor: "#FAFBFC" }}>
-              {allEventData && comData ? (
+              {allEventData && comData && allNetwork ? (
                 <ENTContainer
                   patientInformation={patientInfo}
                   electrodeData={electrodeDataCsv}
@@ -120,7 +120,7 @@ function App() {
                   community={comData}
                   time={timeRange}
                   events={allEventData[patientInfo.sample]}
-                  allnetworks={fullNetwork}
+                  allnetworks={allNetwork}
                   eegInBrain={eegInBrain}
                 />
               ) : null}

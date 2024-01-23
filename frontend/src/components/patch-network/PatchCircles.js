@@ -206,7 +206,7 @@ const RegionWrapper = ({ data, patchOrder, electrodes, sample, topPercent, color
                 const target = network.target;
                 const key = `${source}_${target}`
                 if (edgeLists.includes(key) && electrodes.includes(parseInt(source)) && electrodes.includes(parseInt(target))) {
-                    const linePath = lineGenerator([source, target]);
+                    const linePath = lineGenerator({ source, target });
                     allLines.push(
                         <path
                             key={`${sample}_${i}_${source}_${target}`}

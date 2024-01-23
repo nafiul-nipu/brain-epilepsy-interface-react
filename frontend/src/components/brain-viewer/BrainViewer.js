@@ -6,6 +6,7 @@ import dataRegisty from '../../data/dataRegistry.json'
 import { BrainLesionLoad } from "./BrainLesionLoad";
 import { ElectrodeLoad } from "./ElectrodeLoad";
 import { Card, Slider } from "antd";
+import { CreateLineCurve } from "./CreateLineCurve";
 
 const width = (window.innerWidth / 2) - 10;
 const height = window.innerHeight / 2.3 - 10
@@ -22,6 +23,7 @@ export const BrainViewer = ({
     sliderObj,
     buttonValue,
     visualPanel,
+    topPercent
 }) => {
     const [leftBrainOpacity, setLeftBrainOpacity] = useState(1);
     const [rightBrainOpacity, setRightBrainOpacity] = useState(1);
@@ -189,6 +191,7 @@ export const BrainViewer = ({
                                         </View>
                                     ))
                                 }
+                                <Stats />
                             </Canvas>
                         </div>
 
@@ -261,10 +264,17 @@ export const BrainViewer = ({
                                                     buttonValue={buttonValue}
                                                     sliderObj={sliderObj}
                                                 />
+                                                <CreateLineCurve
+                                                    electrodeData={electrodeData}
+                                                    networkData={allnetworks[item]}
+                                                    topPercent={topPercent}
+                                                    bbox={dataRegisty[patientInformation.id].bbox}
+                                                />
                                                 <OrbitControls enablePan={true} />
                                             </View>
                                         ))
                                     }
+                                    <Stats />
                                 </Canvas>
                             </div>
                             :

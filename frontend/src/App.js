@@ -122,6 +122,7 @@ function App() {
                   events={allEventData[patientInfo.sample]}
                   allnetworks={allNetwork}
                   eegInBrain={eegInBrain}
+                  topPercent={topPercent}
                 />
               ) : null}
             </Col>

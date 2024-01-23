@@ -131,10 +131,10 @@ const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, sho
     // console.log("Top", topPercent, "edges:", topEdges);
 
 
-    const lineGenerator = d3.line()
+    const lineGenerator = d3.link(d3.curveBumpY)
         .x(d => electrode_positions[d] ? electrode_positions[d].x : 0)
         .y(d => electrode_positions[d] ? electrode_positions[d].y : 0)
-        .curve(d3.curveLinear);
+    // .curve(d3.curveLinear);
 
     const lineColor = d3.scaleSequential(d3.interpolateReds)
         .domain([data[0].index, data[data.length - 1].index])
@@ -157,7 +157,7 @@ const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, sho
             const target = edge[0].split('_')[1];
             // console.log(source, target)
             // console.log(electrode_positions[source], electrode_positions[target])
-            const linePath = lineGenerator([source, target]);
+            const linePath = lineGenerator({ source, target });
             lines.push(
                 <path
                     key={`${sample}_${source}_${target}`}
@@ -181,7 +181,7 @@ const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, sho
                 const target = network.target;
                 const key = `${source}_${target}`
                 if (edgeLists.includes(key)) {
-                    const linePath = lineGenerator([source, target]);
+                    const linePath = lineGenerator({ source, target });
                     allLines.push(
                         <path
                             key={`${sample}_${i}_${source}_${target}`}

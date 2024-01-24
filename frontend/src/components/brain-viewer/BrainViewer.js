@@ -25,6 +25,10 @@ export const BrainViewer = ({
     visualPanel,
     topPercent
 }) => {
+
+    console.log(Object.keys(allnetworks))
+    console.log(Object.keys(community))
+
     const [leftBrainOpacity, setLeftBrainOpacity] = useState(1);
     const [rightBrainOpacity, setRightBrainOpacity] = useState(1);
     const containerRef = useRef();
@@ -187,6 +191,12 @@ export const BrainViewer = ({
                                                 buttonValue={buttonValue}
                                                 sliderObj={sliderObj}
                                             />
+                                            <CreateLineCurve
+                                                    electrodeData={electrodeData}
+                                                    networkData={allnetworks[`sample${index+1}`]}
+                                                    topPercent={topPercent}
+                                                    bbox={dataRegisty[patientInformation.id].bbox}
+                                                />
                                             <OrbitControls enablePan={true} />
                                         </View>
                                     ))

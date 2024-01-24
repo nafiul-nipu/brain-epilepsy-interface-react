@@ -12,7 +12,7 @@ export const CreateLineCurve = ({
     bbox
 }) => {
     // console.log(electrodeData)
-    // console.log(networkData)
+    console.log(networkData)
     // console.log(topPercent)
     const linesRef = useRef();
     const linesSegmentRef = useRef();

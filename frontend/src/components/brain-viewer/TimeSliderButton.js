@@ -152,6 +152,15 @@ export const TimeSliderButton = ({
                                 </Col>
                             ))
 
+                        ) : visualPanel === 'Curve' ? (
+                            totalSamples.map((sample, index) => (
+                                <Col
+                                    key={index}
+                                    md={12 / totalSamples.length}
+                                >
+                                    Sample: {sample + 1}
+                                </Col>
+                            ))
                         ) : null
                 }
             </Row>

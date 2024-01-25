@@ -12,12 +12,13 @@ export const CreateLineCurve = ({
     bbox
 }) => {
     // console.log(electrodeData)
-    console.log(networkData)
+    // console.log(networkData)
     // console.log(topPercent)
     const linesRef = useRef();
     const linesSegmentRef = useRef();
 
     useLayoutEffect(() => {
+        // console.log(electrodeData)
         const edgeCounter = {}
         let edges = 0
         for (const connection of networkData) {
@@ -48,7 +49,7 @@ export const CreateLineCurve = ({
         // Extract the top 5% edges
         const topEdges = sortedEdges.slice(0, topCount);
 
-        console.log(topEdges)
+        // console.log(topEdges)
         let positions = []
         for (const edge of topEdges) {
             const source = parseInt(edge[0].split('_')[0]);
@@ -57,13 +58,15 @@ export const CreateLineCurve = ({
             // console.log(electrodeData)
             // console.log(source, target)
 
+            // console.log(source)
             const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
             // console.log(sourcePos)
-            positions.push(...sourcePos.position)
+            if (sourcePos !== undefined) positions.push(...sourcePos.position)
 
+            // console.log(target)
             const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
             // console.log(targetPos)
-            positions.push(...targetPos.position)
+            if (targetPos !== undefined) positions.push(...targetPos.position)
         }
 
         const lineWidth = d3.scaleLinear()

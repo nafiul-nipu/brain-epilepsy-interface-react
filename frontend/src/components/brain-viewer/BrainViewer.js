@@ -26,8 +26,8 @@ export const BrainViewer = ({
     topPercent
 }) => {
 
-    console.log(Object.keys(allnetworks))
-    console.log(Object.keys(community))
+    // console.log(Object.keys(allnetworks))
+    // console.log(Object.keys(community))
 
     const [leftBrainOpacity, setLeftBrainOpacity] = useState(1);
     const [rightBrainOpacity, setRightBrainOpacity] = useState(1);
@@ -192,11 +192,11 @@ export const BrainViewer = ({
                                                 sliderObj={sliderObj}
                                             />
                                             <CreateLineCurve
-                                                    electrodeData={electrodeData}
-                                                    networkData={allnetworks[`sample${index+1}`]}
-                                                    topPercent={topPercent}
-                                                    bbox={dataRegisty[patientInformation.id].bbox}
-                                                />
+                                                electrodeData={electrodeData}
+                                                networkData={allnetworks[`sample${index + 1}`]}
+                                                topPercent={topPercent}
+                                                bbox={dataRegisty[patientInformation.id].bbox}
+                                            />
                                             <OrbitControls enablePan={true} />
                                         </View>
                                     ))

@@ -44,9 +44,6 @@ export const PatchSummary = ({
 
   // For getting each electrode frequency
   const processedPatchData = {};
-  const maxPropagationCounts = samplePropagationData.reduce((max, current) => {
-    return current.propagation > max ? current.propagation : max;
-  }, 0);
 
   for (const key in patchData) {
     if (patchData.hasOwnProperty(key)) {
@@ -81,7 +78,7 @@ export const PatchSummary = ({
   const circleRadius = d3
     .scaleLinear()
     .domain([0, maxOccurrence])
-    .range([2, 12]);
+    .range([8, 16]);
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey];
@@ -94,7 +91,6 @@ export const PatchSummary = ({
     const roiLabelHeight = 10;
     const svgWidth = columnsPerRow * 50;
     const svgHeight = numRowsInSVG * 75 + roiLabelHeight;
-    // console.log(svgWidth, svgHeight)
     const roiScale = d3
       .scaleLinear()
       .domain([0, d3.max(roiCount)])
@@ -121,18 +117,6 @@ export const PatchSummary = ({
             <text x={10} y={10} fontSize={12} fill="black" textAnchor="start">
               {`Patch: ${roiKey}`}
             </text>
-            {/* <rect
-              x={50}
-              y={0}
-              width={roiScale(roiCount[roiKey]) - roiLabelWidth}
-              height={10}
-              opacity={1}
-            />
-            <title>
-              {`
-                Patch : ${roiKey}\n Frequency : ${roiCount[roiKey]}
-            `}
-            </title> */}
           </g>
         </svg>
         <svg
@@ -145,7 +129,7 @@ export const PatchSummary = ({
             return rowArray.map((electrodeObj, columnIndex) => {
               const electrodeId = Object.keys(electrodeObj)[0];
               const electrodePropagation = samplePropagationData.find(
-                (e) => e.electrode_id === electrodeId
+                (e) => e.electrode_id == electrodeId
               );
               const propagationCounts = electrodePropagation
                 ? electrodePropagation

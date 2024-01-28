@@ -138,12 +138,15 @@ function App() {
           </div>
           {/* Patient dropdown */}
           <div id="region-topPercent">
-            <label htmlFor="percent">Top:</label>
+            <label htmlFor="percent">Percentile:</label>
             <select id="percent" value={topPercent} onChange={topOnChange}>
-              <option value="0.01"> 1% </option>
-              <option value="0.02"> 2% </option>
-              <option value="0.05"> 5% </option>
-              <option value="0.1"> 10% </option>
+              <option value="99"> 99 </option>
+              <option value="98"> 98 </option>
+              <option value="97"> 97 </option>
+              <option value="96"> 96 </option>
+              <option value="95"> 95 </option>
+              <option value="90"> 90 </option>
+              <option value="50"> 50 </option>
             </select>
           </div>
 

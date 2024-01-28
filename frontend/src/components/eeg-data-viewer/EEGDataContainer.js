@@ -2,6 +2,8 @@ import { EEGDataViewer } from "./EEGDataViewer";
 import { useEffect, useState } from "react";
 import { fetchEEGperPatient } from "../../api";
 
+const timeWindow = 10000;
+
 export const EEGDataContainer = ({
   patient,
   electrodeList,
@@ -13,10 +15,10 @@ export const EEGDataContainer = ({
 
   const timeToFecth = (buttonPressed) => {
     if (buttonPressed === 'next') {
-      setstartTime(startTime + 500)
+      setstartTime(startTime + timeWindow)
     } else if (buttonPressed === 'prev') {
-      if (startTime - 500 > 0) {
-        setstartTime(startTime - 500)
+      if (startTime - timeWindow > 0) {
+        setstartTime(startTime - timeWindow)
       } else {
         setstartTime(0)
       }
@@ -29,8 +31,8 @@ export const EEGDataContainer = ({
       const { data, error } = await fetchEEGperPatient(
         patient.id,
         patient.sample,
-        startTime,  // time start next 500 prev
-        500  // range
+        startTime,  // time start next timeWindow prev
+        timeWindow  // range
       );
       // TODO: if error do something
       seteegData(data);
@@ -51,11 +53,12 @@ export const EEGDataContainer = ({
         <EEGDataViewer
           sampleName={patient.sample}
           eegData={eegData}
-          xTicks={[startTime, startTime + 500]}
+          xTicks={[startTime, startTime + timeWindow]}
           electrodeList={electrodeList}
           eegInBrain={eegInBrain}
           setEegInBrain={setEegInBrain}
           timeToFecth={timeToFecth}
+          timeWindow={timeWindow}
         />
       }
     </>

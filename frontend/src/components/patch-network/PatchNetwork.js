@@ -1,5 +1,5 @@
 import { Col, Row } from "react-bootstrap";
-import { PatchCircles } from "./PatchCircles";
+import { Create2DNetwork } from "../../CommonComponents/Create2DNetwork";
 
 const samples = ['sample1', 'sample2', 'sample3']
 const rowSize = 3;
@@ -15,13 +15,6 @@ export const PatchNetwork = ({
     colorTheLine,
     rowLength,
 }) => {
-    // console.log(networks)
-    // console.log(sampleName)
-    // console.log(samples.indexOf(sampleName))
-    // console.log(electrodeData)
-    // console.log(communityData)
-    // console.log(rowLength)
-    // console.log(patchData)
 
     const numRows = Math.ceil((rowLength.length - 1) / rowSize);
 
@@ -59,7 +52,7 @@ export const PatchNetwork = ({
 
                                             >
                                                 {patchData[object] ?
-                                                    (<PatchCircles
+                                                    (<Create2DNetwork
                                                         sample={object}
                                                         data={networks}
                                                         patchOrder={patchData[object]}
@@ -67,6 +60,7 @@ export const PatchNetwork = ({
                                                         topPercent={topPercent}
                                                         colorTheLine={colorTheLine}
                                                         show={viewColor}
+                                                        labels={null}
                                                         communityObj={communityData[samples.indexOf(sampleName)] !== undefined ?
                                                             Object.assign({}, ...communityData[samples.indexOf(sampleName)].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
                                                             : null

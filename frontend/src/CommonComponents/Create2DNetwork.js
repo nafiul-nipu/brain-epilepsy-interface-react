@@ -1,7 +1,7 @@
 import React from 'react';
 import * as d3 from 'd3';
 import * as ss from 'simple-statistics'
-import ChartContainer, { useChartContext } from '../chart-container/chart-container';
+import ChartContainer, { useChartContext } from '../components/chart-container/chart-container';
 
 const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
 
@@ -27,7 +27,7 @@ const containerProps = {
     mb: 0,
     mt: 10,
 };
-export const PatchCircles = ({
+export const Create2DNetwork = ({
     sample,
     data,
     patchOrder,
@@ -35,13 +35,9 @@ export const PatchCircles = ({
     topPercent,
     colorTheLine,
     show,
+    labels,
     communityObj
 }) => {
-    // console.log(sample)
-    // // console.log(data)
-    // console.log(electrodes)
-    // console.log(patchOrder)
-    // console.log(communityObj)
 
     return (
         <ChartContainer {...containerProps}>
@@ -53,74 +49,115 @@ export const PatchCircles = ({
                 topPercent={topPercent}
                 colorTheLine={colorTheLine}
                 show={show}
+                labels={labels}
                 communityObj={communityObj}
             />
         </ChartContainer>
     );
 };
 
-const RegionWrapper = ({ data, patchOrder, electrodes, sample, topPercent, colorTheLine, show, communityObj }) => {
-    // console.log(data)
-    // console.log(electrodes)
-
-    // console.log(filteredObjects)
+const RegionWrapper = ({
+    data,
+    patchOrder,
+    electrodes,
+    sample,
+    topPercent,
+    colorTheLine,
+    show,
+    labels,
+    communityObj
+}) => {
 
     const dimensions = useChartContext();
 
-    let circlesPerRow = patchOrder?.reduce((max, arr) => Math.max(max, arr.length), 0);
     const electrode_positions = {};
     const rows = [];
-    const numRows = patchOrder ? patchOrder.length : 0;
 
-    // console.log(circlesPerRow)
-    let patchMatrix = []
-    if (circlesPerRow === 1) {
-        patchMatrix.push([].concat(...patchOrder));
-        circlesPerRow = patchMatrix[0].length;
-    } else {
-        patchMatrix = patchOrder
-    }
-    // console.log(patchMatrix)
-
-    for (let i = 0; i < patchMatrix.length; i++) {
-        const circles = [];
-        // const circlesPerRow = patchOrder[i].length;
+    if (patchOrder === null) {
+        const circlesPerRow = 8;
+        const count = electrodes.length;
         const circleSpacing = (dimensions.boundedWidth - 2 * 10 * circlesPerRow) / (circlesPerRow - 1);
+        const numRows = Math.ceil(count / circlesPerRow);
 
-        for (let j = 0; j < patchMatrix[i].length; j++) {
-            const temp = circlesPerRow - patchMatrix[i].length;
-
-            const currElectrode = patchMatrix[i][j];
-            // if (circleIndex < count) {
-            electrode_positions[currElectrode] = {
-                "x": 10 + j * (circleSpacing + 2 * 10) + temp * (circleSpacing + 2 * 10),
-                "y": (i + 0.5) * (dimensions.boundedHeight / numRows)
-            }
-            circles.push(
-                <g key={`${sample}_${i}_${j}`}>
-                    <circle
-                        key={currElectrode}
-                        cx={10 + j * (circleSpacing + 2 * 10) + temp * (circleSpacing + 2 * 10)}
-                        cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
-                        r={5}
-                        fill={show === 'patch' ? colorslist[sample]
-                            : show === 'communities' ? catColor[communityObj[currElectrode]]
-                                : `#1f77b4`}
-                    />
-                    <title>{`
-                        Electrode : E${currElectrode}
+        for (let i = 0; i < numRows; i++) {
+            const circles = [];
+            for (let j = 0; j < circlesPerRow; j++) {
+                const circleIndex = i * circlesPerRow + j;
+                if (circleIndex < count) {
+                    electrode_positions[electrodes[circleIndex]] = {
+                        "x": 10 + j * (circleSpacing + 2 * 10),
+                        "y": (i + 0.5) * (dimensions.boundedHeight / numRows)
+                    }
+                    circles.push(
+                        <g key={`${sample}_${i}_${j}`}>
+                            <circle
+                                key={circleIndex}
+                                cx={10 + j * (circleSpacing + 2 * 10)}
+                                cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
+                                r={5}
+                                fill={show === 'patch' ? colorslist[labels[circleIndex]]
+                                    : show === 'communities' ? catColor[communityObj[electrodes[circleIndex]]]
+                                        : `#1f77b4`}
+                            />
+                            <title>{`
+                        Electrode : E${electrodes[circleIndex]}
                     `}</title>
-                </g>
-            );
-            // }
+                        </g>
+                    );
+                }
+            }
+            rows.push(<g key={i}>{circles}</g>);
         }
-        rows.push(<g key={i}>{circles}</g>);
+    } else {
+
+        let circlesPerRow = patchOrder?.reduce((max, arr) => Math.max(max, arr.length), 0);
+        const numRows = patchOrder ? patchOrder.length : 0;
+
+        let patchMatrix = []
+        if (circlesPerRow === 1) {
+            patchMatrix.push([].concat(...patchOrder));
+            circlesPerRow = patchMatrix[0].length;
+        } else {
+            patchMatrix = patchOrder
+        }
+
+        for (let i = 0; i < patchMatrix.length; i++) {
+            const circles = [];
+            const circleSpacing = (dimensions.boundedWidth - 2 * 10 * circlesPerRow) / (circlesPerRow - 1);
+
+            for (let j = 0; j < patchMatrix[i].length; j++) {
+                const temp = circlesPerRow - patchMatrix[i].length;
+
+                const currElectrode = patchMatrix[i][j];
+                electrode_positions[currElectrode] = {
+                    "x": 10 + j * (circleSpacing + 2 * 10) + temp * (circleSpacing + 2 * 10),
+                    "y": (i + 0.5) * (dimensions.boundedHeight / numRows)
+                }
+                circles.push(
+                    <g key={`${sample}_${i}_${j}`}>
+                        <circle
+                            key={currElectrode}
+                            cx={10 + j * (circleSpacing + 2 * 10) + temp * (circleSpacing + 2 * 10)}
+                            cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
+                            r={5}
+                            fill={show === 'patch' ? colorslist[sample]
+                                : show === 'communities' ? catColor[communityObj[currElectrode]]
+                                    : `#1f77b4`}
+                        />
+                        <title>{`
+                            Electrode : E${currElectrode}
+                        `}</title>
+                    </g>
+                );
+                // }
+            }
+            rows.push(<g key={i}>{circles}</g>);
+        }
+
     }
 
-    // console.log(electrode_positions)
 
-    // console.log(Object.keys(electrode_positions).length)
-    // console.log(data)
+
     const edgeCounter = {}
     for (const connection of data) {
         if (connection.network.length === 0) {
@@ -137,20 +174,14 @@ const RegionWrapper = ({ data, patchOrder, electrodes, sample, topPercent, color
             }
         }
     }
-    // console.log(edgeCounter)
 
     const sortedEdges = Object.entries(edgeCounter)
         .filter(([key, value]) => value > 1) // Filter values not greater than 1
         .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
 
-    // console.log(sortedEdges)
-
     const sortedValues = sortedEdges.map(edge => edge[1])
-    // console.log(sortedValues)
 
     const percentileVal = ss.quantileSorted(sortedValues, topPercent / 100);
-
-    // console.log(percentileVal)
 
     const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
 
@@ -158,43 +189,32 @@ const RegionWrapper = ({ data, patchOrder, electrodes, sample, topPercent, color
     const lineGenerator = d3.link(d3.curveBumpY)
         .x(d => electrode_positions[d] ? electrode_positions[d].x : 0)
         .y(d => electrode_positions[d] ? electrode_positions[d].y : 0)
-    // .curve(d3.curveNatural);
 
     const lineColor = d3.scaleSequential(d3.interpolateReds)
         .domain([data[0].index, data[data.length - 1].index])
-
-    console.log(topEdges)
-    console.log(topEdges[0][1], topEdges[topEdges.length - 1][1])
 
     const lineWidth = d3.scaleLinear()
         .domain([topEdges[0][1], topEdges[topEdges.length - 1][1]])
         .range([0.25, 3.5])
 
-    // console.log(electrodes)
-    // console.log(electrode_positions)
-    // console.log(topEdges)
     let lines = []
     if (colorTheLine === 'width') {
         for (const edge of topEdges) {
-            const source = edge[0].split('_')[0];
-            const target = edge[0].split('_')[1];
-            // console.log(source, target)
-            // console.log(electrode_positions[source], electrode_positions[target])
-            if (electrodes.includes(parseInt(source)) && electrodes.includes(parseInt(target))) {
-                // const linePath = lineGenerator([source, target]);
+            const source = parseInt(edge[0].split('_')[0]);
+            const target = parseInt(edge[0].split('_')[1]);
+            if (electrodes.includes(source) && electrodes.includes(target)) {
                 const linePath = lineGenerator({ source, target });
-                console.log(edge[1], lineWidth(parseInt(edge[1])))
                 lines.push(
-                    <>
-                        <path
-                            key={`${sample}_${source}_${target}`}
-                            d={linePath}
-                            stroke={'red'}
-                            strokeWidth={lineWidth(edge[1])}
-                            fill="none"
-                            markerEnd="url(#arrow)"
-                        />
-                    </>
+
+                    <path
+                        key={`${sample}_${source}_${target}`}
+                        d={linePath}
+                        stroke={'red'}
+                        strokeWidth={lineWidth(edge[1])}
+                        fill="none"
+                        markerEnd="url(#arrow)"
+                    />
+
                 );
 
             }
@@ -208,10 +228,10 @@ const RegionWrapper = ({ data, patchOrder, electrodes, sample, topPercent, color
             }
             let allLines = []
             for (const network of connection.network) {
-                const source = network.source;
-                const target = network.target;
+                const source = parseInt(network.source);
+                const target = parseInt(network.target);
                 const key = `${source}_${target}`
-                if (edgeLists.includes(key) && electrodes.includes(parseInt(source)) && electrodes.includes(parseInt(target))) {
+                if (edgeLists.includes(key) && electrodes.includes(source) && electrodes.includes(target)) {
                     const linePath = lineGenerator({ source, target });
                     allLines.push(
                         <path
@@ -244,7 +264,7 @@ const RegionWrapper = ({ data, patchOrder, electrodes, sample, topPercent, color
                 </marker>
             </defs>
             <text x={0} y={-1} fontSize={12} fill="black" textAnchor="start">
-                {`Patch: ${sample}`}
+                {patchOrder === null ? `Sample: ${sample}` : `Patch: ${sample}`}
             </text>
             <rect
                 x={0}

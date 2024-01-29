@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from "react"
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
 import * as d3 from 'd3'
+import * as ss from 'simple-statistics'
 
 import { BufferGeometry, BufferAttribute, InstancedBufferAttribute, MeshBasicMaterial, Matrix4, LineSegments, Vector3, MeshPhongMaterial } from 'three';
 
@@ -40,14 +41,19 @@ export const CreateLineCurve = ({
         // console.log(edgeCounter)
 
         const sortedEdges = Object.entries(edgeCounter)
-            .sort((a, b) => b[1] - a[1]);
+            .filter(([key, value]) => value > 1) // Filter values not greater than 1
+            .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
 
         // console.log(sortedEdges)
 
-        const topCount = Math.ceil(edges * topPercent);
+        const sortedValues = sortedEdges.map(edge => edge[1])
+        // console.log(sortedValues)
 
-        // Extract the top 5% edges
-        const topEdges = sortedEdges.slice(0, topCount);
+        const percentileVal = ss.quantileSorted(sortedValues, topPercent / 100);
+
+        // console.log(percentileVal)
+
+        const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
 
         // console.log(topEdges)
         let positions = []

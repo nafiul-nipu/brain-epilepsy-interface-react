@@ -77,7 +77,7 @@ function App() {
   const [eegInBrain, setEegInBrain] = useState(null);
 
 
-  const [topPercent, setTopPercent] = useState(0.01)
+  const [topPercent, setTopPercent] = useState(99)
   const [colorTheLine, setColorTheLine] = useState('width')
   const [viewColor, setViewColor] = useState('na')
 

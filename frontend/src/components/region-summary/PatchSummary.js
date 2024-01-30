@@ -30,8 +30,8 @@ export const PatchSummary = ({
     setTooltip({
       visible: true,
       content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue}\n Source\u00A0counts: ${propagationCounts.source_counts}\n Target\u00A0counts: ${propagationCounts.target_counts}`,
-      x: e.clientX + 20,
-      y: e.clientY - 20,
+      x: e.clientX - 150,
+      y: e.clientY + 50,
     });
   };
   function patchOnClick(roi) {
@@ -78,7 +78,7 @@ export const PatchSummary = ({
   const circleRadius = d3
     .scaleLinear()
     .domain([0, maxOccurrence])
-    .range([8, 16]);
+    .range([9, 16]);
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey];
@@ -87,14 +87,9 @@ export const PatchSummary = ({
     // For finding the rows
     const numRowsInSVG = roiMatrix.length;
 
-    const roiLabelWidth = 20;
     const roiLabelHeight = 10;
     const svgWidth = columnsPerRow * 50;
     const svgHeight = numRowsInSVG * 75 + roiLabelHeight;
-    const roiScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(roiCount)])
-      .range([0, svgWidth - roiLabelWidth]);
 
     const colorIndex = roiIndex % electrodeColorList.length;
     const fillColor = electrodeColorList[colorIndex];
@@ -281,12 +276,12 @@ export const PatchSummary = ({
     >
       <Row>
         <Col md="12" style={{ height: "4vh" }}>
-          <Row style={{ height: "100%" }}>
+          <Row style={{ height: "100%", margin: 0 }}>
             <Col className="summary">Patch Summary</Col>
             <Col className="summary">
               <svg width="100%" height="100%" overflow="visible">
                 <text
-                  x={dimension - 70}
+                  x={dimension - 80}
                   y={10}
                   fontSize={11}
                   alignmentBaseline="middle"
@@ -331,7 +326,7 @@ export const PatchSummary = ({
           </Row>
         </Col>
       </Row>
-      <Row style={{ height: "92vh", overflowY: "auto", width: "100%" }}>
+      <Row style={{ height: "92vh", overflowY: "auto", width: "100%", margin: 0 }}>
         <>{rows}</>
         {tooltip.visible && (
           <div
@@ -345,6 +340,7 @@ export const PatchSummary = ({
               padding: "5px",
               pointerEvents: "none",
               fontSize: "14px",
+              zIndex: 1000
             }}
           >
             {tooltip.content}

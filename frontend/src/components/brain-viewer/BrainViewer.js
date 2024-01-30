@@ -81,7 +81,7 @@ export const BrainViewer = ({
                         justifyContent: "center",
                         position: "absolute",
                         top: "10%",
-                        left: "49%",
+                        left: "48%",
                         zIndex: 100,
                     }}
                 >

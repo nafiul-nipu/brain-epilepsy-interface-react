@@ -253,7 +253,7 @@ export const PatchSummary = ({
     const yCircleCenter = dimension - circleRadius(tick);
 
     return (
-      <g key={i} transform="translate(5,-5)">
+      <g key={i} transform="translate(0,3)">
         <circle
           cx={xCenter}
           cy={yCircleCenter}
@@ -305,14 +305,14 @@ export const PatchSummary = ({
                 <g>
                   <rect
                     x={dimension + 100}
-                    y={-15}
+                    y={0}
                     fill="#9e0142"
                     width={10}
                     height={10}
                   />
                   <text
                     x={dimension + 120}
-                    y={-10}
+                    y={5}
                     fontSize={10}
                     alignmentBaseline="middle"
                   >
@@ -320,14 +320,14 @@ export const PatchSummary = ({
                   </text>
                   <rect
                     x={dimension + 100}
-                    y={0}
+                    y={15}
                     fill="#5e4fa2"
                     width={10}
                     height={10}
                   />
                   <text
                     x={dimension + 120}
-                    y={5}
+                    y={20}
                     fontSize={10}
                     alignmentBaseline="middle"
                   >
@@ -340,7 +340,7 @@ export const PatchSummary = ({
         </Col>
       </Row>
       <Row
-        style={{ height: "92vh", overflowY: "auto", width: "100%", margin: 0 }}
+        style={{ height: "92%", overflowY: "auto", width: "100%", margin: 0 }}
       >
         <>{rows}</>
         {tooltip.visible && (

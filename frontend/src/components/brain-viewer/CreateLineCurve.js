@@ -10,24 +10,28 @@ export const CreateLineCurve = ({
     electrodeData,
     networkData,
     topPercent,
-    bbox
+    bbox,
+    selectedRoi,
 }) => {
-    // console.log(electrodeData)
-    // console.log(networkData)
-    // console.log(topPercent)
+    // console.log(item, index, selectedRoi)
     const linesRef = useRef();
     const linesSegmentRef = useRef();
 
     useLayoutEffect(() => {
+        // console.log("create line is being called")
         // console.log(electrodeData)
+        // console.log(networkData)
+        const electrodeLabels = {};
+        electrodeData.forEach(electrode => {
+            electrodeLabels[electrode.electrode_number] = electrode.label;
+        })
+        // console.log(electrodeLabels)
         const edgeCounter = {}
-        let edges = 0
         for (const connection of networkData) {
             if (connection.network.length === 0) {
                 continue;
             }
             for (const network of connection.network) {
-                edges += 1;
                 const source = network.source;
                 const target = network.target;
                 const key = `${source}_${target}`
@@ -37,6 +41,7 @@ export const CreateLineCurve = ({
                     edgeCounter[key] = 1;
                 }
             }
+
         }
         // console.log(edgeCounter)
 
@@ -56,23 +61,35 @@ export const CreateLineCurve = ({
         const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
 
         // console.log(topEdges)
+        let edges = 0;
         let positions = []
-        for (const edge of topEdges) {
-            const source = parseInt(edge[0].split('_')[0]);
-            const target = parseInt(edge[0].split('_')[1]);
+        if (selectedRoi == null) {
+            for (const edge of topEdges) {
+                const source = parseInt(edge[0].split('_')[0]);
+                const target = parseInt(edge[0].split('_')[1]);
 
-            // console.log(electrodeData)
-            // console.log(source, target)
+                edges += 1;
 
-            // console.log(source)
-            const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
-            // console.log(sourcePos)
-            if (sourcePos !== undefined) positions.push(...sourcePos.position)
+                const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
+                if (sourcePos !== undefined) positions.push(...sourcePos.position)
 
-            // console.log(target)
-            const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
-            // console.log(targetPos)
-            if (targetPos !== undefined) positions.push(...targetPos.position)
+                const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
+                if (targetPos !== undefined) positions.push(...targetPos.position)
+            }
+        } else {
+            for (const edge of topEdges) {
+                const source = parseInt(edge[0].split('_')[0]);
+                const target = parseInt(edge[0].split('_')[1]);
+
+                if (selectedRoi === electrodeLabels[source] && selectedRoi === electrodeLabels[target]) {
+                    edges += 1;
+                    const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
+                    if (sourcePos !== undefined) positions.push(...sourcePos.position)
+
+                    const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
+                    if (targetPos !== undefined) positions.push(...targetPos.position)
+                }
+            }
         }
 
         const lineWidth = d3.scaleLinear()
@@ -81,7 +98,8 @@ export const CreateLineCurve = ({
 
         const lines = linesRef.current;
 
-        const numLines = edges.length;
+        // const numLines = edges.length;
+        const numLines = edges;
 
         // Create line geometry and attributes
         const geometry = new BufferGeometry();
@@ -137,7 +155,7 @@ export const CreateLineCurve = ({
         console.log("lines created")
 
 
-    }, [electrodeData, networkData, topPercent])
+    }, [electrodeData, networkData, topPercent, selectedRoi])
     return (
         <group ref={linesRef} />
     )

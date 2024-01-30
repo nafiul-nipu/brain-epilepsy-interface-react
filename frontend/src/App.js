@@ -72,7 +72,7 @@ function App() {
   })
 
 
-  const [selectedRoi, setSelectedRoi] = useState(0);
+  const [selectedRoi, setSelectedRoi] = useState(null);
 
   const [eegInBrain, setEegInBrain] = useState(null);
 
@@ -123,6 +123,7 @@ function App() {
                   allnetworks={allNetwork}
                   eegInBrain={eegInBrain}
                   topPercent={topPercent}
+                  selectedRoi={selectedRoi}
                 />
               ) : null}
             </Col>
@@ -183,6 +184,8 @@ function App() {
                           electrodeDataCsv.map((el) => el.label)
                         )
                       ).sort((a, b) => a - b)}
+                      selectedRoi={selectedRoi}
+                      setSelectedRoi={setSelectedRoi}
                     />
                   ) : null}
                 </TabPanel>

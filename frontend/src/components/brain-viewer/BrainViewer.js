@@ -23,7 +23,8 @@ export const BrainViewer = ({
     sliderObj,
     buttonValue,
     visualPanel,
-    topPercent
+    topPercent,
+    selectedRoi,
 }) => {
 
     // console.log(Object.keys(allnetworks))
@@ -196,6 +197,7 @@ export const BrainViewer = ({
                                                 networkData={allnetworks[`sample${index + 1}`]}
                                                 topPercent={topPercent}
                                                 bbox={dataRegisty[patientInformation.id].bbox}
+                                                selectedRoi={selectedRoi}
                                             />
                                             <OrbitControls enablePan={true} />
                                         </View>
@@ -279,6 +281,7 @@ export const BrainViewer = ({
                                                     networkData={allnetworks[item]}
                                                     topPercent={topPercent}
                                                     bbox={dataRegisty[patientInformation.id].bbox}
+                                                    selectedRoi={selectedRoi}
                                                 />
                                                 <OrbitControls enablePan={true} />
                                             </View>

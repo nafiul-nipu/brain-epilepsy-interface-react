@@ -14,7 +14,8 @@ export const ENTContainer = ({
     events,
     allnetworks,
     eegInBrain,
-    topPercent
+    topPercent,
+    selectedRoi,
 }) => {
     const [sliderValue, setSliderValue] = useState([0, 1000])
 
@@ -81,6 +82,7 @@ export const ENTContainer = ({
                             buttonValue={buttonValue}
                             visualPanel={segment}
                             topPercent={topPercent}
+                            selectedRoi={selectedRoi}
                         />
                     </Row>
                 </Col>

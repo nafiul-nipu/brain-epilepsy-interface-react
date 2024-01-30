@@ -14,9 +14,16 @@ export const PatchNetwork = ({
     topPercent,
     colorTheLine,
     rowLength,
+    selectedRoi,
+    setSelectedRoi
 }) => {
 
     const numRows = Math.ceil((rowLength.length - 1) / rowSize);
+
+    const patchOnClick = (object) => {
+        // console.log(object)
+        setSelectedRoi(object)
+    }
 
     // console.log(numRows)
     return (
@@ -46,9 +53,11 @@ export const PatchNetwork = ({
                                                 key={i}
                                                 style={{
                                                     height: `${35 / numRows}vh`,
-                                                    // backgroundColor: selectedRoi === (i + rowStartIndex) ? "rgba(202, 204, 202, 0.4)" : "white",
-                                                    // border: "1px solid #E2E8F0",
+                                                    backgroundColor: selectedRoi === (object)
+                                                        ? "rgba(202, 204, 202, 0.4)"
+                                                        : "white",
                                                 }}
+                                                onClick={() => patchOnClick(object)}
 
                                             >
                                                 {patchData[object] ?

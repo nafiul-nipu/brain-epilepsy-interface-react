@@ -11,7 +11,19 @@ export const PatchSummary = ({
   roiCount,
   samplePropagationData,
 }) => {
-  const electrodeColorList = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
+  const electrodeColorList = [
+    "#1f77b4",
+    "#ff7f0e",
+    "#2ca02c",
+    "#d62728",
+    "#9467bd",
+    "#8c564b",
+    "#e377c2",
+    "#bfa3a3",
+    "#00A5E3",
+    "#8DD7BF",
+    "#FF96C5",
+  ];
 
   const [tooltip, setTooltip] = useState({
     visible: false,
@@ -63,7 +75,6 @@ export const PatchSummary = ({
     function recurse(currentObj) {
       Object.values(currentObj).forEach((value) => {
         if (typeof value === "object" && value !== null) {
-          // If the value is an object, recurse deeper
           recurse(value);
         } else if (typeof value === "number") {
           maxVal = Math.max(maxVal, value);
@@ -78,7 +89,7 @@ export const PatchSummary = ({
   const circleRadius = d3
     .scaleLinear()
     .domain([0, maxOccurrence])
-    .range([9, 16]);
+    .range([9, 15]);
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey];
@@ -89,7 +100,7 @@ export const PatchSummary = ({
 
     const roiLabelHeight = 10;
     const svgWidth = columnsPerRow * 50;
-    const svgHeight = numRowsInSVG * 75 + roiLabelHeight;
+    const svgHeight = numRowsInSVG * 50 + roiLabelHeight;
 
     const colorIndex = roiIndex % electrodeColorList.length;
     const fillColor = electrodeColorList[colorIndex];
@@ -116,7 +127,7 @@ export const PatchSummary = ({
         </svg>
         <svg
           width="100%"
-          height="100%"
+          height="calc(100% - 10px)"
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
         >
           {roiMatrix.map((rowArray, rowIndex) => {
@@ -137,19 +148,19 @@ export const PatchSummary = ({
               const sourceRatio =
                 propagationCounts.source_counts +
                   propagationCounts.target_counts ===
-                  0
+                0
                   ? 0
                   : propagationCounts.source_counts /
-                  (propagationCounts.source_counts +
-                    propagationCounts.target_counts);
+                    (propagationCounts.source_counts +
+                      propagationCounts.target_counts);
               const targetRatio =
                 propagationCounts.source_counts +
                   propagationCounts.target_counts ===
-                  0
+                0
                   ? 0
                   : propagationCounts.target_counts /
-                  (propagationCounts.source_counts +
-                    propagationCounts.target_counts);
+                    (propagationCounts.source_counts +
+                      propagationCounts.target_counts);
               return (
                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
                   <circle
@@ -180,40 +191,42 @@ export const PatchSummary = ({
                     onMouseLeave={handleMouseLeave}
                   >
                     <circle
-                      r={circleRadius(electrodeValue) + 5}
+                      r={circleRadius(electrodeValue) + 3}
                       fill="none"
                       stroke={
                         sourceRatio === 0 && targetRatio === 0
                           ? "grey"
                           : "#5e4fa2"
                       }
-                      strokeWidth="10"
+                      strokeWidth="5"
                     />
                     {sourceRatio > 0 && (
                       <circle
-                        r={circleRadius(electrodeValue) + 5}
+                        r={circleRadius(electrodeValue) + 3}
                         fill="none"
                         stroke="#9e0142"
-                        strokeWidth="10"
-                        strokeDasharray={`${sourceRatio.toFixed(2) *
+                        strokeWidth="5"
+                        strokeDasharray={`${
+                          sourceRatio.toFixed(2) *
                           3.14 *
                           2 *
-                          (circleRadius(electrodeValue) + 5)
-                          } 100`}
+                          (circleRadius(electrodeValue) + 3)
+                        } 100`}
                         transform={`rotate(-90)`}
                       />
                     )}
                     {targetRatio > 0 && sourceRatio === 0 && (
                       <circle
-                        r={circleRadius(electrodeValue) + 5}
+                        r={circleRadius(electrodeValue) + 3}
                         fill="none"
                         stroke="#5e4fa2"
-                        strokeWidth="10"
-                        strokeDasharray={`${targetRatio.toFixed(2) *
+                        strokeWidth="5"
+                        strokeDasharray={`${
+                          targetRatio.toFixed(2) *
                           3.14 *
                           2 *
-                          (circleRadius(electrodeValue) + 5)
-                          } 100`}
+                          (circleRadius(electrodeValue) + 3)
+                        } 100`}
                         transform={`rotate(-90)`}
                       />
                     )}
@@ -326,7 +339,9 @@ export const PatchSummary = ({
           </Row>
         </Col>
       </Row>
-      <Row style={{ height: "92vh", overflowY: "auto", width: "100%", margin: 0 }}>
+      <Row
+        style={{ height: "92vh", overflowY: "auto", width: "100%", margin: 0 }}
+      >
         <>{rows}</>
         {tooltip.visible && (
           <div
@@ -340,7 +355,7 @@ export const PatchSummary = ({
               padding: "5px",
               pointerEvents: "none",
               fontSize: "14px",
-              zIndex: 1000
+              zIndex: 1000,
             }}
           >
             {tooltip.content}

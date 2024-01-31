@@ -94,6 +94,9 @@ linters
    `python -m venv venv`
 3. Activate the virtual environment
    `.\venv\Scripts\activate`
+
+   For Mac
+   `source venv/bin/activate`
 4. Install dependencies from requirements.txt
    `pip install -r requirements.txt`
 5. create a .env file with the following variables
@@ -102,6 +105,9 @@ linters
 6. go to spikexplorer-core folder and
    set up flask app
    `set FLASK_APP=app.py`
+
+   for mac
+   `export FLASK_APP=app.py`
 7. run flask
    `flask run`
 

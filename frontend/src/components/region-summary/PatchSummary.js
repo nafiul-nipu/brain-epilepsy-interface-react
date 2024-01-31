@@ -89,7 +89,7 @@ export const PatchSummary = ({
   const circleRadius = d3
     .scaleLinear()
     .domain([0, maxOccurrence])
-    .range([9, 15]);
+    .range([5, 10]);
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey];
@@ -99,8 +99,8 @@ export const PatchSummary = ({
     const numRowsInSVG = roiMatrix.length;
 
     const roiLabelHeight = 10;
-    const svgWidth = columnsPerRow * 50;
-    const svgHeight = numRowsInSVG * 50 + roiLabelHeight;
+    const svgWidth = columnsPerRow * 40;
+    const svgHeight = numRowsInSVG * 45 + roiLabelHeight;
 
     const colorIndex = roiIndex % electrodeColorList.length;
     const fillColor = electrodeColorList[colorIndex];
@@ -143,8 +143,8 @@ export const PatchSummary = ({
 
               const electrodeValue = electrodeObj[electrodeId];
 
-              const cx = 25 + 50 * (columnIndex + shift);
-              const cy = 25 + 50 * rowIndex + roiLabelHeight;
+              const cx = 20 + 38 * (columnIndex + shift);
+              const cy = 20 + 38 * rowIndex + roiLabelHeight;
               const sourceRatio =
                 propagationCounts.source_counts +
                   propagationCounts.target_counts ===
@@ -196,16 +196,16 @@ export const PatchSummary = ({
                       stroke={
                         sourceRatio === 0 && targetRatio === 0
                           ? "grey"
-                          : "#5e4fa2"
+                          :"#762a83"
                       }
-                      strokeWidth="5"
+                      strokeWidth="12"
                     />
                     {sourceRatio > 0 && (
                       <circle
                         r={circleRadius(electrodeValue) + 3}
                         fill="none"
-                        stroke="#9e0142"
-                        strokeWidth="5"
+                        stroke="#fee0b6"
+                        strokeWidth="12"
                         strokeDasharray={`${
                           sourceRatio.toFixed(2) *
                           3.14 *
@@ -219,8 +219,8 @@ export const PatchSummary = ({
                       <circle
                         r={circleRadius(electrodeValue) + 3}
                         fill="none"
-                        stroke="#5e4fa2"
-                        strokeWidth="5"
+                        stroke="#762a83"
+                        strokeWidth="12"
                         strokeDasharray={`${
                           targetRatio.toFixed(2) *
                           3.14 *
@@ -253,7 +253,7 @@ export const PatchSummary = ({
     const yCircleCenter = dimension - circleRadius(tick);
 
     return (
-      <g key={i} transform="translate(0,3)">
+      <g key={i}>
         <circle
           cx={xCenter}
           cy={yCircleCenter}
@@ -306,7 +306,7 @@ export const PatchSummary = ({
                   <rect
                     x={dimension + 100}
                     y={0}
-                    fill="#9e0142"
+                    fill="#fee0b6"
                     width={10}
                     height={10}
                   />
@@ -321,7 +321,7 @@ export const PatchSummary = ({
                   <rect
                     x={dimension + 100}
                     y={15}
-                    fill="#5e4fa2"
+                    fill="#762a83"
                     width={10}
                     height={10}
                   />

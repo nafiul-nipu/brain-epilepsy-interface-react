@@ -672,7 +672,7 @@
             "sample": 1,
             "communities": [
                 {
-                    "community": 4,
+                    "community": 1,
                     "members": [
                         17,
                         24,
@@ -762,7 +762,7 @@
                 }
             ],
             "communityList": [
-                4,
+                1,
                 2
             ]
         }

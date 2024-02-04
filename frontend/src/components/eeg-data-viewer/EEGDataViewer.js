@@ -23,6 +23,7 @@ export const EEGDataViewer = ({
   eegInBrain,
   setEegInBrain,
   timeToFecth,
+  timeWindow
 }) => {
   // console.log(eegData)
   // console.log(electrodeList)
@@ -42,13 +43,14 @@ export const EEGDataViewer = ({
 
   const peakIndex = d3.scaleLinear()
     .domain(xTicks)
-    .range([0, 500])
+    .range([0, timeWindow])
 
   function onEEGClick(el) {
     setEegInBrain(el)
     // stopTimer()
   }
 
+  // let count = 0;
 
   return (
     <div className="eeg-container">
@@ -62,6 +64,7 @@ export const EEGDataViewer = ({
         {
           electrodeList.map((el, i) => {
             if (eegData.eeg[el] !== undefined && eegData.eeg[el].length > 0) {
+              // count++;
               return (
                 <div
                   style={{
@@ -82,6 +85,7 @@ export const EEGDataViewer = ({
                       xTicks={xTicks}
                       peaks={eegData.peaks[el] ? eegData.peaks[el] : []}
                       peakIndex={peakIndex}
+                      timeWindow={timeWindow}
                     />
                   </ChartContainer>
                 </div>
@@ -97,7 +101,7 @@ export const EEGDataViewer = ({
 };
 
 
-const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks, peaks, peakIndex }) => {
+const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks, peaks, peakIndex, timeWindow }) => {
   // console.log(currenElectrode)
 
   // console.log(data)
@@ -106,7 +110,7 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
   const dimensions = useChartContext();
 
   const xScale = d3.scaleLinear()
-    .domain([0, 500])
+    .domain([0, timeWindow])
     .range([0, dimensions.boundedWidth])
 
   const yLineScale = d3.scaleLinear()
@@ -118,7 +122,7 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
 
   const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
   // console.log(xTickText)
-  const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (500 / 5));
+  const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (timeWindow / 5));
 
 
 
@@ -152,14 +156,19 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
       />
       {
         peaks.length > 0 ? peaks.map((el, i) => {
-          // console.log(peakIndex(el.time))
+          // console.log("time", el.time)
+          // console.log("peak index", peakIndex(el.time))
+          // console.log("xScale", xScale(peakIndex(el.time) - 1))
+          // console.log("yScale", yLineScale(data[peakIndex(el.time) - 1]))
+          const index = Math.round(peakIndex(el.time) - 1)
+          // console.log("index", index)
           return (
             <g key={i}>
               <circle
                 key={i}
-                cx={xScale(peakIndex(el.time) - 1)}
-                cy={yLineScale(data[peakIndex(el.time) - 1])}
-                r={4}
+                cx={xScale(index)}
+                cy={yLineScale(data[index])}
+                r={3}
                 fill="red"
               /><title>{`Time: ${el.time}`}</title>
             </g>

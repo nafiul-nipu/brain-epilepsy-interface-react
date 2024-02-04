@@ -1,6 +1,7 @@
-import { RegionCircles } from "../../CommonComponents/RegionCircles";
+import { RegionCircles } from "../previous components/archived/RegionCircles";
 import { Col, Row } from "react-bootstrap";
 import './RegionSummary.css'
+import { Create2DNetwork } from "../../CommonComponents/Create2DNetwork";
 
 
 const rowSize = 3;
@@ -39,12 +40,11 @@ export const RegionSummary = ({
                                             backgroundColor: sampleName === sample ? "rgba(202, 204, 202, 0.4)" : "white",
                                         }}
                                     >
-                                        <RegionCircles
+                                        <Create2DNetwork
                                             sample={sample}
                                             data={networks[sample]}
+                                            patchOrder={null}
                                             electrodes={electrodeData.map((obj) => obj.electrode_number)}
-                                            sampleCount={rowLength}
-                                            currsample={sampleName}
                                             topPercent={topPercent}
                                             colorTheLine={colorTheLine}
                                             show={viewColor}

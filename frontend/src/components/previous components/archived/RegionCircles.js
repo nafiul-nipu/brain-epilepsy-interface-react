@@ -1,6 +1,7 @@
 import React from 'react';
 import * as d3 from 'd3';
-import ChartContainer, { useChartContext } from '../components/chart-container/chart-container';
+import * as ss from 'simple-statistics'
+import ChartContainer, { useChartContext } from '../../chart-container/chart-container';
 
 const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
 
@@ -100,13 +101,11 @@ const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, sho
     // console.log(Object.keys(electrode_positions).length)
     // console.log(data)
     const edgeCounter = {}
-    let edges = 0
     for (const connection of data) {
         if (connection.network.length === 0) {
             continue;
         }
         for (const network of connection.network) {
-            edges += 1;
             const source = network.source;
             const target = network.target;
             const key = `${source}_${target}`
@@ -120,15 +119,19 @@ const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, sho
     // console.log(edgeCounter)
 
     const sortedEdges = Object.entries(edgeCounter)
-        .sort((a, b) => b[1] - a[1]);
+        .filter(([key, value]) => value > 1) // Filter values not greater than 1
+        .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
 
     // console.log(sortedEdges)
 
-    const topCount = Math.ceil(edges * topPercent);
+    const sortedValues = sortedEdges.map(edge => edge[1])
+    // console.log(sortedValues)
 
-    // Extract the top 5% edges
-    const topEdges = sortedEdges.slice(0, topCount);
-    // console.log("Top", topPercent, "edges:", topEdges);
+    const percentileVal = ss.quantileSorted(sortedValues, topPercent / 100);
+
+    // console.log(percentileVal)
+
+    const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
 
 
     const lineGenerator = d3.link(d3.curveBumpY)
@@ -144,8 +147,8 @@ const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, sho
     //     .range([0.001, 3])
 
     const lineWidth = d3.scaleLinear()
-        .domain([topEdges[topEdges.length - 1][1], topEdges[0][1]])
-        .range([0.001, 3])
+        .domain([topEdges[0][1], topEdges[topEdges.length - 1][1]])
+        .range([0.25, 3.5])
 
     // console.log(electrodes)
     // console.log(electrode_positions)
@@ -165,6 +168,7 @@ const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, sho
                     stroke={'red'}
                     strokeWidth={lineWidth(edge[1])}
                     fill="none"
+                    markerEnd="url(#arrow)"
                 />
             );
         }
@@ -200,6 +204,18 @@ const RegionWrapper = ({ data, electrodes, sample, topPercent, colorTheLine, sho
 
     return (
         <g>
+            <defs>
+                <marker
+                    id="arrow"
+                    viewBox="0 0 10 10"
+                    refX="5"
+                    refY="5"
+                    markerWidth="10"
+                    markerHeight="10"
+                    orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" stroke='black' fill='black' />
+                </marker>
+            </defs>
             <text x={0} y={-1} fontSize={12} fill="black" textAnchor="start">
                 {`Sample: ${sample}`}
             </text>

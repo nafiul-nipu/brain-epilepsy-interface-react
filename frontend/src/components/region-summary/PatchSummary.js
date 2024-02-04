@@ -11,6 +11,7 @@ export const PatchSummary = ({
   roiCount,
   samplePropagationData,
 }) => {
+
   const electrodeColorList = [
     "#1f77b4",
     "#ff7f0e",
@@ -59,14 +60,19 @@ export const PatchSummary = ({
 
   for (const key in patchData) {
     if (patchData.hasOwnProperty(key)) {
-      processedPatchData[key] = patchData[key].map((subArray) =>
-        subArray.map((num) => {
-          const occurrences = eventData.reduce((acc, dataItem) => {
-            return acc + dataItem.electrode.filter((x) => x === num).length;
-          }, 0);
-          return { [num]: occurrences };
-        })
-      );
+      const matrix = patchData[key].matrix;
+      processedPatchData[key] = {
+        ...patchData[key],
+        matrix: matrix.map((row) =>
+          row.map((num) => {
+            if (num === null) return null; // Handle null values directly
+            const occurrences = eventData.reduce((acc, dataItem) => {
+              return acc + (dataItem.electrode.includes(num) ? 1 : 0);
+            }, 0);
+            return { [num]: occurrences };
+          })
+        ),
+      };
     }
   }
 
@@ -92,7 +98,8 @@ export const PatchSummary = ({
     .range([5, 10]);
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
-    const roiMatrix = processedPatchData[roiKey];
+    const roiMatrix = processedPatchData[roiKey].matrix;
+
     // For finding the max columns in one row
     const columnsPerRow = Math.max(...roiMatrix.map((a) => a.length));
     // For finding the rows
@@ -133,6 +140,9 @@ export const PatchSummary = ({
           {roiMatrix.map((rowArray, rowIndex) => {
             const shift = columnsPerRow - rowArray.length;
             return rowArray.map((electrodeObj, columnIndex) => {
+              if (electrodeObj === null) {
+                return null;
+              }
               const electrodeId = Object.keys(electrodeObj)[0];
               const electrodePropagation = samplePropagationData.find(
                 (e) => e.electrode_id == electrodeId

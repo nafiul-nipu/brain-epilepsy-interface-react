@@ -9,7 +9,7 @@ export const usePatchData = ({
 
     useEffect(() => {
         if (patientID) {
-            const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/syUpdateBranch/frontend/src/data/electrodes/${patientID}/${patientID}_patch_data.json`
+            const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/syUpdateBranch/frontend/src/data/electrodes/${patientID}/${patientID}_patch_summary.json`
             json(url).then(jData => {
                 setData(jData)
             })

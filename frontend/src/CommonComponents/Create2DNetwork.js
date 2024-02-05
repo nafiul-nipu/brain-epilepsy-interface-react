@@ -111,7 +111,7 @@ const RegionWrapper = ({
     } else {
 
         let circlesPerRow = patchOrder?.reduce((max, arr) => Math.max(max, arr.length), 0);
-        console.log(circlesPerRow)
+        // console.log(circlesPerRow)
         const numRows = patchOrder ? patchOrder.length : 0;
 
         let patchMatrix = [];
@@ -233,8 +233,8 @@ const RegionWrapper = ({
             // test gradient color
             const gradientId = `url(#gradient-${sample}-${source}-${target})`;
             if (electrodes.includes(source) && electrodes.includes(target)) {
-                console.log(source, target)
-                console.log(electrode_positions[source], electrode_positions[target])
+                // console.log(source, target)
+                // console.log(electrode_positions[source], electrode_positions[target])
                 const linePath = lineGenerator({ source, target });
                 const midX = (electrode_positions[source].x + electrode_positions[target].x) / 2;
                 const midY = (electrode_positions[source].y + electrode_positions[target].y) / 2;

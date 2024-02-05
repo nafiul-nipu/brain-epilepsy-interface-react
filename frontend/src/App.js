@@ -58,6 +58,7 @@ function App() {
 
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
+  console.log(electrodeDataCsv)
 
   const patchData = usePatchData({ patientID: patientInfo.id })
   const samplePropagationData = useSamplePropagation({
@@ -154,7 +155,7 @@ function App() {
             </select>
           </div>
 
-          <Row style={{margin: '5px 0'}}>
+          <Row style={{ margin: '5px 0' }}>
             <Tabs variant="enclosed" colorScheme="green" size='sm' style={{ paddingRight: 0 }}>
               <TabList>
                 <Tab>Patch Network</Tab>

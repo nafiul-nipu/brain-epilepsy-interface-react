@@ -17,7 +17,7 @@ export const useElectrodeData = ({ id }) => {
                 d.electrode_number = +d.electrode_number;
                 d.position = JSON.parse(d.position)
                 d.label = +d.label;
-                // d.newPosition = JSON.parse(d.newPosition)
+                d.region = d.E_Brain.replace(/\d/g, '')
                 return d
             }
             csv(electrodeURL, row).then(setData)

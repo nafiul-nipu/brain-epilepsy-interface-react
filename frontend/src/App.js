@@ -154,7 +154,7 @@ function App() {
             </select>
           </div>
 
-          <Row>
+          <Row style={{margin: '5px 0'}}>
             <Tabs variant="enclosed" colorScheme="green" size='sm' style={{ paddingRight: 0 }}>
               <TabList>
                 <Tab>Patch Network</Tab>
@@ -206,7 +206,7 @@ function App() {
         {/* right panel */}
         <Col md="5">
           <Row>
-            <Tabs variant="enclosed" colorScheme="green" size='sm' style={{ paddingRight: 0 }}>
+            <Tabs variant="enclosed" colorScheme="green" size='sm' style={{ padding: 0 }}>
               <TabList>
                 <Tab>EEG</Tab>
                 <Tab>Patches</Tab>

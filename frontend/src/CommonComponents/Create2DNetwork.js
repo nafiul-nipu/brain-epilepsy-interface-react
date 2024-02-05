@@ -201,10 +201,10 @@ const RegionWrapper = ({
     const gradients = topEdges.map(edge => {
         const source = parseInt(edge[0].split('_')[0]);
         const target = parseInt(edge[0].split('_')[1]);
-        const id = `gradient-${source}-${target}`;
+        const id = `gradient-${sample}-${source}-${target}`;
     
         return (
-            <linearGradient id={id} x1={electrode_positions[source].x} y1={electrode_positions[source].y} x2={electrode_positions[target].x} y2={electrode_positions[target].y} gradientUnits="userSpaceOnUse">
+            <linearGradient id={id} key={id} x1={electrode_positions[source].x} y1={electrode_positions[source].y} x2={electrode_positions[target].x} y2={electrode_positions[target].y} gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stopColor="#ffffcc" /> {/* Lighter color at the source */}
                 <stop offset="100%" stopColor="#bd0026" /> {/* Darker color at the target */}
             </linearGradient>
@@ -217,7 +217,7 @@ const RegionWrapper = ({
             const source = parseInt(edge[0].split('_')[0]);
             const target = parseInt(edge[0].split('_')[1]);
             // test gradient color
-            const gradientId = `url(#gradient-${source}-${target})`;
+            const gradientId = `url(#gradient-${sample}-${source}-${target})`;
             if (electrodes.includes(source) && electrodes.includes(target)) {
                 const linePath = lineGenerator({ source, target });
                 const midX = (electrode_positions[source].x + electrode_positions[target].x) / 2;
@@ -226,36 +226,39 @@ const RegionWrapper = ({
                 // Calculate a directional vector from source to target
                 const directionX = electrode_positions[target].x - electrode_positions[source].x;
                 const directionY = electrode_positions[target].y - electrode_positions[source].y;
-
-                // Normalize this vector to a small length
                 const length = Math.sqrt(directionX * directionX + directionY * directionY);
-                const unitX = (directionX / length) * 10; 
-                const unitY = (directionY / length) * 10;
-
-                // Calculate a new start point slightly offset from the midpoint towards the source
-                const newStartX = midX - unitX * 0.5;
-                const newStartY = midY - unitY * 0.5;
-                const overlayLinePath = `M${newStartX},${newStartY} L${newStartX + unitX},${newStartY + unitY}`;
-                lines.push(
-                    <>
-                        <path
-                            key={`${sample}_${source}_${target}`}
-                            d={linePath}
-                            // stroke={'red'}
-                            stroke={gradientId} 
-                            strokeWidth={lineWidth(edge[1])}
-                            fill="none"
-                        />
-                        <path
-                            d={overlayLinePath}
-                            // stroke="red"
-                            strokeWidth={2}
-                            markerEnd="url(#arrow)"
-                            fill="none"
-                        />
-                    </>
-                );
-
+                
+                // Normalize this vector to a small length
+                if(length !== 0) {
+                    const unitX = (directionX / length) * 9; 
+                    const unitY = (directionY / length) * 5;
+    
+                    // Calculate a new start point slightly offset from the midpoint towards the source
+                    const newStartX = midX - unitX * 0.5;
+                    const newStartY = midY - unitY * 0.5;
+                    const overlayLinePath = `M${newStartX},${newStartY} L${newStartX + unitX},${newStartY + unitY}`;
+                    
+                    lines.push(
+                        <React.Fragment key={`${sample}_${source}_${target}-group`}>
+                            <path
+                                key={`${sample}_${source}_${target}`}
+                                d={linePath}
+                                // stroke={'red'}
+                                stroke={gradientId} 
+                                strokeWidth={lineWidth(edge[1])}
+                                fill="none"
+                            />
+                            <path
+                                d={overlayLinePath}
+                                key={`${sample}_${source}_${target}-arrow`}
+                                // stroke="red"
+                                strokeWidth={2}
+                                markerEnd="url(#arrow)"
+                                fill="none"
+                            />
+                        </React.Fragment>
+                    );
+                }
             }
         }
     } else {
@@ -292,7 +295,7 @@ const RegionWrapper = ({
         <g>
             <defs>
                 {gradients}
-                <marker id="arrow" viewBox="0 0 12 12" refX="5" refY="6" markerWidth="4" markerHeight="6" orient="auto-start-reverse">
+                <marker id="arrow" viewBox="0 0 12 12" refX="5" refY="6" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                     <path d="M2,2 L10,6 L2,10 L6,6 L2,2" fill="black" />
                 </marker>
             </defs>

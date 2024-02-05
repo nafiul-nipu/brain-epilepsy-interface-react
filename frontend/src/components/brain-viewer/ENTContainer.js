@@ -17,8 +17,8 @@ export const ENTContainer = ({
     topPercent,
     selectedRoi,
 }) => {
-    console.log(community)
-    console.log(topPercent)
+    // console.log(community)
+    // console.log(topPercent)
     const [sliderValue, setSliderValue] = useState([0, 1000])
 
     // console.log(bboxCenter)
@@ -48,7 +48,7 @@ export const ENTContainer = ({
             <Row>
                 <Col md='12' style={{ height: '5vh' }}>
                     <Segmented
-                        options={["Patches", "Frequency", "Community", "Curve"]}
+                        options={["Patches", "Frequency", "Community", "Patch-Com-Net", "Region-Com-Net"]}
                         onChange={onSegmentChange}
                         defaultValue={'Patches'}
                     >

@@ -186,19 +186,19 @@
   flex-direction: row-reverse;
 }
 
-#region-topPercent{
+/* #region-topPercent{
   position: absolute;
   left: 35%;
   bottom: 37%;
-}
-#region-color{
+} */
+#region-topPercent{
   position: absolute;
   left: 46%;
   bottom: 37%;
 }
 #viewPatch{
   position: absolute;
-  left: 18%;
+  left: 30%;
   bottom: 36.5%;
   display: flex;
   align-items: center;

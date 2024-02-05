@@ -58,16 +58,16 @@ export const ElectrodeDropDown = ({
   function onSampleChange(event) {
     // console.log({ ...patientInfo, sample: event.target.value })
     setPatientInfo({ ...patientInfo, sample: event.target.value });
-    setSelectedRoi(0);
+    setSelectedRoi(null);
   }
 
   function onPatientChange(event) {
     setPatientInfo({ ...patientInfo, id: event.target.value, sample: "sample1" });
-    setSelectedRoi(0);
+    setSelectedRoi(null);
   }
 
   function onTimeRangeChange(event) {
     setTimeRange(event.target.value);
-    setSelectedRoi(0);
+    setSelectedRoi(null);
   }
 };

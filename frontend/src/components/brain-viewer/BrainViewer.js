@@ -27,7 +27,7 @@ export const BrainViewer = ({
     selectedRoi,
 }) => {
 
-    console.log(topPercent)
+    // console.log(topPercent)
 
     // console.log(Object.keys(allnetworks))
     // console.log(Object.keys(community))
@@ -209,7 +209,7 @@ export const BrainViewer = ({
                             </Canvas>
                         </div>
 
-                        : (visualPanel === 'Curve' ?
+                        : (visualPanel === 'Patch-Com-Net' ?
                             <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden' }}>
                                 {
                                     Object.keys(allnetworks).map((item, index) => (

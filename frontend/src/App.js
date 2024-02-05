@@ -146,23 +146,36 @@ function App() {
             </select>
           </div>
 
-          {/* propagation dropdown */}
-          <div id="region-color">
-            <label htmlFor="color">Color:</label>
-            <select id="color" value={colorTheLine} onChange={colorOnChange}>
-              <option value="width"> width</option>
-              <option value="time"> time </option>
-            </select>
-          </div>
-
           <Row style={{ margin: '5px 0' }}>
             <Tabs variant="enclosed" colorScheme="green" size='sm' style={{ paddingRight: 0 }}>
               <TabList>
                 <Tab>Patch Network</Tab>
+                <Tab>Region Network</Tab>
                 <Tab>All Networks</Tab>
                 {/* <Tab></Tab> */}
               </TabList>
               <TabPanels>
+                <TabPanel style={{ padding: '0px' }}>
+                  {allNetwork && electrodeDataCsv && comData && patchData ? (
+                    <PatchNetwork
+                      networks={allNetwork[patientInfo.sample]}
+                      patchData={patchData}
+                      sampleName={patientInfo.sample}
+                      electrodeData={electrodeDataCsv}
+                      communityData={comData}
+                      viewColor={viewColor}
+                      topPercent={topPercent}
+                      colorTheLine={colorTheLine}
+                      rowLength={Array.from(
+                        new Set(
+                          electrodeDataCsv.map((el) => el.label)
+                        )
+                      ).sort((a, b) => a - b)}
+                      selectedRoi={selectedRoi}
+                      setSelectedRoi={setSelectedRoi}
+                    />
+                  ) : null}
+                </TabPanel>
                 <TabPanel style={{ padding: '0px' }}>
                   {allNetwork && electrodeDataCsv && comData && patchData ? (
                     <PatchNetwork
@@ -211,7 +224,7 @@ function App() {
               <TabList>
                 <Tab>EEG</Tab>
                 <Tab>Patches</Tab>
-                <Tab></Tab>
+                <Tab>Regions</Tab>
               </TabList>
 
               <TabPanels>
@@ -227,6 +240,18 @@ function App() {
                       />
                     ) : null}
                   </Col>
+                </TabPanel>
+                <TabPanel style={{ padding: '0px' }}>
+                  {allEventData && patchData && samplePropagationData ? (
+                    <PatchSummary
+                      patchData={patchData}
+                      samplePropagationData={samplePropagationData}
+                      eventData={allEventData[patientInfo.sample]}
+                      selectedRoi={selectedRoi}
+                      setSelectedRoi={setSelectedRoi}
+                      roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
+                    />
+                  ) : null}
                 </TabPanel>
                 <TabPanel style={{ padding: '0px' }}>
                   {allEventData && patchData && samplePropagationData ? (

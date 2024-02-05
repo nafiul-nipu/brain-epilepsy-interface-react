@@ -152,7 +152,7 @@ export const TimeSliderButton = ({
                                 </Col>
                             ))
 
-                        ) : visualPanel === 'Curve' ? (
+                        ) : visualPanel === 'Patch-Com-Net' ? (
                             totalSamples.map((sample, index) => (
                                 <Col
                                     key={index}

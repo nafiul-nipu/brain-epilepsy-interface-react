@@ -100,6 +100,7 @@ export const CreateLineCurve = ({
 
         // const numLines = edges.length;
         const numLines = edges;
+        // console.log(numLines)
 
         // Create line geometry and attributes
         const geometry = new BufferGeometry();

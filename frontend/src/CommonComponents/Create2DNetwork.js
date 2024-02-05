@@ -197,11 +197,27 @@ const RegionWrapper = ({
         .domain([topEdges[0][1], topEdges[topEdges.length - 1][1]])
         .range([0.25, 3.5])
 
+    // test gradient line color
+    const gradients = topEdges.map(edge => {
+        const source = parseInt(edge[0].split('_')[0]);
+        const target = parseInt(edge[0].split('_')[1]);
+        const id = `gradient-${source}-${target}`;
+    
+        return (
+            <linearGradient id={id} x1={electrode_positions[source].x} y1={electrode_positions[source].y} x2={electrode_positions[target].x} y2={electrode_positions[target].y} gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#fdbb84" /> {/* Lighter color at the source */}
+                <stop offset="100%" stopColor="#bd0026" /> {/* Darker color at the target */}
+            </linearGradient>
+        );
+    });
+
     let lines = []
     if (colorTheLine === 'width') {
         for (const edge of topEdges) {
             const source = parseInt(edge[0].split('_')[0]);
             const target = parseInt(edge[0].split('_')[1]);
+            // test gradient color
+            const gradientId = `url(#gradient-${source}-${target})`;
             if (electrodes.includes(source) && electrodes.includes(target)) {
                 const linePath = lineGenerator({ source, target });
                 const midX = (electrode_positions[source].x + electrode_positions[target].x) / 2;
@@ -212,7 +228,8 @@ const RegionWrapper = ({
                         <path
                             key={`${sample}_${source}_${target}`}
                             d={linePath}
-                            stroke={'red'}
+                            // stroke={'red'}
+                            stroke={gradientId} 
                             strokeWidth={lineWidth(edge[1])}
                             fill="none"
                         />
@@ -261,6 +278,7 @@ const RegionWrapper = ({
     return (
         <g>
             <defs>
+                {gradients}
                 <marker id="arrow" viewBox="0 0 12 12" refX="6" refY="6" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                     <path d="M2,2 L10,6 L2,10 L6,6 L2,2" fill="black" />
                 </marker>

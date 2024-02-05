@@ -204,17 +204,26 @@ const RegionWrapper = ({
             const target = parseInt(edge[0].split('_')[1]);
             if (electrodes.includes(source) && electrodes.includes(target)) {
                 const linePath = lineGenerator({ source, target });
+                const midX = (electrode_positions[source].x + electrode_positions[target].x) / 2;
+                const midY = (electrode_positions[source].y + electrode_positions[target].y) / 2;
+                const overlayLinePath = `M${midX},${midY} L${midX},${midY}`;
                 lines.push(
-
-                    <path
-                        key={`${sample}_${source}_${target}`}
-                        d={linePath}
-                        stroke={'red'}
-                        strokeWidth={lineWidth(edge[1])}
-                        fill="none"
-                        markerEnd="url(#arrow)"
-                    />
-
+                    <>
+                        <path
+                            key={`${sample}_${source}_${target}`}
+                            d={linePath}
+                            stroke={'red'}
+                            strokeWidth={lineWidth(edge[1])}
+                            fill="none"
+                        />
+                        <path
+                            d={overlayLinePath}
+                            stroke="red"
+                            strokeWidth={2}
+                            markerEnd="url(#arrow)"
+                            fill="none"
+                        />
+                    </>
                 );
 
             }
@@ -252,15 +261,8 @@ const RegionWrapper = ({
     return (
         <g>
             <defs>
-                <marker
-                    id="arrow"
-                    viewBox="0 0 5 5"
-                    refX="3"
-                    refY="3"
-                    markerWidth="4"
-                    markerHeight="4"
-                    orient="auto-start-reverse">
-                    <path d="M 0 0 L 10 5 L 0 10 z" stroke='black' fill='black' />
+                <marker id="arrow" viewBox="0 0 12 12" refX="6" refY="6" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M2,2 L10,6 L2,10 L6,6 L2,2" fill="black" />
                 </marker>
             </defs>
             <text x={0} y={-1} fontSize={12} fill="black" textAnchor="start">

@@ -14,7 +14,6 @@ import { ElectrodeDropDown } from "./components/top-navigation-panel/ElectrodeDr
 
 import { ENTContainer } from "./components/brain-viewer/ENTContainer";
 
-import { useFullNetwork } from "./library/useFullNetwork";
 import { useAllEventData } from "./library/useAllEventData";
 import { usePatchData } from "./library/usePatchData";
 import { useSamplePropagation } from "./library/useSamplePropagation"
@@ -54,11 +53,6 @@ function App() {
   const allEventData = useAllEventData({ patientID: patientInfo.id });
 
   // console.log(allEventData)
-
-  const fullNetwork = useFullNetwork({
-    patientID: patientInfo.id,
-    sample: patientInfo.sample,
-  });
 
   const allNetwork = useAllNetwork({ patientID: patientInfo.id });
 

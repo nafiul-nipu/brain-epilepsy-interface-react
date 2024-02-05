@@ -95,7 +95,7 @@ export const PatchSummary = ({
   const circleRadius = d3
     .scaleLinear()
     .domain([0, maxOccurrence])
-    .range([6, 10]);
+    .range([6, 12]);
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey].matrix;
@@ -106,7 +106,7 @@ export const PatchSummary = ({
     const numRowsInSVG = roiMatrix.length;
 
     const roiLabelHeight = 10;
-    const svgWidth = columnsPerRow * 40;
+    const svgWidth = columnsPerRow * 45;
     const svgHeight = numRowsInSVG * 45 + roiLabelHeight;
 
     const colorIndex = roiIndex % electrodeColorList.length;
@@ -153,8 +153,8 @@ export const PatchSummary = ({
 
               const electrodeValue = electrodeObj[electrodeId];
 
-              const cx = 20 + 38 * (columnIndex + shift);
-              const cy = 20 + 38 * rowIndex + roiLabelHeight;
+              const cx = 28 + 42 * (columnIndex + shift);
+              const cy = 20 + 42 * rowIndex + roiLabelHeight;
               const sourceRatio =
                 propagationCounts.source_counts +
                   propagationCounts.target_counts ===
@@ -205,7 +205,7 @@ export const PatchSummary = ({
                       fill="none"
                       stroke={
                         sourceRatio === 0 && targetRatio === 0
-                          ? "grey"
+                          ? "#D3D3D3"
                           :"#762a83"
                       }
                       strokeWidth="12"
@@ -214,7 +214,7 @@ export const PatchSummary = ({
                       <circle
                         r={circleRadius(electrodeValue) + 3}
                         fill="none"
-                        stroke="#fee0b6"
+                        stroke="#fee090"
                         strokeWidth="12"
                         strokeDasharray={`${
                           sourceRatio.toFixed(2) *
@@ -316,7 +316,7 @@ export const PatchSummary = ({
                   <rect
                     x={dimension + 100}
                     y={0}
-                    fill="#fee0b6"
+                    fill="#fee090"
                     width={10}
                     height={10}
                   />

@@ -49,8 +49,8 @@ export const RegionSummary = ({
                                             colorTheLine={colorTheLine}
                                             show={viewColor}
                                             labels={electrodeData.map((obj) => obj.label)}
-                                            communityObj={communityData[index] !== undefined ?
-                                                Object.assign({}, ...communityData[index].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
+                                            communityObj={communityData[topPercent][index] !== undefined ?
+                                                Object.assign({}, ...communityData[topPercent][index].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
                                                 : null
                                             }
                                         />

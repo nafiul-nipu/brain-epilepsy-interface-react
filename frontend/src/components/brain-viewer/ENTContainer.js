@@ -17,6 +17,8 @@ export const ENTContainer = ({
     topPercent,
     selectedRoi,
 }) => {
+    console.log(community)
+    console.log(topPercent)
     const [sliderValue, setSliderValue] = useState([0, 1000])
 
     // console.log(bboxCenter)
@@ -61,8 +63,8 @@ export const ENTContainer = ({
                     setSliderValue={setSliderValue}
                     patientID={patientInformation.id}
                     visualPanel={segment}
-                    totalSamples={community.map((el) => el.sample)}
-                    totalCommunities={community.map((el) => el.communityList.length)}
+                    totalSamples={community[topPercent].map((el) => el.sample)}
+                    totalCommunities={community[topPercent].map((el) => el.communityList.length)}
                 />
             </Row>
             <Row>
@@ -73,7 +75,7 @@ export const ENTContainer = ({
                             patientInformation={patientInformation}
                             electrodeData={electrodeData}
                             sample={sample}
-                            community={community}
+                            community={community[topPercent]}
                             time={time}
                             events={events}
                             allnetworks={allnetworks}

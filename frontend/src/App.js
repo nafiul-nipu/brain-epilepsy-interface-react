@@ -58,7 +58,7 @@ function App() {
 
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
-  console.log(electrodeDataCsv)
+  // console.log(electrodeDataCsv)
 
   const patchData = usePatchData({ patientID: patientInfo.id })
   const samplePropagationData = useSamplePropagation({

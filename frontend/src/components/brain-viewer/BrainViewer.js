@@ -27,6 +27,8 @@ export const BrainViewer = ({
     selectedRoi,
 }) => {
 
+    console.log(topPercent)
+
     // console.log(Object.keys(allnetworks))
     // console.log(Object.keys(community))
 

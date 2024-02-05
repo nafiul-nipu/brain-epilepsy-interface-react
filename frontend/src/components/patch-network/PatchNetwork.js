@@ -71,8 +71,8 @@ export const PatchNetwork = ({
                                                         colorTheLine={colorTheLine}
                                                         show={viewColor}
                                                         labels={null}
-                                                        communityObj={communityData[samples.indexOf(sampleName)] !== undefined ?
-                                                            Object.assign({}, ...communityData[samples.indexOf(sampleName)].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
+                                                        communityObj={communityData[topPercent][samples.indexOf(sampleName)] !== undefined ?
+                                                            Object.assign({}, ...communityData[topPercent][samples.indexOf(sampleName)].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
                                                             : null
                                                         }
                                                     />)

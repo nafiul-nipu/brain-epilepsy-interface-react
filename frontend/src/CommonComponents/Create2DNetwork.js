@@ -111,9 +111,10 @@ const RegionWrapper = ({
     } else {
 
         let circlesPerRow = patchOrder?.reduce((max, arr) => Math.max(max, arr.length), 0);
+        console.log(circlesPerRow)
         const numRows = patchOrder ? patchOrder.length : 0;
 
-        let patchMatrix = []
+        let patchMatrix = [];
         if (circlesPerRow === 1) {
             patchMatrix.push([].concat(...patchOrder));
             circlesPerRow = patchMatrix[0].length;
@@ -126,6 +127,8 @@ const RegionWrapper = ({
             const circleSpacing = (dimensions.boundedWidth - 2 * 10 * circlesPerRow) / (circlesPerRow - 1);
 
             for (let j = 0; j < patchMatrix[i].length; j++) {
+                if (patchMatrix[i][j] === null) continue;
+
                 const temp = circlesPerRow - patchMatrix[i].length;
 
                 const currElectrode = patchMatrix[i][j];
@@ -156,6 +159,7 @@ const RegionWrapper = ({
 
     }
 
+    // console.log(electrode_positions)
 
 
     const edgeCounter = {}
@@ -202,9 +206,19 @@ const RegionWrapper = ({
         const source = parseInt(edge[0].split('_')[0]);
         const target = parseInt(edge[0].split('_')[1]);
         const id = `gradient-${sample}-${source}-${target}`;
-    
+        // console.log(source, target)
+        // console.log(electrode_positions[source], electrode_positions[target])
+
         return (
-            <linearGradient id={id} key={id} x1={electrode_positions[source].x} y1={electrode_positions[source].y} x2={electrode_positions[target].x} y2={electrode_positions[target].y} gradientUnits="userSpaceOnUse">
+            <linearGradient
+                id={id}
+                key={id}
+                x1={electrode_positions[source]?.x}
+                y1={electrode_positions[source]?.y}
+                x2={electrode_positions[target]?.x}
+                y2={electrode_positions[target]?.y}
+                gradientUnits="userSpaceOnUse"
+            >
                 <stop offset="0%" stopColor="#ffffcc" /> {/* Lighter color at the source */}
                 <stop offset="100%" stopColor="#bd0026" /> {/* Darker color at the target */}
             </linearGradient>
@@ -219,32 +233,34 @@ const RegionWrapper = ({
             // test gradient color
             const gradientId = `url(#gradient-${sample}-${source}-${target})`;
             if (electrodes.includes(source) && electrodes.includes(target)) {
+                console.log(source, target)
+                console.log(electrode_positions[source], electrode_positions[target])
                 const linePath = lineGenerator({ source, target });
                 const midX = (electrode_positions[source].x + electrode_positions[target].x) / 2;
                 const midY = (electrode_positions[source].y + electrode_positions[target].y) / 2;
-                
+
                 // Calculate a directional vector from source to target
                 const directionX = electrode_positions[target].x - electrode_positions[source].x;
                 const directionY = electrode_positions[target].y - electrode_positions[source].y;
                 const length = Math.sqrt(directionX * directionX + directionY * directionY);
-                
+
                 // Normalize this vector to a small length
-                if(length !== 0) {
-                    const unitX = (directionX / length) * 9; 
+                if (length !== 0) {
+                    const unitX = (directionX / length) * 9;
                     const unitY = (directionY / length) * 5;
-    
+
                     // Calculate a new start point slightly offset from the midpoint towards the source
                     const newStartX = midX - unitX * 0.5;
                     const newStartY = midY - unitY * 0.5;
                     const overlayLinePath = `M${newStartX},${newStartY} L${newStartX + unitX},${newStartY + unitY}`;
-                    
+
                     lines.push(
                         <React.Fragment key={`${sample}_${source}_${target}-group`}>
                             <path
                                 key={`${sample}_${source}_${target}`}
                                 d={linePath}
                                 // stroke={'red'}
-                                stroke={gradientId} 
+                                stroke={gradientId}
                                 strokeWidth={lineWidth(edge[1])}
                                 fill="none"
                             />

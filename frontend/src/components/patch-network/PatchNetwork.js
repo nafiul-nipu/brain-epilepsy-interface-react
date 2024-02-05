@@ -17,6 +17,7 @@ export const PatchNetwork = ({
     selectedRoi,
     setSelectedRoi
 }) => {
+    // console.log(patchData)
 
     const numRows = Math.ceil((rowLength.length - 1) / rowSize);
 
@@ -64,7 +65,7 @@ export const PatchNetwork = ({
                                                     (<Create2DNetwork
                                                         sample={object}
                                                         data={networks}
-                                                        patchOrder={patchData[object]}
+                                                        patchOrder={patchData[object].matrix}
                                                         electrodes={electrodeData.filter((obj) => obj.label === object).map((obj) => obj.electrode_number)}
                                                         topPercent={topPercent}
                                                         colorTheLine={colorTheLine}

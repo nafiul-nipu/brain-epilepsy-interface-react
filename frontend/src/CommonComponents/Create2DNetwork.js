@@ -33,9 +33,10 @@ export const Create2DNetwork = ({
     patchOrder,
     electrodes,
     topPercent,
-    colorTheLine,
     show,
-    labels,
+    regions,
+    patchLabels,
+    regionLabels,
     communityObj
 }) => {
 
@@ -47,9 +48,10 @@ export const Create2DNetwork = ({
                 electrodes={electrodes}
                 sample={sample}
                 topPercent={topPercent}
-                colorTheLine={colorTheLine}
                 show={show}
-                labels={labels}
+                regions={regions}
+                patchLabels={patchLabels}
+                regionLabels={regionLabels}
                 communityObj={communityObj}
             />
         </ChartContainer>
@@ -62,11 +64,15 @@ const RegionWrapper = ({
     electrodes,
     sample,
     topPercent,
-    colorTheLine,
     show,
-    labels,
+    regions,
+    patchLabels,
+    regionLabels,
     communityObj
 }) => {
+    // console.log(show, regions)
+    // console.log(patchLabels)
+    // console.log(regionLabels)
 
     const dimensions = useChartContext();
 
@@ -95,9 +101,10 @@ const RegionWrapper = ({
                                 cx={10 + j * (circleSpacing + 2 * 10)}
                                 cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
                                 r={5}
-                                fill={show === 'patch' ? colorslist[labels[circleIndex]]
+                                fill={show === 'patch' ? colorslist[patchLabels[circleIndex]]
                                     : show === 'communities' ? catColor[communityObj[electrodes[circleIndex]]]
-                                        : `#1f77b4`}
+                                        : show === 'regions' ? colorslist[regions.indexOf(regionLabels[circleIndex])]
+                                            : `#1f77b4`}
                             />
                             <title>{`
                         Electrode : E${electrodes[circleIndex]}
@@ -136,6 +143,7 @@ const RegionWrapper = ({
                     "x": 10 + j * (circleSpacing + 2 * 10) + temp * (circleSpacing + 2 * 10),
                     "y": (i + 0.5) * (dimensions.boundedHeight / numRows)
                 }
+
                 circles.push(
                     <g key={`${sample}_${i}_${j}`}>
                         <circle
@@ -143,9 +151,10 @@ const RegionWrapper = ({
                             cx={10 + j * (circleSpacing + 2 * 10) + temp * (circleSpacing + 2 * 10)}
                             cy={(i + 0.5) * (dimensions.boundedHeight / numRows)}
                             r={5}
-                            fill={show === 'patch' ? colorslist[sample]
+                            fill={show === 'patch' ? colorslist[patchLabels[currElectrode]]
                                 : show === 'communities' ? catColor[communityObj[currElectrode]]
-                                    : `#1f77b4`}
+                                    : show === 'regions' ? colorslist[regions.indexOf(regionLabels[currElectrode])]
+                                        : `#1f77b4`}
                         />
                         <title>{`
                             Electrode : E${currElectrode}
@@ -226,85 +235,55 @@ const RegionWrapper = ({
     });
 
     let lines = []
-    if (colorTheLine === 'width') {
-        for (const edge of topEdges) {
-            const source = parseInt(edge[0].split('_')[0]);
-            const target = parseInt(edge[0].split('_')[1]);
-            // test gradient color
-            const gradientId = `url(#gradient-${sample}-${source}-${target})`;
-            if (electrodes.includes(source) && electrodes.includes(target)) {
-                // console.log(source, target)
-                // console.log(electrode_positions[source], electrode_positions[target])
-                const linePath = lineGenerator({ source, target });
-                const midX = (electrode_positions[source].x + electrode_positions[target].x) / 2;
-                const midY = (electrode_positions[source].y + electrode_positions[target].y) / 2;
+    for (const edge of topEdges) {
+        const source = parseInt(edge[0].split('_')[0]);
+        const target = parseInt(edge[0].split('_')[1]);
+        // test gradient color
+        const gradientId = `url(#gradient-${sample}-${source}-${target})`;
+        if (electrodes.includes(source) && electrodes.includes(target)) {
+            // console.log(source, target)
+            // console.log(electrode_positions[source], electrode_positions[target])
+            const linePath = lineGenerator({ source, target });
+            const midX = (electrode_positions[source]?.x + electrode_positions[target]?.x) / 2;
+            const midY = (electrode_positions[source]?.y + electrode_positions[target]?.y) / 2;
 
-                // Calculate a directional vector from source to target
-                const directionX = electrode_positions[target].x - electrode_positions[source].x;
-                const directionY = electrode_positions[target].y - electrode_positions[source].y;
-                const length = Math.sqrt(directionX * directionX + directionY * directionY);
+            // Calculate a directional vector from source to target
+            const directionX = electrode_positions[target]?.x - electrode_positions[source]?.x;
+            const directionY = electrode_positions[target]?.y - electrode_positions[source]?.y;
+            const length = Math.sqrt(directionX * directionX + directionY * directionY);
 
-                // Normalize this vector to a small length
-                if (length !== 0) {
-                    const unitX = (directionX / length) * 9;
-                    const unitY = (directionY / length) * 5;
+            // Normalize this vector to a small length
+            if (length !== 0) {
+                const unitX = (directionX / length) * 9;
+                const unitY = (directionY / length) * 5;
 
-                    // Calculate a new start point slightly offset from the midpoint towards the source
-                    const newStartX = midX - unitX * 0.5;
-                    const newStartY = midY - unitY * 0.5;
-                    const overlayLinePath = `M${newStartX},${newStartY} L${newStartX + unitX},${newStartY + unitY}`;
+                // Calculate a new start point slightly offset from the midpoint towards the source
+                const newStartX = midX - unitX * 0.5;
+                const newStartY = midY - unitY * 0.5;
+                const overlayLinePath = `M${newStartX},${newStartY} L${newStartX + unitX},${newStartY + unitY}`;
 
-                    lines.push(
-                        <React.Fragment key={`${sample}_${source}_${target}-group`}>
-                            <path
-                                key={`${sample}_${source}_${target}`}
-                                d={linePath}
-                                // stroke={'red'}
-                                stroke={gradientId}
-                                strokeWidth={lineWidth(edge[1])}
-                                fill="none"
-                            />
-                            <path
-                                d={overlayLinePath}
-                                key={`${sample}_${source}_${target}-arrow`}
-                                // stroke="red"
-                                strokeWidth={2}
-                                markerEnd="url(#arrow)"
-                                fill="none"
-                            />
-                        </React.Fragment>
-                    );
-                }
-            }
-        }
-    } else {
-        const edgeLists = topEdges.map(edge => edge[0])
-        // console.log(edgeLists)
-        lines = data.map((connection, i) => {
-            if (connection.network.length === 0) {
-                return null;
-            }
-            let allLines = []
-            for (const network of connection.network) {
-                const source = parseInt(network.source);
-                const target = parseInt(network.target);
-                const key = `${source}_${target}`
-                if (edgeLists.includes(key) && electrodes.includes(source) && electrodes.includes(target)) {
-                    const linePath = lineGenerator({ source, target });
-                    allLines.push(
+                lines.push(
+                    <React.Fragment key={`${sample}_${source}_${target}-group`}>
                         <path
-                            key={`${sample}_${i}_${source}_${target}`}
+                            key={`${sample}_${source}_${target}`}
                             d={linePath}
-                            stroke={lineColor(connection.index)}
-                            strokeWidth={0.1}
+                            // stroke={'red'}
+                            stroke={gradientId}
+                            strokeWidth={lineWidth(edge[1])}
                             fill="none"
                         />
-                    );
-                }
+                        <path
+                            d={overlayLinePath}
+                            key={`${sample}_${source}_${target}-arrow`}
+                            // stroke="red"
+                            strokeWidth={2}
+                            markerEnd="url(#arrow)"
+                            fill="none"
+                        />
+                    </React.Fragment>
+                );
             }
-            return allLines;
-
-        })
+        }
     }
 
     return (

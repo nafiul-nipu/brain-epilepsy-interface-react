@@ -24,6 +24,7 @@ import { PatchSummary } from "./components/region-summary/PatchSummary";
 import { useCommunity } from "./library/useCommunity";
 import { useAllNetwork } from "./library/useAllNetwork";
 import { PatchNetwork } from "./components/patch-network/PatchNetwork";
+import { useRegionData } from "./library/useRegionData";
 
 function App() {
 
@@ -66,6 +67,8 @@ function App() {
     sampleID: patientInfo.sample,
   })
 
+  const regionData = useRegionData({ patientID: patientInfo.id })
+
 
   const [selectedRoi, setSelectedRoi] = useState(null);
 
@@ -73,7 +76,6 @@ function App() {
 
 
   const [topPercent, setTopPercent] = useState(99)
-  const [colorTheLine, setColorTheLine] = useState('width')
   const [viewColor, setViewColor] = useState('na')
 
   const onViewChange = (event) => {
@@ -82,10 +84,6 @@ function App() {
 
   const topOnChange = (event) => {
     setTopPercent(event.target.value)
-  }
-
-  const colorOnChange = (event) => {
-    setColorTheLine(event.target.value)
   }
 
   return (
@@ -129,6 +127,7 @@ function App() {
             <select id="view" value={viewColor} onChange={onViewChange}>
               <option value="na"> N/A </option>
               <option value="patch"> Patch </option>
+              <option value="regions"> Regions </option>
               <option value="communities"> Communities </option>
             </select>
           </div>
@@ -156,6 +155,7 @@ function App() {
               </TabList>
               <TabPanels>
                 <TabPanel style={{ padding: '0px' }}>
+                  {/* patch network */}
                   {allNetwork && electrodeDataCsv && comData && patchData ? (
                     <PatchNetwork
                       networks={allNetwork[patientInfo.sample]}
@@ -165,7 +165,6 @@ function App() {
                       communityData={comData}
                       viewColor={viewColor}
                       topPercent={topPercent}
-                      colorTheLine={colorTheLine}
                       rowLength={Array.from(
                         new Set(
                           electrodeDataCsv.map((el) => el.label)
@@ -177,16 +176,16 @@ function App() {
                   ) : null}
                 </TabPanel>
                 <TabPanel style={{ padding: '0px' }}>
-                  {allNetwork && electrodeDataCsv && comData && patchData ? (
+                  {/* region network */}
+                  {allNetwork && electrodeDataCsv && comData && regionData ? (
                     <PatchNetwork
                       networks={allNetwork[patientInfo.sample]}
-                      patchData={patchData}
+                      patchData={regionData}
                       sampleName={patientInfo.sample}
                       electrodeData={electrodeDataCsv}
                       communityData={comData}
                       viewColor={viewColor}
                       topPercent={topPercent}
-                      colorTheLine={colorTheLine}
                       rowLength={[...new Set(electrodeDataCsv.map(obj => obj.region))]}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
@@ -204,7 +203,6 @@ function App() {
                       communityData={comData}
                       viewColor={viewColor}
                       topPercent={topPercent}
-                      colorTheLine={colorTheLine}
                     />
                   ) : null}
                 </TabPanel>

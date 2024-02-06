@@ -13,7 +13,6 @@ export const RegionSummary = ({
     communityData,
     viewColor,
     topPercent,
-    colorTheLine,
 }) => {
     return (
         <Col
@@ -46,9 +45,10 @@ export const RegionSummary = ({
                                             patchOrder={null}
                                             electrodes={electrodeData.map((obj) => obj.electrode_number)}
                                             topPercent={topPercent}
-                                            colorTheLine={colorTheLine}
                                             show={viewColor}
-                                            labels={electrodeData.map((obj) => obj.label)}
+                                            regions={[...new Set(electrodeData.map(obj => obj.region))]}
+                                            patchLabels={electrodeData.map((obj) => obj.label)}
+                                            regionLabels={electrodeData.map((obj) => obj.region)}
                                             communityObj={communityData[topPercent][index] !== undefined ?
                                                 Object.assign({}, ...communityData[topPercent][index].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
                                                 : null

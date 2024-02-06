@@ -12,21 +12,21 @@ export const PatchNetwork = ({
     communityData,
     viewColor,
     topPercent,
-    colorTheLine,
     rowLength,
     selectedRoi,
     setSelectedRoi
 }) => {
-    console.log(patchData)
+    // console.log(patchData)
+    // console.log(rowLength)
 
-    const numRows = Math.ceil((rowLength.length - 1) / rowSize);
+    const numRows = Math.ceil((rowLength.length) / rowSize);
+    // console.log('rowLength', rowLength.length)
+    // console.log('numRows', numRows)
 
     const patchOnClick = (object) => {
         // console.log(object)
         setSelectedRoi(object)
     }
-
-    // console.log(numRows)
     return (
         <Col
             md="12"
@@ -42,11 +42,12 @@ export const PatchNetwork = ({
                                 const rowStartIndex = rowIndex * rowSize;
                                 const rowObjects = rowLength.slice(rowStartIndex, rowStartIndex + rowSize);
                                 const rowKey = `row-${rowIndex}`;
-                                console.log(rowObjects)
-                                console.log("rowStartIndex", rowStartIndex)
-                                console.log("rowObjects", rowObjects)
-                                console.log("rowKey", rowKey)
-                                console.log(typeof rowObjects[0])
+                                // console.log(rowObjects)
+                                // console.log("rowStartIndex", rowStartIndex)
+                                // console.log("rowObjects", rowObjects)
+                                // console.log("rowKey", rowKey)
+                                // console.log(typeof rowObjects[0])
+
                                 return (
                                     <Row key={rowKey}>
                                         {rowObjects.map((object, i) => (
@@ -73,9 +74,13 @@ export const PatchNetwork = ({
                                                             electrodeData.filter((obj) => obj.label === object).map((obj) => obj.electrode_number)
                                                         }
                                                         topPercent={topPercent}
-                                                        colorTheLine={colorTheLine}
                                                         show={viewColor}
-                                                        labels={null}
+                                                        regions={[...new Set(electrodeData.map(obj => obj.region))]}
+                                                        patchLabels={
+                                                            electrodeData.reduce((result, obj) =>
+                                                                ({ ...result, [obj.electrode_number]: obj.label }), {})
+                                                        }
+                                                        regionLabels={electrodeData.reduce((result, obj) => ({ ...result, [obj.electrode_number]: obj.region }), {})}
                                                         communityObj={communityData[topPercent][samples.indexOf(sampleName)] !== undefined ?
                                                             Object.assign({}, ...communityData[topPercent][samples.indexOf(sampleName)].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
                                                             : null

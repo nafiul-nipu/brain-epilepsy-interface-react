@@ -5,8 +5,8 @@ const object = new Object3D();
 
 const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
 const catColor = {
-    1: "#00A5E3",
-    2: "#8DD7BF",
+    1: '#1f77b4',
+    2: '#ff7f0e',
     3: "#FF96C5",
     4: "#FF5768",
     5: "#FFBF65",
@@ -16,7 +16,7 @@ const catColor = {
     9: "#fb9a99",
     10: "#8c564b",
     12: "#9467bd",
-    14: "#ff7f0e",
+    14: "#00A5E3",
 }
 let currentIndex = 0;
 
@@ -50,11 +50,19 @@ export const ElectrodeLoad = ({
         // console.log("visual panel", visualPanel)
         if (!isMountedRef.current) return;
         if (buttonValue === 'Pause') return;
-        if (visualPanel === 'Patches' || visualPanel === 'Patch-Com-Net') {
+        if (visualPanel === 'Patches' || visualPanel === 'Patch-Com-Net' || visualPanel === 'Region-Com-Net') {
             // console.log(electrodeData)
+            const uniqueRegions = visualPanel === 'Region-Com-Net' ? [...new Set(electrodeData.map(obj => obj.region))] : null;
+
+            // console.log(uniqueRegions);
             // console.log("patches")
             electrodeData.forEach((electrode, index) => {
-                meshRef.current.setColorAt(index, new Color(colorslist[electrode.label]));
+                if (visualPanel === 'Region-Com-Net') {
+                    const regionIndex = uniqueRegions.indexOf(electrode.region);
+                    meshRef.current.setColorAt(index, new Color(colorslist[regionIndex]));
+                } else {
+                    meshRef.current.setColorAt(index, new Color(colorslist[electrode.label]));
+                }
                 object.scale.set(1, 1, 1)
 
                 object.position.set(

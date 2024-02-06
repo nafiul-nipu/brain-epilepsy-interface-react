@@ -6,8 +6,8 @@ import ChartContainer, { useChartContext } from '../components/chart-container/c
 const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
 
 const catColor = {
-    1: "#00A5E3",
-    2: "#8DD7BF",
+    1: '#1f77b4',
+    2: '#ff7f0e',
     3: "#FF96C5",
     4: "#FF5768",
     5: "#FFBF65",
@@ -17,7 +17,7 @@ const catColor = {
     9: "#fb9a99",
     10: "#8c564b",
     12: "#9467bd",
-    14: "#ff7f0e",
+    14: "#00A5E3",
 }
 
 const containerProps = {

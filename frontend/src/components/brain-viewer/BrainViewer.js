@@ -293,57 +293,142 @@ export const BrainViewer = ({
                                 </Canvas>
                             </div>
                             :
-                            <Canvas>
-                                <Suspense fallback={null}>
-                                    <Hud renderPriority={1}>
-                                        <PerspectiveCamera
-                                            makeDefault
-                                            position={[-250, -10, 0]}
-                                            up={[0, 0, 1]}
-                                            aspect={width / height}
-                                            near={1}
-                                            far={2000}
-                                            fov={40}
-                                        />
-                                        <Lighting />
-                                        <BrainLesionLoad
-                                            patientInformation={patientInformation}
-                                            lesionArray={dataRegisty[patientInformation.id].lesionArray}
-                                            brainPartition={dataRegisty[patientInformation.id].brainPartition}
-                                            leftBrainOpacity={leftBrainOpacity}
-                                            rightBrainOpacity={rightBrainOpacity}
-                                        />
-                                        <OrbitControls enablePan={true} />
-                                    </Hud>
-                                    <Hud renderPriority={2}>
-                                        <PerspectiveCamera
-                                            makeDefault
-                                            position={[-250, -10, 0]}
-                                            up={[0, 0, 1]}
-                                            aspect={width / height}
-                                            near={1}
-                                            far={2000}
-                                            fov={40}
-                                        />
-                                        <Lighting />
-                                        <ElectrodeLoad
-                                            electrodeData={electrodeData}
-                                            sampleData={sample}
-                                            community={community}
-                                            bbox={dataRegisty[patientInformation.id].bbox}
-                                            eegInBrain={eegInBrain}
-                                            timeRange={time}
-                                            eventData={events}
-                                            allnetwork={allnetworks}
-                                            visualPanel={visualPanel}
-                                            buttonValue={buttonValue}
-                                            sliderObj={sliderObj}
-                                        />
-                                        <OrbitControls enablePan={true} />
-                                    </Hud>
-                                </Suspense>
-                                <Stats />
-                            </Canvas>
+                            (visualPanel === 'Region-Com-Net' ?
+                                <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden' }}>
+                                    {
+                                        Object.keys(allnetworks).map((item, index) => (
+                                            <div
+                                                key={index}
+                                                ref={views[index]}
+                                                style={{
+                                                    height: height,
+                                                    width: width / Object.keys(allnetworks).length,
+                                                    display: "inline-block",
+                                                    padding: "2px",
+                                                    // border: "0.5px solid grey",
+                                                    // backgroundColor: "yellowgreen"
+                                                }}
+                                            ></div>
+                                        ))
+                                    }
+                                    <Canvas eventSource={containerRef} className="canvas">
+                                        {
+                                            Object.keys(allnetworks).map((item, index) => (
+                                                <View
+                                                    index={index}
+                                                    key={index}
+                                                    track={views[index]}
+                                                >
+                                                    <PerspectiveCamera
+                                                        makeDefault
+                                                        position={[-250, -10, 0]}
+                                                        up={[0, 0, 1]}
+                                                        aspect={width / height}
+                                                        near={1}
+                                                        far={2000}
+                                                        fov={40}
+                                                    />
+                                                    <ambientLight intensity={0.5} />
+                                                    <directionalLight
+                                                        castShadow
+                                                        position={[0, 5, 5]}
+                                                        intensity={1}
+                                                        shadow-mapSize-width={2048}
+                                                        shadow-mapSize-height={2048}
+                                                        shadow-camera-near={0.5}
+                                                        shadow-camera-far={500}
+                                                        shadow-camera-left={-5}
+                                                        shadow-camera-right={5}
+                                                        shadow-camera-top={5}
+                                                        shadow-camera-bottom={-5}
+                                                    />
+                                                    <BrainLesionLoad
+                                                        patientInformation={patientInformation}
+                                                        lesionArray={dataRegisty[patientInformation.id].lesionArray}
+                                                        brainPartition={dataRegisty[patientInformation.id].brainPartition}
+                                                        leftBrainOpacity={leftBrainOpacity}
+                                                        rightBrainOpacity={rightBrainOpacity}
+                                                    />
+                                                    <ElectrodeLoad
+                                                        electrodeData={electrodeData}
+                                                        sampleData={sample}
+                                                        community={community}
+                                                        bbox={dataRegisty[patientInformation.id].bbox}
+                                                        eegInBrain={eegInBrain}
+                                                        timeRange={time}
+                                                        eventData={events}
+                                                        allnetwork={allnetworks[item]}
+                                                        visualPanel={visualPanel}
+                                                        buttonValue={buttonValue}
+                                                        sliderObj={sliderObj}
+                                                    />
+                                                    <CreateLineCurve
+                                                        electrodeData={electrodeData}
+                                                        networkData={allnetworks[item]}
+                                                        topPercent={topPercent}
+                                                        bbox={dataRegisty[patientInformation.id].bbox}
+                                                        selectedRoi={selectedRoi}
+                                                    />
+                                                    <OrbitControls enablePan={true} />
+                                                </View>
+                                            ))
+                                        }
+                                        <Stats />
+                                    </Canvas>
+                                </div>
+                                :
+                                <Canvas>
+                                    <Suspense fallback={null}>
+                                        <Hud renderPriority={1}>
+                                            <PerspectiveCamera
+                                                makeDefault
+                                                position={[-250, -10, 0]}
+                                                up={[0, 0, 1]}
+                                                aspect={width / height}
+                                                near={1}
+                                                far={2000}
+                                                fov={40}
+                                            />
+                                            <Lighting />
+                                            <BrainLesionLoad
+                                                patientInformation={patientInformation}
+                                                lesionArray={dataRegisty[patientInformation.id].lesionArray}
+                                                brainPartition={dataRegisty[patientInformation.id].brainPartition}
+                                                leftBrainOpacity={leftBrainOpacity}
+                                                rightBrainOpacity={rightBrainOpacity}
+                                            />
+                                            <OrbitControls enablePan={true} />
+                                        </Hud>
+                                        <Hud renderPriority={2}>
+                                            <PerspectiveCamera
+                                                makeDefault
+                                                position={[-250, -10, 0]}
+                                                up={[0, 0, 1]}
+                                                aspect={width / height}
+                                                near={1}
+                                                far={2000}
+                                                fov={40}
+                                            />
+                                            <Lighting />
+                                            <ElectrodeLoad
+                                                electrodeData={electrodeData}
+                                                sampleData={sample}
+                                                community={community}
+                                                bbox={dataRegisty[patientInformation.id].bbox}
+                                                eegInBrain={eegInBrain}
+                                                timeRange={time}
+                                                eventData={events}
+                                                allnetwork={allnetworks}
+                                                visualPanel={visualPanel}
+                                                buttonValue={buttonValue}
+                                                sliderObj={sliderObj}
+                                            />
+                                            <OrbitControls enablePan={true} />
+                                        </Hud>
+                                    </Suspense>
+                                    <Stats />
+                                </Canvas>
+                            )
                         )
                 }
             </Col >

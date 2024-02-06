@@ -187,11 +187,7 @@ function App() {
                       viewColor={viewColor}
                       topPercent={topPercent}
                       colorTheLine={colorTheLine}
-                      rowLength={Array.from(
-                        new Set(
-                          electrodeDataCsv.map((el) => el.label)
-                        )
-                      ).sort((a, b) => a - b)}
+                      rowLength={[...new Set(electrodeDataCsv.map(obj => obj.region))]}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
                     />

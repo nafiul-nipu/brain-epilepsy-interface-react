@@ -17,7 +17,7 @@ export const PatchNetwork = ({
     selectedRoi,
     setSelectedRoi
 }) => {
-    // console.log(patchData)
+    console.log(patchData)
 
     const numRows = Math.ceil((rowLength.length - 1) / rowSize);
 
@@ -42,10 +42,11 @@ export const PatchNetwork = ({
                                 const rowStartIndex = rowIndex * rowSize;
                                 const rowObjects = rowLength.slice(rowStartIndex, rowStartIndex + rowSize);
                                 const rowKey = `row-${rowIndex}`;
-                                // console.log(rowObjects)
-                                // console.log("rowStartIndex", rowStartIndex)
-                                // console.log("rowObjects", rowObjects)
-                                // console.log("rowKey", rowKey)
+                                console.log(rowObjects)
+                                console.log("rowStartIndex", rowStartIndex)
+                                console.log("rowObjects", rowObjects)
+                                console.log("rowKey", rowKey)
+                                console.log(typeof rowObjects[0])
                                 return (
                                     <Row key={rowKey}>
                                         {rowObjects.map((object, i) => (
@@ -66,7 +67,11 @@ export const PatchNetwork = ({
                                                         sample={object}
                                                         data={networks}
                                                         patchOrder={patchData[object].matrix}
-                                                        electrodes={electrodeData.filter((obj) => obj.label === object).map((obj) => obj.electrode_number)}
+                                                        electrodes={typeof object === 'string' ?
+                                                            electrodeData.filter((obj) => obj.region === object).map((obj) => obj.electrode_number)
+                                                            :
+                                                            electrodeData.filter((obj) => obj.label === object).map((obj) => obj.electrode_number)
+                                                        }
                                                         topPercent={topPercent}
                                                         colorTheLine={colorTheLine}
                                                         show={viewColor}

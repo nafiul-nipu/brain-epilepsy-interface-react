@@ -37,7 +37,8 @@ export const Create2DNetwork = ({
     regions,
     patchLabels,
     regionLabels,
-    communityObj
+    communityObj,
+    setEegList
 }) => {
 
     return (
@@ -53,6 +54,7 @@ export const Create2DNetwork = ({
                 patchLabels={patchLabels}
                 regionLabels={regionLabels}
                 communityObj={communityObj}
+                setEegList={setEegList}
             />
         </ChartContainer>
     );
@@ -68,7 +70,8 @@ const RegionWrapper = ({
     regions,
     patchLabels,
     regionLabels,
-    communityObj
+    communityObj,
+    setEegList
 }) => {
     // console.log(show, regions)
     // console.log(patchLabels)
@@ -294,13 +297,13 @@ const RegionWrapper = ({
                 const posX = electrode_positions[electrode]?.x;
                 const posY = electrode_positions[electrode]?.y;
                 return posX >= selection[0][0] && posX <= selection[1][0] && posY >= selection[0][1] && posY <= selection[1][1];
-            });
+            }).map(electrode => +electrode);
 
             // Do something with the selected electrodes, e.g., log or update state
             console.log('Selected Electrodes:', selectedElectrodes);
 
             // Update state to store the selected electrodes
-            // setBrushedElectrodes(selectedElectrodes);
+            setEegList(selectedElectrodes);
         }
     }
     const brush = d3.brush()

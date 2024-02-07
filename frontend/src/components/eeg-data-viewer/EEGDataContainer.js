@@ -8,7 +8,8 @@ export const EEGDataContainer = ({
   patient,
   electrodeList,
   eegInBrain,
-  setEegInBrain
+  setEegInBrain,
+  eegList
 }) => {
   const [eegData, seteegData] = useState(null);
   const [startTime, setstartTime] = useState(0)
@@ -45,7 +46,6 @@ export const EEGDataContainer = ({
     patient
   ]);
 
-  // const eegList = eegData ? Object.keys(eegData.eeg).map(Number).sort() : [];
 
   return (
     <>
@@ -59,6 +59,7 @@ export const EEGDataContainer = ({
           setEegInBrain={setEegInBrain}
           timeToFecth={timeToFecth}
           timeWindow={timeWindow}
+          eegList={eegList}
         />
       }
     </>

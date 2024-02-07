@@ -73,6 +73,7 @@ function App() {
   const [selectedRoi, setSelectedRoi] = useState(null);
 
   const [eegInBrain, setEegInBrain] = useState(null);
+  const [eegList, setEegList] = useState(null)
 
 
   const [topPercent, setTopPercent] = useState(99)
@@ -172,6 +173,7 @@ function App() {
                       ).sort((a, b) => a - b)}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
+                      setEegList={setEegList}
                     />
                   ) : null}
                 </TabPanel>
@@ -189,6 +191,7 @@ function App() {
                       rowLength={[...new Set(electrodeDataCsv.map(obj => obj.region))]}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
+                      setEegList={setEegList}
                     />
                   ) : null}
                 </TabPanel>
@@ -203,6 +206,7 @@ function App() {
                       communityData={comData}
                       viewColor={viewColor}
                       topPercent={topPercent}
+                      setEegList={setEegList}
                     />
                   ) : null}
                 </TabPanel>
@@ -231,6 +235,7 @@ function App() {
                         electrodeList={electrodeDataCsv.map((el) => el.electrode_number)}
                         eegInBrain={eegInBrain}
                         setEegInBrain={setEegInBrain}
+                        eegList={eegList}
                       />
                     ) : null}
                   </Col>

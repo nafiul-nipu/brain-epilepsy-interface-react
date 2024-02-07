@@ -23,11 +23,13 @@ export const EEGDataViewer = ({
   eegInBrain,
   setEegInBrain,
   timeToFecth,
-  timeWindow
+  timeWindow,
+  eegList
 }) => {
   // console.log(eegData)
   // console.log(electrodeList)
   // console.log(selectedEventRange)
+  // console.log(eegList)
 
   const containerRef = useRef(null);
   const itemRefs = useRef([]);
@@ -52,6 +54,13 @@ export const EEGDataViewer = ({
 
   // let count = 0;
 
+  const sortedElectrodes = eegList !== null ?
+    eegList.concat(electrodeList.filter(electrode => !eegList.includes(electrode)))
+    : electrodeList;
+
+  // console.log(eegList)
+  // console.log(sortedElectrodes)
+
   return (
     <div className="eeg-container">
       <div className="eeg-title">
@@ -62,7 +71,7 @@ export const EEGDataViewer = ({
 
       <div className="eeg-list" ref={containerRef}>
         {
-          electrodeList.map((el, i) => {
+          sortedElectrodes.map((el, i) => {
             if (eegData.eeg[el] !== undefined && eegData.eeg[el].length > 0) {
               // count++;
               return (

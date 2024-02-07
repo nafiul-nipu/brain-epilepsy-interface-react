@@ -39,7 +39,8 @@ export const Create2DNetwork = ({
     regionLabels,
     communityObj,
     eegList,
-    setEegList
+    setEegList,
+    networkType
 }) => {
 
     return (
@@ -57,6 +58,7 @@ export const Create2DNetwork = ({
                 communityObj={communityObj}
                 eegList={eegList}
                 setEegList={setEegList}
+                networkType={networkType}
             />
         </ChartContainer>
     );
@@ -74,7 +76,8 @@ const RegionWrapper = ({
     regionLabels,
     communityObj,
     eegList,
-    setEegList
+    setEegList,
+    networkType
 }) => {
     // console.log(show, regions)
     // console.log(patchLabels)
@@ -283,7 +286,7 @@ const RegionWrapper = ({
                             key={`${sample}_${source}_${target}-arrow`}
                             // stroke="red"
                             strokeWidth={2}
-                            markerEnd="url(#arrow)"
+                            markerEnd={`url(#arrow-${networkType})`}
                             fill="none"
                         />
                     </React.Fragment>
@@ -318,7 +321,7 @@ const RegionWrapper = ({
         <g>
             <defs>
                 {gradients}
-                <marker id="arrow" viewBox="0 0 12 12" refX="5" refY="6" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <marker id={`arrow-${networkType}`} viewBox="0 0 12 12" refX="5" refY="6" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                     <path d="M2,2 L10,6 L2,10 L6,6 L2,2" fill="black" />
                 </marker>
             </defs>

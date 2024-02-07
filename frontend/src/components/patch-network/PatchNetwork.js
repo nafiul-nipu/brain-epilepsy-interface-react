@@ -16,7 +16,8 @@ export const PatchNetwork = ({
     selectedRoi,
     setSelectedRoi,
     eegList,
-    setEegList
+    setEegList,
+    networkType
 }) => {
     // console.log(patchData)
     // console.log(rowLength)
@@ -75,6 +76,7 @@ export const PatchNetwork = ({
                                                             :
                                                             electrodeData.filter((obj) => obj.label === object).map((obj) => obj.electrode_number)
                                                         }
+                                                        networkType={networkType === 'patch' ? 'patch' : 'region'}
                                                         topPercent={topPercent}
                                                         show={viewColor}
                                                         regions={[...new Set(electrodeData.map(obj => obj.region))]}

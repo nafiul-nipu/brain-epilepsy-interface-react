@@ -181,6 +181,7 @@ function App() {
                       setSelectedRoi={setSelectedRoi}
                       eegList={eegList}
                       setEegList={setEegList}
+                      networkType={'patch'}
                     />
                   ) : null}
                 </TabPanel>
@@ -200,6 +201,7 @@ function App() {
                       setSelectedRoi={setSelectedRoi}
                       eegList={eegList}
                       setEegList={setEegList}
+                      networkType={'region'}
                     />
                   ) : null}
                 </TabPanel>
@@ -216,6 +218,7 @@ function App() {
                       topPercent={topPercent}
                       eegList={eegList}
                       setEegList={setEegList}
+                      networkType={'all'}
                     />
                   ) : null}
                 </TabPanel>

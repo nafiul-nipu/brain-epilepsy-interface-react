@@ -57,6 +57,7 @@ export const RegionSummary = ({
                                             }
                                             eegList={eegList}
                                             setEegList={setEegList}
+                                            networkType={'all'}
                                         />
                                     </Col>
                                 )

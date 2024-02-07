@@ -286,6 +286,27 @@ const RegionWrapper = ({
         }
     }
 
+    const handleBrushEnd = (event) => {
+        const selection = event.selection;
+        if (selection) {
+            // Find electrodes within the brushed area
+            const selectedElectrodes = Object.keys(electrode_positions).filter((electrode) => {
+                const posX = electrode_positions[electrode]?.x;
+                const posY = electrode_positions[electrode]?.y;
+                return posX >= selection[0][0] && posX <= selection[1][0] && posY >= selection[0][1] && posY <= selection[1][1];
+            });
+
+            // Do something with the selected electrodes, e.g., log or update state
+            console.log('Selected Electrodes:', selectedElectrodes);
+
+            // Update state to store the selected electrodes
+            // setBrushedElectrodes(selectedElectrodes);
+        }
+    }
+    const brush = d3.brush()
+        .extent([[0, 0], [dimensions.boundedWidth, dimensions.boundedHeight]])
+        .on('end', handleBrushEnd)
+
     return (
         <g>
             <defs>
@@ -308,6 +329,7 @@ const RegionWrapper = ({
             />
             {lines}
             {rows}
+            <g ref={node => d3.select(node).call(brush)}></g>
         </g>
     );
 };

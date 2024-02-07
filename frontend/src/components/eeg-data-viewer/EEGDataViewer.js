@@ -61,6 +61,7 @@ export const EEGDataViewer = ({
   // console.log(eegList)
   // console.log(sortedElectrodes)
 
+
   return (
     <div className="eeg-container">
       <div className="eeg-title">

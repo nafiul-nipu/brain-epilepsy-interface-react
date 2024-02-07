@@ -147,7 +147,13 @@ function App() {
           </div>
 
           <Row style={{ margin: '5px 0' }}>
-            <Tabs variant="enclosed" colorScheme="green" size='sm' style={{ paddingRight: 0 }}>
+            <Tabs
+              variant="enclosed"
+              colorScheme="green"
+              size='sm'
+              style={{ paddingRight: 0 }}
+              onChange={(index) => { setEegList(null) }}
+            >
               <TabList>
                 <Tab>Patch Network</Tab>
                 <Tab>Region Network</Tab>
@@ -173,6 +179,7 @@ function App() {
                       ).sort((a, b) => a - b)}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
+                      eegList={eegList}
                       setEegList={setEegList}
                     />
                   ) : null}
@@ -191,6 +198,7 @@ function App() {
                       rowLength={[...new Set(electrodeDataCsv.map(obj => obj.region))]}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
+                      eegList={eegList}
                       setEegList={setEegList}
                     />
                   ) : null}
@@ -206,6 +214,7 @@ function App() {
                       communityData={comData}
                       viewColor={viewColor}
                       topPercent={topPercent}
+                      eegList={eegList}
                       setEegList={setEegList}
                     />
                   ) : null}

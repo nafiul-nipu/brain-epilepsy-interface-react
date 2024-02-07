@@ -13,6 +13,7 @@ export const RegionSummary = ({
     communityData,
     viewColor,
     topPercent,
+    eegList,
     setEegList
 }) => {
     return (
@@ -54,6 +55,7 @@ export const RegionSummary = ({
                                                 Object.assign({}, ...communityData[topPercent][index].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
                                                 : null
                                             }
+                                            eegList={eegList}
                                             setEegList={setEegList}
                                         />
                                     </Col>

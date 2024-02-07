@@ -15,6 +15,7 @@ export const PatchNetwork = ({
     rowLength,
     selectedRoi,
     setSelectedRoi,
+    eegList,
     setEegList
 }) => {
     // console.log(patchData)
@@ -86,6 +87,7 @@ export const PatchNetwork = ({
                                                             Object.assign({}, ...communityData[topPercent][samples.indexOf(sampleName)].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
                                                             : null
                                                         }
+                                                        eegList={eegList}
                                                         setEegList={setEegList}
                                                     />)
                                                     : null}

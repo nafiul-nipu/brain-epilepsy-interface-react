@@ -88,6 +88,53 @@ const RegionWrapper = ({
     const electrode_positions = {};
     const rows = [];
 
+    const edgeCounter = {}
+    for (const connection of data) {
+        if (connection.network.length === 0) {
+            continue;
+        }
+        for (const network of connection.network) {
+            const source = network.source;
+            const target = network.target;
+            const key = `${source}_${target}`
+            if (key in edgeCounter) {
+                edgeCounter[key] += 1;
+            } else {
+                edgeCounter[key] = 1;
+            }
+        }
+    }
+
+    const sortedEdges = Object.entries(edgeCounter)
+        .filter(([key, value]) => value > 1) // Filter values not greater than 1
+        .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
+
+    const sortedValues = sortedEdges.map(edge => edge[1])
+
+    const percentileVal = ss.quantileSorted(sortedValues, topPercent / 100);
+
+    const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
+
+    const sourceElectrodes = new Set();
+
+    topEdges.forEach(edge => {
+        const source = parseInt(edge[0].split('_')[0]);
+        sourceElectrodes.add(source);
+    });
+    
+    console.log(sourceElectrodes, '?????')
+    
+    const lineGenerator = d3.link(d3.curveBumpY)
+        .x(d => electrode_positions[d] ? electrode_positions[d].x : 0)
+        .y(d => electrode_positions[d] ? electrode_positions[d].y : 0)
+
+    const lineColor = d3.scaleSequential(d3.interpolateReds)
+        .domain([data[0].index, data[data.length - 1].index])
+
+    const lineWidth = d3.scaleLinear()
+        .domain([topEdges[0][1], topEdges[topEdges.length - 1][1]])
+        .range([0.25, 3.5])
+
     if (patchOrder === null) {
         const circlesPerRow = 8;
         const count = electrodes.length;
@@ -114,6 +161,8 @@ const RegionWrapper = ({
                                     : show === 'communities' ? catColor[communityObj[electrodes[circleIndex]]]
                                         : show === 'regions' ? colorslist[regions.indexOf(regionLabels[circleIndex])]
                                             : `#1f77b4`}
+                                stroke={sourceElectrodes.has(electrodes[circleIndex]) ? '#2d004b' : 'none'}
+                                strokeWidth={sourceElectrodes.has(electrodes[circleIndex]) ? 3 : 0}
                             />
                             <title>{`
                         Electrode : E${electrodes[circleIndex]}
@@ -164,6 +213,8 @@ const RegionWrapper = ({
                                 : show === 'communities' ? catColor[communityObj[currElectrode]]
                                     : show === 'regions' ? colorslist[regions.indexOf(regionLabels[currElectrode])]
                                         : `#1f77b4`}
+                            stroke={sourceElectrodes.has(currElectrode) ? '#2d004b' : 'none'}
+                            strokeWidth={sourceElectrodes.has(currElectrode) ? 3 : 0}
                         />
                         <title>{`
                             Electrode : E${currElectrode}
@@ -179,47 +230,7 @@ const RegionWrapper = ({
 
     // console.log(electrode_positions)
 
-
-    const edgeCounter = {}
-    for (const connection of data) {
-        if (connection.network.length === 0) {
-            continue;
-        }
-        for (const network of connection.network) {
-            const source = network.source;
-            const target = network.target;
-            const key = `${source}_${target}`
-            if (key in edgeCounter) {
-                edgeCounter[key] += 1;
-            } else {
-                edgeCounter[key] = 1;
-            }
-        }
-    }
-
-    const sortedEdges = Object.entries(edgeCounter)
-        .filter(([key, value]) => value > 1) // Filter values not greater than 1
-        .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
-
-    const sortedValues = sortedEdges.map(edge => edge[1])
-
-    const percentileVal = ss.quantileSorted(sortedValues, topPercent / 100);
-
-    const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
-
-
-    const lineGenerator = d3.link(d3.curveBumpY)
-        .x(d => electrode_positions[d] ? electrode_positions[d].x : 0)
-        .y(d => electrode_positions[d] ? electrode_positions[d].y : 0)
-
-    const lineColor = d3.scaleSequential(d3.interpolateReds)
-        .domain([data[0].index, data[data.length - 1].index])
-
-    const lineWidth = d3.scaleLinear()
-        .domain([topEdges[0][1], topEdges[topEdges.length - 1][1]])
-        .range([0.25, 3.5])
-
-    // test gradient line color
+    // gradient line color
     const gradients = topEdges.map(edge => {
         const source = parseInt(edge[0].split('_')[0]);
         const target = parseInt(edge[0].split('_')[1]);

@@ -238,9 +238,9 @@ function App() {
               </TabList>
 
               <TabPanels>
-                <TabPanel style={{ padding: '0px' }}>
-                  {/* eeg 94vh */}
-                  <Col md="12" style={{ height: "94vh", backgroundColor: "#FAFBFC" }}>
+                <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
+                  {/* eeg 89.5vh */}
+                  <Col md="12" style={{ height: "89.5vh", backgroundColor: "#FAFBFC" }}>
                     {allEventData && electrodeDataCsv ? (
                       <EEGDataContainer
                         patient={patientInfo}
@@ -252,7 +252,7 @@ function App() {
                     ) : null}
                   </Col>
                 </TabPanel>
-                <TabPanel style={{ padding: '0px' }}>
+                <TabPanel style={{ padding: '0px', marginRight: "5px" }}>
                   {allEventData && patchData && samplePropagationData ? (
                     <PatchSummary
                       patchData={patchData}
@@ -264,7 +264,7 @@ function App() {
                     />
                   ) : null}
                 </TabPanel>
-                <TabPanel style={{ padding: '0px' }}>
+                <TabPanel style={{ padding: '0px', marginRight: "5px" }}>
                   {allEventData && patchData && samplePropagationData && regionData ? (
                     <PatchSummary
                       patchData={regionData}

@@ -122,8 +122,6 @@ const RegionWrapper = ({
         sourceElectrodes.add(source);
     });
     
-    console.log(sourceElectrodes, '?????')
-    
     const lineGenerator = d3.link(d3.curveBumpY)
         .x(d => electrode_positions[d] ? electrode_positions[d].x : 0)
         .y(d => electrode_positions[d] ? electrode_positions[d].y : 0)

@@ -277,7 +277,7 @@ export const PatchSummary = ({
     <Col
       md="12"
       className="patchSummaryContainer"
-      style={{ height: "92vh", backgroundColor: "#FAFBFC" }}
+      style={{ height: "89.5vh", backgroundColor: "#FAFBFC" }}
     >
       <Row>
         <Col md="12" style={{ height: "4vh" }}>
@@ -332,7 +332,7 @@ export const PatchSummary = ({
         </Col>
       </Row>
       <Row
-        style={{ height: "92%", overflowY: "auto", width: "100%", margin: 0 }}
+        style={{ height: "92%", overflowY: "auto", width: "100%", margin: 0, alignContent: "flex-start"}}
       >
         <>{rows}</>
         {tooltip.visible && (

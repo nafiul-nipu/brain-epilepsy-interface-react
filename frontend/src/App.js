@@ -265,9 +265,9 @@ function App() {
                   ) : null}
                 </TabPanel>
                 <TabPanel style={{ padding: '0px' }}>
-                  {allEventData && patchData && samplePropagationData ? (
+                  {allEventData && patchData && samplePropagationData && regionData ? (
                     <PatchSummary
-                      patchData={patchData}
+                      patchData={regionData}
                       samplePropagationData={samplePropagationData}
                       eventData={allEventData[patientInfo.sample]}
                       selectedRoi={selectedRoi}

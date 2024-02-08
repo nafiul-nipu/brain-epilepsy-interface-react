@@ -11,7 +11,6 @@ export const PatchSummary = ({
   roiCount,
   samplePropagationData,
 }) => {
-
   const electrodeColorList = [
     "#1f77b4",
     "#ff7f0e",
@@ -92,10 +91,7 @@ export const PatchSummary = ({
   }
 
   const maxOccurrence = findMaxInObject(processedPatchData);
-  const circleRadius = d3
-    .scaleLinear()
-    .domain([0, maxOccurrence])
-    .range([6, 12]);
+  const circleRadius = d3.scaleSqrt().domain([0, maxOccurrence]).range([5, 15]);
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey].matrix;
@@ -116,7 +112,7 @@ export const PatchSummary = ({
         md="4"
         key={roiKey}
         style={{
-          height: "22vh",
+          height: "25vh",
           padding: 0,
           backgroundColor:
             selectedRoi === Number(roiKey)
@@ -155,39 +151,20 @@ export const PatchSummary = ({
 
               const cx = 28 + 42 * (columnIndex + shift);
               const cy = 20 + 42 * rowIndex + roiLabelHeight;
-              const sourceRatio =
-                propagationCounts.source_counts +
-                  propagationCounts.target_counts ===
-                0
+              const sourceRatio = propagationCounts.source_counts + propagationCounts.target_counts === 0
                   ? 0
-                  : propagationCounts.source_counts /
-                    (propagationCounts.source_counts +
-                      propagationCounts.target_counts);
-              const targetRatio =
-                propagationCounts.source_counts +
-                  propagationCounts.target_counts ===
-                0
+                  : propagationCounts.source_counts / (propagationCounts.source_counts + propagationCounts.target_counts);
+              const targetRatio = propagationCounts.source_counts + propagationCounts.target_counts === 0
                   ? 0
-                  : propagationCounts.target_counts /
-                    (propagationCounts.source_counts +
-                      propagationCounts.target_counts);
+                  : propagationCounts.target_counts / (propagationCounts.source_counts + propagationCounts.target_counts);
+
+              const totalRadius = circleRadius(maxOccurrence) + 3;
+              const innerRadius = circleRadius(electrodeValue);
+              const strokeWidth = totalRadius - innerRadius;
+              const outerRadius = innerRadius + strokeWidth / 2;
+
               return (
                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
-                  <circle
-                    cx={cx}
-                    cy={cy}
-                    r={circleRadius(electrodeValue)}
-                    fill={fillColor}
-                    onMouseEnter={(e) =>
-                      handleMouseEnter(
-                        electrodeId,
-                        electrodeValue,
-                        propagationCounts,
-                        e
-                      )
-                    }
-                    onMouseLeave={handleMouseLeave}
-                  />
                   <g
                     transform={`translate(${cx},${cy})`}
                     onMouseEnter={(e) =>
@@ -201,46 +178,51 @@ export const PatchSummary = ({
                     onMouseLeave={handleMouseLeave}
                   >
                     <circle
-                      r={circleRadius(electrodeValue) + 3}
+                      r={outerRadius}
                       fill="none"
                       stroke={
                         sourceRatio === 0 && targetRatio === 0
                           ? "#D3D3D3"
-                          :"#762a83"
+                          : "#762a83"
                       }
-                      strokeWidth="12"
+                      strokeWidth={strokeWidth}
                     />
                     {sourceRatio > 0 && (
                       <circle
-                        r={circleRadius(electrodeValue) + 3}
+                        r={outerRadius}
                         fill="none"
                         stroke="#fee090"
-                        strokeWidth="12"
-                        strokeDasharray={`${
-                          sourceRatio.toFixed(2) *
-                          3.14 *
-                          2 *
-                          (circleRadius(electrodeValue) + 3)
-                        } 100`}
+                        strokeWidth={strokeWidth}
+                        strokeDasharray={`${sourceRatio.toFixed(2) * 3.14 * 2 * outerRadius} 100`}
                         transform={`rotate(-90)`}
                       />
                     )}
                     {targetRatio > 0 && sourceRatio === 0 && (
                       <circle
-                        r={circleRadius(electrodeValue) + 3}
+                        r={outerRadius}
                         fill="none"
                         stroke="#762a83"
-                        strokeWidth="12"
-                        strokeDasharray={`${
-                          targetRatio.toFixed(2) *
-                          3.14 *
-                          2 *
-                          (circleRadius(electrodeValue) + 3)
-                        } 100`}
+                        strokeWidth={strokeWidth}
+                        strokeDasharray={`${targetRatio.toFixed(2) * 3.14 * 2 * outerRadius} 100`}
                         transform={`rotate(-90)`}
                       />
                     )}
                   </g>
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r={innerRadius}
+                    fill={fillColor}
+                    onMouseEnter={(e) =>
+                      handleMouseEnter(
+                        electrodeId,
+                        electrodeValue,
+                        propagationCounts,
+                        e
+                      )
+                    }
+                    onMouseLeave={handleMouseLeave}
+                  />
                 </g>
               );
             });
@@ -294,7 +276,7 @@ export const PatchSummary = ({
   return (
     <Col
       md="12"
-      className="regionSummaryContainer"
+      className="patchSummaryContainer"
       style={{ height: "92vh", backgroundColor: "#FAFBFC" }}
     >
       <Row>

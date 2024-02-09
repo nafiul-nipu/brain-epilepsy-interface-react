@@ -246,8 +246,8 @@ const RegionWrapper = ({
                 y2={electrode_positions[target]?.y}
                 gradientUnits="userSpaceOnUse"
             >
-                <stop offset="0%" stopColor="#ffffcc" /> {/* Lighter color at the source */}
-                <stop offset="100%" stopColor="#bd0026" /> {/* Darker color at the target */}
+                <stop offset="0%" stopColor="#bd0026" /> {/* Darker color at the source */}
+                <stop offset="100%" stopColor="#ffffcc" /> {/* Lighter color at the target */}
             </linearGradient>
         );
     });

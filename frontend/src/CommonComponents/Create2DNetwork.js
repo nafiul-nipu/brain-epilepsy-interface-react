@@ -121,7 +121,7 @@ const RegionWrapper = ({
         const source = parseInt(edge[0].split('_')[0]);
         sourceElectrodes.add(source);
     });
-    
+
     const lineGenerator = d3.link(d3.curveBumpY)
         .x(d => electrode_positions[d] ? electrode_positions[d].x : 0)
         .y(d => electrode_positions[d] ? electrode_positions[d].y : 0)
@@ -211,8 +211,8 @@ const RegionWrapper = ({
                                 : show === 'communities' ? catColor[communityObj[currElectrode]]
                                     : show === 'regions' ? colorslist[regions.indexOf(regionLabels[currElectrode])]
                                         : `#1f77b4`}
-                            stroke={sourceElectrodes.has(currElectrode) ? '#2d004b' : 'none'}
-                            strokeWidth={sourceElectrodes.has(currElectrode) ? 3 : 0}
+                        // stroke={sourceElectrodes.has(currElectrode) ? '#2d004b' : 'none'}
+                        // strokeWidth={sourceElectrodes.has(currElectrode) ? 3 : 0}
                         />
                         <title>{`
                             Electrode : E${currElectrode}
@@ -246,8 +246,8 @@ const RegionWrapper = ({
                 y2={electrode_positions[target]?.y}
                 gradientUnits="userSpaceOnUse"
             >
-                <stop offset="0%" stopColor="#ffffcc" /> {/* Lighter color at the source */}
-                <stop offset="100%" stopColor="#bd0026" /> {/* Darker color at the target */}
+                <stop offset="0%" stopColor="#bd0026" /> {/* Darker color at the source */}
+                <stop offset="100%" stopColor="#ffffcc" /> {/* Lighter color at the target */}
             </linearGradient>
         );
     });

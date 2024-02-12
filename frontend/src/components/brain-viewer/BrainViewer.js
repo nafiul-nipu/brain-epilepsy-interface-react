@@ -6,7 +6,7 @@ import dataRegisty from '../../data/dataRegistry.json'
 import { BrainLesionLoad } from "./BrainLesionLoad";
 import { ElectrodeLoad } from "./ElectrodeLoad";
 import { Card, Slider } from "antd";
-import { CreateLineCurve } from "./CreateLineCurve";
+import { NetworkView } from "./NetworkView";
 
 const width = (window.innerWidth / 2) - 10;
 const height = window.innerHeight / 2.3 - 10
@@ -194,7 +194,7 @@ export const BrainViewer = ({
                                                 buttonValue={buttonValue}
                                                 sliderObj={sliderObj}
                                             />
-                                            <CreateLineCurve
+                                            <NetworkView
                                                 electrodeData={electrodeData}
                                                 networkData={allnetworks[`sample${index + 1}`]}
                                                 topPercent={topPercent}
@@ -278,7 +278,8 @@ export const BrainViewer = ({
                                                     buttonValue={buttonValue}
                                                     sliderObj={sliderObj}
                                                 />
-                                                <CreateLineCurve
+
+                                                <NetworkView
                                                     electrodeData={electrodeData}
                                                     networkData={allnetworks[item]}
                                                     topPercent={topPercent}
@@ -362,13 +363,15 @@ export const BrainViewer = ({
                                                         buttonValue={buttonValue}
                                                         sliderObj={sliderObj}
                                                     />
-                                                    <CreateLineCurve
+
+                                                    <NetworkView
                                                         electrodeData={electrodeData}
                                                         networkData={allnetworks[item]}
                                                         topPercent={topPercent}
                                                         bbox={dataRegisty[patientInformation.id].bbox}
                                                         selectedRoi={selectedRoi}
                                                     />
+
                                                     <OrbitControls enablePan={true} />
                                                 </View>
                                             ))

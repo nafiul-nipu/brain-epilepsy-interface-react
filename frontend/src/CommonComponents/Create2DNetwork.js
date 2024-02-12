@@ -346,9 +346,10 @@ const RegionWrapper = ({
                 opacity={0.2}
             // stroke="black"
             />
+            <g ref={node => d3.select(node).call(brush)}></g>
             {lines}
             {rows}
-            <g ref={node => d3.select(node).call(brush)}></g>
+            {/* <g ref={node => d3.select(node).call(brush)}></g> */}
         </g>
     );
 };

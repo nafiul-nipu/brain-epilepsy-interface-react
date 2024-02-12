@@ -159,8 +159,8 @@ const RegionWrapper = ({
                                     : show === 'communities' ? catColor[communityObj[electrodes[circleIndex]]]
                                         : show === 'regions' ? colorslist[regions.indexOf(regionLabels[circleIndex])]
                                             : `#1f77b4`}
-                                stroke={sourceElectrodes.has(electrodes[circleIndex]) ? '#2d004b' : 'none'}
-                                strokeWidth={sourceElectrodes.has(electrodes[circleIndex]) ? 3 : 0}
+                            // stroke={sourceElectrodes.has(electrodes[circleIndex]) ? '#2d004b' : 'none'}
+                            // strokeWidth={sourceElectrodes.has(electrodes[circleIndex]) ? 3 : 0}
                             />
                             <title>{`
                         Electrode : E${electrodes[circleIndex]}

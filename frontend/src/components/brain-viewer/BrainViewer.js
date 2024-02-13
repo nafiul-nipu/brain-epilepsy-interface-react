@@ -25,6 +25,7 @@ export const BrainViewer = ({
     visualPanel,
     topPercent,
     selectedRoi,
+    eegList
 }) => {
 
     // console.log(topPercent)
@@ -193,6 +194,7 @@ export const BrainViewer = ({
                                                 visualPanel={visualPanel}
                                                 buttonValue={buttonValue}
                                                 sliderObj={sliderObj}
+                                                eegList={eegList}
                                             />
                                             <NetworkView
                                                 electrodeData={electrodeData}
@@ -277,6 +279,7 @@ export const BrainViewer = ({
                                                     visualPanel={visualPanel}
                                                     buttonValue={buttonValue}
                                                     sliderObj={sliderObj}
+                                                    eegList={eegList}
                                                 />
 
                                                 <NetworkView
@@ -362,6 +365,7 @@ export const BrainViewer = ({
                                                         visualPanel={visualPanel}
                                                         buttonValue={buttonValue}
                                                         sliderObj={sliderObj}
+                                                        eegList={eegList}
                                                     />
 
                                                     <NetworkView
@@ -425,6 +429,7 @@ export const BrainViewer = ({
                                                 visualPanel={visualPanel}
                                                 buttonValue={buttonValue}
                                                 sliderObj={sliderObj}
+                                                eegList={eegList}
                                             />
                                             <OrbitControls enablePan={true} />
                                         </Hud>

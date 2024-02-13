@@ -118,6 +118,7 @@ function App() {
                   eegInBrain={eegInBrain}
                   topPercent={topPercent}
                   selectedRoi={selectedRoi}
+                  eegList={eegList}
                 />
               ) : null}
             </Col>

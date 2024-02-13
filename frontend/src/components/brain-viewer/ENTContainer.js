@@ -16,6 +16,7 @@ export const ENTContainer = ({
     eegInBrain,
     topPercent,
     selectedRoi,
+    eegList
 }) => {
     // console.log(community)
     // console.log(topPercent)
@@ -85,6 +86,7 @@ export const ENTContainer = ({
                             visualPanel={segment}
                             topPercent={topPercent}
                             selectedRoi={selectedRoi}
+                            eegList={eegList}
                         />
                     </Row>
                 </Col>

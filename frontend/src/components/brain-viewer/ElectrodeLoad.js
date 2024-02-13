@@ -32,6 +32,7 @@ export const ElectrodeLoad = ({
     visualPanel,
     buttonValue,
     sliderObj,
+    eegList
 }) => {
     const isMountedRef = useRef(false)
     const meshRef = useRef()
@@ -132,10 +133,17 @@ export const ElectrodeLoad = ({
 
         }
 
+        if (eegList !== null && eegList.length > 0) {
+            electrodeData.forEach((electrode, index) => {
+                if (eegList.includes(electrode['electrode_number'])) {
+                    meshRef.current.setColorAt(index, new Color(0x363636));
+                }
+            })
+        }
         meshRef.current.instanceMatrix.needsUpdate = true;
         meshRef.current.instanceColor.needsUpdate = true;
 
-    }, [allnetwork, buttonValue, eegInBrain, electrodeData, eventData, visualPanel, community])
+    }, [allnetwork, buttonValue, eegInBrain, electrodeData, eventData, visualPanel, community, eegList])
 
     useEffect(() => {
         if (!isMountedRef.current) return;

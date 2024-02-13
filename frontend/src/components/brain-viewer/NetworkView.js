@@ -20,8 +20,13 @@ export const NetworkView = ({
         // console.log(networkData)
         const electrodeLabels = {};
         electrodeData.forEach(electrode => {
-            electrodeLabels[electrode.electrode_number] = electrode.label;
+            if (typeof selectedRoi === 'string') {
+                electrodeLabels[electrode.electrode_number] = electrode.region;
+            } else {
+                electrodeLabels[electrode.electrode_number] = electrode.label;
+            }
         })
+        // console.log(typeof selectedRoi)
         // console.log(electrodeLabels)
         const edgeCounter = {}
         for (const connection of networkData) {

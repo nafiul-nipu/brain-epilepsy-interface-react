@@ -162,7 +162,7 @@ export const PatchSummary = ({
               const cx = 28 + 42 * (columnIndex + shift);
               const cy = 20 + 42 * rowIndex + roiLabelHeight;
 
-              const source_target_lineScale = d3.scaleLinear().domain([0, maxTargetRatio]).range([8, circleRadius]);
+              const source_target_lineScale = d3.scaleLinear().domain([0, maxTargetRatio]).range([0.3, 1]);
               const frequency_opacityScale = d3.scaleLinear().domain([0, maxOccurrence]).range([0.3, 1]);
               const electrodeFrequencyOpacity = frequency_opacityScale(electrodeValue);
 
@@ -175,7 +175,7 @@ export const PatchSummary = ({
               const frequencyEndPositionY = cy + circleRadius;
 
               // target and source(dynamtic arc) start, end, and Bézier curve keypoint
-              const dynamicLength = source_target_lineScale(propagationCounts.target_counts / (propagationCounts.target_counts + propagationCounts.source_counts))
+              const dynamicLength = circleRadius * source_target_lineScale(propagationCounts.target_counts / (propagationCounts.target_counts + propagationCounts.source_counts))
               
               // target and source arc Bézier curve keypoint
               const target_source_keyPositionX = cx + dynamicLength * Math.cos(45 * Math.PI / 180);
@@ -217,13 +217,13 @@ export const PatchSummary = ({
                               Q ${cx} ${cy} ${frequencyStartPositionX} ${frequencyStartPositionY} 
                               A ${circleRadius} ${circleRadius} 0 0 1 ${target_source_startPositionX} ${target_source_startPositionY}
                               Z`}
-                          fill="#762a83">
+                          fill="#8073ac">
                         </path>
                         <path d={`M ${target_source_startPositionX} ${target_source_startPositionY} 
                             A ${circleRadius} ${circleRadius} 0 1 1 ${target_source_endPositionX} ${target_source_endPositionY} 
                             Q ${target_source_keyPositionX} ${target_source_keyPositionY} ${target_source_startPositionX} ${target_source_startPositionY} 
                             Z`}
-                          fill="#fee090">
+                          fill="#fdb863">
                         </path>
                       </>
                     )}
@@ -233,7 +233,7 @@ export const PatchSummary = ({
                                 A ${circleRadius} ${circleRadius} 0 1 1 ${frequencyEndPositionX} ${frequencyEndPositionY} 
                                 Q ${cx} ${cy} ${frequencyStartPositionX} ${frequencyStartPositionY} 
                                 Z`}
-                        fill="#fee090"></path>
+                        fill="#fdb863"></path>
                     )}
                     {/* if only have source counts */}
                     {propagationCounts.source_counts && propagationCounts.target_counts === 0 && (
@@ -241,7 +241,7 @@ export const PatchSummary = ({
                                 A ${circleRadius} ${circleRadius} 0 1 1 ${frequencyEndPositionX} ${frequencyEndPositionY} 
                                 Q ${cx} ${cy} ${frequencyStartPositionX} ${frequencyStartPositionY} 
                                 Z`}
-                        fill="#762a83"></path>
+                        fill="#8073ac"></path>
                     )}
                     {/* if both counts both not exist */}
                     {propagationCounts.source_counts === 0 && propagationCounts.target_counts === 0 && (
@@ -251,12 +251,6 @@ export const PatchSummary = ({
                                 Z`}
                         fill="#C0C0C0"></path>
                     )}
-
-                    {/* <path d={`M ${target_source_startPositionX} ${target_source_startPositionY} 
-                            A ${circleRadius} ${circleRadius} 0 1 1 ${target_source_endPositionX} ${target_source_endPositionY} 
-                            Q ${target_source_keyPositionX} ${target_source_keyPositionY} ${target_source_startPositionX} ${target_source_startPositionY} 
-                            Z`}
-                      fill="#fee090"></path> */}
                   </g>
                 </g>
               );

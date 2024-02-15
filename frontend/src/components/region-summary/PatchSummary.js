@@ -90,8 +90,15 @@ export const PatchSummary = ({
     return maxVal;
   }
 
+  // max frequency number for each electrode
   const maxOccurrence = findMaxInObject(processedPatchData);
-  const circleRadius = d3.scaleSqrt().domain([0, maxOccurrence]).range([5, 15]);
+
+  // max ratio(target counts / total counts) for each electrode
+  const maxTargetRatio = Math.max(...samplePropagationData
+    .filter(item => item.source_counts !== 0 && item.target_counts !== 0)
+    .map(item => item.target_counts / (item.target_counts + item.source_counts)));
+
+  const circleRadius = 15;
 
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey].matrix;
@@ -139,34 +146,51 @@ export const PatchSummary = ({
               if (electrodeObj === null) {
                 return null;
               }
+
               const electrodeId = Object.keys(electrodeObj)[0];
               const electrodePropagation = samplePropagationData.find(
                 (e) => e.electrode_id == electrodeId
               );
+
               const propagationCounts = electrodePropagation
                 ? electrodePropagation
-                : { source_counts: 0, target_counts: 0 };
+                : { electrode_id: Number(electrodeId), source_counts: 0, target_counts: 0 };
 
               const electrodeValue = electrodeObj[electrodeId];
 
+              // adjust each electrode x and y position
               const cx = 28 + 42 * (columnIndex + shift);
               const cy = 20 + 42 * rowIndex + roiLabelHeight;
-              const sourceRatio = propagationCounts.source_counts + propagationCounts.target_counts === 0
-                  ? 0
-                  : propagationCounts.source_counts / (propagationCounts.source_counts + propagationCounts.target_counts);
-              const targetRatio = propagationCounts.source_counts + propagationCounts.target_counts === 0
-                  ? 0
-                  : propagationCounts.target_counts / (propagationCounts.source_counts + propagationCounts.target_counts);
 
-              const totalRadius = circleRadius(maxOccurrence) + 3;
-              const innerRadius = circleRadius(electrodeValue);
-              const strokeWidth = totalRadius - innerRadius;
-              const outerRadius = innerRadius + strokeWidth / 2;
+              const source_target_lineScale = d3.scaleLinear().domain([0, maxTargetRatio]).range([8, circleRadius]);
+              const frequency_opacityScale = d3.scaleLinear().domain([0, maxOccurrence]).range([0.3, 1]);
+              const electrodeFrequencyOpacity = frequency_opacityScale(electrodeValue);
+
+
+              // frequency arc(fixed arc) start and end position x and y
+              const frequencyAngle = 180;
+              const frequencyStartPositionX = cx + circleRadius * Math.cos(frequencyAngle * Math.PI / 180);
+              const frequencyStartPositionY = cy - circleRadius * Math.sin(frequencyAngle * Math.PI / 180);
+              const frequencyEndPositionX = cx;
+              const frequencyEndPositionY = cy + circleRadius;
+
+              // target and source(dynamtic arc) start, end, and Bézier curve keypoint
+              const dynamicLength = source_target_lineScale(propagationCounts.target_counts / (propagationCounts.target_counts + propagationCounts.source_counts))
+              
+              // target and source arc Bézier curve keypoint
+              const target_source_keyPositionX = cx + dynamicLength * Math.cos(45 * Math.PI / 180);
+              const target_source_keyPositionY = cy - dynamicLength * Math.sin(45 * Math.PI / 180);
+
+              const target_source_endPositionX = target_source_keyPositionX
+              const target_source_endPositionY = cy + Math.sqrt(Math.pow(circleRadius, 2) - Math.pow(dynamicLength * Math.cos(45 * Math.PI / 180), 2))
+
+              const target_source_startPositionX = cx - Math.sqrt(Math.pow(circleRadius, 2) - Math.pow(dynamicLength * Math.cos(45 * Math.PI / 180), 2))
+              const target_source_startPositionY = cy - dynamicLength * Math.sin(45 * Math.PI / 180);
+
 
               return (
                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
                   <g
-                    transform={`translate(${cx},${cy})`}
                     onMouseEnter={(e) =>
                       handleMouseEnter(
                         electrodeId,
@@ -177,52 +201,63 @@ export const PatchSummary = ({
                     }
                     onMouseLeave={handleMouseLeave}
                   >
-                    <circle
-                      r={outerRadius}
-                      fill="none"
-                      stroke={
-                        sourceRatio === 0 && targetRatio === 0
-                          ? "#D3D3D3"
-                          : "#762a83"
-                      }
-                      strokeWidth={strokeWidth}
-                    />
-                    {sourceRatio > 0 && (
-                      <circle
-                        r={outerRadius}
-                        fill="none"
-                        stroke="#fee090"
-                        strokeWidth={strokeWidth}
-                        strokeDasharray={`${sourceRatio.toFixed(2) * 3.14 * 2 * outerRadius} 100`}
-                        transform={`rotate(-90)`}
-                      />
+                    {/* frequency area */}
+                    <path d={`M ${frequencyStartPositionX} ${frequencyStartPositionY} 
+                              Q ${cx} ${cy} ${frequencyEndPositionX} ${frequencyEndPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${frequencyStartPositionX} ${frequencyStartPositionY} 
+                              Z`}
+                      fill={fillColor}
+                      opacity={electrodeFrequencyOpacity}></path>
+                    {/* source counts and target counts both exist */}
+                    {propagationCounts.source_counts && propagationCounts.target_counts && (
+                      <>
+                        <path d={`M ${target_source_startPositionX} ${target_source_startPositionY} 
+                              Q ${target_source_keyPositionX} ${target_source_keyPositionY} ${target_source_endPositionX} ${target_source_endPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${frequencyEndPositionX} ${frequencyEndPositionY} 
+                              Q ${cx} ${cy} ${frequencyStartPositionX} ${frequencyStartPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${target_source_startPositionX} ${target_source_startPositionY}
+                              Z`}
+                          fill="#762a83">
+                        </path>
+                        <path d={`M ${target_source_startPositionX} ${target_source_startPositionY} 
+                            A ${circleRadius} ${circleRadius} 0 1 1 ${target_source_endPositionX} ${target_source_endPositionY} 
+                            Q ${target_source_keyPositionX} ${target_source_keyPositionY} ${target_source_startPositionX} ${target_source_startPositionY} 
+                            Z`}
+                          fill="#fee090">
+                        </path>
+                      </>
                     )}
-                    {targetRatio > 0 && sourceRatio === 0 && (
-                      <circle
-                        r={outerRadius}
-                        fill="none"
-                        stroke="#762a83"
-                        strokeWidth={strokeWidth}
-                        strokeDasharray={`${targetRatio.toFixed(2) * 3.14 * 2 * outerRadius} 100`}
-                        transform={`rotate(-90)`}
-                      />
+                    {/* if only have target counts */}
+                    {propagationCounts.source_counts === 0 && propagationCounts.target_counts && (
+                      <path d={`M ${frequencyStartPositionX} ${frequencyStartPositionY}
+                                A ${circleRadius} ${circleRadius} 0 1 1 ${frequencyEndPositionX} ${frequencyEndPositionY} 
+                                Q ${cx} ${cy} ${frequencyStartPositionX} ${frequencyStartPositionY} 
+                                Z`}
+                        fill="#fee090"></path>
                     )}
+                    {/* if only have source counts */}
+                    {propagationCounts.source_counts && propagationCounts.target_counts === 0 && (
+                      <path d={`M ${frequencyStartPositionX} ${frequencyStartPositionY}
+                                A ${circleRadius} ${circleRadius} 0 1 1 ${frequencyEndPositionX} ${frequencyEndPositionY} 
+                                Q ${cx} ${cy} ${frequencyStartPositionX} ${frequencyStartPositionY} 
+                                Z`}
+                        fill="#762a83"></path>
+                    )}
+                    {/* if both counts both not exist */}
+                    {propagationCounts.source_counts === 0 && propagationCounts.target_counts === 0 && (
+                      <path d={`M ${frequencyStartPositionX} ${frequencyStartPositionY}
+                                A ${circleRadius} ${circleRadius} 0 1 1 ${frequencyEndPositionX} ${frequencyEndPositionY} 
+                                Q ${cx} ${cy} ${frequencyStartPositionX} ${frequencyStartPositionY} 
+                                Z`}
+                        fill="#C0C0C0"></path>
+                    )}
+
+                    {/* <path d={`M ${target_source_startPositionX} ${target_source_startPositionY} 
+                            A ${circleRadius} ${circleRadius} 0 1 1 ${target_source_endPositionX} ${target_source_endPositionY} 
+                            Q ${target_source_keyPositionX} ${target_source_keyPositionY} ${target_source_startPositionX} ${target_source_startPositionY} 
+                            Z`}
+                      fill="#fee090"></path> */}
                   </g>
-                  <circle
-                    cx={cx}
-                    cy={cy}
-                    r={innerRadius}
-                    fill={fillColor}
-                    onMouseEnter={(e) =>
-                      handleMouseEnter(
-                        electrodeId,
-                        electrodeValue,
-                        propagationCounts,
-                        e
-                      )
-                    }
-                    onMouseLeave={handleMouseLeave}
-                  />
                 </g>
               );
             });
@@ -232,46 +267,46 @@ export const PatchSummary = ({
     );
   });
 
-  const customTicks = [0, maxOccurrence];
-  const tickList = circleRadius.ticks().concat(customTicks);
-  const ticks = [tickList[0], tickList[tickList.length - 1]];
-  const maxValue = ticks[ticks.length - 1];
-  const dimension = circleRadius(maxValue) * 2;
-  const DASH_WIDTH = 50;
+  // const customTicks = [0, maxOccurrence];
+  // const tickList = circleRadius.ticks().concat(customTicks);
+  // const ticks = [tickList[0], tickList[tickList.length - 1]];
+  // const maxValue = ticks[ticks.length - 1];
+  // const dimension = circleRadius(maxValue) * 2;
+  // const DASH_WIDTH = 50;
 
-  const circleLegend = ticks.map((tick, i) => {
-    const xCenter = dimension;
-    const yCircleTop = dimension - 2 * circleRadius(tick);
-    const yCircleCenter = dimension - circleRadius(tick);
+  // const circleLegend = ticks.map((tick, i) => {
+  //   const xCenter = dimension;
+  //   const yCircleTop = dimension - 2 * circleRadius(tick);
+  //   const yCircleCenter = dimension - circleRadius(tick);
 
-    return (
-      <g key={i}>
-        <circle
-          cx={xCenter}
-          cy={yCircleCenter}
-          r={circleRadius(tick)}
-          fill="none"
-          stroke="black"
-        />
-        <line
-          x1={xCenter}
-          x2={xCenter + DASH_WIDTH}
-          y1={yCircleTop}
-          y2={yCircleTop}
-          stroke="black"
-          strokeDasharray={"2,2"}
-        />
-        <text
-          x={xCenter + DASH_WIDTH + 4}
-          y={yCircleTop}
-          fontSize={10}
-          alignmentBaseline="middle"
-        >
-          {tick}
-        </text>
-      </g>
-    );
-  });
+  //   return (
+  //     <g key={i}>
+  //       <circle
+  //         cx={xCenter}
+  //         cy={yCircleCenter}
+  //         r={circleRadius(tick)}
+  //         fill="none"
+  //         stroke="black"
+  //       />
+  //       <line
+  //         x1={xCenter}
+  //         x2={xCenter + DASH_WIDTH}
+  //         y1={yCircleTop}
+  //         y2={yCircleTop}
+  //         stroke="black"
+  //         strokeDasharray={"2,2"}
+  //       />
+  //       <text
+  //         x={xCenter + DASH_WIDTH + 4}
+  //         y={yCircleTop}
+  //         fontSize={10}
+  //         alignmentBaseline="middle"
+  //       >
+  //         {tick}
+  //       </text>
+  //     </g>
+  //   );
+  // });
 
   return (
     <Col
@@ -283,7 +318,7 @@ export const PatchSummary = ({
         <Col md="12" style={{ height: "4vh" }}>
           <Row style={{ height: "100%", margin: 0 }}>
             <Col className="summary">Patch Summary</Col>
-            <Col className="summary">
+            {/* <Col className="summary">
               <svg width="100%" height="100%" overflow="visible">
                 <text
                   x={dimension - 80}
@@ -327,12 +362,18 @@ export const PatchSummary = ({
                   </text>
                 </g>
               </svg>
-            </Col>
+            </Col> */}
           </Row>
         </Col>
       </Row>
       <Row
-        style={{ height: "92%", overflowY: "auto", width: "100%", margin: 0, alignContent: "flex-start"}}
+        style={{
+          height: "92%",
+          overflowY: "auto",
+          width: "100%",
+          margin: 0,
+          alignContent: "flex-start",
+        }}
       >
         <>{rows}</>
         {tooltip.visible && (

@@ -93,10 +93,13 @@ export const PatchSummary = ({
   // max frequency number for each electrode
   const maxOccurrence = findMaxInObject(processedPatchData);
 
-  // max ratio(target counts / total counts) for each electrode
-  const maxTargetRatio = Math.max(...samplePropagationData
+  const ratios = samplePropagationData
     .filter(item => item.source_counts !== 0 && item.target_counts !== 0)
-    .map(item => item.target_counts / (item.target_counts + item.source_counts)));
+    .map(item => item.target_counts / item.source_counts);
+
+  // max and min ratio(target counts / source counts) for each electrode
+  const minTargetRatio = Math.min(...ratios);
+  const maxTargetRatio = Math.max(...ratios);
 
   const circleRadius = 15;
 
@@ -162,10 +165,9 @@ export const PatchSummary = ({
               const cx = 28 + 42 * (columnIndex + shift);
               const cy = 20 + 42 * rowIndex + roiLabelHeight;
 
-              const source_target_lineScale = d3.scaleLinear().domain([0, maxTargetRatio]).range([0.3, 1]);
+              const source_target_lineScale = d3.scaleLog().domain([minTargetRatio, maxTargetRatio]).range([0.7, 1.4]);
               const frequency_opacityScale = d3.scaleLinear().domain([0, maxOccurrence]).range([0.3, 1]);
               const electrodeFrequencyOpacity = frequency_opacityScale(electrodeValue);
-
 
               // frequency arc(fixed arc) start and end position x and y
               const frequencyAngle = 180;
@@ -175,18 +177,17 @@ export const PatchSummary = ({
               const frequencyEndPositionY = cy + circleRadius;
 
               // target and source(dynamtic arc) start, end, and Bézier curve keypoint
-              const dynamicLength = circleRadius * source_target_lineScale(propagationCounts.target_counts / (propagationCounts.target_counts + propagationCounts.source_counts))
-              
+              const dynamicLength = circleRadius * source_target_lineScale(propagationCounts.target_counts / propagationCounts.source_counts)
+
               // target and source arc Bézier curve keypoint
-              const target_source_keyPositionX = cx + dynamicLength * Math.cos(45 * Math.PI / 180);
-              const target_source_keyPositionY = cy - dynamicLength * Math.sin(45 * Math.PI / 180);
+              const target_source_keyPositionX = (cx + Math.round(dynamicLength * Math.cos(45 * Math.PI / 180)))
+              const target_source_keyPositionY = (cy - Math.round(dynamicLength * Math.sin(45 * Math.PI / 180)))
 
               const target_source_endPositionX = target_source_keyPositionX
-              const target_source_endPositionY = cy + Math.sqrt(Math.pow(circleRadius, 2) - Math.pow(dynamicLength * Math.cos(45 * Math.PI / 180), 2))
+              const target_source_endPositionY = cy + Math.sqrt(Math.pow(circleRadius, 2) - Math.pow(Math.round(dynamicLength * Math.cos(45 * Math.PI / 180)), 2))
 
-              const target_source_startPositionX = cx - Math.sqrt(Math.pow(circleRadius, 2) - Math.pow(dynamicLength * Math.cos(45 * Math.PI / 180), 2))
-              const target_source_startPositionY = cy - dynamicLength * Math.sin(45 * Math.PI / 180);
-
+              const target_source_startPositionX = cx - Math.round(Math.sqrt(Math.pow(circleRadius, 2) - Math.pow(Math.round(dynamicLength * Math.cos(45 * Math.PI / 180)), 2)))
+              const target_source_startPositionY = cy - Math.round(dynamicLength * Math.sin(45 * Math.PI / 180));
 
               return (
                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
@@ -219,12 +220,20 @@ export const PatchSummary = ({
                               Z`}
                           fill="#8073ac">
                         </path>
-                        <path d={`M ${target_source_startPositionX} ${target_source_startPositionY} 
-                            A ${circleRadius} ${circleRadius} 0 1 1 ${target_source_endPositionX} ${target_source_endPositionY} 
-                            Q ${target_source_keyPositionX} ${target_source_keyPositionY} ${target_source_startPositionX} ${target_source_startPositionY} 
-                            Z`}
-                          fill="#fdb863">
-                        </path>
+                        {dynamicLength >= circleRadius ? (
+                          <path d={`M ${target_source_startPositionX} ${target_source_startPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${target_source_endPositionX} ${target_source_endPositionY} 
+                              Q ${target_source_keyPositionX} ${target_source_keyPositionY} ${target_source_startPositionX} ${target_source_startPositionY} 
+                              Z`}
+                            fill="#fdb863">
+                          </path>
+                        ) : 
+                          <path d={`M ${target_source_startPositionX} ${target_source_startPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 1 1 ${target_source_endPositionX} ${target_source_endPositionY} 
+                              Q ${target_source_keyPositionX} ${target_source_keyPositionY} ${target_source_startPositionX} ${target_source_startPositionY} 
+                              Z`}
+                            fill="#fdb863">
+                        </path>}
                       </>
                     )}
                     {/* if only have target counts */}

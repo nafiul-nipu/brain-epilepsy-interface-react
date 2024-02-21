@@ -256,7 +256,7 @@ const RegionWrapper = ({
     for (const edge of topEdges) {
         const source = parseInt(edge[0].split('_')[0]);
         const target = parseInt(edge[0].split('_')[1]);
-        // test gradient color
+        // gradient color
         const gradientId = `url(#gradient-${sample}-${source}-${target})`;
         if (electrodes.includes(source) && electrodes.includes(target)) {
             // console.log(source, target)

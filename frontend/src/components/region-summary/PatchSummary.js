@@ -1,3 +1,4 @@
+import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
@@ -24,9 +25,16 @@ export const PatchSummary = ({
     "hsl(161, 48%, 70%)",
     "hsl(333, 100%, 79%)",
   ];
-  
-  const svgRef = useRef(null);
-  const gRef = useRef(null);
+  // frequency area opacity list
+  const legendOpacity = [0.3, 0.5, 0.7, 1];
+
+  // circle legend svg and g ref
+  const circleSvgRef = useRef(null);
+  const circleGRef = useRef(null);
+
+  // frequency legend svg and g ref
+  const frequencySvgRef = useRef(null);
+  const frequencyGRef = useRef(null);
 
   const [tooltip, setTooltip] = useState({
     visible: false,
@@ -37,30 +45,56 @@ export const PatchSummary = ({
 
   // dynamic move circle legend in the center of svg vertically
   useEffect(() => {
-    const observer = new ResizeObserver(() => {
-      if (svgRef.current && gRef.current) {
-        const svgBox = svgRef.current.getBoundingClientRect();
-        const gBox = gRef.current.getBBox();
-  
+    // circle legend observer
+    const circleObserver = new ResizeObserver(() => {
+      if (circleSvgRef.current && circleGRef.current) {
+        const svgBox = circleSvgRef.current.getBoundingClientRect();
+        const gBox = circleGRef.current.getBBox();
+        
+        // circle legend align end of the svg
         const svgRightX = svgBox.width;
         const svgCenterY = svgBox.height / 2;
         const gRightX = gBox.x + gBox.width;
         const gCenterY = gBox.y + gBox.height / 2;
-  
+
         const shiftX = svgRightX - gRightX;
         const shiftY = svgCenterY - gCenterY;
-  
-        gRef.current.setAttribute('transform', `translate(${shiftX}, ${shiftY})`);
+
+        circleGRef.current.setAttribute('transform', `translate(${shiftX}, ${shiftY})`);
       }
     });
-  
-    if (svgRef.current) {
-      observer.observe(svgRef.current);
+
+    // frequency legend observer
+    const frequencyObserver = new ResizeObserver(() => {
+      if (frequencySvgRef.current && frequencyGRef.current) {
+        const svgBox = frequencySvgRef.current.getBoundingClientRect();
+        const gBox = frequencyGRef.current.getBBox();
+
+        // frequency legend align center
+        const svgCenterX = svgBox.width / 2;
+        const svgCenterY = svgBox.height / 2;
+        const gCenterX = gBox.x + gBox.width / 2;
+        const gCenterY = gBox.y + gBox.height / 2;
+
+        const shiftX = svgCenterX - gCenterX;
+        const shiftY = svgCenterY - gCenterY;
+
+        frequencyGRef.current.setAttribute('transform', `translate(${shiftX}, ${shiftY})`);
+      }
+    });
+
+    if (circleSvgRef.current) {
+      circleObserver.observe(circleSvgRef.current);
     }
-  
-    return () => observer.disconnect();
+    if (frequencySvgRef.current) {
+      frequencyObserver.observe(frequencySvgRef.current);
+    }
+
+    return () => {
+      circleObserver.disconnect();
+      frequencyObserver.disconnect();
+    }
   }, []);
-  
 
   // tooltip controller
   const handleMouseEnter = (
@@ -312,7 +346,7 @@ export const PatchSummary = ({
       </Col>
     );
   });
-  
+
   // legend area setting
   const xCenter = 0;
   const yCenter = 0;
@@ -324,7 +358,7 @@ export const PatchSummary = ({
   const legendMinPoints = CircularCurve(xCenter, yCenter, circleRadius, min_legendDynamicLength);
 
   const circleLegend = (
-    <g ref={gRef}>
+    <g ref={circleGRef}>
       {/* legend frequency area */}
       <path d={`M ${legendMaxPoints.frequencyStartPositionX} ${legendMaxPoints.frequencyStartPositionY} 
                 Q ${xCenter} ${yCenter} ${legendMaxPoints.frequencyEndPositionX} ${legendMaxPoints.frequencyEndPositionY} 
@@ -357,7 +391,7 @@ export const PatchSummary = ({
                 A ${circleRadius} ${circleRadius} 0 0 1 ${legendMaxPoints.target_source_startPositionX} ${legendMaxPoints.target_source_startPositionY}
                 Z`}
         stroke="black"
-        strokeWidth={0.5}        
+        strokeWidth={0.5}
         fill="#8073ac">
       </path>
 
@@ -379,7 +413,7 @@ export const PatchSummary = ({
         stroke="black"
         strokeWidth={1}
         strokeDasharray={"1,1"}
-      />  
+      />
 
       {/* target area line */}
       <line
@@ -423,7 +457,7 @@ export const PatchSummary = ({
         stroke="black"
         strokeWidth={1}
         strokeDasharray={"1,1"}
-      />  
+      />
 
       {/* frequency area text */}
       <text
@@ -477,6 +511,30 @@ export const PatchSummary = ({
     </g>
   )
 
+  // frequency legend area setting
+  const frequencyLegend = (
+    <g ref={frequencyGRef}>
+      {legendOpacity.map((item, index) => {
+        let frequencyLegendXPosition = xCenter + index * 25;
+        let frequencyLegendItemPoints = CircularCurve(frequencyLegendXPosition, yCenter, circleRadius, circleRadius * source_target_lineScale(maxTargetRatio));
+        return (
+          <React.Fragment key={index}>
+            <path d={`M ${frequencyLegendItemPoints.frequencyStartPositionX} ${frequencyLegendItemPoints.frequencyStartPositionY} 
+                    Q ${frequencyLegendXPosition} ${yCenter} ${frequencyLegendItemPoints.frequencyEndPositionX} ${frequencyLegendItemPoints.frequencyEndPositionY} 
+                    A ${circleRadius} ${circleRadius} 0 0 1 ${frequencyLegendItemPoints.frequencyStartPositionX} ${frequencyLegendItemPoints.frequencyStartPositionY} 
+                    Z`}
+              key={index}
+              fill={electrodeColorList[0]}
+              opacity={item}
+            >
+            </path>
+            <text className="frequencyLegendText" x={(frequencyLegendItemPoints.frequencyStartPositionX + frequencyLegendItemPoints.frequencyEndPositionX) / 2 - 8} y={yCenter + circleRadius + 12}>{Math.round(maxOccurrence * item)}</text>
+          </React.Fragment>
+        )
+      })}
+    </g>
+  )
+
   return (
     <Col
       md="12"
@@ -486,9 +544,14 @@ export const PatchSummary = ({
       <Row>
         <Col md="12" style={{ height: "5vh" }}>
           <Row style={{ height: "100%", margin: 0, display: 'flex' }}>
-            <Col className="summary">Patch Summary</Col>
-            <Col className="summary">
-              <svg ref={svgRef} width="100%" height="100%" overflow="visible">
+            <Col md="7" className="summary">Patch Summary</Col>
+            <Col md="1" className="summary">
+              <svg ref={frequencySvgRef} width="100%" height="100%" overflow="visible">
+                {frequencyLegend}
+              </svg>
+            </Col>
+            <Col md="4" className="summary">
+              <svg ref={circleSvgRef} width="100%" height="100%" overflow="visible">
                 {circleLegend}
               </svg>
             </Col>

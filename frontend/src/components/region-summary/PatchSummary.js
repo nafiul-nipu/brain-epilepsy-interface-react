@@ -71,12 +71,12 @@ export const PatchSummary = ({
         const gBox = frequencyGRef.current.getBBox();
 
         // frequency legend align center
-        const svgCenterX = svgBox.width / 2;
+        const svgRightX = svgBox.width;
         const svgCenterY = svgBox.height / 2;
-        const gCenterX = gBox.x + gBox.width / 2;
+        const gRightX = gBox.x + gBox.width;
         const gCenterY = gBox.y + gBox.height / 2;
 
-        const shiftX = svgCenterX - gCenterX;
+        const shiftX = svgRightX - gRightX;
         const shiftY = svgCenterY - gCenterY;
 
         frequencyGRef.current.setAttribute('transform', `translate(${shiftX}, ${shiftY})`);
@@ -544,14 +544,12 @@ export const PatchSummary = ({
       <Row>
         <Col md="12" style={{ height: "5vh" }}>
           <Row style={{ height: "100%", margin: 0, display: 'flex' }}>
-            <Col md="7" className="summary">Patch Summary</Col>
-            <Col md="1" className="summary">
-              <svg ref={frequencySvgRef} width="100%" height="100%" overflow="visible">
+            <Col md="3" className="summary">Patch Summary</Col>
+            <Col md="9" className="summary">
+              <svg ref={frequencySvgRef} width="50%" height="100%" overflow="visible">
                 {frequencyLegend}
               </svg>
-            </Col>
-            <Col md="4" className="summary">
-              <svg ref={circleSvgRef} width="100%" height="100%" overflow="visible">
+              <svg ref={circleSvgRef} width="50%" height="100%" overflow="visible">
                 {circleLegend}
               </svg>
             </Col>

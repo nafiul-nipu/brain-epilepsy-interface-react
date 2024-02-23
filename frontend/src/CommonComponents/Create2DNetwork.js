@@ -131,7 +131,7 @@ const RegionWrapper = ({
 
     const lineWidth = d3.scaleLinear()
         .domain([topEdges[0][1], topEdges[topEdges.length - 1][1]])
-        .range([0.25, 3.5])
+        .range([1, 5])
 
     if (patchOrder === null) {
         const circlesPerRow = 8;
@@ -330,7 +330,7 @@ const RegionWrapper = ({
         <g>
             <defs>
                 {gradients}
-                <marker id={`arrow-${networkType}`} viewBox="0 0 12 12" refX="5" refY="6" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <marker id={`arrow-${networkType}`} viewBox="0 0 12 12" refX="5" refY="6" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
                     <path d="M2,2 L10,6 L2,10 L6,6 L2,2" fill="black" />
                 </marker>
             </defs>

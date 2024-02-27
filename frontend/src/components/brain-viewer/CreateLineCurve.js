@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react"
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
+import * as THREE from 'three';
 import * as d3 from 'd3'
 import * as ss from 'simple-statistics'
 
@@ -46,7 +47,7 @@ export const CreateLineCurve = ({
         // console.log(edgeCounter)
 
         const sortedEdges = Object.entries(edgeCounter)
-            .filter(([key, value]) => value > 1) // Filter values not greater than 1
+            .filter(([key, value]) => value > 1) // Filter values greater than 1
             .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
 
         // console.log(sortedEdges)
@@ -139,19 +140,58 @@ export const CreateLineCurve = ({
             lines.remove(linesSegmentRef.current);
         }
 
-        // Create line segments
-        const material = new MeshBasicMaterial({
-            color: 0xFF0000,
+        // Function to create a custom arrow
+        function createColoredArrowHelper(direction, origin, length, shaftColor, headColor) {
+            // Create an arrow helper with a default color
+            const arrowHelper = new THREE.ArrowHelper(direction, origin, length, 0xffffff);
+            
+            // Change the shaft (line) color
+            arrowHelper.line.material.color.set(shaftColor);
+            arrowHelper.line.material.needsUpdate = true;
+            
+            // Change the head (cone) color
+            arrowHelper.cone.material.color.set(headColor);
+            arrowHelper.cone.material.needsUpdate = true;
+            
+            return arrowHelper;
+        }
 
+        const arrows = [];
+        for (let i = 0; i < edges; i++) {
+            const sourceIndex = i * 6;
+            const targetIndex = sourceIndex + 3;
+
+            const dir = new THREE.Vector3(
+                positions[targetIndex] - positions[sourceIndex],
+                positions[targetIndex + 1] - positions[sourceIndex + 1], 
+                positions[targetIndex + 2] - positions[sourceIndex + 2]
+            ).normalize();
+
+            const origin = new THREE.Vector3(
+                positions[sourceIndex] + bbox.x, 
+                positions[sourceIndex + 1] + bbox.y, 
+                positions[sourceIndex + 2] + bbox.z
+            );
+
+            const length = Math.sqrt(
+                Math.pow(positions[targetIndex] - positions[sourceIndex], 2) +
+                Math.pow(positions[targetIndex + 1] - positions[sourceIndex + 1], 2) +
+                Math.pow(positions[targetIndex + 2] - positions[sourceIndex + 2], 2)
+            );
+
+            // Specify colors for the shaft and head
+            const shaftColor = 0xff0000;
+            const headColor = 0x000000;
+
+            const arrowHelper = createColoredArrowHelper(dir, origin, length, shaftColor, headColor);
+            arrows.push(arrowHelper);
+        }
+
+        // Add arrows
+        arrows.forEach(arrow => {
+            lines.add(arrow);
         });
-        const linesSegments = new LineSegments(geometry, material);
-        // linesSegments.frustumCulled = true;
-        linesSegments.position.set(bbox.x, bbox.y, bbox.z);
-
-
-        // Add line segments to the scene
-        lines.add(linesSegments);
-        linesSegmentRef.current = linesSegments;
+        linesSegmentRef.current = arrows;
 
         console.log("lines created")
 

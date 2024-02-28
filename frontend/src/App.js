@@ -158,7 +158,6 @@ function App() {
                 <Tab>Patch Network</Tab>
                 <Tab>Region Network</Tab>
                 <Tab>All Networks</Tab>
-                {/* <Tab></Tab> */}
               </TabList>
               <TabPanels>
                 <TabPanel style={{ padding: '0px' }}>
@@ -252,7 +251,7 @@ function App() {
                     ) : null}
                   </Col>
                 </TabPanel>
-                <TabPanel style={{ padding: '0px', marginRight: "5px" }}>
+                <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
                   {allEventData && patchData && samplePropagationData ? (
                     <PatchSummary
                       patchData={patchData}
@@ -264,7 +263,7 @@ function App() {
                     />
                   ) : null}
                 </TabPanel>
-                <TabPanel style={{ padding: '0px', marginRight: "5px" }}>
+                <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
                   {allEventData && patchData && samplePropagationData && regionData ? (
                     <PatchSummary
                       patchData={regionData}

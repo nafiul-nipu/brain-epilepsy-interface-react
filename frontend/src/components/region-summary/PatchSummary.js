@@ -50,7 +50,7 @@ export const PatchSummary = ({
       if (circleSvgRef.current && circleGRef.current) {
         const svgBox = circleSvgRef.current.getBoundingClientRect();
         const gBox = circleGRef.current.getBBox();
-        
+
         // circle legend align end of the svg
         const svgRightX = svgBox.width;
         const svgCenterY = svgBox.height / 2;
@@ -206,8 +206,7 @@ export const PatchSummary = ({
     const svgWidth = columnsPerRow * 45;
     const svgHeight = numRowsInSVG * 45 + roiLabelHeight;
 
-    const colorIndex = roiIndex % electrodeColorList.length;
-    const fillColor = electrodeColorList[colorIndex];
+    const fillColor = electrodeColorList[roiIndex];
     return (
       <Col
         md="4"
@@ -219,6 +218,7 @@ export const PatchSummary = ({
             selectedRoi === Number(roiKey)
               ? "rgba(202, 204, 202, 0.4)"
               : "white",
+          border: `3px solid ${electrodeColorList[roiIndex]}`,
         }}
         onClick={() => patchOnClick(roiKey)}
       >

@@ -5,7 +5,7 @@ import { Suspense, useRef, useState } from "react";
 import dataRegisty from '../../data/dataRegistry.json'
 import { BrainLesionLoad } from "./BrainLesionLoad";
 import { ElectrodeLoad } from "./ElectrodeLoad";
-import { Card, Slider } from "antd";
+import { Card, Slider, Button } from "antd";
 import { CreateLineCurve } from "./CreateLineCurve";
 
 const width = (window.innerWidth / 2) - 10;
@@ -35,6 +35,9 @@ export const BrainViewer = ({
     const [leftBrainOpacity, setLeftBrainOpacity] = useState(1);
     const [rightBrainOpacity, setRightBrainOpacity] = useState(1);
     const containerRef = useRef();
+    const electrodeOrbitControlsRef = useRef(null);
+    const brainOrbitControlsRef = useRef(null);
+    const orbitControlsRefs = useRef([]);
     const views = [useRef(), useRef(), useRef()];
     // console.log(sampleData)
 
@@ -46,6 +49,45 @@ export const BrainViewer = ({
     const changeRightBrainOpacity = (value) => {
         setRightBrainOpacity(value);
     };
+
+    // reset orbit controls for brain and electrode when visual panel is patches or frequency
+    const brainandElectrodeResetOrbitControls = () => {
+        if (electrodeOrbitControlsRef.current && brainOrbitControlsRef.current) {
+            electrodeOrbitControlsRef.current.reset();
+            brainOrbitControlsRef.current.reset();
+        }
+    };
+
+    // reset orbit controls for all views when visual panel is community, patch-com-net, or region-com-net
+    const resetAllOrbitControls = () => {
+        orbitControlsRefs.current.forEach(controlsRef => {
+            // if (controlsRef) {
+                // const camera = controlsRef.object;
+                // // Reset camera position, up vector, etc., as needed
+                // camera.position.set(-250, -10, 0);
+                // camera.up.set(0, 0, 1);
+                // controlsRef.update();
+                console.log(controlsRef, '7789789789')
+                controlsRef.reset();
+            // }
+        });
+    };
+
+    const attachRef = (index, ref) => {
+        orbitControlsRefs.current[index] = ref;
+        console.log(orbitControlsRefs, '???????')
+    };
+
+
+    const reset = () => {
+        console.log(visualPanel, 'whyhwyhywhyw')
+        if(visualPanel !== 'Community' && visualPanel !== 'Patch-Com-Net' && visualPanel !== 'Region-Com-Net'){
+            brainandElectrodeResetOrbitControls();
+        } else {
+            console.log(123123)
+            resetAllOrbitControls();
+        }
+    }
 
     const Lighting = () => {
         return (
@@ -121,6 +163,7 @@ export const BrainViewer = ({
                         />
                     </Card>
                     {/* <Button onClick={handleButtonClick} style={{marginTop: 20, marginBottom: 20}}>Update Projection</Button> */}
+                    <Button onClick={reset}>Reset Brain</Button>
                 </Card>
             </Col>
             <Col md='8' style={{ height: height, width: width }}>
@@ -201,7 +244,7 @@ export const BrainViewer = ({
                                                 bbox={dataRegisty[patientInformation.id].bbox}
                                                 selectedRoi={selectedRoi}
                                             />
-                                            <OrbitControls enablePan={true} />
+                                            <OrbitControls ref={ref => attachRef(index, ref)} enablePan={true} />
                                         </View>
                                     ))
                                 }
@@ -285,7 +328,7 @@ export const BrainViewer = ({
                                                     bbox={dataRegisty[patientInformation.id].bbox}
                                                     selectedRoi={selectedRoi}
                                                 />
-                                                <OrbitControls enablePan={true} />
+                                                <OrbitControls ref={ref => attachRef(index, ref)} enablePan={true} />
                                             </View>
                                         ))
                                     }
@@ -369,7 +412,7 @@ export const BrainViewer = ({
                                                         bbox={dataRegisty[patientInformation.id].bbox}
                                                         selectedRoi={selectedRoi}
                                                     />
-                                                    <OrbitControls enablePan={true} />
+                                                    <OrbitControls ref={ref => attachRef(index, ref)} enablePan={true} />
                                                 </View>
                                             ))
                                         }
@@ -397,7 +440,7 @@ export const BrainViewer = ({
                                                 leftBrainOpacity={leftBrainOpacity}
                                                 rightBrainOpacity={rightBrainOpacity}
                                             />
-                                            <OrbitControls enablePan={true} />
+                                            <OrbitControls ref={brainOrbitControlsRef} enablePan={true} />
                                         </Hud>
                                         <Hud renderPriority={2}>
                                             <PerspectiveCamera
@@ -423,7 +466,7 @@ export const BrainViewer = ({
                                                 buttonValue={buttonValue}
                                                 sliderObj={sliderObj}
                                             />
-                                            <OrbitControls enablePan={true} />
+                                            <OrbitControls ref={electrodeOrbitControlsRef} enablePan={true} />
                                         </Hud>
                                     </Suspense>
                                     <Stats />

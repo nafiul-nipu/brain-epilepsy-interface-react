@@ -11,7 +11,7 @@ export const useAllEventData = ({
         // console.log('before', patientID, sample)
         if (patientID) {
             // console.log('after', patientID, sample)
-            const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/master/frontend/src/data/electrodes/${patientID}/${patientID}_all_events.json`;
+            const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/convert-to-siyuan-interface/frontend/src/data/electrodes/${patientID}/${patientID}_all_events.json`;
 
             json(url).then(jData => {
                 // console.log(jData)

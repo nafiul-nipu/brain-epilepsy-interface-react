@@ -13,7 +13,7 @@ export const useSamples = ({
         // console.log('useSample', patientID, sampleName, range)
         if (patientID && sampleName && range) {
             // console.log("inside", patientID, sampleName, range)
-            const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/seizurePropagationPrototype/src/data/electrodes/${patientID}/${sampleName}/${sampleName}_${range}.json`
+            const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/convert-to-siyuan-interface/src/data/electrodes/${patientID}/${sampleName}/${sampleName}_${range}.json`
             // console.log(url)
             json(url).then(jdata => {
                 // console.log(jdata)

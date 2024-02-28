@@ -195,11 +195,13 @@
   position: absolute;
   left: 46%;
   bottom: 37%;
+  display: flex;
+  align-items: center;
 }
 #viewPatch{
   position: absolute;
   left: 30%;
-  bottom: 36.5%;
+  bottom: 37%;
   display: flex;
   align-items: center;
 }

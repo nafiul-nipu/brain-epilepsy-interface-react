@@ -61,30 +61,20 @@ export const BrainViewer = ({
     // reset orbit controls for all views when visual panel is community, patch-com-net, or region-com-net
     const resetAllOrbitControls = () => {
         orbitControlsRefs.current.forEach(controlsRef => {
-            // if (controlsRef) {
-                // const camera = controlsRef.object;
-                // // Reset camera position, up vector, etc., as needed
-                // camera.position.set(-250, -10, 0);
-                // camera.up.set(0, 0, 1);
-                // controlsRef.update();
-                console.log(controlsRef, '7789789789')
-                controlsRef.reset();
-            // }
+            controlsRef.reset();
         });
     };
 
+    // add orbitcontrol ref to the orbitControlsRefs
     const attachRef = (index, ref) => {
         orbitControlsRefs.current[index] = ref;
-        console.log(orbitControlsRefs, '???????')
     };
 
-
+    // reset orbit controls for all views
     const reset = () => {
-        console.log(visualPanel, 'whyhwyhywhyw')
-        if(visualPanel !== 'Community' && visualPanel !== 'Patch-Com-Net' && visualPanel !== 'Region-Com-Net'){
+        if (visualPanel !== 'Community' && visualPanel !== 'Patch-Com-Net' && visualPanel !== 'Region-Com-Net') {
             brainandElectrodeResetOrbitControls();
         } else {
-            console.log(123123)
             resetAllOrbitControls();
         }
     }

@@ -17,7 +17,6 @@ import { ENTContainer } from "./components/brain-viewer/ENTContainer";
 import { useAllEventData } from "./library/useAllEventData";
 import { usePatchData } from "./library/usePatchData";
 import { useSamplePropagation } from "./library/useSamplePropagation"
-import dataRegistry from "./data/dataRegistry.json";
 import { RegionSummary } from "./components/region-summary/RegionSummary";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
 import { PatchSummary } from "./components/region-summary/PatchSummary";
@@ -260,7 +259,6 @@ function App() {
                       eventData={allEventData[patientInfo.sample]}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
-                      roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
                     />
                   ) : null}
                 </TabPanel>
@@ -272,7 +270,6 @@ function App() {
                       eventData={allEventData[patientInfo.sample]}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
-                      roiCount={dataRegistry[patientInfo.id][patientInfo.sample].roiCount}
                     />
                   ) : null}
                 </TabPanel>

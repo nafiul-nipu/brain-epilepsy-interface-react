@@ -21,7 +21,7 @@
     },
     "ep162":{
         "lesionArray": [1, 2, 3],
-        "brainPartition": false,
+        "brainPartition": true,
         "bbox": {
             "x": -96.63730239868164,
             "y": -101.13715362548828,
@@ -31,7 +31,7 @@
     },
     "ep164":{
         "lesionArray": [],
-        "brainPartition": false,
+        "brainPartition": true,
         "bbox": {
             "x": -80.97245359420776,
             "y": -110.47559928894043,
@@ -41,7 +41,7 @@
     },
     "ep165":{
         "lesionArray": [],
-        "brainPartition": false,
+        "brainPartition": true,
         "bbox": {
             "x": -98.39089775085449,
             "y": -99.69970321655273,

@@ -35,6 +35,9 @@ export const useAllEventData = ({
                 }
 
                 setData(formattedData);
+            }).catch(err => {
+                console.log("error", err)
+                setData(null)
             })
 
         }

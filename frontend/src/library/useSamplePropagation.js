@@ -13,6 +13,9 @@ export const useSamplePropagation = ({
             const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/syUpdateBranch/frontend/src/data/electrodes/${patientID}/${sampleID}/${patientID}_${sampleID}_propagation.json`
             json(url).then(jData => {
                 setData(jData)
+            }).catch(err => {
+                console.log("error", err)
+                setData(null)
             })
         }
     }, [patientID, sampleID])

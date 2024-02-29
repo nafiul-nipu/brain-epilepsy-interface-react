@@ -25,6 +25,8 @@ export const useBBoxcenter = ({
         })
     }, [objType, patient])
 
+    console.log(patient, data)
+
     return data;
 
 }

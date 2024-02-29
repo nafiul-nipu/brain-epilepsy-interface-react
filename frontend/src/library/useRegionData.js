@@ -12,6 +12,9 @@ export const useRegionData = ({
             const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/convert-to-siyuan-interface/frontend/src/data/electrodes/${patientID}/${patientID}_region_summary.json`
             json(url).then(jData => {
                 setData(jData)
+            }).catch(err => {
+                console.log("error", err)
+                setData(null)
             })
         }
     }, [patientID])

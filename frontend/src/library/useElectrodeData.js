@@ -20,7 +20,10 @@ export const useElectrodeData = ({ id }) => {
                 d.region = d.E_Brain.replace(/\d/g, '')
                 return d
             }
-            csv(electrodeURL, row).then(setData)
+            csv(electrodeURL, row).then(setData).catch(err => {
+                console.log("error", err)
+                setData(null)
+            })
         }
 
     }, [id])

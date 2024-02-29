@@ -32,6 +32,9 @@ export const useAllNetwork = ({ patientID }) => {
                     });
                 }
                 setData(formattedData);
+            }).catch(err => {
+                console.log("error", err)
+                setData(null)
             })
 
         }

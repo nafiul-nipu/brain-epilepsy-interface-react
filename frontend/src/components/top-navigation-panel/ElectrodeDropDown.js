@@ -21,6 +21,9 @@ export const ElectrodeDropDown = ({
         <select id="patient" value={id} onChange={onPatientChange}>
           <option value="ep187"> EP187 </option>
           <option value="ep129"> EP129 </option>
+          <option value="ep162"> EP162 </option>
+          <option value="ep164"> EP164 </option>
+          <option value="ep165"> EP165 </option>
         </select>
       </div>
 

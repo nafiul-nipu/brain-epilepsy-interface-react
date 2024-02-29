@@ -30,6 +30,9 @@ export const useSamples = ({
                 });
 
                 setData(numericData)
+            }).catch(err => {
+                console.log("error", err)
+                setData(null)
             });
         }
 

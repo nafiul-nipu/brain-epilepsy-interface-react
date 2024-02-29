@@ -32,6 +32,9 @@ export const useCommunity = ({
                 // });
 
                 setData(jdata)
+            }).catch(err => {
+                console.log("error", err)
+                setData(null)
             });
         }
 

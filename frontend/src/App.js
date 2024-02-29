@@ -24,6 +24,7 @@ import { useCommunity } from "./library/useCommunity";
 import { useAllNetwork } from "./library/useAllNetwork";
 import { PatchNetwork } from "./components/patch-network/PatchNetwork";
 import { useRegionData } from "./library/useRegionData";
+import { useBBoxcenter } from "./library/useBBoxcenter";
 
 function App() {
 
@@ -36,6 +37,9 @@ function App() {
   // console.log('patient', patientInfo)
   const [timeRange, setTimeRange] = useState(1000);
   // console.log('time', timeRange)
+
+  // const bboxCenter = useBBoxcenter({ patient: patientInfo.id, objType: 'brain.obj' })
+  // console.log("Patient: ", patientInfo.id, "BBoxCenter: ", bboxCenter)
 
   const sampleData = useSamples({
     patientID: patientInfo.id,

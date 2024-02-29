@@ -146,8 +146,6 @@
   font-size: small;
 }
 
-
-
 .scrollableEvent{
   /* width: 100%; */
   /* display: flex; */
@@ -193,15 +191,24 @@
 } */
 #region-topPercent{
   position: absolute;
-  left: 46%;
+  left: 50%;
   bottom: 37%;
-}
-#viewPatch{
-  position: absolute;
-  left: 30%;
-  bottom: 36.5%;
   display: flex;
   align-items: center;
+  font-size: 14px;
+}
+
+#viewPatch{
+  position: absolute;
+  left: 39%;
+  bottom: 37%;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+#view, #percent{
+  text-align: center;
 }
 
 /* width */

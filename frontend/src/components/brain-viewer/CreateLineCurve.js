@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react"
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
+import * as THREE from 'three';
 import * as d3 from 'd3'
 import * as ss from 'simple-statistics'
 
@@ -46,7 +47,7 @@ export const CreateLineCurve = ({
         // console.log(edgeCounter)
 
         const sortedEdges = Object.entries(edgeCounter)
-            .filter(([key, value]) => value > 1) // Filter values not greater than 1
+            .filter(([key, value]) => value > 1) // Filter values greater than 1
             .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
 
         // console.log(sortedEdges)
@@ -139,19 +140,109 @@ export const CreateLineCurve = ({
             lines.remove(linesSegmentRef.current);
         }
 
-        // Create line segments
-        const material = new MeshBasicMaterial({
-            color: 0xFF0000,
+        // create a custom arrow
+        function createGradientArrow(source, target, colorStart, colorEnd, headColor) {
+            const direction = new THREE.Vector3().subVectors(target, source);
+            const length = direction.length();
+            direction.normalize();
+        
+            // Line geometry
+            const lineGeometry = new THREE.BufferGeometry().setFromPoints([source, target]);
+            const lineMaterial = new THREE.ShaderMaterial({
+                vertexShader: `
+                    uniform vec3 startPoint;
+                    uniform vec3 endPoint;
+                    varying float gradient;
+                    void main() {
+                        // Calculate the gradient based on the distance from the startPoint
+                        float lineDistance = distance(startPoint, position);
+                        float totalLength = distance(startPoint, endPoint);
+                        gradient = lineDistance / totalLength;
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                    }
+                `,
+                fragmentShader: `
+                    uniform vec3 colorStart;
+                    uniform vec3 colorEnd;
+                    varying float gradient;
+                    void main() {
+                        // Interpolate between start and end colors based on the gradient
+                        gl_FragColor = vec4(mix(colorStart, colorEnd, gradient), 1.0);
+                    }
+                `,
+                uniforms: {
+                    startPoint: { value: source },
+                    endPoint: { value: target },
+                    colorStart: { value: new THREE.Color(colorStart) },
+                    colorEnd: { value: new THREE.Color(colorEnd) }
+                }
+            });
+        
+            const line = new THREE.Line(lineGeometry, lineMaterial);
+        
+            // Cone geometry for the arrowhead
+            const coneGeometry = new THREE.ConeGeometry(0.01 * length, 0.05 * length, 32);
+            const coneMaterial = new THREE.MeshBasicMaterial({ color: headColor });
+            const cone = new THREE.Mesh(coneGeometry, coneMaterial);
+        
+            // Position the cone
+            const middlePosition = new THREE.Vector3().lerpVectors(source, target, 0.5);
+            cone.position.copy(middlePosition);
+        
+            // Adjust cone orientation to face along the direction of the line
+            cone.lookAt(target);
+            cone.rotateX(Math.PI / 2); 
+        
+            const arrow = new THREE.Group();
+            arrow.add(line);
+            arrow.add(cone);
+        
+            return arrow;
+        }
+        
+        const arrows = [];
+        for (let i = 0; i < edges; i++) {
+            const sourceIndex = i * 6;
+            const targetIndex = sourceIndex + 3;
 
+            const dir = new THREE.Vector3(
+                positions[targetIndex] - positions[sourceIndex],
+                positions[targetIndex + 1] - positions[sourceIndex + 1],
+                positions[targetIndex + 2] - positions[sourceIndex + 2]
+            ).normalize();
+
+            const origin = new THREE.Vector3(
+                positions[sourceIndex] + bbox.x,
+                positions[sourceIndex + 1] + bbox.y,
+                positions[sourceIndex + 2] + bbox.z
+            );
+
+            const target = new THREE.Vector3(
+                positions[targetIndex] + bbox.x,
+                positions[targetIndex + 1] + bbox.y,
+                positions[targetIndex + 2] + bbox.z,
+            );
+
+            const length = Math.sqrt(
+                Math.pow(positions[targetIndex] - positions[sourceIndex], 2) +
+                Math.pow(positions[targetIndex + 1] - positions[sourceIndex + 1], 2) +
+                Math.pow(positions[targetIndex + 2] - positions[sourceIndex + 2], 2)
+            );
+
+            // Specify colors 
+            const gradientStartColor = 0xbd0026;
+            const gradientEndColor = 0xffffcc;
+            const headColor = 0x000000;
+
+            const gradientArrow = createGradientArrow(origin, target, gradientStartColor, gradientEndColor, headColor);
+            arrows.push(gradientArrow);
+        }
+
+        // Add arrows
+        arrows.forEach(arrow => {
+            lines.add(arrow);
         });
-        const linesSegments = new LineSegments(geometry, material);
-        // linesSegments.frustumCulled = true;
-        linesSegments.position.set(bbox.x, bbox.y, bbox.z);
-
-
-        // Add line segments to the scene
-        lines.add(linesSegments);
-        linesSegmentRef.current = linesSegments;
+        linesSegmentRef.current = arrows;
 
         console.log("lines created")
 

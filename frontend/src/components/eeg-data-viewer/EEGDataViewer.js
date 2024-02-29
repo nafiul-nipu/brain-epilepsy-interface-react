@@ -10,7 +10,7 @@ import * as d3 from "d3";
 const containerProps = {
   useZoom: false,
   ml: 50,
-  mr: 20,
+  mr: 25,
   mb: 30,
   mt: 10,
 };
@@ -139,8 +139,8 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
   return (
     <g>
       <text
-        x={-containerProps.ml + 10}
-        y={dimensions.boundedHeight / 2}
+        x={-containerProps.ml + 12}
+        y={dimensions.boundedHeight / 2 + 6}
       >E{currenElectrode}</text>
       <LinePlot
         data={data}

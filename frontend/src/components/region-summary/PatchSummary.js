@@ -15,7 +15,7 @@ export const PatchSummary = ({
   const electrodeColorList = [
     "hsl(205, 100%, 41%)",
     "hsl(28, 100%, 53%)",
-    "hsl(120, 100%, 40%)",
+    "hsl(120, 70%, 40%)",
     "hsl(360, 100%, 50%)",
     "hsl(271, 100%, 57%)",
     "hsl(10, 100%, 42%)",

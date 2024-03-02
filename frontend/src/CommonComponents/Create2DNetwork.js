@@ -131,7 +131,7 @@ const RegionWrapper = ({
 
     const lineWidth = d3.scaleLinear()
         .domain([topEdges[0][1], topEdges[topEdges.length - 1][1]])
-        .range([1, 5])
+        .range([3, 8])
 
     if (patchOrder === null) {
         const circlesPerRow = 8;

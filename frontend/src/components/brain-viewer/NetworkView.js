@@ -1,6 +1,7 @@
-import { CatmullRomLine, Line, QuadraticBezierLine } from "@react-three/drei"
+import { CatmullRomLine, Line, QuadraticBezierLine, Cone } from "@react-three/drei"
 import { useLayoutEffect, useState } from "react"
-import { Vector3 } from "three"
+import { Vector3, Euler, Quaternion } from "three"
+import React from 'react'
 import * as d3 from 'd3'
 import * as ss from 'simple-statistics'
 
@@ -13,7 +14,7 @@ export const NetworkView = ({
 }) => {
     const [edgeData, setEdgeData] = useState(null)
     const lineWidth = d3.scaleLinear()
-        .range([0.25, 2])
+        .range([1, 5])
     useLayoutEffect(() => {
         // console.log("create line is being called")
         // console.log(electrodeData)
@@ -131,34 +132,82 @@ export const NetworkView = ({
         return midPoint;
     };
 
+    const calculateConeOrientation = (sourcePos, targetPos) => {
+        const direction = new Vector3().subVectors(targetPos, sourcePos).normalize();
+        const orientation = new Euler().setFromQuaternion(
+            new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), direction)
+        );
+        return orientation;
+    };
+
+    function generateBasicGradientColor(sourcePosition, targetPosition, sourceColor, targetColor, stepSize) {
+        let distance = Math.sqrt(
+            Math.pow(targetPosition.x - sourcePosition.x, 2) +
+            Math.pow(targetPosition.y - sourcePosition.y, 2) +
+            Math.pow(targetPosition.z - sourcePosition.z, 2)
+        );
+    
+        // Determine the number of steps based on the distance and a given step size
+        let steps = Math.max(1, Math.floor(distance / stepSize));
+    
+        let gradientColors = [];
+        for (let i = 0; i <= steps; i++) {
+            let t = i / steps; // Normalized position between source and target
+            let linearColor = [
+                sourceColor[0] + (targetColor[0] - sourceColor[0]) * t, // R
+                sourceColor[1] + (targetColor[1] - sourceColor[1]) * t, // G
+                sourceColor[2] + (targetColor[2] - sourceColor[2]) * t, // B
+            ].map(c => c / 255); // Normalize to [0, 1]
+
+            gradientColors.push(linearColor);
+        }
+    
+        return gradientColors;
+    }
+
+
     return (
         <group position={[bbox.x, bbox.y, bbox.z]}>
             {
                 edgeData ? edgeData.map((edge, index) => {
-                    // console.log(edge)
+                    const midpoint = new Vector3().addVectors(edge.source, edge.target).multiplyScalar(0.5);
+                    const orientation = calculateConeOrientation(edge.source, edge.target);
+
                     return (
-                        edge.sourceLabel === edge.targetLabel ?
+                        <React.Fragment key={index}>
+                            {/* {edge.sourceLabel === edge.targetLabel ?
+                                <Line
+                                    key={`line-${index}`}
+                                    points={[edge.source, edge.target]}
+                                    color='white'
+                                    lineWidth={edge.frequency}
+                                    vertexColors={generateBasicGradientColor(edge.source, edge.target, [128, 0, 0], [255, 255, 204], 5)}
+                                />
+                                :
+                                <QuadraticBezierLine
+                                    key={`quadratic-${index}`}
+                                    start={edge.source}
+                                    end={edge.target}
+                                    mid={calculateRadialOffset(edge.source, edge.target, 1, 20)}
+                                    color='white'
+                                    lineWidth={edge.frequency}
+                                />
+                            } */}
                             <Line
-                                key={index}
+                                key={`line-${index}`}
                                 points={[edge.source, edge.target]}
-                                color='red'
+                                color='white'
                                 lineWidth={edge.frequency}
+                                vertexColors={generateBasicGradientColor(edge.source, edge.target, [128, 0, 0], [255, 255, 204], 5)}
                             />
-                            :
-                            <QuadraticBezierLine
-                                key={index}
-                                start={edge.source}
-                                end={edge.target}
-                                mid={calculateRadialOffset(edge.source, edge.target, 1, 20)}
-                                color='red'
-                                lineWidth={edge.frequency}
+                            <Cone
+                                key={`cone-${index}`}
+                                position={[midpoint.x, midpoint.y, midpoint.z]}
+                                rotation={orientation}
+                                args={[0.5, 2, 32]}
+                                material-color="#333"
                             />
-                        // <CatmullRomLine
-                        //     key={index}
-                        //     points={[edge.source, calculateRadialOffset(edge.source, edge.target, 1, 20), edge.target]}
-                        //     color='red'
-                        //     lineWidth={edge.frequency}
-                        // />
+                        </React.Fragment>
                     )
                 }) : null
             }

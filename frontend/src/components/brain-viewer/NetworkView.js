@@ -14,7 +14,7 @@ export const NetworkView = ({
 }) => {
     const [edgeData, setEdgeData] = useState(null)
     const lineWidth = d3.scaleLinear()
-        .range([1, 5])
+        .range([1, 4])
     useLayoutEffect(() => {
         // console.log("create line is being called")
         // console.log(electrodeData)
@@ -113,24 +113,24 @@ export const NetworkView = ({
 
     }, [electrodeData, networkData, topPercent, selectedRoi])
 
-    const calculateRadialOffset = (sourcePos, targetPos, radian, radialDistance) => {
-        // Calculate midpoint
-        const midPoint = new Vector3(
-            (sourcePos.x + targetPos.x) / 2,
-            (sourcePos.y + targetPos.y) / 2 + 20,
-            (sourcePos.z + targetPos.z) / 2 + 20
-        );
+    // const calculateRadialOffset = (sourcePos, targetPos, radian, radialDistance) => {
+    //     // Calculate midpoint
+    //     const midPoint = new Vector3(
+    //         (sourcePos.x + targetPos.x) / 2,
+    //         (sourcePos.y + targetPos.y) / 2 + 20,
+    //         (sourcePos.z + targetPos.z) / 2 + 20
+    //     );
 
-        // Calculate radial offset
-        const direction = new Vector3().subVectors(targetPos, sourcePos).normalize();
-        const perpendicular = new Vector3(-direction.z, 0, direction.x).normalize();
+    //     // Calculate radial offset
+    //     const direction = new Vector3().subVectors(targetPos, sourcePos).normalize();
+    //     const perpendicular = new Vector3(-direction.z, 0, direction.x).normalize();
 
-        // Offset midpoint
-        midPoint.addScaledVector(perpendicular, Math.cos(radian) * radialDistance);
-        midPoint.y += Math.sin(radian) * radialDistance; // Adjust Y to create a 3D curve effect
+    //     // Offset midpoint
+    //     midPoint.addScaledVector(perpendicular, Math.cos(radian) * radialDistance);
+    //     midPoint.y += Math.sin(radian) * radialDistance; // Adjust Y to create a 3D curve effect
 
-        return midPoint;
-    };
+    //     return midPoint;
+    // };
 
     const calculateConeOrientation = (sourcePos, targetPos) => {
         const direction = new Vector3().subVectors(targetPos, sourcePos).normalize();
@@ -146,10 +146,10 @@ export const NetworkView = ({
             Math.pow(targetPosition.y - sourcePosition.y, 2) +
             Math.pow(targetPosition.z - sourcePosition.z, 2)
         );
-    
+
         // Determine the number of steps based on the distance and a given step size
         let steps = Math.max(1, Math.floor(distance / stepSize));
-    
+
         let gradientColors = [];
         for (let i = 0; i <= steps; i++) {
             let t = i / steps; // Normalized position between source and target
@@ -161,7 +161,7 @@ export const NetworkView = ({
 
             gradientColors.push(linearColor);
         }
-    
+
         return gradientColors;
     }
 

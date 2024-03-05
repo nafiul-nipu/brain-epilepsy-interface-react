@@ -71,7 +71,13 @@ export const ENTContainer = ({
             <Row>
                 <Col md='12' style={{ height: '35vh' }}>
                     <Row>
-                        {segment === 'Community' ? null : <div id="titleBrain1">{`${patientInformation.id}: Propagation Over Time`}</div>}
+                        {
+                            segment === 'Community' ? null :
+                                segment === 'Patches' ? <div id="titleBrain1">{`${patientInformation.id}: Brain Patches`}</div> :
+                                    segment === 'Frequency' ? <div id="titleBrain1">{`${patientInformation.id}: Propagation Over Time`}</div> :
+                                        segment === 'Patch-Com-Net' ? <div id="titleBrain1">{`${patientInformation.id}: Patch Network`}</div> :
+                                            <div id="titleBrain1">{`${patientInformation.id}: Region Network`}</div>
+                        }
                         <BrainViewer
                             patientInformation={patientInformation}
                             electrodeData={electrodeData}

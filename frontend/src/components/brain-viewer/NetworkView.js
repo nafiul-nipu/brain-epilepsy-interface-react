@@ -113,24 +113,24 @@ export const NetworkView = ({
 
     }, [electrodeData, networkData, topPercent, selectedRoi])
 
-    // const calculateRadialOffset = (sourcePos, targetPos, radian, radialDistance) => {
-    //     // Calculate midpoint
-    //     const midPoint = new Vector3(
-    //         (sourcePos.x + targetPos.x) / 2,
-    //         (sourcePos.y + targetPos.y) / 2 + 20,
-    //         (sourcePos.z + targetPos.z) / 2 + 20
-    //     );
+    const calculateRadialOffset = (sourcePos, targetPos, radian, radialDistance) => {
+        // Calculate midpoint
+        const midPoint = new Vector3(
+            (sourcePos.x + targetPos.x) / 2,
+            (sourcePos.y + targetPos.y) / 2 + 20,
+            (sourcePos.z + targetPos.z) / 2 + 20
+        );
 
-    //     // Calculate radial offset
-    //     const direction = new Vector3().subVectors(targetPos, sourcePos).normalize();
-    //     const perpendicular = new Vector3(-direction.z, 0, direction.x).normalize();
+        // Calculate radial offset
+        const direction = new Vector3().subVectors(targetPos, sourcePos).normalize();
+        const perpendicular = new Vector3(-direction.z, 0, direction.x).normalize();
 
-    //     // Offset midpoint
-    //     midPoint.addScaledVector(perpendicular, Math.cos(radian) * radialDistance);
-    //     midPoint.y += Math.sin(radian) * radialDistance; // Adjust Y to create a 3D curve effect
+        // Offset midpoint
+        midPoint.addScaledVector(perpendicular, Math.cos(radian) * radialDistance);
+        midPoint.y += Math.sin(radian) * radialDistance; // Adjust Y to create a 3D curve effect
 
-    //     return midPoint;
-    // };
+        return midPoint;
+    };
 
     const calculateConeOrientation = (sourcePos, targetPos) => {
         const direction = new Vector3().subVectors(targetPos, sourcePos).normalize();
@@ -170,30 +170,53 @@ export const NetworkView = ({
         <group position={[bbox.x, bbox.y, bbox.z]}>
             {
                 edgeData ? edgeData.map((edge, index) => {
-                    const midpoint = new Vector3().addVectors(edge.source, edge.target).multiplyScalar(0.5);
+                    const midpoint = edge.sourceLabel === edge.targetLabel ?
+                        new Vector3().addVectors(edge.source, edge.target).multiplyScalar(0.5)
+                        : calculateRadialOffset(edge.source, edge.target, 1, 20);
+
+
                     const orientation = calculateConeOrientation(edge.source, edge.target);
 
                     return (
                         <React.Fragment key={index}>
-                            {/* {edge.sourceLabel === edge.targetLabel ?
-                                <Line
-                                    key={`line-${index}`}
-                                    points={[edge.source, edge.target]}
-                                    color='white'
-                                    lineWidth={edge.frequency}
-                                    vertexColors={generateBasicGradientColor(edge.source, edge.target, [128, 0, 0], [255, 255, 204], 5)}
-                                />
+                            {edge.sourceLabel === edge.targetLabel ?
+                                <>
+                                    <Line
+                                        key={`line-${index}`}
+                                        points={[edge.source, edge.target]}
+                                        color='white'
+                                        lineWidth={edge.frequency}
+                                        vertexColors={generateBasicGradientColor(edge.source, edge.target, [128, 0, 0], [255, 255, 204], 5)}
+                                    />
+                                    <Cone
+                                        key={`cone-${index}`}
+                                        position={[midpoint.x, midpoint.y, midpoint.z]}
+                                        rotation={orientation}
+                                        args={[0.5, 2, 32]}
+                                        material-color="#333"
+                                    />
+                                </>
                                 :
-                                <QuadraticBezierLine
-                                    key={`quadratic-${index}`}
-                                    start={edge.source}
-                                    end={edge.target}
-                                    mid={calculateRadialOffset(edge.source, edge.target, 1, 20)}
-                                    color='white'
-                                    lineWidth={edge.frequency}
-                                />
-                            } */}
-                            <Line
+                                <>
+                                    <QuadraticBezierLine
+                                        key={`quadratic-${index}`}
+                                        start={edge.source}
+                                        end={edge.target}
+                                        mid={[midpoint.x, midpoint.y, midpoint.z]}
+                                        color='white'
+                                        lineWidth={edge.frequency}
+                                        vertexColors={generateBasicGradientColor(edge.source, edge.target, [128, 0, 0], [255, 255, 204], 1)}
+                                    />
+                                    <Cone
+                                        key={`cone-${index}`}
+                                        position={[midpoint.x, midpoint.y, midpoint.z]}
+                                        rotation={orientation}
+                                        args={[0.5, 2, 32]}
+                                        material-color="#333"
+                                    />
+                                </>
+                            }
+                            {/* <Line
                                 key={`line-${index}`}
                                 points={[edge.source, edge.target]}
                                 color='white'
@@ -206,7 +229,7 @@ export const NetworkView = ({
                                 rotation={orientation}
                                 args={[0.5, 2, 32]}
                                 material-color="#333"
-                            />
+                            /> */}
                         </React.Fragment>
                     )
                 }) : null

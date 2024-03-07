@@ -26,7 +26,8 @@ export const BrainViewer = ({
     visualPanel,
     topPercent,
     selectedRoi,
-    eegList
+    eegList,
+    sampleDomain
 }) => {
 
     // console.log(topPercent)
@@ -230,6 +231,7 @@ export const BrainViewer = ({
                                                 buttonValue={buttonValue}
                                                 sliderObj={sliderObj}
                                                 eegList={eegList}
+                                                sampleDomain={sampleDomain}
                                             />
                                             <NetworkView
                                                 electrodeData={electrodeData}
@@ -316,6 +318,7 @@ export const BrainViewer = ({
                                                     buttonValue={buttonValue}
                                                     sliderObj={sliderObj}
                                                     eegList={eegList}
+                                                    sampleDomain={sampleDomain}
                                                 />
 
                                                 <NetworkView
@@ -403,6 +406,7 @@ export const BrainViewer = ({
                                                         buttonValue={buttonValue}
                                                         sliderObj={sliderObj}
                                                         eegList={eegList}
+                                                        sampleDomain={sampleDomain}
                                                     />
 
                                                     <NetworkView
@@ -466,6 +470,7 @@ export const BrainViewer = ({
                                                 buttonValue={buttonValue}
                                                 sliderObj={sliderObj}
                                                 eegList={eegList}
+                                                sampleDomain={sampleDomain}
                                             />
                                             <OrbitControls ref={electrodeOrbitControlsRef} enablePan={true} />
                                         </Hud>

@@ -27,9 +27,35 @@ export const ENTContainer = ({
 
     const [segment, setSegment] = useState('Patches')
 
+    const [sampleDomain, setSampleDomain] = useState(null)
+
     // const [seeRoi, setSeeRoi] = useState(false);
 
     function onSegmentChange(value) {
+        if (value === 'Frequency') {
+            if (sample === null) return;
+
+            // Flatten the array of arrays into a single array of objects
+            const flattenedArray = [].concat(...sample);
+
+            // Use reduce to find the max and min frequencies
+            const { maxFrequency, minFrequency } = flattenedArray.reduce(
+                (result, obj) => {
+                    const frequency = obj.frequency;
+
+                    // Update max frequency
+                    result.maxFrequency = Math.max(result.maxFrequency, frequency);
+
+                    // Update min frequency
+                    result.minFrequency = Math.min(result.minFrequency, frequency);
+
+                    return result;
+                },
+                { maxFrequency: -Infinity, minFrequency: Infinity }
+            );
+
+            setSampleDomain([minFrequency, maxFrequency]);
+        }
         setSegment(value)
     }
 
@@ -93,6 +119,7 @@ export const ENTContainer = ({
                             topPercent={topPercent}
                             selectedRoi={selectedRoi}
                             eegList={eegList}
+                            sampleDomain={sampleDomain}
                         />
                     </Row>
                 </Col>

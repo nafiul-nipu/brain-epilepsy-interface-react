@@ -6,7 +6,7 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { useElectrodeData } from "./library/useElectrodeData";
 import { useSamples } from "./library/useSamples";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Container, Row, Col } from "react-bootstrap";
 

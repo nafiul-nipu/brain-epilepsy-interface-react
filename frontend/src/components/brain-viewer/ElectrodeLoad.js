@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { Color, Object3D } from "three";
+import { scaleLinear } from "d3";
 
 const object = new Object3D();
 
@@ -19,7 +20,7 @@ const catColor = {
     14: "#00A5E3",
 }
 let currentIndex = 0;
-
+let sampleSize = scaleLinear().range([2, 8])
 export const ElectrodeLoad = ({
     electrodeData,
     sampleData,
@@ -32,14 +33,15 @@ export const ElectrodeLoad = ({
     visualPanel,
     buttonValue,
     sliderObj,
-    eegList
+    eegList,
+    sampleDomain
 }) => {
     const isMountedRef = useRef(false)
     const meshRef = useRef()
     useLayoutEffect(() => {
         isMountedRef.current = true;
         meshRef.current.setColorAt(0, new Color());
-        // console.log(electrodeData)
+        // console.log(sampleData)
 
         return () => {
             isMountedRef.current = false;
@@ -108,17 +110,20 @@ export const ElectrodeLoad = ({
             });
 
         } else if (visualPanel === 'Frequency') {
+            sampleSize.domain(sampleDomain)
             // console.log("frequncy")
             const currentSample = sampleData[currentIndex];
             // console.log(currentSample)
             let startElec = [...new Set(currentSample.slice(0, Math.round(currentSample.length)).map(item => item.start))]
-            // console.log(startElec)
+            let frequencies = currentSample.map(item => item.frequency)
             electrodeData.forEach((electrode, index) => {
                 if (startElec.includes(electrode['electrode_number'])) {
-                    meshRef.current.setColorAt(index, new Color(0x0AF521));
-                    object.scale.set(1.25, 1.25, 1.25)
+                    meshRef.current.setColorAt(index, new Color(0x04b0bf));
+                    const indexOfStartElec = startElec.indexOf(electrode['electrode_number'])
+                    const freq = sampleSize(frequencies[indexOfStartElec])
+                    object.scale.set(freq, freq, freq)
                 } else {
-                    meshRef.current.setColorAt(index, new Color(0x000000));
+                    meshRef.current.setColorAt(index, new Color("#FFFFFF"));
                     object.scale.set(1, 1, 1)
                 }
 
@@ -140,17 +145,24 @@ export const ElectrodeLoad = ({
                 }
             })
         }
+
+        if (eegInBrain !== null) {
+            const foundObject = electrodeData.findIndex(obj => obj.electrode_number === eegInBrain);
+            meshRef.current.setColorAt(foundObject, new Color(0x363636));
+        }
         meshRef.current.instanceMatrix.needsUpdate = true;
         meshRef.current.instanceColor.needsUpdate = true;
 
-    }, [allnetwork, buttonValue, eegInBrain, electrodeData, eventData, visualPanel, community, eegList])
+    }, [allnetwork, buttonValue, eegInBrain, electrodeData, eventData, visualPanel, community, eegList, sampleDomain])
 
     useEffect(() => {
         if (!isMountedRef.current) return;
         let interval;
         // console.log(sampleData)
         if (buttonValue === 'Pause') {
+            // console.log(electrodeData)
             // let currentIndex = 0;
+            sampleSize.domain(sampleDomain)
             interval = setInterval(() => {
                 if (visualPanel === 'Frequency') {
                     // console.log("inter val frequncy")
@@ -163,12 +175,15 @@ export const ElectrodeLoad = ({
                         // console.log(currentSample)
                         let startElec = [...new Set(currentSample.slice(0, Math.round(currentSample.length)).map(item => item.start))]
                         // console.log(startElec)
+                        let frequencies = currentSample.map(item => item.frequency)
                         electrodeData.forEach((electrode, index) => {
                             if (startElec.includes(electrode['electrode_number'])) {
-                                meshRef.current.setColorAt(index, new Color(0x0AF521));
-                                object.scale.set(1.25, 1.25, 1.25)
+                                meshRef.current.setColorAt(index, new Color(0x04b0bf));
+                                const indexOfStartElec = startElec.indexOf(electrode['electrode_number'])
+                                const freq = sampleSize(frequencies[indexOfStartElec])
+                                object.scale.set(freq, freq, freq)
                             } else {
-                                meshRef.current.setColorAt(index, new Color(0x000000));
+                                meshRef.current.setColorAt(index, new Color("#FFFFFF"));
                                 object.scale.set(1, 1, 1)
                             }
 
@@ -201,7 +216,7 @@ export const ElectrodeLoad = ({
 
         }
         return () => clearInterval(interval);
-    }, [buttonValue, electrodeData, sampleData, community])
+    }, [buttonValue, electrodeData, sampleData, community, sampleDomain])
     return (
         <group>
             <instancedMesh

@@ -1,6 +1,6 @@
 import { CatmullRomLine, Line, QuadraticBezierLine, Cone } from "@react-three/drei"
 import { useLayoutEffect, useState } from "react"
-import { Vector3, Euler, Quaternion } from "three"
+import { Vector3, Euler, Quaternion, QuadraticBezierCurve3 } from "three"
 import React from 'react'
 import * as d3 from 'd3'
 import * as ss from 'simple-statistics'
@@ -129,7 +129,11 @@ export const NetworkView = ({
         midPoint.addScaledVector(perpendicular, Math.cos(radian) * radialDistance);
         midPoint.y += Math.sin(radian) * radialDistance; // Adjust Y to create a 3D curve effect
 
-        return midPoint;
+        const curve = new QuadraticBezierCurve3(sourcePos, midPoint, targetPos);
+        const points = curve.getPoints(5);
+        // console.log(points)
+
+        return { "curve": midPoint, "cone": points[3] };
     };
 
     const calculateConeOrientation = (sourcePos, targetPos) => {
@@ -202,14 +206,14 @@ export const NetworkView = ({
                                         key={`quadratic-${index}`}
                                         start={edge.source}
                                         end={edge.target}
-                                        mid={[midpoint.x, midpoint.y, midpoint.z]}
+                                        mid={[midpoint.curve.x, midpoint.curve.y, midpoint.curve.z]}
                                         color='white'
                                         lineWidth={edge.frequency}
                                         vertexColors={generateBasicGradientColor(edge.source, edge.target, [128, 0, 0], [255, 255, 204], 1)}
                                     />
                                     <Cone
                                         key={`cone-${index}`}
-                                        position={[midpoint.x, midpoint.y, midpoint.z]}
+                                        position={[midpoint.cone.x, midpoint.cone.y, midpoint.cone.z]}
                                         rotation={orientation}
                                         args={[0.5, 2, 32]}
                                         material-color="#333"

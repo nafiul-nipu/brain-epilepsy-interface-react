@@ -169,9 +169,10 @@ export const BrainViewer = ({
                                         ref={views[index]}
                                         style={{
                                             height: height,
-                                            width: width / community.length,
+                                            width: (width - 15) / community.length,
                                             display: "inline-block",
                                             padding: "2px",
+                                            margin: "2px",
                                             // border: "0.5px solid grey",
                                             // backgroundColor: "yellowgreen"
                                         }}
@@ -254,9 +255,10 @@ export const BrainViewer = ({
                                             ref={views[index]}
                                             style={{
                                                 height: height,
-                                                width: width / Object.keys(allnetworks).length,
+                                                width: (width - 15) / community.length,
                                                 display: "inline-block",
                                                 padding: "2px",
+                                                margin: "2px",
                                                 // border: "0.5px solid grey",
                                                 // backgroundColor: "yellowgreen"
                                             }}
@@ -340,9 +342,10 @@ export const BrainViewer = ({
                                                 ref={views[index]}
                                                 style={{
                                                     height: height,
-                                                    width: width / Object.keys(allnetworks).length,
+                                                    width: (width - 15) / community.length,
                                                     display: "inline-block",
                                                     padding: "2px",
+                                                    margin: "2px",
                                                     // border: "0.5px solid grey",
                                                     // backgroundColor: "yellowgreen"
                                                 }}

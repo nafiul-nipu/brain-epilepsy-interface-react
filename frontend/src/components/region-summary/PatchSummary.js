@@ -300,7 +300,7 @@ export const PatchSummary = ({
               const electrodeValue = electrodeObj[electrodeId];
 
               // adjust each electrode x and y position
-              const cx = xOffset + columnIndex * (45 + horizontalSpacing) + 28;
+              const cx = xOffset + columnIndex * (45 + horizontalSpacing) + 23;
               const cy = yOffset + rowIndex * (45 + verticalSpacing) + 20;
 
               const electrodeFrequencyOpacity = frequency_opacityScale(electrodeValue);

@@ -11,20 +11,21 @@ export const PatchSummary = ({
   setSelectedRoi,
   samplePropagationData,
 }) => {
-  // increace the color contrast
+
   const electrodeColorList = [
-    "hsl(205, 100%, 41%)",
-    "hsl(28, 100%, 53%)",
-    "hsl(120, 70%, 40%)",
-    "hsl(360, 100%, 50%)",
-    "hsl(271, 100%, 57%)",
-    "hsl(10, 100%, 42%)",
-    "hsl(318, 100%, 68%)",
-    "hsl(0, 100%, 69%)",
-    "hsl(196, 100%, 45%)",
-    "hsl(161, 48%, 70%)",
-    "hsl(333, 100%, 79%)",
-  ];
+    '#007ed3',
+    '#FF004F',
+    '#2ca02c',
+    '#9400D3',
+    '#FFC40C',
+    '#59260B',
+    '#FE4EDA',
+    '#40E0D0',
+    '#FF4F00',
+    '#006D6F',
+    '#C19A6B'
+  ]
+  
   // frequency area opacity list
   const legendOpacity = [0.3, 0.5, 0.7, 1];
 

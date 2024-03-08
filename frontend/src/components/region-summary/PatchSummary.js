@@ -192,19 +192,66 @@ export const PatchSummary = ({
   const source_target_lineScale = d3.scaleLog().domain([minTargetRatio, maxTargetRatio]).range([0.7, 1.3]);
   const frequency_opacityScale = d3.scaleLinear().domain([0, maxOccurrence]).range([0.3, 1]);
 
-  const circleRadius = 15;
+  const circleRadius = 18;
 
-  const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
+  // find max columns and rows in all patches
+  const maxDimensions = {
+    columnsPerRow: 0,
+    numRowsInSVG: 0
+  };
+
+  Object.keys(processedPatchData).forEach((roiKey) => {
     const roiMatrix = processedPatchData[roiKey].matrix;
-
     // For finding the max columns in one row
     const columnsPerRow = Math.max(...roiMatrix.map((a) => a.length));
     // For finding the rows
     const numRowsInSVG = roiMatrix.length;
 
-    const roiLabelHeight = 10;
-    const svgWidth = columnsPerRow * 45;
-    const svgHeight = numRowsInSVG * 45 + roiLabelHeight;
+    // Update maxima in the object if current values are higher
+    if (columnsPerRow > maxDimensions.columnsPerRow) {
+      maxDimensions.columnsPerRow = columnsPerRow;
+    }
+    if (numRowsInSVG > maxDimensions.numRowsInSVG) {
+      maxDimensions.numRowsInSVG = numRowsInSVG;
+    }
+  });
+  
+  const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
+    const roiMatrix = processedPatchData[roiKey].matrix;
+
+    // For finding the max columns in one row
+    const columnsPerRow = Math.max(...roiMatrix.map((a) => a.length));
+
+    // For finding the rows
+    const numRowsInSVG = roiMatrix.length;
+    
+    const minSpace = 0;
+
+    const svgWidth = maxDimensions.columnsPerRow * 45;
+    const svgHeight = maxDimensions.numRowsInSVG * 45;
+
+    const totalAvailableWidth = svgWidth - (columnsPerRow * 45);
+    const totalAvailableHeight = svgHeight - (numRowsInSVG * 45); 
+
+    let horizontalSpacing, verticalSpacing;
+
+    if (columnsPerRow > 1) {
+        horizontalSpacing = Math.max(minSpace, totalAvailableWidth / (columnsPerRow - 1));
+    } else {
+        horizontalSpacing = 0; 
+    }
+    
+    if (numRowsInSVG > 1) {
+        verticalSpacing = Math.max(minSpace, totalAvailableHeight / (numRowsInSVG - 1));
+    } else {
+        verticalSpacing = 0;
+    }
+
+    const totalMatrixWidth = (columnsPerRow - 1) * horizontalSpacing + columnsPerRow * 45;
+    const totalMatrixHeight = (numRowsInSVG - 1) * verticalSpacing + numRowsInSVG * 45;
+
+    const xOffset = (svgWidth - totalMatrixWidth) / 2;
+    const yOffset = (svgHeight - totalMatrixHeight) / 2;
 
     const fillColor = electrodeColorList[roiIndex];
     return (
@@ -234,8 +281,7 @@ export const PatchSummary = ({
           height="calc(100% - 10px)"
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
         >
-          {roiMatrix.map((rowArray, rowIndex) => {
-            const shift = columnsPerRow - rowArray.length;
+          {roiMatrix.map((rowArray, rowIndex) => {                   
             return rowArray.map((electrodeObj, columnIndex) => {
               if (electrodeObj === null) {
                 return null;
@@ -243,7 +289,7 @@ export const PatchSummary = ({
 
               const electrodeId = Object.keys(electrodeObj)[0];
               const electrodePropagation = samplePropagationData.find(
-                (e) => e.electrode_id == electrodeId
+                (e) => e.electrode_id === Number(electrodeId)
               );
 
               const propagationCounts = electrodePropagation
@@ -253,8 +299,8 @@ export const PatchSummary = ({
               const electrodeValue = electrodeObj[electrodeId];
 
               // adjust each electrode x and y position
-              const cx = 28 + 42 * (columnIndex + shift);
-              const cy = 20 + 42 * rowIndex + roiLabelHeight;
+              const cx = xOffset + columnIndex * (45 + horizontalSpacing) + 28;
+              const cy = yOffset + rowIndex * (45 + verticalSpacing) + 20;
 
               const electrodeFrequencyOpacity = frequency_opacityScale(electrodeValue);
 

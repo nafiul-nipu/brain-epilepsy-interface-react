@@ -3,7 +3,19 @@ import * as d3 from 'd3';
 import * as ss from 'simple-statistics'
 import ChartContainer, { useChartContext } from '../components/chart-container/chart-container';
 
-const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
+const colorslist = [
+    '#007ed3',
+    '#FF004F',
+    '#9F8170',
+    '#9400D3',
+    '#FFC40C',
+    '#59260B',
+    '#FE4EDA',
+    '#40E0D0',
+    '#FF4F00',
+    '#006D6F',
+    '#C19A6B'
+];
 
 const catColor = {
     1: '#1f77b4',
@@ -126,8 +138,8 @@ const RegionWrapper = ({
         .x(d => electrode_positions[d] ? electrode_positions[d].x : 0)
         .y(d => electrode_positions[d] ? electrode_positions[d].y : 0)
 
-    const lineColor = d3.scaleSequential(d3.interpolateReds)
-        .domain([data[0].index, data[data.length - 1].index])
+    // const lineColor = d3.scaleSequential(d3.interpolateReds)
+    //     .domain([data[0].index, data[data.length - 1].index])
 
     const lineWidth = d3.scaleLinear()
         .domain([topEdges[0][1], topEdges[topEdges.length - 1][1]])

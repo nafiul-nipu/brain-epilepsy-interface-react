@@ -4,7 +4,19 @@ import { scaleLinear } from "d3";
 
 const object = new Object3D();
 
-const colorslist = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bfa3a3', '#00A5E3', '#8DD7BF', '#FF96C5'];
+const colorslist = [
+    '#007ed3',
+    '#FF004F',
+    '#9F8170',
+    '#9400D3',
+    '#FFC40C',
+    '#59260B',
+    '#FE4EDA',
+    '#40E0D0',
+    '#FF4F00',
+    '#006D6F',
+    '#C19A6B'
+];
 const catColor = {
     1: '#1f77b4',
     2: '#ff7f0e',

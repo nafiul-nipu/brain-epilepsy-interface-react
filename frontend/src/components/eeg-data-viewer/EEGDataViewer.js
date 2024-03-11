@@ -35,12 +35,19 @@ export const EEGDataViewer = ({
   const itemRefs = useRef([]);
 
   const extents = Object.keys(eegData.eeg)
-    .map(key => [Math.min(...eegData.eeg[key]), Math.max(...eegData.eeg[key])])
+    .map(key => eegData.eeg[key].filter(value => isFinite(value)))
+    .filter(filteredArray => filteredArray.length > 0) // Remove empty arrays
+    .map(filteredArray => [Math.min(...filteredArray), Math.max(...filteredArray)])
     .flat();
 
+
+  // console.log(extents)
+
   const absMax = Math.max(...extents.map(Math.abs));
+  // console.log(absMax)
 
   const yDomain = [-absMax, absMax];
+  // console.log(yDomain)
   // const yDomain = [-2000, 2000];
 
   const peakIndex = d3.scaleLinear()

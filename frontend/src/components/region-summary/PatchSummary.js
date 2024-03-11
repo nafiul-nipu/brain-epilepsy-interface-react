@@ -15,7 +15,7 @@ export const PatchSummary = ({
   const electrodeColorList = [
     '#007ed3',
     '#FF004F',
-    '#2ca02c',
+    '#9F8170',
     '#9400D3',
     '#FFC40C',
     '#59260B',

@@ -35,15 +35,14 @@ export const EEGDataViewer = ({
   const itemRefs = useRef([]);
 
   const extents = Object.keys(eegData.eeg)
-    .map(key => eegData.eeg[key].filter(value => isFinite(value)))
-    .filter(filteredArray => filteredArray.length > 0) // Remove empty arrays
-    .map(filteredArray => [Math.min(...filteredArray), Math.max(...filteredArray)])
+    .map(key => [Math.min(...eegData.eeg[key]), Math.max(...eegData.eeg[key])])
     .flat();
 
+  const filteredExtents = extents.filter(el => isFinite(el));
 
   // console.log(extents)
 
-  const absMax = Math.max(...extents.map(Math.abs));
+  const absMax = Math.max(...filteredExtents.map(Math.abs));
   // console.log(absMax)
 
   const yDomain = [-absMax, absMax];

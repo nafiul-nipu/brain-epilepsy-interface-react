@@ -32,7 +32,7 @@ const catColor = {
     14: "#00A5E3",
 }
 let currentIndex = 0;
-let sampleSize = scaleLinear().range([2, 8])
+let sampleSize = scaleLinear().range([2, 5])
 export const ElectrodeLoad = ({
     electrodeData,
     sampleData,

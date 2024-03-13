@@ -32,7 +32,7 @@ const catColor = {
     14: "#00A5E3",
 }
 let currentIndex = 0;
-let sampleSize = scaleLinear().range([2, 5])
+let sampleSize = scaleLinear().range([1, 4])
 export const ElectrodeLoad = ({
     electrodeData,
     sampleData,
@@ -136,7 +136,7 @@ export const ElectrodeLoad = ({
                     object.scale.set(freq, freq, freq)
                 } else {
                     meshRef.current.setColorAt(index, new Color("#FFFFFF"));
-                    object.scale.set(1, 1, 1)
+                    object.scale.set(0.75, 0.75, 0.75)
                 }
 
                 object.position.set(
@@ -196,7 +196,7 @@ export const ElectrodeLoad = ({
                                 object.scale.set(freq, freq, freq)
                             } else {
                                 meshRef.current.setColorAt(index, new Color("#FFFFFF"));
-                                object.scale.set(1, 1, 1)
+                                object.scale.set(0.75, 0.75, 0.75)
                             }
 
                             object.position.set(

@@ -14,7 +14,7 @@ export const NetworkView = ({
 }) => {
     const [edgeData, setEdgeData] = useState(null)
     const lineWidth = d3.scaleLinear()
-        .range([1, 4])
+        .range([2, 5])
     useLayoutEffect(() => {
         // console.log("create line is being called")
         // console.log(electrodeData)

@@ -194,6 +194,7 @@ export const PatchSummary = ({
   const frequency_opacityScale = d3.scaleLinear().domain([0, maxOccurrence]).range([0.3, 1]);
 
   const circleRadius = 18;
+  const dynamicCircleRadius = d3.scaleLinear().domain([0, maxOccurrence]).range([12, 20]);
 
   // find max columns and rows in all patches
   const maxDimensions = {
@@ -292,11 +293,13 @@ export const PatchSummary = ({
               const electrodePropagation = samplePropagationData.find(
                 (e) => e.electrode_id === Number(electrodeId)
               );
-
+              
               const propagationCounts = electrodePropagation
                 ? electrodePropagation
                 : { electrode_id: Number(electrodeId), source_counts: 0, target_counts: 0 };
 
+              const totalFrequency = Object.values(electrodeObj)[0];
+              const circleRadius = dynamicCircleRadius(totalFrequency);
               const electrodeValue = electrodeObj[electrodeId];
 
               // adjust each electrode x and y position

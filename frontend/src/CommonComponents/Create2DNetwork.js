@@ -44,6 +44,7 @@ export const Create2DNetwork = ({
     data,
     patchOrder,
     electrodes,
+    electrodeName,
     topPercent,
     show,
     regions,
@@ -61,6 +62,7 @@ export const Create2DNetwork = ({
                 data={data}
                 patchOrder={patchOrder}
                 electrodes={electrodes}
+                electrodeName={electrodeName}
                 sample={sample}
                 topPercent={topPercent}
                 show={show}
@@ -80,6 +82,7 @@ const RegionWrapper = ({
     data,
     patchOrder,
     electrodes,
+    electrodeName,
     sample,
     topPercent,
     show,
@@ -94,6 +97,7 @@ const RegionWrapper = ({
     // console.log(show, regions)
     // console.log(patchLabels)
     // console.log(regionLabels)
+    // console.log(electrodes)
 
     const dimensions = useChartContext();
 
@@ -175,7 +179,7 @@ const RegionWrapper = ({
                             // strokeWidth={sourceElectrodes.has(electrodes[circleIndex]) ? 3 : 0}
                             />
                             <title>{`
-                        Electrode : E${electrodes[circleIndex]}
+                        Electrode : ${electrodeName[circleIndex]}
                     `}</title>
                         </g>
                     );
@@ -211,7 +215,7 @@ const RegionWrapper = ({
                     "x": 10 + j * (circleSpacing + 2 * 10) + temp * (circleSpacing + 2 * 10),
                     "y": (i + 0.5) * (dimensions.boundedHeight / numRows)
                 }
-
+                const electrodeNameIndex = electrodes.indexOf(currElectrode);
                 circles.push(
                     <g key={`${sample}_${i}_${j}`}>
                         <circle
@@ -227,7 +231,7 @@ const RegionWrapper = ({
                         // strokeWidth={sourceElectrodes.has(currElectrode) ? 3 : 0}
                         />
                         <title>{`
-                            Electrode : E${currElectrode}
+                            Electrode : ${electrodeName[electrodeNameIndex]}
                         `}</title>
                     </g>
                 );

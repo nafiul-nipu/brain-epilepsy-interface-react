@@ -20,6 +20,7 @@ export const EEGDataViewer = ({
   eegData,
   xTicks,
   electrodeList,
+  electrodeName,
   eegInBrain,
   setEegInBrain,
   timeToFecth,
@@ -96,6 +97,7 @@ export const EEGDataViewer = ({
                     <EEGChartWrapper
                       data={eegData.eeg[el]}
                       electrodeList={electrodeList}
+                      electrodeName={electrodeName}
                       currenElectrode={el}
                       yDomain={yDomain}
                       xTicks={xTicks}
@@ -117,8 +119,10 @@ export const EEGDataViewer = ({
 };
 
 
-const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks, peaks, peakIndex, timeWindow }) => {
+const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, yDomain, xTicks, peaks, peakIndex, timeWindow }) => {
   // console.log(currenElectrode)
+  // console.log(electrodeList)
+  // console.log(electrodeName[electrodeList.indexOf(currenElectrode)])
 
   // console.log(data)
 
@@ -147,7 +151,7 @@ const EEGChartWrapper = ({ data, electrodeList, currenElectrode, yDomain, xTicks
       <text
         x={-containerProps.ml + 12}
         y={dimensions.boundedHeight / 2 + 6}
-      >E{currenElectrode}</text>
+      >{electrodeName[electrodeList.indexOf(currenElectrode)]}</text>
       <LinePlot
         data={data}
         xScale={xScale}

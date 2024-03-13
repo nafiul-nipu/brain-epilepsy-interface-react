@@ -248,6 +248,7 @@ function App() {
                       <EEGDataContainer
                         patient={patientInfo}
                         electrodeList={electrodeDataCsv.map((el) => el.electrode_number)}
+                        electrodeName={electrodeDataCsv.map((el) => el.E_Brain)}
                         eegInBrain={eegInBrain}
                         setEegInBrain={setEegInBrain}
                         eegList={eegList}

@@ -46,6 +46,7 @@ export const RegionSummary = ({
                                             data={networks[sample]}
                                             patchOrder={null}
                                             electrodes={electrodeData.map((obj) => obj.electrode_number)}
+                                            electrodeName={electrodeData.map((obj) => obj.E_Brain)}
                                             topPercent={topPercent}
                                             show={viewColor}
                                             regions={[...new Set(electrodeData.map(obj => obj.region))]}

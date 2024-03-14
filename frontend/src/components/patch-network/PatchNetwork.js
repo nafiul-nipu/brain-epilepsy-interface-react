@@ -19,7 +19,7 @@ export const PatchNetwork = ({
     setEegList,
     networkType
 }) => {
-    // console.log(patchData)
+    // console.log(electrodeData)
     // console.log(rowLength)
 
     const numRows = Math.ceil((rowLength.length) / rowSize);
@@ -75,6 +75,11 @@ export const PatchNetwork = ({
                                                             electrodeData.filter((obj) => obj.region === object).map((obj) => obj.electrode_number)
                                                             :
                                                             electrodeData.filter((obj) => obj.label === object).map((obj) => obj.electrode_number)
+                                                        }
+                                                        electrodeName={typeof object === 'string' ?
+                                                            electrodeData.filter((obj) => obj.region === object).map((obj) => obj.E_Brain)
+                                                            :
+                                                            electrodeData.filter((obj) => obj.label === object).map((obj) => obj.E_Brain)
                                                         }
                                                         networkType={networkType === 'patch' ? 'patch' : 'region'}
                                                         topPercent={topPercent}

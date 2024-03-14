@@ -7,6 +7,7 @@ const timeWindow = 10000;
 export const EEGDataContainer = ({
   patient,
   electrodeList,
+  electrodeName,
   eegInBrain,
   setEegInBrain,
   eegList
@@ -55,6 +56,7 @@ export const EEGDataContainer = ({
           eegData={eegData}
           xTicks={[startTime, startTime + timeWindow]}
           electrodeList={electrodeList}
+          electrodeName={electrodeName}
           eegInBrain={eegInBrain}
           setEegInBrain={setEegInBrain}
           timeToFecth={timeToFecth}

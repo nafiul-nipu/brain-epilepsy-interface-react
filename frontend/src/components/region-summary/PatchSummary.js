@@ -255,7 +255,9 @@ export const PatchSummary = ({
     const xOffset = (svgWidth - totalMatrixWidth) / 2;
     const yOffset = (svgHeight - totalMatrixHeight) / 2;
 
-    const fillColor = electrodeColorList[roiIndex];
+    const fillColor = electrodeColorList[0];
+
+    const setBorderColorOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
     return (
       <Col
         md="4"
@@ -267,7 +269,7 @@ export const PatchSummary = ({
             selectedRoi === Number(roiKey)
               ? "rgba(202, 204, 202, 0.4)"
               : "white",
-          border: `3px solid ${electrodeColorList[roiIndex]}`,
+          border: `3px solid ${setBorderColorOpacity(electrodeColorList[roiIndex], 0.5)}`,
         }}
         onClick={() => patchOnClick(roiKey)}
       >

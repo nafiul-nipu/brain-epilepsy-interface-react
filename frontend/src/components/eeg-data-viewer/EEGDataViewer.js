@@ -64,7 +64,7 @@ export const EEGDataViewer = ({
   // console.log(electrodeList)
   // console.log(selectedEventRange)
   // console.log(eegList)
-  console.log(patchLabels, regionLabels, communityObj, show)
+
   const containerRef = useRef(null);
   const itemRefs = useRef([]);
 
@@ -254,13 +254,13 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
       const regions = generateRegionsFromLabels(regionLabels);
       const regionColorMap = assignColorsToRegions(regions);
 
-      const region = regions[currenElectrode]; 
+      const region = regions[currenElectrode];
       if (region !== undefined) {
         return regionColorMap.get(region);
       }
     }
 
-    if(show === 'communities') {
+    if (show === 'communities') {
       const community = communityObj[currenElectrode];
       if (community !== undefined) {
         return catColor[community];
@@ -278,19 +278,10 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
     .domain(yDomain)
     .range([dimensions.boundedHeight, 0])
 
-  const yTicks = yLineScale.ticks();
-  // const tickValues = [yTicks[0], yTicks[yTicks.length - 1]];
-
-  // const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
-  // console.log(xTickText)
-  // const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (timeWindow / 5));
-
-
-
   return (
     <g>
       <text
-        x={-containerProps.ml + 12}
+        x={-containerProps.ml + 8}
         y={dimensions.boundedHeight / 2 + 6}
       >{electrodeName[electrodeList.indexOf(currenElectrode)]}</text>
       <LinePlot
@@ -330,8 +321,8 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
                 key={i}
                 cx={xScale(index)}
                 cy={yLineScale(data[index])}
-                r={2}
-                fill="red"
+                r={3}
+                fill='black'
               /><title>{`Time: ${el.time}`}</title>
             </g>
           )

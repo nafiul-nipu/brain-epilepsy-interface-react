@@ -22,7 +22,7 @@ export const LinePlot = ({
                 fill="none"
                 // fill={colorChecker?.includes(curr) ? '#137B80' : 'grey'}
                 stroke={colorChecker?.includes(curr) ? color : 'grey'}
-                strokeWidth={"1px"}
+                strokeWidth={"2px"}
                 d={line()
                     .x((d, i) => {
                         // console.log("line plot d")

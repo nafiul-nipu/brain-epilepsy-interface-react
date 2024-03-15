@@ -1,6 +1,6 @@
 import { LinePlot } from "../../CommonComponents/LinePlot";
 import ChartContainer, { useChartContext } from "../chart-container/chart-container";
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
 import "./eeg-data-viewer.css";
 import { AxisBottom } from "../../CommonComponents/AxisBottom";
@@ -11,8 +11,8 @@ const containerProps = {
   useZoom: false,
   ml: 50,
   mr: 25,
-  mb: 30,
-  mt: 10,
+  mb: 0,
+  mt: 0,
 };
 
 export const EEGDataViewer = ({
@@ -34,6 +34,8 @@ export const EEGDataViewer = ({
 
   const containerRef = useRef(null);
   const itemRefs = useRef([]);
+
+  const [dimensions, setDimensions] = useState(null);
 
   const extents = Object.keys(eegData.eeg)
     .map(key => [Math.min(...eegData.eeg[key]), Math.max(...eegData.eeg[key])])
@@ -68,6 +70,21 @@ export const EEGDataViewer = ({
   // console.log(eegList)
   // console.log(sortedElectrodes)
 
+  let xScale, yLineScale;
+  if (dimensions) {
+    xScale = d3.scaleLinear()
+      .domain([0, timeWindow])
+      .range([0, dimensions.boundedWidth]);
+
+    yLineScale = d3.scaleLinear()
+      .domain(yDomain)
+      .range([dimensions.boundedHeight, 0])
+  }
+
+  const startTickText = xTicks[0];
+  const endTickText = xTicks[xTicks.length - 1];
+  const xTickText = [startTickText, endTickText];
+  const xtickvalues = [0, timeWindow];
 
   return (
     <div className="eeg-container">
@@ -77,6 +94,27 @@ export const EEGDataViewer = ({
         <div title="Next" onClick={() => timeToFecth('next')}><TbPlayerTrackNextFilled /></div>
       </div>
 
+      {dimensions && (
+        <svg x={0}
+          y={0}
+          width={dimensions.width} height="25">
+          <g
+            transform={`translate(${dimensions.marginLeft},  ${dimensions.marginTop
+              }) scale(1)`}
+          >
+            <AxisBottom
+              xScale={xScale}
+              yScale={yLineScale}
+              scaleOffset={5}
+              innerHeight={5}
+              textPosition={3.85}
+              ticks={xtickvalues}
+              tickText={xTickText}
+            />
+          </g>
+        </svg>
+      )}
+
       <div className="eeg-list" ref={containerRef}>
         {
           sortedElectrodes.map((el, i) => {
@@ -85,7 +123,7 @@ export const EEGDataViewer = ({
               return (
                 <div
                   style={{
-                    height: '12vh',
+                    height: '5vh',
                     boxShadow: eegInBrain === el ? "0 0 10px 5px #000000" : "none"
                   }}
                   ref={el => itemRefs.current[i] = el}
@@ -104,6 +142,7 @@ export const EEGDataViewer = ({
                       peaks={eegData.peaks[el] ? eegData.peaks[el] : []}
                       peakIndex={peakIndex}
                       timeWindow={timeWindow}
+                      setDimensions={setDimensions}
                     />
                   </ChartContainer>
                 </div>
@@ -119,7 +158,7 @@ export const EEGDataViewer = ({
 };
 
 
-const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, yDomain, xTicks, peaks, peakIndex, timeWindow }) => {
+const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, yDomain, xTicks, peaks, peakIndex, timeWindow, setDimensions }) => {
   // console.log(currenElectrode)
   // console.log(electrodeList)
   // console.log(electrodeName[electrodeList.indexOf(currenElectrode)])
@@ -128,6 +167,11 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
 
   // console.log(xTicks)
   const dimensions = useChartContext();
+  useEffect(() => {
+    if (dimensions) {
+      setDimensions(dimensions);
+    }
+  }, [dimensions, setDimensions]);
 
   const xScale = d3.scaleLinear()
     .domain([0, timeWindow])
@@ -159,13 +203,13 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
         colorChecker={electrodeList}
         curr={currenElectrode}
       />
-      <AxisLeft
+      {/* <AxisLeft
         xScale={xScale} yScale={yLineScale} scaleOffset={10}
         ticks={tickValues}
         textPosition={2.85}
-      />
+      /> */}
 
-      <AxisBottom
+      {/* <AxisBottom
         xScale={xScale}
         yScale={yLineScale}
         scaleOffset={5}
@@ -173,7 +217,7 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
         textPosition={3.85}
         ticks={xtickvalues}
         tickText={xTickText}
-      />
+      /> */}
       {
         peaks.length > 0 ? peaks.map((el, i) => {
           // console.log("time", el.time)
@@ -188,7 +232,7 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
                 key={i}
                 cx={xScale(index)}
                 cy={yLineScale(data[index])}
-                r={3}
+                r={2}
                 fill="red"
               /><title>{`Time: ${el.time}`}</title>
             </g>

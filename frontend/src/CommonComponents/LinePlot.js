@@ -5,6 +5,7 @@ export const LinePlot = ({
     data,
     xScale,
     yLineScale,
+    color,
     colorChecker = null,
     curr = null
 }) => {
@@ -20,7 +21,7 @@ export const LinePlot = ({
                 id="line-plot"
                 fill="none"
                 // fill={colorChecker?.includes(curr) ? '#137B80' : 'grey'}
-                stroke={colorChecker?.includes(curr) ? '#137B80' : 'grey'}
+                stroke={colorChecker?.includes(curr) ? color : 'grey'}
                 strokeWidth={"1px"}
                 d={line()
                     .x((d, i) => {

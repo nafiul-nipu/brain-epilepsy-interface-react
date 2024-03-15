@@ -3,17 +3,22 @@ import { useEffect, useState } from "react";
 import { fetchEEGperPatient } from "../../api";
 
 const timeWindow = 10000;
-
+const samples = ['sample1', 'sample2', 'sample3']
 export const EEGDataContainer = ({
   patient,
   electrodeList,
   electrodeName,
   eegInBrain,
   setEegInBrain,
-  eegList
+  eegList,
+  viewColor,
+  electrodeData,
+  communityData,
+  topPercent,
+  sampleName
 }) => {
   const [eegData, seteegData] = useState(null);
-  const [startTime, setstartTime] = useState(0)
+  const [startTime, setstartTime] = useState(0);
 
   const timeToFecth = (buttonPressed) => {
     if (buttonPressed === 'next') {
@@ -47,7 +52,6 @@ export const EEGDataContainer = ({
     patient
   ]);
 
-
   return (
     <>
       {eegData &&
@@ -56,6 +60,16 @@ export const EEGDataContainer = ({
           eegData={eegData}
           xTicks={[startTime, startTime + timeWindow]}
           electrodeList={electrodeList}
+          show={viewColor}
+          patchLabels={
+            electrodeData.reduce((result, obj) =>
+              ({ ...result, [obj.electrode_number]: obj.label }), {})
+          }
+          regionLabels={electrodeData.reduce((result, obj) => ({ ...result, [obj.electrode_number]: obj.region }), {})}
+          communityObj={communityData[topPercent][samples.indexOf(sampleName)] !== undefined ?
+            Object.assign({}, ...communityData[topPercent][samples.indexOf(sampleName)].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
+            : null
+          }
           electrodeName={electrodeName}
           eegInBrain={eegInBrain}
           setEegInBrain={setEegInBrain}

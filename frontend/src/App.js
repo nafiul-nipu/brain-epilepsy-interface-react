@@ -244,9 +244,14 @@ function App() {
                 <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
                   {/* eeg 89.5vh */}
                   <Col md="12" style={{ height: "89.5vh", backgroundColor: "#FAFBFC" }}>
-                    {allEventData && electrodeDataCsv ? (
+                    {allEventData && electrodeDataCsv && comData ? (
                       <EEGDataContainer
+                        viewColor={viewColor}
                         patient={patientInfo}
+                        electrodeData={electrodeDataCsv}
+                        communityData={comData}
+                        sampleName={patientInfo.sample}
+                        topPercent={topPercent}
                         electrodeList={electrodeDataCsv.map((el) => el.electrode_number)}
                         electrodeName={electrodeDataCsv.map((el) => el.E_Brain)}
                         eegInBrain={eegInBrain}

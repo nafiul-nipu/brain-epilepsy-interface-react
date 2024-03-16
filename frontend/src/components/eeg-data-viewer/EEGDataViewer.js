@@ -4,7 +4,6 @@ import { useRef, useState, useEffect } from 'react';
 import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
 import "./eeg-data-viewer.css";
 import { AxisBottom } from "../../CommonComponents/AxisBottom";
-import { AxisLeft } from "../../CommonComponents/AxisLeft";
 import * as d3 from "d3";
 
 const containerProps = {
@@ -34,8 +33,6 @@ export const EEGDataViewer = ({
 
   const containerRef = useRef(null);
   const itemRefs = useRef([]);
-
-  const [dimensions, setDimensions] = useState(null);
 
   const extents = Object.keys(eegData.eeg)
     .map(key => [Math.min(...eegData.eeg[key]), Math.max(...eegData.eeg[key])])
@@ -70,21 +67,6 @@ export const EEGDataViewer = ({
   // console.log(eegList)
   // console.log(sortedElectrodes)
 
-  let xScale, yLineScale;
-  if (dimensions) {
-    xScale = d3.scaleLinear()
-      .domain([0, timeWindow])
-      .range([0, dimensions.boundedWidth]);
-
-    yLineScale = d3.scaleLinear()
-      .domain(yDomain)
-      .range([dimensions.boundedHeight, 0])
-  }
-
-  const startTickText = xTicks[0];
-  const endTickText = xTicks[xTicks.length - 1];
-  const xTickText = [startTickText, endTickText];
-  const xtickvalues = [0, timeWindow];
 
   return (
     <div className="eeg-container">
@@ -93,27 +75,6 @@ export const EEGDataViewer = ({
         <div><strong>EEGs</strong> <span>{sampleName}</span></div>
         <div title="Next" onClick={() => timeToFecth('next')}><TbPlayerTrackNextFilled /></div>
       </div>
-
-      {dimensions && (
-        <svg x={0}
-          y={0}
-          width={dimensions.width} height="25">
-          <g
-            transform={`translate(${dimensions.marginLeft},  ${dimensions.marginTop
-              }) scale(1)`}
-          >
-            <AxisBottom
-              xScale={xScale}
-              yScale={yLineScale}
-              scaleOffset={5}
-              innerHeight={5}
-              textPosition={3.85}
-              ticks={xtickvalues}
-              tickText={xTickText}
-            />
-          </g>
-        </svg>
-      )}
 
       <div className="eeg-list" ref={containerRef}>
         {
@@ -142,7 +103,6 @@ export const EEGDataViewer = ({
                       peaks={eegData.peaks[el] ? eegData.peaks[el] : []}
                       peakIndex={peakIndex}
                       timeWindow={timeWindow}
-                      setDimensions={setDimensions}
                     />
                   </ChartContainer>
                 </div>
@@ -158,7 +118,7 @@ export const EEGDataViewer = ({
 };
 
 
-const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, yDomain, xTicks, peaks, peakIndex, timeWindow, setDimensions }) => {
+const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, yDomain, xTicks, peaks, peakIndex, timeWindow }) => {
   // console.log(currenElectrode)
   // console.log(electrodeList)
   // console.log(electrodeName[electrodeList.indexOf(currenElectrode)])
@@ -167,11 +127,6 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
 
   // console.log(xTicks)
   const dimensions = useChartContext();
-  useEffect(() => {
-    if (dimensions) {
-      setDimensions(dimensions);
-    }
-  }, [dimensions, setDimensions]);
 
   const xScale = d3.scaleLinear()
     .domain([0, timeWindow])
@@ -181,12 +136,12 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
     .domain(yDomain)
     .range([dimensions.boundedHeight, 0])
 
-  const yTicks = yLineScale.ticks();
-  const tickValues = [yTicks[0], yTicks[yTicks.length - 1]];
+  // const yTicks = yLineScale.ticks();
+  // const tickValues = [yTicks[0], yTicks[yTicks.length - 1]];
 
-  const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
-  // console.log(xTickText)
-  const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (timeWindow / 5));
+  // const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
+  // // console.log(xTickText)
+  // const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (timeWindow / 5));
 
 
 

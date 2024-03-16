@@ -101,39 +101,7 @@ export const EEGDataContainer = ({
   );
 };
 
-const CommonAxisWrapper = ({ xTicks, timeWindow }) => {
-  const dimensions = useChartContext();
-  const xScale = d3.scaleLinear()
-    .domain([0, timeWindow])
-    .range([0, dimensions.boundedWidth])
 
-  const yScale = d3.scaleLinear()
-    .domain([0, 1])
-    .range([0, dimensions.boundedHeight])
-
-  const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
-  // console.log(xTickText)
-  const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (timeWindow / 5));
-  return (
-    <g>
-      <text
-        x={-containerProps.ml + 12}
-        y={dimensions.boundedHeight / 2 - 10}
-      ><tspan x={-containerProps.ml + 12} y={dimensions.boundedHeight / 2 - 17} dy=".6em">Time</tspan>
-        <tspan x={-containerProps.ml + 12} y={dimensions.boundedHeight / 2 - 10} dy="1.2em">(ms)</tspan></text>
-      <AxisBottom
-        xScale={xScale}
-        yScale={yScale}
-        scaleOffset={5}
-        innerHeight={-35}
-        textPosition={3.85}
-        ticks={xtickvalues}
-        tickText={xTickText}
-      />
-    </g>
-
-  )
-};
 
 const CommonAxisWrapper = ({ xTicks, timeWindow }) => {
   const dimensions = useChartContext();

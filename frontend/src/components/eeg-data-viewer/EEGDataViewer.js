@@ -1,9 +1,7 @@
 import { LinePlot } from "../../CommonComponents/LinePlot";
 import ChartContainer, { useChartContext } from "../chart-container/chart-container";
-import { useRef, useState, useEffect } from 'react';
-import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
+import { useRef } from 'react';
 import "./eeg-data-viewer.css";
-import { AxisBottom } from "../../CommonComponents/AxisBottom";
 import * as d3 from "d3";
 
 const containerProps = {
@@ -15,14 +13,12 @@ const containerProps = {
 };
 
 export const EEGDataViewer = ({
-  sampleName,
   eegData,
   xTicks,
   electrodeList,
   electrodeName,
   eegInBrain,
   setEegInBrain,
-  timeToFecth,
   timeWindow,
   eegList
 }) => {
@@ -69,50 +65,42 @@ export const EEGDataViewer = ({
 
 
   return (
-    <div className="eeg-container">
-      <div className="eeg-title">
-        <div title="Previous" onClick={() => timeToFecth('prev')}><TbPlayerTrackPrevFilled /></div>
-        <div><strong>EEGs</strong> <span>{sampleName}</span></div>
-        <div title="Next" onClick={() => timeToFecth('next')}><TbPlayerTrackNextFilled /></div>
-      </div>
-
-      <div className="eeg-list" ref={containerRef}>
-        {
-          sortedElectrodes.map((el, i) => {
-            if (eegData.eeg[el] !== undefined && eegData.eeg[el].length > 0) {
-              // count++;
-              return (
-                <div
-                  style={{
-                    height: '5vh',
-                    boxShadow: eegInBrain === el ? "0 0 10px 5px #000000" : "none"
-                  }}
-                  ref={el => itemRefs.current[i] = el}
-                  key={i}
-                  onClick={() => onEEGClick(el)}
-                >
-                  {/* <div className="electrodeEEGNameDiv">{`E${el}`} </div> */}
-                  <ChartContainer {...containerProps} key={i}>
-                    <EEGChartWrapper
-                      data={eegData.eeg[el]}
-                      electrodeList={electrodeList}
-                      electrodeName={electrodeName}
-                      currenElectrode={el}
-                      yDomain={yDomain}
-                      xTicks={xTicks}
-                      peaks={eegData.peaks[el] ? eegData.peaks[el] : []}
-                      peakIndex={peakIndex}
-                      timeWindow={timeWindow}
-                    />
-                  </ChartContainer>
-                </div>
-              )
-            } else {
-              return null
-            }
-          })
-        }
-      </div>
+    <div className="eeg-list" ref={containerRef}>
+      {
+        sortedElectrodes.map((el, i) => {
+          if (eegData.eeg[el] !== undefined && eegData.eeg[el].length > 0) {
+            // count++;
+            return (
+              <div
+                style={{
+                  height: '4vh',
+                  boxShadow: eegInBrain === el ? "0 0 10px 5px #000000" : "none"
+                }}
+                ref={el => itemRefs.current[i] = el}
+                key={i}
+                onClick={() => onEEGClick(el)}
+              >
+                {/* <div className="electrodeEEGNameDiv">{`E${el}`} </div> */}
+                <ChartContainer {...containerProps} key={i}>
+                  <EEGChartWrapper
+                    data={eegData.eeg[el]}
+                    electrodeList={electrodeList}
+                    electrodeName={electrodeName}
+                    currenElectrode={el}
+                    yDomain={yDomain}
+                    xTicks={xTicks}
+                    peaks={eegData.peaks[el] ? eegData.peaks[el] : []}
+                    peakIndex={peakIndex}
+                    timeWindow={timeWindow}
+                  />
+                </ChartContainer>
+              </div>
+            )
+          } else {
+            return null
+          }
+        })
+      }
     </div>
   );
 };

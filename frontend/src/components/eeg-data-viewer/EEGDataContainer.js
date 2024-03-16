@@ -3,8 +3,11 @@ import { useEffect, useState } from "react";
 import { fetchEEGperPatient } from "../../api";
 import ChartContainer, { useChartContext } from "../chart-container/chart-container";
 import { AxisBottom } from "../../CommonComponents/AxisBottom";
+import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
 
 import * as d3 from "d3";
+
+import "./eeg-data-viewer.css";
 
 
 const timeWindow = 10000;
@@ -62,8 +65,13 @@ export const EEGDataContainer = ({
 
 
   return (
-    <>
-      <div style={{ width: "100%", height: "5vh", backgroundColor: "white" }}>
+    <div className="eeg-container">
+      <div className="eeg-title">
+        <div title="Previous" onClick={() => timeToFecth('prev')}><TbPlayerTrackPrevFilled /></div>
+        <div><strong>EEGs</strong> <span>{patient.sample}</span></div>
+        <div title="Next" onClick={() => timeToFecth('next')}><TbPlayerTrackNextFilled /></div>
+      </div>
+      <div style={{ width: "100%", height: "4vh", backgroundColor: "white" }}>
         <ChartContainer {...containerProps}>
           <CommonAxisWrapper
             xTicks={[startTime, startTime + timeWindow]}
@@ -71,22 +79,21 @@ export const EEGDataContainer = ({
           />
         </ChartContainer>
       </div>
-
-      {eegData &&
-        <EEGDataViewer
-          sampleName={patient.sample}
-          eegData={eegData}
-          xTicks={[startTime, startTime + timeWindow]}
-          electrodeList={electrodeList}
-          electrodeName={electrodeName}
-          eegInBrain={eegInBrain}
-          setEegInBrain={setEegInBrain}
-          timeToFecth={timeToFecth}
-          timeWindow={timeWindow}
-          eegList={eegList}
-        />
-      }
-    </>
+      <div>
+        {eegData &&
+          <EEGDataViewer
+            eegData={eegData}
+            xTicks={[startTime, startTime + timeWindow]}
+            electrodeList={electrodeList}
+            electrodeName={electrodeName}
+            eegInBrain={eegInBrain}
+            setEegInBrain={setEegInBrain}
+            timeWindow={timeWindow}
+            eegList={eegList}
+          />
+        }
+      </div>
+    </div>
   );
 };
 
@@ -105,6 +112,11 @@ const CommonAxisWrapper = ({ xTicks, timeWindow }) => {
   const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (timeWindow / 5));
   return (
     <g>
+      <text
+        x={-containerProps.ml + 12}
+        y={dimensions.boundedHeight / 2 - 10}
+      ><tspan x={-containerProps.ml + 12} y={dimensions.boundedHeight / 2 - 17} dy=".6em">Time</tspan>
+        <tspan x={-containerProps.ml + 12} y={dimensions.boundedHeight / 2 - 10} dy="1.2em">(ms)</tspan></text>
       <AxisBottom
         xScale={xScale}
         yScale={yScale}

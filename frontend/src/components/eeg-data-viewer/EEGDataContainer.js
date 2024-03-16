@@ -1,9 +1,25 @@
 import { EEGDataViewer } from "./EEGDataViewer";
 import { useEffect, useState } from "react";
 import { fetchEEGperPatient } from "../../api";
+import ChartContainer, { useChartContext } from "../chart-container/chart-container";
+import { AxisBottom } from "../../CommonComponents/AxisBottom";
+import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
+
+import * as d3 from "d3";
+
+import "./eeg-data-viewer.css";
+
 
 const timeWindow = 10000;
-const samples = ['sample1', 'sample2', 'sample3']
+
+const containerProps = {
+  useZoom: false,
+  ml: 50,
+  mr: 25,
+  mb: 0,
+  mt: 0,
+};
+
 export const EEGDataContainer = ({
   patient,
   electrodeList,
@@ -53,31 +69,102 @@ export const EEGDataContainer = ({
   ]);
 
   return (
-    <>
-      {eegData &&
-        <EEGDataViewer
-          sampleName={patient.sample}
-          eegData={eegData}
-          xTicks={[startTime, startTime + timeWindow]}
-          electrodeList={electrodeList}
-          show={viewColor}
-          patchLabels={
-            electrodeData.reduce((result, obj) =>
-              ({ ...result, [obj.electrode_number]: obj.label }), {})
-          }
-          regionLabels={electrodeData.reduce((result, obj) => ({ ...result, [obj.electrode_number]: obj.region }), {})}
-          communityObj={communityData[topPercent][samples.indexOf(sampleName)] !== undefined ?
-            Object.assign({}, ...communityData[topPercent][samples.indexOf(sampleName)].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
-            : null
-          }
-          electrodeName={electrodeName}
-          eegInBrain={eegInBrain}
-          setEegInBrain={setEegInBrain}
-          timeToFecth={timeToFecth}
-          timeWindow={timeWindow}
-          eegList={eegList}
-        />
-      }
-    </>
+    <div className="eeg-container">
+      <div className="eeg-title">
+        <div title="Previous" onClick={() => timeToFecth('prev')}><TbPlayerTrackPrevFilled /></div>
+        <div><strong>EEGs</strong> <span>{patient.sample}</span></div>
+        <div title="Next" onClick={() => timeToFecth('next')}><TbPlayerTrackNextFilled /></div>
+      </div>
+      <div style={{ width: "100%", height: "4vh", backgroundColor: "white" }}>
+        <ChartContainer {...containerProps}>
+          <CommonAxisWrapper
+            xTicks={[startTime, startTime + timeWindow]}
+            timeWindow={timeWindow}
+          />
+        </ChartContainer>
+      </div>
+      <div>
+        {eegData &&
+          <EEGDataViewer
+            eegData={eegData}
+            xTicks={[startTime, startTime + timeWindow]}
+            electrodeList={electrodeList}
+            electrodeName={electrodeName}
+            eegInBrain={eegInBrain}
+            setEegInBrain={setEegInBrain}
+            timeWindow={timeWindow}
+            eegList={eegList}
+          />
+        }
+      </div>
+    </div>
   );
+};
+
+const CommonAxisWrapper = ({ xTicks, timeWindow }) => {
+  const dimensions = useChartContext();
+  const xScale = d3.scaleLinear()
+    .domain([0, timeWindow])
+    .range([0, dimensions.boundedWidth])
+
+  const yScale = d3.scaleLinear()
+    .domain([0, 1])
+    .range([0, dimensions.boundedHeight])
+
+  const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
+  // console.log(xTickText)
+  const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (timeWindow / 5));
+  return (
+    <g>
+      <text
+        x={-containerProps.ml + 12}
+        y={dimensions.boundedHeight / 2 - 10}
+      ><tspan x={-containerProps.ml + 12} y={dimensions.boundedHeight / 2 - 17} dy=".6em">Time</tspan>
+        <tspan x={-containerProps.ml + 12} y={dimensions.boundedHeight / 2 - 10} dy="1.2em">(ms)</tspan></text>
+      <AxisBottom
+        xScale={xScale}
+        yScale={yScale}
+        scaleOffset={5}
+        innerHeight={-35}
+        textPosition={3.85}
+        ticks={xtickvalues}
+        tickText={xTickText}
+      />
+    </g>
+
+  )
+};
+
+const CommonAxisWrapper = ({ xTicks, timeWindow }) => {
+  const dimensions = useChartContext();
+  const xScale = d3.scaleLinear()
+    .domain([0, timeWindow])
+    .range([0, dimensions.boundedWidth])
+
+  const yScale = d3.scaleLinear()
+    .domain([0, 1])
+    .range([0, dimensions.boundedHeight])
+
+  const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
+  // console.log(xTickText)
+  const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (timeWindow / 5));
+  return (
+    <g>
+      <text
+        x={-containerProps.ml + 12}
+        y={dimensions.boundedHeight / 2 - 10}
+      ><tspan x={-containerProps.ml + 12} y={dimensions.boundedHeight / 2 - 17} dy=".6em">Time</tspan>
+        <tspan x={-containerProps.ml + 12} y={dimensions.boundedHeight / 2 - 10} dy="1.2em">(ms)</tspan></text>
+      <AxisBottom
+        xScale={xScale}
+        yScale={yScale}
+        scaleOffset={5}
+        innerHeight={-35}
+        textPosition={3.85}
+        ticks={xtickvalues}
+        tickText={xTickText}
+      />
+    </g>
+
+  )
 };

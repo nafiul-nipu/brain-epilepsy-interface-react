@@ -1,10 +1,7 @@
 import { LinePlot } from "../../CommonComponents/LinePlot";
 import ChartContainer, { useChartContext } from "../chart-container/chart-container";
-import { useRef, useState, useEffect } from 'react';
-import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
+import { useRef } from 'react';
 import "./eeg-data-viewer.css";
-import { AxisBottom } from "../../CommonComponents/AxisBottom";
-import { AxisLeft } from "../../CommonComponents/AxisLeft";
 import * as d3 from "d3";
 
 const containerProps = {
@@ -44,14 +41,12 @@ const catColor = {
   14: "#00A5E3",
 }
 export const EEGDataViewer = ({
-  sampleName,
   eegData,
   xTicks,
   electrodeList,
   electrodeName,
   eegInBrain,
   setEegInBrain,
-  timeToFecth,
   timeWindow,
   eegList,
   show,
@@ -67,8 +62,6 @@ export const EEGDataViewer = ({
 
   const containerRef = useRef(null);
   const itemRefs = useRef([]);
-
-  const [axisDimensions, setAxisDimensions] = useState(null);
 
   const extents = Object.keys(eegData.eeg)
     .map(key => [Math.min(...eegData.eeg[key]), Math.max(...eegData.eeg[key])])
@@ -103,100 +96,50 @@ export const EEGDataViewer = ({
   // console.log(eegList)
   // console.log(sortedElectrodes)
 
-  let xScale, yLineScale;
-  if (axisDimensions) {
-    xScale = d3.scaleLinear()
-      .domain([0, timeWindow])
-      .range([0, axisDimensions.boundedWidth]);
-
-    yLineScale = d3.scaleLinear()
-      .domain(yDomain)
-      .range([axisDimensions.boundedHeight, 0])
-  }
-
-  const startTickText = xTicks[0];
-  const endTickText = xTicks[xTicks.length - 1];
-  const xTickText = [startTickText, endTickText];
-  const xtickvalues = [0, timeWindow];
 
   return (
-    <div className="eeg-container">
-      <div className="eeg-title">
-        <div title="Previous" onClick={() => timeToFecth('prev')}><TbPlayerTrackPrevFilled /></div>
-        <div><strong>EEGs</strong> <span>{sampleName}</span></div>
-        <div title="Next" onClick={() => timeToFecth('next')}><TbPlayerTrackNextFilled /></div>
-      </div>
-
-      {axisDimensions && (
-        <svg x={0}
-          y={0}
-          width={axisDimensions.width} height="25">
-          <g
-            transform={`translate(${axisDimensions.marginLeft}, ${axisDimensions.marginTop}) scale(1)`}
-          >
-            <AxisBottom
-              xScale={xScale}
-              yScale={yLineScale}
-              scaleOffset={5}
-              innerHeight={5}
-              textPosition={3.85}
-              ticks={xtickvalues}
-              tickText={xTickText}
-            />
-          </g>
-        </svg>
-      )}
-
-      <div className="eeg-list" ref={containerRef}>
-        {
-          sortedElectrodes.map((el, i) => {
-            if (eegData.eeg[el] !== undefined && eegData.eeg[el].length > 0) {
-              // count++;
-              return (
-                <div
-                  style={{
-                    height: '5vh',
-                    boxShadow: eegInBrain === el ? "0 0 10px 5px #000000" : "none"
-                  }}
-                  ref={el => itemRefs.current[i] = el}
-                  key={i}
-                  onClick={() => onEEGClick(el)}
-                >
-                  {/* <div className="electrodeEEGNameDiv">{`E${el}`} </div> */}
-                  <ChartContainer {...containerProps} key={i}>
-                    <EEGChartWrapper
-                      data={eegData.eeg[el]}
-                      electrodeList={electrodeList}
-                      electrodeName={electrodeName}
-                      currenElectrode={el}
-                      yDomain={yDomain}
-                      xTicks={xTicks}
-                      peaks={eegData.peaks[el] ? eegData.peaks[el] : []}
-                      peakIndex={peakIndex}
-                      timeWindow={timeWindow}
-                      axisDimensions={axisDimensions}
-                      setAxisDimensions={setAxisDimensions}
-                      show={show}
-                      patchLabels={patchLabels}
-                      regionLabels={regionLabels}
-                      communityObj={communityObj}
-                    />
-                  </ChartContainer>
-                </div>
-              )
-            } else {
-              return null
-            }
-          })
-        }
-      </div>
+    <div className="eeg-list" ref={containerRef}>
+      {
+        sortedElectrodes.map((el, i) => {
+          if (eegData.eeg[el] !== undefined && eegData.eeg[el].length > 0) {
+            // count++;
+            return (
+              <div
+                style={{
+                  height: '4vh',
+                  boxShadow: eegInBrain === el ? "0 0 10px 5px #000000" : "none"
+                }}
+                ref={el => itemRefs.current[i] = el}
+                key={i}
+                onClick={() => onEEGClick(el)}
+              >
+                {/* <div className="electrodeEEGNameDiv">{`E${el}`} </div> */}
+                <ChartContainer {...containerProps} key={i}>
+                  <EEGChartWrapper
+                    data={eegData.eeg[el]}
+                    electrodeList={electrodeList}
+                    electrodeName={electrodeName}
+                    currenElectrode={el}
+                    yDomain={yDomain}
+                    xTicks={xTicks}
+                    peaks={eegData.peaks[el] ? eegData.peaks[el] : []}
+                    peakIndex={peakIndex}
+                    timeWindow={timeWindow}
+                  />
+                </ChartContainer>
+              </div>
+            )
+          } else {
+            return null
+          }
+        })
+      }
     </div>
   );
 };
 
 
-const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, yDomain, xTicks, peaks, peakIndex, timeWindow, axisDimensions, setAxisDimensions, show, patchLabels,
-  regionLabels, communityObj }) => {
+const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, yDomain, xTicks, peaks, peakIndex, timeWindow }) => {
   // console.log(currenElectrode)
   // console.log(electrodeList)
   // console.log(electrodeName[electrodeList.indexOf(currenElectrode)])
@@ -206,70 +149,6 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
   // console.log(xTicks)
   const dimensions = useChartContext();
 
-  useEffect(() => {
-    // prevent over rendering
-    if (dimensions && JSON.stringify(dimensions) !== JSON.stringify(axisDimensions)) {
-      setAxisDimensions(dimensions);
-    }
-  }, [dimensions]);
-
-  // Function to generate regions from patchLabels
-  const generateRegionsFromLabels = (regionLabels) => {
-    let regions = {};
-    let currentRegion = null;
-    Object.entries(regionLabels).forEach(([electrode, label]) => {
-      if (label !== currentRegion) {
-        currentRegion = label;
-      }
-      regions[electrode] = currentRegion;
-    });
-    return regions;
-  };
-
-  // Assign colors to each unique region
-  const assignColorsToRegions = (regions) => {
-    const uniqueRegions = new Set(Object.values(regions));
-    const colorMap = new Map();
-
-    let colorIndex = 0;
-
-    uniqueRegions.forEach(region => {
-      colorMap.set(region, colorslist[colorIndex % colorslist.length]);
-      colorIndex++;
-    });
-
-    return colorMap;
-  };
-
-  // setting color based on the dropdown value
-  const eegLineColor = (() => {
-    if (show === 'patch') {
-      const labelValue = patchLabels[currenElectrode];
-      if (labelValue !== undefined) {
-        return colorslist[labelValue];
-      }
-    }
-
-    if (show === 'regions') {
-      const regions = generateRegionsFromLabels(regionLabels);
-      const regionColorMap = assignColorsToRegions(regions);
-
-      const region = regions[currenElectrode];
-      if (region !== undefined) {
-        return regionColorMap.get(region);
-      }
-    }
-
-    if (show === 'communities') {
-      const community = communityObj[currenElectrode];
-      if (community !== undefined) {
-        return catColor[community];
-      }
-    }
-
-    return "#137B80"; // green
-  })();
-
   const xScale = d3.scaleLinear()
     .domain([0, timeWindow])
     .range([0, dimensions.boundedWidth])
@@ -277,6 +156,15 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
   const yLineScale = d3.scaleLinear()
     .domain(yDomain)
     .range([dimensions.boundedHeight, 0])
+
+  // const yTicks = yLineScale.ticks();
+  // const tickValues = [yTicks[0], yTicks[yTicks.length - 1]];
+
+  // const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
+  // // console.log(xTickText)
+  // const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (timeWindow / 5));
+
+
 
   return (
     <g>

@@ -11,7 +11,7 @@ import "./eeg-data-viewer.css";
 
 
 const timeWindow = 10000;
-
+const samples = ['sample1', 'sample2', 'sample3']
 const containerProps = {
   useZoom: false,
   ml: 50,
@@ -94,6 +94,16 @@ export const EEGDataContainer = ({
             setEegInBrain={setEegInBrain}
             timeWindow={timeWindow}
             eegList={eegList}
+            show={viewColor}
+            patchLabels={
+              electrodeData.reduce((result, obj) =>
+                ({ ...result, [obj.electrode_number]: obj.label }), {})
+            }
+            regionLabels={electrodeData.reduce((result, obj) => ({ ...result, [obj.electrode_number]: obj.region }), {})}
+            communityObj={communityData[topPercent][samples.indexOf(sampleName)] !== undefined ?
+              Object.assign({}, ...communityData[topPercent][samples.indexOf(sampleName)].communities.map(({ community, members }) => Object.fromEntries(members.map(value => [value, community]))))
+              : null
+            }
           />
         }
       </div>

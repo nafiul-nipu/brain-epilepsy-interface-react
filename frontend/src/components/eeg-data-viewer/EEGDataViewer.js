@@ -125,6 +125,10 @@ export const EEGDataViewer = ({
                     peaks={eegData.peaks[el] ? eegData.peaks[el] : []}
                     peakIndex={peakIndex}
                     timeWindow={timeWindow}
+                    show={show}
+                    patchLabels={patchLabels}
+                    regionLabels={regionLabels}
+                    communityObj={communityObj}
                   />
                 </ChartContainer>
               </div>
@@ -139,7 +143,8 @@ export const EEGDataViewer = ({
 };
 
 
-const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, yDomain, xTicks, peaks, peakIndex, timeWindow }) => {
+const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, yDomain, xTicks, peaks, peakIndex, timeWindow, show,
+  patchLabels, regionLabels, communityObj }) => {
   // console.log(currenElectrode)
   // console.log(electrodeList)
   // console.log(electrodeName[electrodeList.indexOf(currenElectrode)])
@@ -163,9 +168,65 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
   // const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
   // // console.log(xTickText)
   // const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (timeWindow / 5));
+  
+  // Function to generate regions from patchLabels
+  const generateRegionsFromLabels = (regionLabels) => {
+    let regions = {};
+    let currentRegion = null;
+    Object.entries(regionLabels).forEach(([electrode, label]) => {
+      if (label !== currentRegion) {
+        currentRegion = label;
+      }
+      regions[electrode] = currentRegion;
+    });
+    return regions;
+  };
 
+  // Assign colors to each unique region
+  const assignColorsToRegions = (regions) => {
+    const uniqueRegions = new Set(Object.values(regions));
+    const colorMap = new Map();
 
+    let colorIndex = 0;
 
+    uniqueRegions.forEach(region => {
+      colorMap.set(region, colorslist[colorIndex % colorslist.length]);
+      colorIndex++;
+    });
+
+    return colorMap;
+  };
+
+  // setting color based on the dropdown value
+  const eegLineColor = (() => {
+
+    if (show === 'patch') {
+      const labelValue = patchLabels[currenElectrode];
+      if (labelValue !== undefined) {
+        return colorslist[labelValue];
+      }
+    }
+
+    if (show === 'regions') {
+      const regions = generateRegionsFromLabels(regionLabels);
+      const regionColorMap = assignColorsToRegions(regions);
+
+      const region = regions[currenElectrode];
+      if (region !== undefined) {
+        return regionColorMap.get(region);
+      }
+    }
+
+    if (show === 'communities') {
+      const community = communityObj[currenElectrode];
+      if (community !== undefined) {
+        return catColor[community];
+      }
+    }
+
+    return "#137B80"; // green
+  })();
+  console.log(eegLineColor, '////')
   return (
     <g>
       <text
@@ -210,7 +271,7 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
                 cx={xScale(index)}
                 cy={yLineScale(data[index])}
                 r={3}
-                fill='black'
+                fill='#333'
               /><title>{`Time: ${el.time}`}</title>
             </g>
           )

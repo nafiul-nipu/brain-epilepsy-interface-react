@@ -168,7 +168,7 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
   // const xTickText = Array.from({ length: 6 }, (_, i) => xTicks[0] + i * ((xTicks[1] - xTicks[0]) / 5));
   // // console.log(xTickText)
   // const xtickvalues = Array.from({ length: 6 }, (_, i) => 0 + i * (timeWindow / 5));
-  
+
   // Function to generate regions from patchLabels
   const generateRegionsFromLabels = (regionLabels) => {
     let regions = {};
@@ -226,7 +226,7 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
 
     return "#137B80"; // green
   })();
-  
+
   return (
     <g>
       <text
@@ -271,7 +271,7 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
                 cx={xScale(index)}
                 cy={yLineScale(data[index])}
                 r={3}
-                fill='#333'
+                fill={show !== 'na' ? 'black' : 'red'}
               /><title>{`Time: ${el.time}`}</title>
             </g>
           )

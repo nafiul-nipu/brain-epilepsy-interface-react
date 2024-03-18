@@ -75,7 +75,7 @@ export const EEGDataContainer = ({
         <div><strong>EEGs</strong> <span>{patient.sample}</span></div>
         <div title="Next" onClick={() => timeToFecth('next')}><TbPlayerTrackNextFilled /></div>
       </div>
-      <div style={{ width: "100%", height: "4vh", backgroundColor: "white" }}>
+      <div style={{ width: "100%", height: "5vh", backgroundColor: "white" }}>
         <ChartContainer {...containerProps}>
           <CommonAxisWrapper
             xTicks={[startTime, startTime + timeWindow]}
@@ -131,8 +131,8 @@ const CommonAxisWrapper = ({ xTicks, timeWindow }) => {
       <text
         x={-containerProps.ml + 12}
         y={dimensions.boundedHeight / 2 - 10}
-      ><tspan x={-containerProps.ml + 12} y={dimensions.boundedHeight / 2 - 17} dy=".6em">Time</tspan>
-        <tspan x={-containerProps.ml + 12} y={dimensions.boundedHeight / 2 - 10} dy="1.2em">(ms)</tspan></text>
+      ><tspan x={-containerProps.ml + 8} y={dimensions.boundedHeight / 2 - 12} dy=".6em">Time</tspan>
+        <tspan x={-containerProps.ml + 10} y={dimensions.boundedHeight / 2 - 6} dy="1.2em">(ms)</tspan></text>
       <AxisBottom
         xScale={xScale}
         yScale={yScale}

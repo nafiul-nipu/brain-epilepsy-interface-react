@@ -20,6 +20,7 @@ import { useSamplePropagation } from "./library/useSamplePropagation"
 import { RegionSummary } from "./components/region-summary/RegionSummary";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
 import { PatchSummary } from "./components/region-summary/PatchSummary";
+import { SpikeSummary } from "./components/region-summary/SpikeSummary";
 import { useCommunity } from "./library/useCommunity";
 import { useAllNetwork } from "./library/useAllNetwork";
 import { PatchNetwork } from "./components/patch-network/PatchNetwork";
@@ -236,6 +237,7 @@ function App() {
             <Tabs variant="enclosed" colorScheme="green" size='sm' style={{ padding: 0 }}>
               <TabList>
                 <Tab>EEG</Tab>
+                <Tab>Spikes</Tab>
                 <Tab>Patches</Tab>
                 <Tab>Regions</Tab>
               </TabList>
@@ -260,6 +262,17 @@ function App() {
                       />
                     ) : null}
                   </Col>
+                </TabPanel>
+                <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
+                  {allEventData && patchData && samplePropagationData ? (
+                    <SpikeSummary
+                      patchData={patchData}
+                      samplePropagationData={samplePropagationData}
+                      eventData={allEventData[patientInfo.sample]}
+                      selectedRoi={selectedRoi}
+                      setSelectedRoi={setSelectedRoi}
+                    />
+                  ) : null}
                 </TabPanel>
                 <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
                   {allEventData && patchData && samplePropagationData ? (

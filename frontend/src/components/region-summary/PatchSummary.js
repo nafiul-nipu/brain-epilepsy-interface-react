@@ -27,8 +27,6 @@ export const PatchSummary = ({
     '#C19A6B'
   ]
 
-  const [isSwitchChecked, setIsSwitchChecked] = useState(true);
-
   // circle legend svg and g ref
   const circleSvgRef = useRef(null);
   const circleGRef = useRef(null);
@@ -194,22 +192,6 @@ export const PatchSummary = ({
     .map(item => item.source_counts + item.target_counts)
     .reduce((min, current) => Math.min(min, current), Infinity);
 
-  const initialMinMax = { minSource: Infinity, maxSource: -Infinity, minTarget: Infinity, maxTarget: -Infinity };
-
-  const { minSource, maxSource, minTarget, maxTarget } = samplePropagationData.reduce((acc, item) => {
-    return {
-      minSource: Math.min(acc.minSource, item.source_counts),
-      maxSource: Math.max(acc.maxSource, item.source_counts),
-      minTarget: Math.min(acc.minTarget, item.target_counts),
-      maxTarget: Math.max(acc.maxTarget, item.target_counts),
-    };
-  }, initialMinMax);
-  console.log(minSource, maxSource, minTarget, maxTarget);
-  // switch to show onset or spread
-  const onChangePatchSummary = (checked) => {
-    setIsSwitchChecked(checked);
-  };
-
   // max and min ratio(target counts / source counts) for each electrode
   const minTargetRatio = Math.min(...ratios);
   const maxTargetRatio = Math.max(...ratios);
@@ -217,11 +199,7 @@ export const PatchSummary = ({
   const source_target_lineScale = d3.scaleLog().domain([minTargetRatio, maxTargetRatio]).range([0.7, 1.3]);
   const frequency_lineScale = d3.scaleLinear().domain([0, maxOccurrence - minSum]).range([0, 1]);
 
-  const circleRadius = 18;
   const dynamicCircleRadius = d3.scaleLinear().domain([0, maxOccurrence]).range([12, 20]);
-
-  // biswajit graph 4A Onset and Spread
-  // const dynamicCircleRadius = isSwitchChecked ? d3.scaleLinear().domain([0, maxTarget]).range([2, 20]) : d3.scaleLinear().domain([0, maxSource]).range([2, 20]);
 
   // find max columns and rows in all patches
   const maxDimensions = {
@@ -331,43 +309,16 @@ export const PatchSummary = ({
 
               const circleRadius = dynamicCircleRadius(electrodeValue);
 
-              //Biswajit graph 4A Onset and Spread
-              // const countForRadius = isSwitchChecked ? propagationCounts.target_counts : propagationCounts.source_counts;
-              // const circleRadius = dynamicCircleRadius(countForRadius);
-
               // adjust each electrode x and y position
               const cx = xOffset + columnIndex * (45 + horizontalSpacing) + 23;
               const cy = yOffset + rowIndex * (45 + verticalSpacing) + 20;
 
               // frequency and dynamic Bézier curve keypoint
               const dynamicLength = circleRadius * source_target_lineScale(propagationCounts.target_counts / propagationCounts.source_counts)
-              // const frequencyLength = circleRadius * frequency_lineScale(electrodeValue - propagationCounts.target_counts - propagationCounts.source_counts);
               const frequencyLength = electrodeValue - propagationCounts.target_counts - propagationCounts.source_counts > 0 ? 2 * circleRadius * frequency_lineScale(electrodeValue - propagationCounts.target_counts - propagationCounts.source_counts) : 0;
               const points = CircularCurve(cx, cy, circleRadius, frequencyLength, dynamicLength);
 
               return (
-                // <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
-                //   <g
-                //     onMouseEnter={(e) =>
-                //       handleMouseEnter(
-                //         electrodeId,
-                //         electrodeValue,
-                //         propagationCounts,
-                //         e
-                //       )
-                //     }
-                //     onMouseLeave={handleMouseLeave}
-                //   >
-                //     <circle
-                //       cx={cx}
-                //       cy={cy}
-                //       r={circleRadius}
-                //       fill={electrodeColorList[roiIndex]}
-                //     >
-                //     </circle>
-                //   </g>
-                // </g>
-
                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
                   <g
                     onMouseEnter={(e) =>
@@ -538,6 +489,7 @@ export const PatchSummary = ({
   // legend area setting
   const xCenter = 0;
   const yCenter = 0;
+  const circleRadius = 18;
 
   const max_legendDynamicLength = circleRadius * source_target_lineScale(maxTargetRatio);
   const min_legendDynamicLength = circleRadius * source_target_lineScale(minTargetRatio);
@@ -700,11 +652,7 @@ export const PatchSummary = ({
   )
 
   const minCircleLegendRadius = 8
-  const maxCircleLegendRadius = 15
-
-  // Biswajit graph 4A Onset and Spread legend
-  // const minCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(minTarget) : dynamicCircleRadius(minSource);
-  // const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxTarget) : dynamicCircleRadius(maxSource);
+  const maxCircleLegendRadius = 14
 
   const sizeLegend = (
     <g ref={frequencyGRef}>
@@ -743,7 +691,6 @@ export const PatchSummary = ({
         alignmentBaseline="middle"
       >
         {maxOccurrence}
-        {/* {isSwitchChecked ? maxTarget : maxSource} */}
       </text>
     </g>
   )
@@ -756,11 +703,9 @@ export const PatchSummary = ({
       <Row>
         <Col md="12" style={{ height: "5vh" }}>
           <Row style={{ height: "100%", margin: 0, display: 'flex' }}>
-            {/* <Col md="4" className="summary">Patch Summary<Switch style={{ marginLeft: 20, backgroundColor: isSwitchChecked ? '#007ed3' : '#2ca25f' }} checkedChildren="Onset" unCheckedChildren="Spread" onChange={onChangePatchSummary} defaultChecked /></Col> */}
             <Col md="4" className="summary">Patch Summary</Col>
             <Col md="8" className="summary">
               <svg ref={frequencySvgRef} width="50%" height="100%" overflow="visible">
-                {/* {frequencyLegend} */}
                 {sizeLegend}
               </svg>
               <svg ref={circleSvgRef} width="50%" height="100%" overflow="visible">

@@ -25,7 +25,7 @@ export const PatchSummary = ({
     '#006D6F',
     '#C19A6B'
   ]
-  
+
   // frequency area opacity list
   const legendOpacity = [0.3, 0.5, 0.7, 1];
 
@@ -158,13 +158,16 @@ export const PatchSummary = ({
   }
 
   // target and source arc Bézier curve points function
-  const CircularCurve = (cx, cy, radius, dynamicLength) => {
-    // frequency area start and end position x and y
-    const frequencyAngle = 180;
-    const frequencyStartPositionX = cx + radius * Math.cos(frequencyAngle * Math.PI / 180);
-    const frequencyStartPositionY = cy - radius * Math.sin(frequencyAngle * Math.PI / 180);
-    const frequencyEndPositionX = cx;
-    const frequencyEndPositionY = cy + radius;
+  const CircularCurve = (cx, cy, radius, dynamicfrequencyLength, dynamicLength) => {
+    const frequencyKeyPositionX = cx - (radius - dynamicfrequencyLength) * Math.cos(45 * Math.PI / 180);
+    const frequencyKeyPositionY = cy + (radius - dynamicfrequencyLength) * Math.sin(45 * Math.PI / 180);
+
+    const frequencyEndPositionX = frequencyKeyPositionX;
+    const frequencyEndPositionY = cy + Math.sqrt(Math.pow(radius, 2) - Math.pow((radius - dynamicfrequencyLength) * Math.cos(45 * Math.PI / 180), 2));
+
+    const frequencyStartPositionX = cx - Math.sqrt(Math.pow(radius, 2) - Math.pow((radius - dynamicfrequencyLength) * Math.sin(45 * Math.PI / 180), 2));
+    const frequencyStartPositionY = frequencyKeyPositionY;
+
 
     // target and source arc Bézier curve keypoint
     const target_source_keyPositionX = cx + Math.round(dynamicLength * Math.cos(45 * Math.PI / 180));
@@ -176,7 +179,7 @@ export const PatchSummary = ({
     const target_source_startPositionX = cx - Math.round(Math.sqrt(Math.pow(radius, 2) - Math.pow(Math.round(dynamicLength * Math.cos(45 * Math.PI / 180)), 2)));
     const target_source_startPositionY = cy - Math.round(dynamicLength * Math.sin(45 * Math.PI / 180));
 
-    return { frequencyStartPositionX, frequencyStartPositionY, frequencyEndPositionX, frequencyEndPositionY, target_source_keyPositionX, target_source_keyPositionY, target_source_endPositionX, target_source_endPositionY, target_source_startPositionX, target_source_startPositionY }
+    return { frequencyStartPositionX, frequencyStartPositionY, frequencyEndPositionX, frequencyEndPositionY, frequencyKeyPositionX, frequencyKeyPositionY, target_source_keyPositionX, target_source_keyPositionY, target_source_endPositionX, target_source_endPositionY, target_source_startPositionX, target_source_startPositionY }
   }
 
   // find the max frequency number in electrodes
@@ -186,12 +189,17 @@ export const PatchSummary = ({
     .filter(item => item.source_counts !== 0 && item.target_counts !== 0)
     .map(item => item.target_counts / item.source_counts);
 
+  const minSum = samplePropagationData
+    .filter(item => item.source_counts !== 0 && item.target_counts !== 0)
+    .map(item => item.source_counts + item.target_counts)
+    .reduce((min, current) => Math.min(min, current), Infinity);
+
   // max and min ratio(target counts / source counts) for each electrode
   const minTargetRatio = Math.min(...ratios);
   const maxTargetRatio = Math.max(...ratios);
 
   const source_target_lineScale = d3.scaleLog().domain([minTargetRatio, maxTargetRatio]).range([0.7, 1.3]);
-  const frequency_opacityScale = d3.scaleLinear().domain([0, maxOccurrence]).range([0.3, 1]);
+  const frequency_lineScale = d3.scaleLinear().domain([0, maxOccurrence - minSum]).range([0, 1]);
 
   const circleRadius = 18;
   const dynamicCircleRadius = d3.scaleLinear().domain([0, maxOccurrence]).range([12, 20]);
@@ -217,7 +225,7 @@ export const PatchSummary = ({
       maxDimensions.numRowsInSVG = numRowsInSVG;
     }
   });
-  
+
   const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
     const roiMatrix = processedPatchData[roiKey].matrix;
 
@@ -226,27 +234,27 @@ export const PatchSummary = ({
 
     // For finding the rows
     const numRowsInSVG = roiMatrix.length;
-    
+
     const minSpace = 0;
 
     const svgWidth = maxDimensions.columnsPerRow * 45;
     const svgHeight = maxDimensions.numRowsInSVG * 45;
 
     const totalAvailableWidth = svgWidth - (columnsPerRow * 45);
-    const totalAvailableHeight = svgHeight - (numRowsInSVG * 45); 
+    const totalAvailableHeight = svgHeight - (numRowsInSVG * 45);
 
     let horizontalSpacing, verticalSpacing;
 
     if (columnsPerRow > 1) {
-        horizontalSpacing = Math.max(minSpace, totalAvailableWidth / (columnsPerRow - 1));
+      horizontalSpacing = Math.max(minSpace, totalAvailableWidth / (columnsPerRow - 1));
     } else {
-        horizontalSpacing = 0; 
+      horizontalSpacing = 0;
     }
-    
+
     if (numRowsInSVG > 1) {
-        verticalSpacing = Math.max(minSpace, totalAvailableHeight / (numRowsInSVG - 1));
+      verticalSpacing = Math.max(minSpace, totalAvailableHeight / (numRowsInSVG - 1));
     } else {
-        verticalSpacing = 0;
+      verticalSpacing = 0;
     }
 
     const totalMatrixWidth = (columnsPerRow - 1) * horizontalSpacing + columnsPerRow * 45;
@@ -285,7 +293,7 @@ export const PatchSummary = ({
           height="calc(100% - 10px)"
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
         >
-          {roiMatrix.map((rowArray, rowIndex) => {                   
+          {roiMatrix.map((rowArray, rowIndex) => {
             return rowArray.map((electrodeObj, columnIndex) => {
               if (electrodeObj === null) {
                 return null;
@@ -295,25 +303,24 @@ export const PatchSummary = ({
               const electrodePropagation = samplePropagationData.find(
                 (e) => e.electrode_id === Number(electrodeId)
               );
-              
+
               const propagationCounts = electrodePropagation
                 ? electrodePropagation
                 : { electrode_id: Number(electrodeId), source_counts: 0, target_counts: 0 };
 
-              const totalFrequency = Object.values(electrodeObj)[0];
-              const circleRadius = dynamicCircleRadius(totalFrequency);
               const electrodeValue = electrodeObj[electrodeId];
+              const circleRadius = dynamicCircleRadius(electrodeValue);
 
               // adjust each electrode x and y position
               const cx = xOffset + columnIndex * (45 + horizontalSpacing) + 23;
               const cy = yOffset + rowIndex * (45 + verticalSpacing) + 20;
 
-              const electrodeFrequencyOpacity = frequency_opacityScale(electrodeValue);
-
               // frequency and dynamic Bézier curve keypoint
               const dynamicLength = circleRadius * source_target_lineScale(propagationCounts.target_counts / propagationCounts.source_counts)
-              const points = CircularCurve(cx, cy, circleRadius, dynamicLength);
-
+              // const frequencyLength = circleRadius * frequency_lineScale(electrodeValue - propagationCounts.target_counts - propagationCounts.source_counts);
+              const frequencyLength = electrodeValue - propagationCounts.target_counts - propagationCounts.source_counts > 0 ? 2 * circleRadius * frequency_lineScale(electrodeValue - propagationCounts.target_counts - propagationCounts.source_counts) : 0;
+              const points = CircularCurve(cx, cy, circleRadius, frequencyLength, dynamicLength);
+              
               return (
                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
                   <g
@@ -327,16 +334,93 @@ export const PatchSummary = ({
                     }
                     onMouseLeave={handleMouseLeave}
                   >
-                    {/* frequency area */}
-                    <path d={`M ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
-                              Q ${cx} ${cy} ${points.frequencyEndPositionX} ${points.frequencyEndPositionY} 
+                    {/* source counts, target counts, frequency exist */}
+                    {propagationCounts.source_counts && propagationCounts.target_counts && frequencyLength > 0 && (
+                      <>
+                        <path d={`M ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
+                              Q ${points.frequencyKeyPositionX} ${points.frequencyKeyPositionY} ${points.frequencyEndPositionX} ${points.frequencyEndPositionY} 
                               A ${circleRadius} ${circleRadius} 0 0 1 ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
                               Z`}
-                      fill={fillColor}
-                      opacity={electrodeFrequencyOpacity}></path>
+                          fill={fillColor}>
+                        </path>
+                        <path d={`M ${points.target_source_startPositionX} ${points.target_source_startPositionY} 
+                              Q ${points.target_source_keyPositionX} ${points.target_source_keyPositionY} ${points.target_source_endPositionX} ${points.target_source_endPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${points.frequencyEndPositionX} ${points.frequencyEndPositionY} 
+                              Q ${points.frequencyKeyPositionX} ${points.frequencyKeyPositionY} ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${points.target_source_startPositionX} ${points.target_source_startPositionY}
+                              Z`}
+                          fill="#8073ac">
+                        </path>
+                        {dynamicLength >= circleRadius ? (
+                          <path d={`M ${points.target_source_startPositionX} ${points.target_source_startPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${points.target_source_endPositionX} ${points.target_source_endPositionY} 
+                              Q ${points.target_source_keyPositionX} ${points.target_source_keyPositionY} ${points.target_source_startPositionX} ${points.target_source_startPositionY} 
+                              Z`}
+                            fill="#fdb863">
+                          </path>
+                        ) :
+                          <path d={`M ${points.target_source_startPositionX} ${points.target_source_startPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 1 1 ${points.target_source_endPositionX} ${points.target_source_endPositionY} 
+                              Q ${points.target_source_keyPositionX} ${points.target_source_keyPositionY} ${points.target_source_startPositionX} ${points.target_source_startPositionY} 
+                              Z`}
+                            fill="#fdb863">
+                          </path>}
+                      </>
+                    )}
 
-                    {/* source counts and target counts both exist */}
-                    {propagationCounts.source_counts && propagationCounts.target_counts && (
+                    {/* if only have target counts and frequency exist */}
+                    {propagationCounts.source_counts === 0 && propagationCounts.target_counts && frequencyLength > 0 && (
+                      <>
+                        <path d={`M ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
+                              Q ${points.frequencyKeyPositionX} ${points.frequencyKeyPositionY} ${points.frequencyEndPositionX} ${points.frequencyEndPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
+                              Z`}
+                          fill={fillColor}>
+                        </path>
+                        <path d={`M ${points.frequencyStartPositionX} ${points.frequencyStartPositionY}
+                                A ${circleRadius} ${circleRadius} 0 1 1 ${points.frequencyEndPositionX} ${points.frequencyEndPositionY} 
+                                Q ${points.frequencyKeyPositionX} ${points.frequencyKeyPositionY} ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
+                                Z`}
+                          fill="#fdb863"></path>
+                      </>
+
+                    )}
+
+                    {/* if only have source counts and frequency exist */}
+                    {propagationCounts.source_counts && propagationCounts.target_counts === 0 && frequencyLength > 0 && (
+                      <>
+                        <path d={`M ${points.frequencyStartPositionX} ${points.frequencyStartPositionY}
+                                A ${circleRadius} ${circleRadius} 0 1 1 ${points.frequencyEndPositionX} ${points.frequencyEndPositionY} 
+                                Q ${points.frequencyKeyPositionX} ${points.frequencyKeyPositionY} ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
+                                Z`}
+                          fill="#fdb863"></path>
+                        <path d={`M ${points.frequencyStartPositionX} ${points.frequencyStartPositionY}
+                                A ${circleRadius} ${circleRadius} 0 1 1 ${points.frequencyEndPositionX} ${points.frequencyEndPositionY} 
+                                Q ${points.frequencyKeyPositionX} ${points.frequencyKeyPositionY} ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
+                                Z`}
+                          fill="#8073ac"></path>
+                      </>
+
+                    )}
+
+                    {/* if both counts both not exist but frequency exist */}
+                    {propagationCounts.source_counts === 0 && propagationCounts.target_counts === 0 && frequencyLength > 0 && (
+                      <>
+                        <path d={`M ${points.frequencyStartPositionX} ${points.frequencyStartPositionY}
+                                A ${circleRadius} ${circleRadius} 0 1 1 ${points.frequencyEndPositionX} ${points.frequencyEndPositionY} 
+                                Q ${cx} ${cy} ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
+                                Z`}
+                          fill="#fdb863"></path>
+                        <path d={`M ${points.frequencyStartPositionX} ${points.frequencyStartPositionY}
+                                A ${circleRadius} ${circleRadius} 0 1 1 ${points.frequencyEndPositionX} ${points.frequencyEndPositionY} 
+                                Q ${cx} ${cy} ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
+                                Z`}
+                          fill="#A9A9A9"></path>
+                      </>
+                    )}
+
+                    {/* source counts, target counts, frequency not exist */}
+                    {propagationCounts.source_counts && propagationCounts.target_counts && frequencyLength === 0 && (
                       <>
                         <path d={`M ${points.target_source_startPositionX} ${points.target_source_startPositionY} 
                               Q ${points.target_source_keyPositionX} ${points.target_source_keyPositionY} ${points.target_source_endPositionX} ${points.target_source_endPositionY} 
@@ -363,31 +447,37 @@ export const PatchSummary = ({
                       </>
                     )}
 
-                    {/* if only have target counts */}
-                    {propagationCounts.source_counts === 0 && propagationCounts.target_counts && (
-                      <path d={`M ${points.frequencyStartPositionX} ${points.frequencyStartPositionY}
-                                A ${circleRadius} ${circleRadius} 0 1 1 ${points.frequencyEndPositionX} ${points.frequencyEndPositionY} 
-                                Q ${cx} ${cy} ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
-                                Z`}
-                        fill="#fdb863"></path>
+                    {/* if only have target counts and frequency not exist */}
+                    {propagationCounts.source_counts === 0 && propagationCounts.target_counts && frequencyLength === 0 && (
+                      <circle
+                        cx={cx}
+                        cy={cy}
+                        r={circleRadius}
+                        fill="#fdb863"
+                      >
+                      </circle>
                     )}
 
-                    {/* if only have source counts */}
-                    {propagationCounts.source_counts && propagationCounts.target_counts === 0 && (
-                      <path d={`M ${points.frequencyStartPositionX} ${points.frequencyStartPositionY}
-                                A ${circleRadius} ${circleRadius} 0 1 1 ${points.frequencyEndPositionX} ${points.frequencyEndPositionY} 
-                                Q ${cx} ${cy} ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
-                                Z`}
-                        fill="#8073ac"></path>
+                    {/* if only have source counts and frequency not exist */}
+                    {propagationCounts.source_counts && propagationCounts.target_counts === 0 && frequencyLength === 0 && (
+                      <circle
+                        cx={cx}
+                        cy={cy}
+                        r={circleRadius}
+                        fill="#8073ac"
+                      >
+                      </circle>
                     )}
 
-                    {/* if both counts both not exist */}
-                    {propagationCounts.source_counts === 0 && propagationCounts.target_counts === 0 && (
-                      <path d={`M ${points.frequencyStartPositionX} ${points.frequencyStartPositionY}
-                                A ${circleRadius} ${circleRadius} 0 1 1 ${points.frequencyEndPositionX} ${points.frequencyEndPositionY} 
-                                Q ${cx} ${cy} ${points.frequencyStartPositionX} ${points.frequencyStartPositionY} 
-                                Z`}
-                        fill="#A9A9A9"></path>
+                    {/* if nothing exist */}
+                    {propagationCounts.source_counts === 0 && propagationCounts.target_counts === 0 && frequencyLength === 0 && (
+                      <circle
+                        cx={cx}
+                        cy={cy}
+                        r={circleRadius}
+                        fill="#A9A9A9"
+                      >
+                      </circle>
                     )}
                   </g>
                 </g>
@@ -406,8 +496,8 @@ export const PatchSummary = ({
   const max_legendDynamicLength = circleRadius * source_target_lineScale(maxTargetRatio);
   const min_legendDynamicLength = circleRadius * source_target_lineScale(minTargetRatio);
 
-  const legendMaxPoints = CircularCurve(xCenter, yCenter, circleRadius, max_legendDynamicLength);
-  const legendMinPoints = CircularCurve(xCenter, yCenter, circleRadius, min_legendDynamicLength);
+  const legendMaxPoints = CircularCurve(xCenter, yCenter, circleRadius, 20, max_legendDynamicLength);
+  const legendMinPoints = CircularCurve(xCenter, yCenter, circleRadius, 20, min_legendDynamicLength);
 
   const circleLegend = (
     <g ref={circleGRef}>
@@ -562,31 +652,50 @@ export const PatchSummary = ({
       </text>
     </g>
   )
+  
+  const minCircleLegendRadius = 8
+  const maxCircleLegendRadius = 15
 
-  // frequency legend area setting
-  const frequencyLegend = (
+  const sizeLegend = (
     <g ref={frequencyGRef}>
-      {legendOpacity.map((item, index) => {
-        let frequencyLegendXPosition = xCenter + index * 25;
-        let frequencyLegendItemPoints = CircularCurve(frequencyLegendXPosition, yCenter, circleRadius, circleRadius * source_target_lineScale(maxTargetRatio));
-        return (
-          <React.Fragment key={index}>
-            <path d={`M ${frequencyLegendItemPoints.frequencyStartPositionX} ${frequencyLegendItemPoints.frequencyStartPositionY} 
-                    Q ${frequencyLegendXPosition} ${yCenter} ${frequencyLegendItemPoints.frequencyEndPositionX} ${frequencyLegendItemPoints.frequencyEndPositionY} 
-                    A ${circleRadius} ${circleRadius} 0 0 1 ${frequencyLegendItemPoints.frequencyStartPositionX} ${frequencyLegendItemPoints.frequencyStartPositionY} 
-                    Z`}
-              key={index}
-              fill={electrodeColorList[0]}
-              opacity={item}
-            >
-            </path>
-            <text className="frequencyLegendText" x={(frequencyLegendItemPoints.frequencyStartPositionX + frequencyLegendItemPoints.frequencyEndPositionX) / 2 - 8} y={yCenter + circleRadius + 12}>{Math.round(maxOccurrence * item)}</text>
-          </React.Fragment>
-        )
-      })}
+      <circle cx={xCenter} cy={yCenter + maxCircleLegendRadius - minCircleLegendRadius} r={minCircleLegendRadius} fill="none" stroke="black" strokeWidth={0.5}></circle>
+      <line
+        x1={xCenter}
+        x2={xCenter + maxCircleLegendRadius + 30}
+        y1={yCenter + maxCircleLegendRadius - 2 * minCircleLegendRadius}
+        y2={yCenter + maxCircleLegendRadius - 2 * minCircleLegendRadius}
+        stroke="black"
+        strokeWidth={1}
+        strokeDasharray={"1,1"}
+      />
+      <text
+        x={xCenter + maxCircleLegendRadius + 30}
+        y={yCenter + maxCircleLegendRadius - 2 * minCircleLegendRadius}
+        fontSize={10}
+        alignmentBaseline="middle"
+      >
+        0
+      </text>
+      <circle cx={xCenter} cy={yCenter} r={maxCircleLegendRadius} fill="none" stroke="black" strokeWidth={0.5}></circle>
+      <line
+        x1={xCenter}
+        x2={xCenter + maxCircleLegendRadius + 30}
+        y1={yCenter - maxCircleLegendRadius}
+        y2={yCenter - maxCircleLegendRadius}
+        stroke="black"
+        strokeWidth={1}
+        strokeDasharray={"1,1"}
+      />
+      <text
+        x={xCenter + maxCircleLegendRadius + 30}
+        y={yCenter - maxCircleLegendRadius}
+        fontSize={10}
+        alignmentBaseline="middle"
+      >
+        {maxOccurrence}
+      </text>
     </g>
   )
-
   return (
     <Col
       md="12"
@@ -599,7 +708,8 @@ export const PatchSummary = ({
             <Col md="3" className="summary">Patch Summary</Col>
             <Col md="9" className="summary">
               <svg ref={frequencySvgRef} width="50%" height="100%" overflow="visible">
-                {frequencyLegend}
+                {/* {frequencyLegend} */}
+                {sizeLegend}
               </svg>
               <svg ref={circleSvgRef} width="50%" height="100%" overflow="visible">
                 {circleLegend}

@@ -226,7 +226,7 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
 
     return "#137B80"; // green
   })();
-  console.log(eegLineColor, '////')
+  
   return (
     <g>
       <text

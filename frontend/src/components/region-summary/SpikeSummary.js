@@ -79,7 +79,7 @@ export const SpikeSummary = ({
     ) => {
         setTooltip({
             visible: true,
-            content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue}\n Source\u00A0counts: ${propagationCounts.source_counts}\n Target\u00A0counts: ${propagationCounts.target_counts}`,
+            content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue}\n Onset\u00A0counts: ${propagationCounts.source_counts}\n Spread\u00A0counts: ${propagationCounts.target_counts}`,
             x: e.clientX - 150,
             y: e.clientY + 50,
         });
@@ -346,6 +346,14 @@ export const SpikeSummary = ({
 
     const sizeLegend = (
         <g ref={frequencyGRef}>
+            <text
+                x={xCenter - 65}
+                y={yCenter}
+                fontSize={12}
+                alignmentBaseline="middle"
+            >
+                {isSwitchChecked ? "Onset :" : "Spread :"}
+            </text>
             <circle cx={xCenter} cy={yCenter + maxCircleLegendRadius - minCircleLegendRadius} r={minCircleLegendRadius} fill="none" stroke="black" strokeWidth={0.5}></circle>
             <line
                 x1={xCenter}

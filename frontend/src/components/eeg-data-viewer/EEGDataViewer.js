@@ -129,6 +129,7 @@ export const EEGDataViewer = ({
                     patchLabels={patchLabels}
                     regionLabels={regionLabels}
                     communityObj={communityObj}
+                    eegList={eegList}
                   />
                 </ChartContainer>
               </div>
@@ -144,7 +145,7 @@ export const EEGDataViewer = ({
 
 
 const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, yDomain, xTicks, peaks, peakIndex, timeWindow, show,
-  patchLabels, regionLabels, communityObj }) => {
+  patchLabels, regionLabels, communityObj, eegList }) => {
   // console.log(currenElectrode)
   // console.log(electrodeList)
   // console.log(electrodeName[electrodeList.indexOf(currenElectrode)])
@@ -232,6 +233,7 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
       <text
         x={-containerProps.ml + 8}
         y={dimensions.boundedHeight / 2 + 6}
+        fontWeight={eegList?.includes(currenElectrode) ? 'bold' : 'normal'}
       >{electrodeName[electrodeList.indexOf(currenElectrode)]}</text>
       <LinePlot
         data={data}

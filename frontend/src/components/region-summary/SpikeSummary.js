@@ -76,13 +76,12 @@ export const SpikeSummary = ({
     // tooltip controller
     const handleMouseEnter = (
         electrodeId,
-        electrodeValue,
         propagationCounts,
         e
     ) => {
         setTooltip({
             visible: true,
-            content: `Electrode ID: ${electrodeId}\n Frequency: ${electrodeValue}\n Onset\u00A0counts: ${propagationCounts.source_counts}\n Spread\u00A0counts: ${propagationCounts.target_counts}`,
+            content: `Electrode\u00A0ID: ${electrodeId}\n Onset\u00A0counts: ${propagationCounts.sourceCount}\n Spread\u00A0counts: ${propagationCounts.targetCount}`,
             x: e.clientX - 150,
             y: e.clientY + 50,
         });
@@ -121,41 +120,36 @@ export const SpikeSummary = ({
         }
     }
 
-    function findMaxInObject(obj) {
-        let maxVal = -Infinity;
-        function recurse(currentObj) {
-            Object.values(currentObj).forEach((value) => {
-                if (typeof value === "object" && value !== null) {
-                    recurse(value);
-                } else if (typeof value === "number") {
-                    maxVal = Math.max(maxVal, value);
-                }
-            });
-        }
-        recurse(obj);
-        return maxVal;
-    }
-
+    // function findMaxInObject(obj) {
+    //     let maxVal = -Infinity;
+    //     function recurse(currentObj) {
+    //         Object.values(currentObj).forEach((value) => {
+    //             if (typeof value === "object" && value !== null) {
+    //                 recurse(value);
+    //             } else if (typeof value === "number") {
+    //                 maxVal = Math.max(maxVal, value);
+    //             }
+    //         });
+    //     }
+    //     recurse(obj);
+    //     return maxVal;
+    // }
+    // console.log(processedPatchData, 'processedPatchData')
     // find the max frequency number in electrodes
-    const maxOccurrence = findMaxInObject(processedPatchData);
+    // const maxOccurrence = findMaxInObject(processedPatchData);
 
-    const ratios = samplePropagationData
-        .filter(item => item.source_counts !== 0 && item.target_counts !== 0)
-        .map(item => item.target_counts / item.source_counts);
-
-    const minSum = samplePropagationData
-        .filter(item => item.source_counts !== 0 && item.target_counts !== 0)
-        .map(item => item.source_counts + item.target_counts)
-        .reduce((min, current) => Math.min(min, current), Infinity);
+    // const ratios = samplePropagationData
+    //     .filter(item => item.source_counts !== 0 && item.target_counts !== 0)
+    //     .map(item => item.target_counts / item.source_counts);
 
     const initialMinMax = { minSource: Infinity, maxSource: -Infinity, minTarget: Infinity, maxTarget: -Infinity };
 
     const { minSource, maxSource, minTarget, maxTarget } = samplePropagationData.reduce((acc, item) => {
         return {
-            minSource: Math.min(acc.minSource, item.source_counts),
-            maxSource: Math.max(acc.maxSource, item.source_counts),
-            minTarget: Math.min(acc.minTarget, item.target_counts),
-            maxTarget: Math.max(acc.maxTarget, item.target_counts),
+            minSource: Math.min(acc.minSource, item.sourceCount),
+            maxSource: Math.max(acc.maxSource, item.sourceCount),
+            minTarget: Math.min(acc.minTarget, item.targetCount),
+            maxTarget: Math.max(acc.maxTarget, item.targetCount),
         };
     }, initialMinMax);
 
@@ -165,13 +159,13 @@ export const SpikeSummary = ({
     };
 
     // max and min ratio(target counts / source counts) for each electrode
-    const minTargetRatio = Math.min(...ratios);
-    const maxTargetRatio = Math.max(...ratios);
+    // const minTargetRatio = Math.min(...ratios);
+    // const maxTargetRatio = Math.max(...ratios);
 
-    const source_target_lineScale = d3.scaleLog().domain([minTargetRatio, maxTargetRatio]).range([0.7, 1.3]);
-    const frequency_lineScale = d3.scaleLinear().domain([0, maxOccurrence - minSum]).range([0, 1]);
+    // const source_target_lineScale = d3.scaleLog().domain([minTargetRatio, maxTargetRatio]).range([0.7, 1.3]);
+    // const frequency_lineScale = d3.scaleLinear().domain([0, maxOccurrence - minSum]).range([0, 1]);
 
-    const dynamicCircleRadius = isSwitchChecked ? d3.scaleLinear().domain([minSource, maxSource]).range([2, 20]) : d3.scaleLinear().domain([minTarget, maxTarget]).range([2, 20]);
+    const dynamicCircleRadius = isSwitchChecked ? d3.scaleLinear().domain([minSource, maxSource]).range([2, 15]) : d3.scaleLinear().domain([minTarget, maxTarget]).range([2, 12]);
 
     // find max columns and rows in all patches
     const maxDimensions = {
@@ -273,10 +267,10 @@ export const SpikeSummary = ({
 
                             const propagationCounts = electrodePropagation
                                 ? electrodePropagation
-                                : { electrode_id: Number(electrodeId), source_counts: 0, target_counts: 0 };
+                                : { electrode_id: Number(electrodeId), sourceCount: 0, targetCount: 0 };
 
-                            const electrodeValue = electrodeObj[electrodeId];
-                            const countForRadius = isSwitchChecked ? propagationCounts.target_counts : propagationCounts.source_counts;
+                            // const electrodeValue = electrodeObj[electrodeId];
+                            const countForRadius = isSwitchChecked ? propagationCounts.targetCount : propagationCounts.sourceCount;
                             const circleRadius = dynamicCircleRadius(countForRadius);
 
                             // adjust each electrode x and y position
@@ -289,7 +283,6 @@ export const SpikeSummary = ({
                                         onMouseEnter={(e) =>
                                             handleMouseEnter(
                                                 electrodeId,
-                                                electrodeValue,
                                                 propagationCounts,
                                                 e
                                             )
@@ -319,12 +312,12 @@ export const SpikeSummary = ({
 
     // Biswajit graph 4A Onset and Spread legend
     const minCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(minTarget) : dynamicCircleRadius(minSource);
-    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxTarget) - 5 : dynamicCircleRadius(maxSource) - 5;
+    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxTarget): dynamicCircleRadius(maxSource);
 
     const sizeLegend = (
         <g ref={frequencyGRef}>
             <text
-                x={xCenter - 65}
+                x={isSwitchChecked ? xCenter - 60 : xCenter - 70}
                 y={yCenter}
                 fontSize={12}
                 alignmentBaseline="middle"
@@ -347,7 +340,7 @@ export const SpikeSummary = ({
                 fontSize={10}
                 alignmentBaseline="middle"
             >
-                0
+                {isSwitchChecked ? minSource : minTarget}
             </text>
             <circle cx={xCenter} cy={yCenter} r={maxCircleLegendRadius} fill="none" stroke="black" strokeWidth={0.5}></circle>
             <line
@@ -380,7 +373,7 @@ export const SpikeSummary = ({
                     <Row style={{ height: "100%", margin: 0, display: 'flex' }}>
                         <Col md="5" className="summary">Patch Summary
                             <Switch style={{ marginLeft: 20, backgroundColor: isSwitchChecked ? '#007ed3' : '#2ca25f' }} checkedChildren="Onset" unCheckedChildren="Spread" onChange={onChangePatchSummary} defaultChecked />
-                            <select id="percent" style={{marginLeft: 20}} value={patchRegionToggle} onChange={changePatchRegion}>
+                            <select id="patchRegionToggle" style={{marginLeft: 20}} value={patchRegionToggle} onChange={changePatchRegion}>
                                 <option value="Patch"> Patch </option>
                                 <option value="Region"> Region </option>
                             </select>

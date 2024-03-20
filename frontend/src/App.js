@@ -265,7 +265,7 @@ function App() {
                   </Col>
                 </TabPanel>
                 <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
-                  {allEventData && patchData && regionData && samplePropagationData ? (
+                  {allEventData && patchData && regionData && samplePropagationData && electrodeDataCsv ? (
                     <SpikeSummary
                       patchData={patchData}
                       regionData={regionData}
@@ -279,24 +279,26 @@ function App() {
                   ) : null}
                 </TabPanel>
                 <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
-                  {allEventData && patchData && samplePropagationData ? (
+                  {allEventData && patchData && samplePropagationData && electrodeDataCsv ? (
                     <PatchSummary
                       patchData={patchData}
                       samplePropagationData={samplePropagationData}
                       eventData={allEventData[patientInfo.sample]}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
+                      electrodeData={electrodeDataCsv}
                     />
                   ) : null}
                 </TabPanel>
                 <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
-                  {allEventData && patchData && samplePropagationData && regionData ? (
+                  {allEventData && patchData && samplePropagationData && regionData && electrodeDataCsv ? (
                     <PatchSummary
                       patchData={regionData}
                       samplePropagationData={samplePropagationData}
                       eventData={allEventData[patientInfo.sample]}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
+                      electrodeData={electrodeDataCsv}
                     />
                   ) : null}
                 </TabPanel>

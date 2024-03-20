@@ -5,27 +5,28 @@ import * as d3 from "d3";
 import { Switch } from 'antd';
 import "./PatchSummary.css";
 
+const electrodeColorList = [
+  '#007ed3',
+  '#FF004F',
+  '#9F8170',
+  '#9400D3',
+  '#FFC40C',
+  '#59260B',
+  '#FE4EDA',
+  '#40E0D0',
+  '#FF4F00',
+  '#006D6F',
+  '#C19A6B'
+]
+
 export const PatchSummary = ({
   patchData,
   eventData,
   selectedRoi,
   setSelectedRoi,
   samplePropagationData,
+  electrodeData
 }) => {
-
-  const electrodeColorList = [
-    '#007ed3',
-    '#FF004F',
-    '#9F8170',
-    '#9400D3',
-    '#FFC40C',
-    '#59260B',
-    '#FE4EDA',
-    '#40E0D0',
-    '#FF4F00',
-    '#006D6F',
-    '#C19A6B'
-  ]
 
   // circle legend svg and g ref
   const circleSvgRef = useRef(null);
@@ -117,6 +118,13 @@ export const PatchSummary = ({
   function patchOnClick(roi) {
     setSelectedRoi(Number(roi));
   }
+
+  const patchLabels = electrodeData.reduce((result, obj) =>
+    ({ ...result, [obj.electrode_number]: obj.label }), {});
+  const regiionLabels = electrodeData.reduce((result, obj) =>
+    ({ ...result, [obj.electrode_number]: obj.region }), {});
+
+  const regions = [...new Set(electrodeData.map(obj => obj.region))];
 
   // getting each electrode frequency
   const processedPatchData = {};
@@ -232,7 +240,7 @@ export const PatchSummary = ({
     const yOffset = (svgHeight - totalMatrixHeight) / 2;
 
     const setBorderColorOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
-
+    // console.log(Number(roiKey), electrodeColorList[Number(roiKey)])
     return (
       <Col
         md="4"
@@ -244,7 +252,9 @@ export const PatchSummary = ({
             selectedRoi === Number(roiKey)
               ? "rgba(202, 204, 202, 0.4)"
               : "white",
-          border: `3px solid ${setBorderColorOpacity(electrodeColorList[roiIndex], 0.5)}`,
+          border: isNaN(Number(roiKey)) ?
+            `3px solid ${setBorderColorOpacity(electrodeColorList[regions.indexOf(roiKey)], 0.5)}` :
+            `3px solid ${setBorderColorOpacity(electrodeColorList[parseInt(roiKey)], 0.5)}`,
         }}
         onClick={() => patchOnClick(roiKey)}
       >

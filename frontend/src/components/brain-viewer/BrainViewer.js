@@ -219,7 +219,7 @@ export const BrainViewer = ({
                                         >
                                             <CustomAxesHelper />
                                             <Text
-                                                position={[100, 0, 0]}
+                                                position={[105, -1, 0]}
                                                 color="#d90429"
                                                 anchorX="center"
                                                 anchorY="middle"
@@ -228,7 +228,7 @@ export const BrainViewer = ({
                                                 X
                                             </Text>
                                             <Text
-                                                position={[0, 100, 0]}
+                                                position={[0, 105, 0]}
                                                 color="#588157"
                                                 anchorX="center"
                                                 anchorY="middle"
@@ -237,7 +237,7 @@ export const BrainViewer = ({
                                                 Y
                                             </Text>
                                             <Text
-                                                position={[0, 0, 100]}
+                                                position={[0, 0, 105]}
                                                 color="#023e8a"
                                                 anchorX="center"
                                                 anchorY="middle"
@@ -334,7 +334,7 @@ export const BrainViewer = ({
                                             >
                                                 <CustomAxesHelper />
                                                 <Text
-                                                    position={[100, 0, 0]}
+                                                    position={[105, -1, 0]}
                                                     color="#d90429"
                                                     anchorX="center"
                                                     anchorY="middle"
@@ -343,7 +343,7 @@ export const BrainViewer = ({
                                                     X
                                                 </Text>
                                                 <Text
-                                                    position={[0, 100, 0]}
+                                                    position={[0, 105, 0]}
                                                     color="#588157"
                                                     anchorX="center"
                                                     anchorY="middle"
@@ -352,7 +352,7 @@ export const BrainViewer = ({
                                                     Y
                                                 </Text>
                                                 <Text
-                                                    position={[0, 0, 100]}
+                                                    position={[0, 0, 105]}
                                                     color="#023e8a"
                                                     anchorX="center"
                                                     anchorY="middle"
@@ -450,7 +450,7 @@ export const BrainViewer = ({
                                                 >
                                                     <CustomAxesHelper />
                                                     <Text
-                                                        position={[100, 0, 0]}
+                                                        position={[105, -1, 0]}
                                                         color="#d90429"
                                                         anchorX="center"
                                                         anchorY="middle"
@@ -459,7 +459,7 @@ export const BrainViewer = ({
                                                         X
                                                     </Text>
                                                     <Text
-                                                        position={[0, 100, 0]}
+                                                        position={[0, 105, 0]}
                                                         color="#588157"
                                                         anchorX="center"
                                                         anchorY="middle"
@@ -468,7 +468,7 @@ export const BrainViewer = ({
                                                         Y
                                                     </Text>
                                                     <Text
-                                                        position={[0, 0, 100]}
+                                                        position={[0, 0, 105]}
                                                         color="#023e8a"
                                                         anchorX="center"
                                                         anchorY="middle"

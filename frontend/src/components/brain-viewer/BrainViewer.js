@@ -1,16 +1,45 @@
 import { Col } from "react-bootstrap";
-import { Canvas } from "@react-three/fiber";
-import { Hud, OrbitControls, PerspectiveCamera, Stats, View } from "@react-three/drei";
+import { Canvas, useThree } from "@react-three/fiber";
+import { Hud, OrbitControls, PerspectiveCamera, Stats, View, Text } from "@react-three/drei";
 import { Suspense, useRef, useState, useEffect } from "react";
 import dataRegisty from '../../data/dataRegistry.json'
 import { BrainLesionLoad } from "./BrainLesionLoad";
 import { ElectrodeLoad } from "./ElectrodeLoad";
 import { Card, Slider, Button } from "antd";
+import * as THREE from 'three';
 import { CreateLineCurve } from "./CreateLineCurve";
 import { NetworkView } from "./NetworkView";
 
 const width = (window.innerWidth / 2) - 10;
 const height = window.innerHeight / 2.3 - 10
+
+const CustomAxesHelper = () => {
+    const { scene } = useThree();
+
+    useEffect(() => {
+        let axes = new THREE.AxesHelper(100);
+
+        //reset axes colors
+        let colors = axes.geometry.attributes.color;
+
+        colors.setXYZ(0, 1, 0, 0);
+        colors.setXYZ(1, 1, 0, 0); // x-axis red
+        
+        colors.setXYZ(2, 0.290, 0.365, 0.137);
+        colors.setXYZ(3, 0.290, 0.365, 0.137); // y-axis green
+
+        colors.setXYZ(4, 0, 0, 1)
+        colors.setXYZ(5, 0, 0, 1); // z-axis blue
+
+        scene.add(axes);
+
+        return () => {
+            scene.remove(axes);
+        };
+    }, [scene]);
+
+    return null;
+};
 
 export const BrainViewer = ({
     patientInformation,
@@ -188,7 +217,34 @@ export const BrainViewer = ({
                                             key={index}
                                             track={views[index]}
                                         >
-                                            <axesHelper args={[100]} />
+                                            <CustomAxesHelper />
+                                            <Text
+                                                position={[100, 0, 0]}
+                                                color="#d90429"
+                                                anchorX="center"
+                                                anchorY="middle"
+                                                fontSize={10}
+                                            >
+                                                X
+                                            </Text>
+                                            <Text
+                                                position={[0, 100, 0]}
+                                                color="#588157"
+                                                anchorX="center"
+                                                anchorY="middle"
+                                                fontSize={10}
+                                            >
+                                                Y
+                                            </Text>
+                                            <Text
+                                                position={[0, 0, 100]}
+                                                color="#023e8a"
+                                                anchorX="center"
+                                                anchorY="middle"
+                                                fontSize={10}
+                                            >
+                                                Z
+                                            </Text>
                                             <PerspectiveCamera
                                                 makeDefault
                                                 position={[-250, -10, 0]}
@@ -269,7 +325,6 @@ export const BrainViewer = ({
                                     ))
                                 }
                                 <Canvas eventSource={containerRef} className="canvas">
-                                    <axesHelper args={[5]} />
                                     {
                                         Object.keys(allnetworks).map((item, index) => (
                                             <View
@@ -277,7 +332,34 @@ export const BrainViewer = ({
                                                 key={index}
                                                 track={views[index]}
                                             >
-                                                <axesHelper args={[100]} />
+                                                <CustomAxesHelper />
+                                                <Text
+                                                    position={[100, 0, 0]}
+                                                    color="#d90429"
+                                                    anchorX="center"
+                                                    anchorY="middle"
+                                                    fontSize={10}
+                                                >
+                                                    X
+                                                </Text>
+                                                <Text
+                                                    position={[0, 100, 0]}
+                                                    color="#588157"
+                                                    anchorX="center"
+                                                    anchorY="middle"
+                                                    fontSize={10}
+                                                >
+                                                    Y
+                                                </Text>
+                                                <Text
+                                                    position={[0, 0, 100]}
+                                                    color="#023e8a"
+                                                    anchorX="center"
+                                                    anchorY="middle"
+                                                    fontSize={10}
+                                                >
+                                                    Z
+                                                </Text>
                                                 <PerspectiveCamera
                                                     makeDefault
                                                     position={[-250, -10, 0]}
@@ -366,7 +448,34 @@ export const BrainViewer = ({
                                                     key={index}
                                                     track={views[index]}
                                                 >
-                                                    <axesHelper args={[100]} />
+                                                    <CustomAxesHelper />
+                                                    <Text
+                                                        position={[100, 0, 0]}
+                                                        color="#d90429"
+                                                        anchorX="center"
+                                                        anchorY="middle"
+                                                        fontSize={10}
+                                                    >
+                                                        X
+                                                    </Text>
+                                                    <Text
+                                                        position={[0, 100, 0]}
+                                                        color="#588157"
+                                                        anchorX="center"
+                                                        anchorY="middle"
+                                                        fontSize={10}
+                                                    >
+                                                        Y
+                                                    </Text>
+                                                    <Text
+                                                        position={[0, 0, 100]}
+                                                        color="#023e8a"
+                                                        anchorX="center"
+                                                        anchorY="middle"
+                                                        fontSize={10}
+                                                    >
+                                                        Z
+                                                    </Text>
                                                     <PerspectiveCamera
                                                         makeDefault
                                                         position={[-250, -10, 0]}
@@ -429,9 +538,36 @@ export const BrainViewer = ({
                                 </div>
                                 :
                                 <Canvas>
-                                    <axesHelper args={[5]} />
                                     <Suspense fallback={null}>
                                         <Hud renderPriority={1}>
+                                            <CustomAxesHelper />
+                                            <Text
+                                                position={[105, -1, 0]}
+                                                color="#d90429"
+                                                anchorX="center"
+                                                anchorY="middle"
+                                                fontSize={10}
+                                            >
+                                                X
+                                            </Text>
+                                            <Text
+                                                position={[0, 105, 0]}
+                                                color="#588157"
+                                                anchorX="center"
+                                                anchorY="middle"
+                                                fontSize={10}
+                                            >
+                                                Y
+                                            </Text>
+                                            <Text
+                                                position={[0, 0, 105]}
+                                                color="#023e8a"
+                                                anchorX="center"
+                                                anchorY="middle"
+                                                fontSize={10}
+                                            >
+                                                Z
+                                            </Text>
                                             <PerspectiveCamera
                                                 makeDefault
                                                 position={[-250, -10, 0]}

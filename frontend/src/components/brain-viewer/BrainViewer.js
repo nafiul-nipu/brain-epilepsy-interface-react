@@ -1,7 +1,7 @@
 import { Col } from "react-bootstrap";
 import { Canvas } from "@react-three/fiber";
 import { Hud, OrbitControls, PerspectiveCamera, Stats, View } from "@react-three/drei";
-import { Suspense, useRef, useState } from "react";
+import { Suspense, useRef, useState, useEffect } from "react";
 import dataRegisty from '../../data/dataRegistry.json'
 import { BrainLesionLoad } from "./BrainLesionLoad";
 import { ElectrodeLoad } from "./ElectrodeLoad";
@@ -188,6 +188,7 @@ export const BrainViewer = ({
                                             key={index}
                                             track={views[index]}
                                         >
+                                            <axesHelper args={[100]} />
                                             <PerspectiveCamera
                                                 makeDefault
                                                 position={[-250, -10, 0]}
@@ -268,6 +269,7 @@ export const BrainViewer = ({
                                     ))
                                 }
                                 <Canvas eventSource={containerRef} className="canvas">
+                                    <axesHelper args={[5]} />
                                     {
                                         Object.keys(allnetworks).map((item, index) => (
                                             <View
@@ -275,6 +277,7 @@ export const BrainViewer = ({
                                                 key={index}
                                                 track={views[index]}
                                             >
+                                                <axesHelper args={[100]} />
                                                 <PerspectiveCamera
                                                     makeDefault
                                                     position={[-250, -10, 0]}
@@ -363,6 +366,7 @@ export const BrainViewer = ({
                                                     key={index}
                                                     track={views[index]}
                                                 >
+                                                    <axesHelper args={[100]} />
                                                     <PerspectiveCamera
                                                         makeDefault
                                                         position={[-250, -10, 0]}
@@ -425,6 +429,7 @@ export const BrainViewer = ({
                                 </div>
                                 :
                                 <Canvas>
+                                    <axesHelper args={[5]} />
                                     <Suspense fallback={null}>
                                         <Hud renderPriority={1}>
                                             <PerspectiveCamera

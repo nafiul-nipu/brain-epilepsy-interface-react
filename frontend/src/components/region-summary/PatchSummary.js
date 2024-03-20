@@ -444,7 +444,7 @@ export const PatchSummary = ({
     </g>
   )
 
-  const minCircleLegendRadius = dynamicCircleRadius(minSpikesSum) - 5
+  const minCircleLegendRadius = dynamicCircleRadius(minSpikesSum) - 4
   const maxCircleLegendRadius = dynamicCircleRadius(maxSpikesSum) - 8
 
   const sizeLegend = (

@@ -264,9 +264,10 @@ function App() {
                   </Col>
                 </TabPanel>
                 <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
-                  {allEventData && patchData && samplePropagationData ? (
+                  {allEventData && patchData && regionData && samplePropagationData ? (
                     <SpikeSummary
                       patchData={patchData}
+                      regionData={regionData}
                       samplePropagationData={samplePropagationData}
                       eventData={allEventData[patientInfo.sample]}
                       selectedRoi={selectedRoi}

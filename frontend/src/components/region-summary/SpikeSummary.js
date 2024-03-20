@@ -7,6 +7,7 @@ import "./PatchSummary.css";
 
 export const SpikeSummary = ({
     patchData,
+    regionData,
     eventData,
     selectedRoi,
     setSelectedRoi,
@@ -27,7 +28,7 @@ export const SpikeSummary = ({
         '#C19A6B'
     ]
 
-    const [isSwitchChecked, setIsSwitchChecked] = useState(true);
+
 
     // frequency legend svg and g ref
     const frequencySvgRef = useRef(null);
@@ -39,7 +40,9 @@ export const SpikeSummary = ({
         x: 0,
         y: 0,
     });
-
+    const [isSwitchChecked, setIsSwitchChecked] = useState(true);
+    const [patchRegionToggle, setPatchRegionToggle] = useState("Patch");
+    
     // dynamic move circle legend in the center of svg vertically
     useEffect(() => {
         // frequency legend observer
@@ -94,17 +97,20 @@ export const SpikeSummary = ({
         setSelectedRoi(Number(roi));
     }
 
+    const changePatchRegion = (event) => {
+        setPatchRegionToggle(event.target.value)
+    }
     // getting each electrode frequency
     const processedPatchData = {};
-
-    for (const key in patchData) {
-        if (patchData.hasOwnProperty(key)) {
-            const matrix = patchData[key].matrix;
+    const toggleData = patchRegionToggle === "Patch" ? patchData : regionData;
+    for (const key in toggleData) {
+        if (toggleData.hasOwnProperty(key)) {
+            const matrix = toggleData[key].matrix;
             processedPatchData[key] = {
-                ...patchData[key],
+                ...toggleData[key],
                 matrix: matrix.map((row) =>
                     row.map((num) => {
-                        if (num === null) return null; // Handle null values directly
+                        if (num === null) return null;
                         const occurrences = eventData.reduce((acc, dataItem) => {
                             return acc + (dataItem.electrode.includes(num) ? 1 : 0);
                         }, 0);
@@ -128,31 +134,6 @@ export const SpikeSummary = ({
         }
         recurse(obj);
         return maxVal;
-    }
-
-    // target and source arc Bézier curve points function
-    const CircularCurve = (cx, cy, radius, dynamicfrequencyLength, dynamicLength) => {
-        const frequencyKeyPositionX = cx - (radius - dynamicfrequencyLength) * Math.cos(45 * Math.PI / 180);
-        const frequencyKeyPositionY = cy + (radius - dynamicfrequencyLength) * Math.sin(45 * Math.PI / 180);
-
-        const frequencyEndPositionX = frequencyKeyPositionX;
-        const frequencyEndPositionY = cy + Math.sqrt(Math.pow(radius, 2) - Math.pow((radius - dynamicfrequencyLength) * Math.cos(45 * Math.PI / 180), 2));
-
-        const frequencyStartPositionX = cx - Math.sqrt(Math.pow(radius, 2) - Math.pow((radius - dynamicfrequencyLength) * Math.sin(45 * Math.PI / 180), 2));
-        const frequencyStartPositionY = frequencyKeyPositionY;
-
-
-        // target and source arc Bézier curve keypoint
-        const target_source_keyPositionX = cx + Math.round(dynamicLength * Math.cos(45 * Math.PI / 180));
-        const target_source_keyPositionY = cy - Math.round(dynamicLength * Math.sin(45 * Math.PI / 180));
-
-        const target_source_endPositionX = target_source_keyPositionX;
-        const target_source_endPositionY = cy + Math.sqrt(Math.pow(radius, 2) - Math.pow(Math.round(dynamicLength * Math.cos(45 * Math.PI / 180)), 2));
-
-        const target_source_startPositionX = cx - Math.round(Math.sqrt(Math.pow(radius, 2) - Math.pow(Math.round(dynamicLength * Math.cos(45 * Math.PI / 180)), 2)));
-        const target_source_startPositionY = cy - Math.round(dynamicLength * Math.sin(45 * Math.PI / 180));
-
-        return { frequencyStartPositionX, frequencyStartPositionY, frequencyEndPositionX, frequencyEndPositionY, frequencyKeyPositionX, frequencyKeyPositionY, target_source_keyPositionX, target_source_keyPositionY, target_source_endPositionX, target_source_endPositionY, target_source_startPositionX, target_source_startPositionY }
     }
 
     // find the max frequency number in electrodes
@@ -190,7 +171,7 @@ export const SpikeSummary = ({
     const source_target_lineScale = d3.scaleLog().domain([minTargetRatio, maxTargetRatio]).range([0.7, 1.3]);
     const frequency_lineScale = d3.scaleLinear().domain([0, maxOccurrence - minSum]).range([0, 1]);
 
-    const dynamicCircleRadius = isSwitchChecked ? d3.scaleLinear().domain([0, maxTarget]).range([2, 20]) : d3.scaleLinear().domain([0, maxSource]).range([2, 20]);
+    const dynamicCircleRadius = isSwitchChecked ? d3.scaleLinear().domain([minSource, maxSource]).range([2, 20]) : d3.scaleLinear().domain([minTarget, maxTarget]).range([2, 20]);
 
     // find max columns and rows in all patches
     const maxDimensions = {
@@ -302,10 +283,6 @@ export const SpikeSummary = ({
                             const cx = xOffset + columnIndex * (45 + horizontalSpacing) + 23;
                             const cy = yOffset + rowIndex * (45 + verticalSpacing) + 20;
 
-                            // frequency and dynamic Bézier curve keypoint
-                            const dynamicLength = circleRadius * source_target_lineScale(propagationCounts.target_counts / propagationCounts.source_counts)
-                            const frequencyLength = electrodeValue - propagationCounts.target_counts - propagationCounts.source_counts > 0 ? 2 * circleRadius * frequency_lineScale(electrodeValue - propagationCounts.target_counts - propagationCounts.source_counts) : 0;
-
                             return (
                                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
                                     <g
@@ -388,7 +365,7 @@ export const SpikeSummary = ({
                 fontSize={10}
                 alignmentBaseline="middle"
             >
-                {isSwitchChecked ? maxTarget : maxSource}
+                {isSwitchChecked ? maxSource : maxTarget}
             </text>
         </g>
     )
@@ -401,8 +378,14 @@ export const SpikeSummary = ({
             <Row>
                 <Col md="12" style={{ height: "5vh" }}>
                     <Row style={{ height: "100%", margin: 0, display: 'flex' }}>
-                        <Col md="4" className="summary">Patch Summary<Switch style={{ marginLeft: 20, backgroundColor: isSwitchChecked ? '#007ed3' : '#2ca25f' }} checkedChildren="Onset" unCheckedChildren="Spread" onChange={onChangePatchSummary} defaultChecked /></Col>
-                        <Col md="8" className="summary">
+                        <Col md="5" className="summary">Patch Summary
+                            <Switch style={{ marginLeft: 20, backgroundColor: isSwitchChecked ? '#007ed3' : '#2ca25f' }} checkedChildren="Onset" unCheckedChildren="Spread" onChange={onChangePatchSummary} defaultChecked />
+                            <select id="percent" style={{marginLeft: 20}} value={patchRegionToggle} onChange={changePatchRegion}>
+                                <option value="Patch"> Patch </option>
+                                <option value="Region"> Region </option>
+                            </select>
+                        </Col>
+                        <Col md="7" className="summary">
                             <svg ref={frequencySvgRef} width="100%" height="100%" overflow="visible">
                                 {sizeLegend}
                             </svg>

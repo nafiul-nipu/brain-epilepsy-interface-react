@@ -293,6 +293,7 @@ export const BrainViewer = ({
                                                 sliderObj={sliderObj}
                                                 eegList={eegList}
                                                 sampleDomain={sampleDomain}
+                                                patientID={patientInformation.id}
                                             />
                                             <NetworkView
                                                 electrodeData={electrodeData}
@@ -409,6 +410,7 @@ export const BrainViewer = ({
                                                     sliderObj={sliderObj}
                                                     eegList={eegList}
                                                     sampleDomain={sampleDomain}
+                                                    patientID={patientInformation.id}
                                                 />
 
                                                 <NetworkView
@@ -526,6 +528,7 @@ export const BrainViewer = ({
                                                         sliderObj={sliderObj}
                                                         eegList={eegList}
                                                         sampleDomain={sampleDomain}
+                                                        patientID={patientInformation.id}
                                                     />
 
                                                     <NetworkView
@@ -620,6 +623,7 @@ export const BrainViewer = ({
                                                 eegList={eegList}
                                                 sampleDomain={sampleDomain}
                                                 patchRegionToggle={patchRegionToggle}
+                                                patientID={patientInformation.id}
                                             />
                                             <OrbitControls ref={electrodeOrbitControlsRef} enablePan={true} />
                                         </Hud>

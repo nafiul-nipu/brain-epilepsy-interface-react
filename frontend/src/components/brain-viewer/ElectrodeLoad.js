@@ -31,6 +31,17 @@ const catColor = {
     12: "#9467bd",
     14: "#00A5E3",
 }
+
+const seizure = {
+    "ep187": [12, 13, 14, 15, 19],
+    "ep165": [45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 73, 74, 75, 76, 77, 78, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124],
+    "ep164": [43, 44, 45, 46, 52, 53, 54, 55, 56, 64, 71, 72, 78, 79, 80, 86, 87, 88, 93, 94, 95, 96, 101, 102, 103, 104, 109, 110, 111, 112, 117, 118, 119, 120],
+    "ep162": [20, 21, 22, 23, 24, 27, 28, 29, 30, 31, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104],
+    "ep160": [19, 20, 29, 30, 31, 32, 36, 37, 38, 39, 40, 49, 50, 51, 52, 55, 57, 58, 59, 60, 63, 64, 65, 66, 67, 72, 73, 74, 75, 76, 77, 80, 81, 82, 83, 84, 88, 89, 90, 91, 92, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112],
+    "ep129": [27, 28, 35, 36, 37, 38, 41, 42, 43, 47, 48, 49, 50, 51, 52, 55, 56, 103, 104, 105, 109, 110]
+}
+
+
 let currentIndex = 0;
 let sampleSize = scaleLinear().range([1, 4])
 export const ElectrodeLoad = ({
@@ -47,7 +58,8 @@ export const ElectrodeLoad = ({
     sliderObj,
     eegList,
     sampleDomain,
-    patchRegionToggle
+    patchRegionToggle,
+    patientID
 }) => {
     const isMountedRef = useRef(false)
     const meshRef = useRef()
@@ -186,6 +198,14 @@ export const ElectrodeLoad = ({
             const foundObject = electrodeData.findIndex(obj => obj.electrode_number === eegInBrain);
             meshRef.current.setColorAt(foundObject, new Color(0xd11799));
         }
+
+        // electrodeData.forEach((electrode, index) => {
+        //     if (seizure[patientID].includes(electrode['electrode_number'])) {
+        //         meshRef.current.setColorAt(index, new Color(0x050df0));
+        //     }
+        // })
+
+
         meshRef.current.instanceMatrix.needsUpdate = true;
         meshRef.current.instanceColor.needsUpdate = true;
 
@@ -198,7 +218,8 @@ export const ElectrodeLoad = ({
         community,
         eegList,
         sampleDomain,
-        patchRegionToggle
+        patchRegionToggle,
+        patientID
     ])
 
     useEffect(() => {

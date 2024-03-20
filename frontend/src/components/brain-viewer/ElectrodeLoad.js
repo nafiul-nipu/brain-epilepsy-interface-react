@@ -160,7 +160,7 @@ export const ElectrodeLoad = ({
 
         if (eegInBrain !== null) {
             const foundObject = electrodeData.findIndex(obj => obj.electrode_number === eegInBrain);
-            meshRef.current.setColorAt(foundObject, new Color(0x363636));
+            meshRef.current.setColorAt(foundObject, new Color(0xd11799));
         }
         meshRef.current.instanceMatrix.needsUpdate = true;
         meshRef.current.instanceColor.needsUpdate = true;

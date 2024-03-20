@@ -24,7 +24,7 @@ const CustomAxesHelper = () => {
 
         colors.setXYZ(0, 1, 0, 0);
         colors.setXYZ(1, 1, 0, 0); // x-axis red
-        
+
         colors.setXYZ(2, 0.290, 0.365, 0.137);
         colors.setXYZ(3, 0.290, 0.365, 0.137); // y-axis green
 
@@ -56,7 +56,8 @@ export const BrainViewer = ({
     topPercent,
     selectedRoi,
     eegList,
-    sampleDomain
+    sampleDomain,
+    setEegInBrain
 }) => {
 
     // console.log(topPercent)
@@ -109,6 +110,8 @@ export const BrainViewer = ({
         } else {
             resetAllOrbitControls();
         }
+
+        setEegInBrain(null);
     }
 
     const Lighting = () => {
@@ -296,6 +299,7 @@ export const BrainViewer = ({
                                                 topPercent={topPercent}
                                                 bbox={dataRegisty[patientInformation.id].bbox}
                                                 selectedRoi={selectedRoi}
+                                                eegInBrain={eegInBrain}
                                             />
                                             <OrbitControls ref={ref => attachRef(index, ref)} enablePan={true} />
                                         </View>
@@ -412,6 +416,7 @@ export const BrainViewer = ({
                                                     topPercent={topPercent}
                                                     bbox={dataRegisty[patientInformation.id].bbox}
                                                     selectedRoi={selectedRoi}
+                                                    eegInBrain={eegInBrain}
                                                 />
                                                 <OrbitControls ref={ref => attachRef(index, ref)} enablePan={true} />
                                             </View>
@@ -528,6 +533,7 @@ export const BrainViewer = ({
                                                         topPercent={topPercent}
                                                         bbox={dataRegisty[patientInformation.id].bbox}
                                                         selectedRoi={selectedRoi}
+                                                        eegInBrain={eegInBrain}
                                                     />
                                                     <OrbitControls ref={ref => attachRef(index, ref)} enablePan={true} />
                                                 </View>

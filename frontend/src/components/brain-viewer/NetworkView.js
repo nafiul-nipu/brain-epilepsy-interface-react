@@ -11,6 +11,7 @@ export const NetworkView = ({
     topPercent,
     bbox,
     selectedRoi,
+    eegInBrain
 }) => {
     const [edgeData, setEdgeData] = useState(null)
     const lineWidth = d3.scaleLinear()
@@ -68,7 +69,29 @@ export const NetworkView = ({
         lineWidth.domain([topEdges[topEdges.length - 1][1], topEdges[0][1]]);
 
         let positions = []
-        if (selectedRoi == null) {
+        if (eegInBrain !== null && eegInBrain !== undefined) {
+            console.log('eeg in Brain Selected')
+            for (const edge of topEdges) {
+                const source = parseInt(edge[0].split('_')[0]);
+                const target = parseInt(edge[0].split('_')[1]);
+
+                if (eegInBrain === source || eegInBrain === target) {
+                    const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
+                    const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
+
+                    if ((sourcePos !== undefined) && (targetPos !== undefined)) {
+                        positions.push({
+                            'source': new Vector3(sourcePos.position[0], sourcePos.position[1], sourcePos.position[2]),
+                            'sourceLabel': electrodeLabels[source],
+                            'target': new Vector3(targetPos.position[0], targetPos.position[1], targetPos.position[2]),
+                            'targetLabel': electrodeLabels[target],
+                            'frequency': lineWidth(edge[1]),
+                        })
+                    }
+                }
+            }
+        } else if (selectedRoi == null) {
+            console.log("selectedRoi is null")
             for (const edge of topEdges) {
                 // console.log(edge)
                 const source = parseInt(edge[0].split('_')[0]);
@@ -89,6 +112,7 @@ export const NetworkView = ({
             }
         } else {
             for (const edge of topEdges) {
+                console.log("roi selected")
                 const source = parseInt(edge[0].split('_')[0]);
                 const target = parseInt(edge[0].split('_')[1]);
 
@@ -111,7 +135,7 @@ export const NetworkView = ({
 
         setEdgeData(positions)
 
-    }, [electrodeData, networkData, topPercent, selectedRoi])
+    }, [electrodeData, networkData, topPercent, selectedRoi, eegInBrain])
 
     const calculateRadialOffset = (sourcePos, targetPos, radian, radialDistance) => {
         // Calculate midpoint

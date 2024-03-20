@@ -16,7 +16,8 @@ export const ENTContainer = ({
     eegInBrain,
     topPercent,
     selectedRoi,
-    eegList
+    eegList,
+    setEegInBrain
 }) => {
     // console.log(community)
     // console.log(topPercent)
@@ -120,6 +121,7 @@ export const ENTContainer = ({
                             selectedRoi={selectedRoi}
                             eegList={eegList}
                             sampleDomain={sampleDomain}
+                            setEegInBrain={setEegInBrain}
                         />
                     </Row>
                 </Col>

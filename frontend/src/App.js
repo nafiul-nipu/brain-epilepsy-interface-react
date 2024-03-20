@@ -273,6 +273,8 @@ function App() {
                       eventData={allEventData[patientInfo.sample]}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
+                      patientID={patientInfo.id}
+                      electrodeData={electrodeDataCsv}
                     />
                   ) : null}
                 </TabPanel>

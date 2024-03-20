@@ -5,6 +5,21 @@ import * as d3 from "d3";
 import { Switch } from 'antd';
 import "./PatchSummary.css";
 
+const electrodeColorList = [
+    '#007ed3',
+    '#FF004F',
+    '#9F8170',
+    '#9400D3',
+    '#FFC40C',
+    '#59260B',
+    '#FE4EDA',
+    '#40E0D0',
+    '#FF4F00',
+    '#006D6F',
+    '#C19A6B'
+]
+
+
 export const SpikeSummary = ({
     patchData,
     regionData,
@@ -12,23 +27,9 @@ export const SpikeSummary = ({
     selectedRoi,
     setSelectedRoi,
     samplePropagationData,
+    patientID,
+    electrodeData
 }) => {
-
-    const electrodeColorList = [
-        '#007ed3',
-        '#FF004F',
-        '#9F8170',
-        '#9400D3',
-        '#FFC40C',
-        '#59260B',
-        '#FE4EDA',
-        '#40E0D0',
-        '#FF4F00',
-        '#006D6F',
-        '#C19A6B'
-    ]
-
-
 
     // frequency legend svg and g ref
     const frequencySvgRef = useRef(null);
@@ -42,7 +43,7 @@ export const SpikeSummary = ({
     });
     const [isSwitchChecked, setIsSwitchChecked] = useState(true);
     const [patchRegionToggle, setPatchRegionToggle] = useState("Patch");
-    
+
     // dynamic move circle legend in the center of svg vertically
     useEffect(() => {
         // frequency legend observer
@@ -99,6 +100,14 @@ export const SpikeSummary = ({
     const changePatchRegion = (event) => {
         setPatchRegionToggle(event.target.value)
     }
+
+    const patchLabels = electrodeData.reduce((result, obj) =>
+        ({ ...result, [obj.electrode_number]: obj.label }), {});
+    const regiionLabels = electrodeData.reduce((result, obj) =>
+        ({ ...result, [obj.electrode_number]: obj.region }), {});
+
+    const regions = [...new Set(electrodeData.map(obj => obj.region))];
+
     // getting each electrode frequency
     const processedPatchData = {};
     const toggleData = patchRegionToggle === "Patch" ? patchData : regionData;
@@ -227,6 +236,8 @@ export const SpikeSummary = ({
         const yOffset = (svgHeight - totalMatrixHeight) / 2;
 
         const setBorderColorOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
+        // console.log(roiMatrix, 'roiMatrix')
+        // console.log(roiKey, 'roiKey')
         return (
             <Col
                 md="4"
@@ -238,7 +249,9 @@ export const SpikeSummary = ({
                         selectedRoi === Number(roiKey)
                             ? "rgba(202, 204, 202, 0.4)"
                             : "white",
-                    border: `3px solid ${setBorderColorOpacity(electrodeColorList[roiIndex], 0.5)}`,
+                    border: patchRegionToggle === "Patch" ?
+                        `3px solid ${setBorderColorOpacity(electrodeColorList[roiIndex], 0.5)}` :
+                        `3px solid ${setBorderColorOpacity(electrodeColorList[regions.indexOf(roiKey)], 0.5)}`,
                 }}
                 onClick={() => patchOnClick(roiKey)}
             >
@@ -259,6 +272,7 @@ export const SpikeSummary = ({
                             if (electrodeObj === null) {
                                 return null;
                             }
+                            // console.log(electrodeObj, 'electrodeObj')
 
                             const electrodeId = Object.keys(electrodeObj)[0];
                             const electrodePropagation = samplePropagationData.find(
@@ -293,7 +307,11 @@ export const SpikeSummary = ({
                                             cx={cx}
                                             cy={cy}
                                             r={circleRadius}
-                                            fill={electrodeColorList[roiIndex]}
+                                            fill={
+                                                patchRegionToggle === "Patch" ?
+                                                    electrodeColorList[patchLabels[electrodeId]] :
+                                                    electrodeColorList[regions.indexOf(regiionLabels[electrodeId])]
+                                            }
                                         >
                                         </circle>
                                     </g>
@@ -312,7 +330,7 @@ export const SpikeSummary = ({
 
     // Biswajit graph 4A Onset and Spread legend
     const minCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(minTarget) : dynamicCircleRadius(minSource);
-    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxTarget): dynamicCircleRadius(maxSource);
+    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxTarget) : dynamicCircleRadius(maxSource);
 
     const sizeLegend = (
         <g ref={frequencyGRef}>
@@ -373,7 +391,7 @@ export const SpikeSummary = ({
                     <Row style={{ height: "100%", margin: 0, display: 'flex' }}>
                         <Col md="5" className="summary">Patch Summary
                             <Switch style={{ marginLeft: 20, backgroundColor: isSwitchChecked ? '#007ed3' : '#2ca25f' }} checkedChildren="Onset" unCheckedChildren="Spread" onChange={onChangePatchSummary} defaultChecked />
-                            <select id="patchRegionToggle" style={{marginLeft: 20}} value={patchRegionToggle} onChange={changePatchRegion}>
+                            <select id="patchRegionToggle" style={{ marginLeft: 20 }} value={patchRegionToggle} onChange={changePatchRegion}>
                                 <option value="Patch"> Patch </option>
                                 <option value="Region"> Region </option>
                             </select>

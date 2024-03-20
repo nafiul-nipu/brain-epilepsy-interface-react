@@ -57,7 +57,8 @@ export const BrainViewer = ({
     selectedRoi,
     eegList,
     sampleDomain,
-    setEegInBrain
+    setEegInBrain,
+    patchRegionToggle
 }) => {
 
     // console.log(topPercent)
@@ -618,6 +619,7 @@ export const BrainViewer = ({
                                                 sliderObj={sliderObj}
                                                 eegList={eegList}
                                                 sampleDomain={sampleDomain}
+                                                patchRegionToggle={patchRegionToggle}
                                             />
                                             <OrbitControls ref={electrodeOrbitControlsRef} enablePan={true} />
                                         </Hud>

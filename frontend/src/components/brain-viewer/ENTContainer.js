@@ -17,7 +17,8 @@ export const ENTContainer = ({
     topPercent,
     selectedRoi,
     eegList,
-    setEegInBrain
+    setEegInBrain,
+    patchRegionToggle
 }) => {
     // console.log(community)
     // console.log(topPercent)
@@ -122,6 +123,7 @@ export const ENTContainer = ({
                             eegList={eegList}
                             sampleDomain={sampleDomain}
                             setEegInBrain={setEegInBrain}
+                            patchRegionToggle={patchRegionToggle}
                         />
                     </Row>
                 </Col>

@@ -28,7 +28,9 @@ export const SpikeSummary = ({
     setSelectedRoi,
     samplePropagationData,
     patientID,
-    electrodeData
+    electrodeData,
+    patchRegionToggle,
+    setPatchRegionToggle
 }) => {
 
     // frequency legend svg and g ref
@@ -42,7 +44,7 @@ export const SpikeSummary = ({
         y: 0,
     });
     const [isSwitchChecked, setIsSwitchChecked] = useState(true);
-    const [patchRegionToggle, setPatchRegionToggle] = useState("Patch");
+    // const [patchRegionToggle, setPatchRegionToggle] = useState("Patch");
 
     // dynamic move circle legend in the center of svg vertically
     useEffect(() => {

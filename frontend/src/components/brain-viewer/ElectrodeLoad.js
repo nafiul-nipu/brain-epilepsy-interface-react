@@ -46,7 +46,8 @@ export const ElectrodeLoad = ({
     buttonValue,
     sliderObj,
     eegList,
-    sampleDomain
+    sampleDomain,
+    patchRegionToggle
 }) => {
     const isMountedRef = useRef(false)
     const meshRef = useRef()
@@ -65,7 +66,7 @@ export const ElectrodeLoad = ({
         // console.log("visual panel", visualPanel)
         if (!isMountedRef.current) return;
         if (buttonValue === 'Pause') return;
-        if (visualPanel === 'Patches' || visualPanel === 'Patch-Com-Net' || visualPanel === 'Region-Com-Net') {
+        if (visualPanel === 'Patch-Com-Net' || visualPanel === 'Region-Com-Net') {
             // console.log(electrodeData)
             const uniqueRegions = visualPanel === 'Region-Com-Net' ? [...new Set(electrodeData.map(obj => obj.region))] : null;
 
@@ -148,6 +149,29 @@ export const ElectrodeLoad = ({
                 meshRef.current.setMatrixAt(index, object.matrix);
             });
 
+        } else if (visualPanel === 'Patches') {
+            // console.log(electrodeData)
+            const uniqueRegions = patchRegionToggle === 'Region' ? [...new Set(electrodeData.map(obj => obj.region))] : null;
+
+            // console.log(uniqueRegions);
+            // console.log("patches")
+            electrodeData.forEach((electrode, index) => {
+                if (patchRegionToggle === 'Region') {
+                    const regionIndex = uniqueRegions.indexOf(electrode.region);
+                    meshRef.current.setColorAt(index, new Color(colorslist[regionIndex]));
+                } else {
+                    meshRef.current.setColorAt(index, new Color(colorslist[electrode.label]));
+                }
+                object.scale.set(1, 1, 1)
+
+                object.position.set(
+                    electrode.position[0],
+                    electrode.position[1],
+                    electrode.position[2]
+                );
+                object.updateMatrix();
+                meshRef.current.setMatrixAt(index, object.matrix);
+            });
         }
 
         if (eegList !== null && eegList.length > 0) {
@@ -165,7 +189,17 @@ export const ElectrodeLoad = ({
         meshRef.current.instanceMatrix.needsUpdate = true;
         meshRef.current.instanceColor.needsUpdate = true;
 
-    }, [allnetwork, buttonValue, eegInBrain, electrodeData, eventData, visualPanel, community, eegList, sampleDomain])
+    }, [allnetwork,
+        buttonValue,
+        eegInBrain,
+        electrodeData,
+        eventData,
+        visualPanel,
+        community,
+        eegList,
+        sampleDomain,
+        patchRegionToggle
+    ])
 
     useEffect(() => {
         if (!isMountedRef.current) return;

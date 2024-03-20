@@ -91,6 +91,8 @@ function App() {
     setTopPercent(event.target.value)
   }
 
+  const [patchRegionToggle, setPatchRegionToggle] = useState("Patch");
+
   return (
     // component container
     <Container fluid id="container">
@@ -124,6 +126,7 @@ function App() {
                   selectedRoi={selectedRoi}
                   eegList={eegList}
                   setEegInBrain={setEegInBrain}
+                  patchRegionToggle={patchRegionToggle}
                 />
               ) : null}
             </Col>
@@ -275,6 +278,8 @@ function App() {
                       setSelectedRoi={setSelectedRoi}
                       patientID={patientInfo.id}
                       electrodeData={electrodeDataCsv}
+                      patchRegionToggle={patchRegionToggle}
+                      setPatchRegionToggle={setPatchRegionToggle}
                     />
                   ) : null}
                 </TabPanel>

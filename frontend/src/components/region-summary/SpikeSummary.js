@@ -43,7 +43,6 @@ export const SpikeSummary = ({
         y: 0,
     });
     const [isSwitchChecked, setIsSwitchChecked] = useState(true);
-    // const [patchRegionToggle, setPatchRegionToggle] = useState("Patch");
 
     // dynamic move circle legend in the center of svg vertically
     useEffect(() => {
@@ -367,7 +366,7 @@ export const SpikeSummary = ({
             <Row>
                 <Col md="12" style={{ height: "5vh" }}>
                     <Row style={{ height: "100%", margin: 0, display: 'flex' }}>
-                        <Col md="5" className="summary">Patch Summary
+                        <Col md="5" className="summary">Spike Summary
                             <Switch style={{ marginLeft: 20, backgroundColor: isSwitchChecked ? '#007ed3' : '#2ca25f' }} checkedChildren="Onset" unCheckedChildren="Spread" onChange={onChangePatchSummary} defaultChecked />
                             <select id="patchRegionToggle" style={{ marginLeft: 20 }} value={patchRegionToggle} onChange={changePatchRegion}>
                                 <option value="Patch"> Patch </option>

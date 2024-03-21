@@ -2,7 +2,6 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { Switch } from 'antd';
 import "./PatchSummary.css";
 
 const electrodeColorList = [
@@ -25,7 +24,8 @@ export const PatchSummary = ({
   selectedRoi,
   setSelectedRoi,
   samplePropagationData,
-  electrodeData
+  electrodeData,
+  patchRegionMark
 }) => {
 
   // circle legend svg and g ref
@@ -509,7 +509,7 @@ export const PatchSummary = ({
       <Row>
         <Col md="12" style={{ height: "5vh" }}>
           <Row style={{ height: "100%", margin: 0, display: 'flex' }}>
-            <Col md="4" className="summary">Patch Summary</Col>
+            <Col md="4" className="summary">{patchRegionMark === 'patch' ? 'Patch' : 'Region'} Summary</Col>
             <Col md="8" className="summary">
               <svg ref={frequencySvgRef} width="50%" height="100%" overflow="visible">
                 {sizeLegend}

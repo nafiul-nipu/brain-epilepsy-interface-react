@@ -292,6 +292,7 @@ function App() {
                   {allEventData && patchData && samplePropagationData && electrodeDataCsv ? (
                     <PatchSummary
                       patchData={patchData}
+                      patchRegionMark={'patch'}
                       samplePropagationData={samplePropagationData}
                       eventData={allEventData[patientInfo.sample]}
                       selectedRoi={selectedRoi}
@@ -301,9 +302,10 @@ function App() {
                   ) : null}
                 </TabPanel>
                 <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
-                  {allEventData && patchData && samplePropagationData && regionData && electrodeDataCsv ? (
+                  {allEventData && samplePropagationData && regionData && electrodeDataCsv ? (
                     <PatchSummary
                       patchData={regionData}
+                      patchRegionMark={'region'}
                       samplePropagationData={samplePropagationData}
                       eventData={allEventData[patientInfo.sample]}
                       selectedRoi={selectedRoi}

@@ -31,6 +31,9 @@ export const ENTContainer = ({
 
     const [sampleDomain, setSampleDomain] = useState(null)
 
+    const [propagationSlider, setPropagationSlider] = useState([0, 60000])
+    const [propagatoinButtonValue, setPropagationButtonValue] = useState('Play')
+
     // const [seeRoi, setSeeRoi] = useState(false);
 
     function onSegmentChange(value) {
@@ -69,6 +72,14 @@ export const ENTContainer = ({
         }
     }
 
+    function handlePropagationClick() {
+        if (propagatoinButtonValue === 'Pause') {
+            setPropagationButtonValue('Play');
+        } else {
+            setPropagationButtonValue('Pause');
+        }
+    }
+
     // console.log(community)
 
 
@@ -77,7 +88,7 @@ export const ENTContainer = ({
             <Row>
                 <Col md='12' style={{ height: '5vh' }}>
                     <Segmented
-                        options={["Patches", "Frequency", "Community", "Patch-Com-Net", "Region-Com-Net"]}
+                        options={["Patches", "Frequency", "Propagation", "Community", "Patch-Com-Net", "Region-Com-Net"]}
                         onChange={onSegmentChange}
                         defaultValue={'Patches'}
                     >
@@ -94,6 +105,10 @@ export const ENTContainer = ({
                     visualPanel={segment}
                     totalSamples={community[topPercent].map((el) => el.sample)}
                     totalCommunities={community[topPercent].map((el) => el.communityList.length)}
+                    propagationSlider={propagationSlider}
+                    setPropagationSlider={setPropagationSlider}
+                    propagatoinButtonValue={propagatoinButtonValue}
+                    handlePropagationClick={handlePropagationClick}
                 />
             </Row>
             <Row>
@@ -102,9 +117,10 @@ export const ENTContainer = ({
                         {
                             segment === 'Community' ? null :
                                 segment === 'Patches' ? <div id="titleBrain1">{`${patientInformation.id}: Brain Patches`}</div> :
-                                    segment === 'Frequency' ? <div id="titleBrain1">{`${patientInformation.id}: Propagation Over Time`}</div> :
-                                        segment === 'Patch-Com-Net' ? <div id="titleBrain1">{`${patientInformation.id}: Patch Network`}</div> :
-                                            <div id="titleBrain1">{`${patientInformation.id}: Region Network`}</div>
+                                    segment === 'Frequency' ? <div id="titleBrain1">{`${patientInformation.id}: Spikes Over Time`}</div> :
+                                        segment === 'Propagation' ? <div id="titleBrain1">{`${patientInformation.id}: Propagation Over Time`}</div> :
+                                            segment === 'Patch-Com-Net' ? <div id="titleBrain1">{`${patientInformation.id}: Patch Network`}</div> :
+                                                <div id="titleBrain1">{`${patientInformation.id}: Region Network`}</div>
                         }
                         <BrainViewer
                             patientInformation={patientInformation}

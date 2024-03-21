@@ -629,6 +629,18 @@ export const BrainViewer = ({
                                                 sampleDomain={sampleDomain}
                                                 patchRegionToggle={patchRegionToggle}
                                             />
+                                            {
+                                                visualPanel === 'Propagation' ? (
+                                                    <NetworkView
+                                                        electrodeData={electrodeData}
+                                                        networkData={allnetworks[patientInformation.sample]}
+                                                        topPercent={topPercent}
+                                                        bbox={dataRegisty[patientInformation.id].bbox}
+                                                        selectedRoi={selectedRoi}
+                                                        eegInBrain={eegInBrain}
+                                                    />
+                                                ) : null
+                                            }
                                             <OrbitControls ref={electrodeOrbitControlsRef} enablePan={true} />
                                         </Hud>
                                     </Suspense>

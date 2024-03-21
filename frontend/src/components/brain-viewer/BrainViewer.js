@@ -1,5 +1,5 @@
 import { Col } from "react-bootstrap";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { Hud, OrbitControls, PerspectiveCamera, Stats, View, Text } from "@react-three/drei";
 import { Suspense, useRef, useState, useEffect } from "react";
 import dataRegisty from '../../data/dataRegistry.json'
@@ -14,13 +14,14 @@ const width = (window.innerWidth / 2) - 10;
 const height = window.innerHeight / 2.3 - 10
 
 const CustomAxesHelper = () => {
-    const { scene } = useThree();
+    const { camera, scene } = useThree();
+    const axesHelperRef = useRef();
 
     useEffect(() => {
-        let axes = new THREE.AxesHelper(100);
+        const axesHelper = new THREE.AxesHelper(5);
+        axesHelperRef.current = axesHelper;
 
-        //reset axes colors
-        let colors = axes.geometry.attributes.color;
+        let colors = axesHelper.geometry.attributes.color;
 
         colors.setXYZ(0, 1, 0, 0);
         colors.setXYZ(1, 1, 0, 0); // x-axis red
@@ -30,13 +31,20 @@ const CustomAxesHelper = () => {
 
         colors.setXYZ(4, 0, 0, 1)
         colors.setXYZ(5, 0, 0, 1); // z-axis blue
+        scene.add(axesHelper);
 
-        scene.add(axes);
-
-        return () => {
-            scene.remove(axes);
-        };
+        return () => scene.remove(axesHelper);
     }, [scene]);
+
+
+    useFrame(() => {
+        if (!axesHelperRef.current) return;
+
+        const desiredPosition = new THREE.Vector3(0.9, 0.5, 0.5);
+        const position = desiredPosition.unproject(camera);
+        axesHelperRef.current.position.copy(position);
+        axesHelperRef.current.scale.set(0.1, 0.1, 0.1);
+    });
 
     return null;
 };

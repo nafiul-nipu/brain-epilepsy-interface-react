@@ -144,7 +144,62 @@ export const NetworkView = ({
                 }
             }
         } else {
-            console.log(network_per_minute)
+            // console.log(network_per_minute)
+            const electrodeLabels = {};
+            electrodeData.forEach(electrode => {
+                if (typeof selectedRoi === 'string') {
+                    electrodeLabels[electrode.electrode_number] = electrode.region;
+                } else {
+                    electrodeLabels[electrode.electrode_number] = electrode.label;
+                }
+            })
+            const currentSample = network_per_minute[currentIndex]
+
+            if (currentSample.length === 0) return;
+
+            const edgeCounter = {}
+            for (const network of currentSample) {
+                const source = parseInt(network.source);
+                const target = parseInt(network.target);
+                const key = `${source}_${target}`
+
+                if (key in edgeCounter) {
+                    edgeCounter[key] += 1;
+                } else {
+                    edgeCounter[key] = 1;
+                }
+            }
+            const sortedEdges = Object.entries(edgeCounter)
+                .filter(([key, value]) => value > 1) // Filter values not greater than 1
+                .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
+
+            const sortedValues = sortedEdges.map(edge => edge[1])
+            // console.log(sortedValues)
+            const percentileVal = sortedValues.length === 0 ? 0 :
+                ss.quantileSorted(sortedValues, topPercent / 100);
+
+            const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
+
+            lineWidth.domain([topEdges[topEdges.length - 1][1], topEdges[0][1]]);
+
+            for (const edge of topEdges) {
+                const source = parseInt(edge[0].split('_')[0]);
+                const target = parseInt(edge[0].split('_')[1]);
+
+                const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
+                const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
+
+                if ((sourcePos !== undefined) && (targetPos !== undefined)) {
+                    positions.push({
+                        'source': new Vector3(sourcePos.position[0], sourcePos.position[1], sourcePos.position[2]),
+                        'sourceLabel': electrodeLabels[source],
+                        'target': new Vector3(targetPos.position[0], targetPos.position[1], targetPos.position[2]),
+                        'targetLabel': electrodeLabels[target],
+                        'frequency': lineWidth(edge[1]),
+                    })
+                }
+            }
+
         }
 
         setEdgeData(positions)

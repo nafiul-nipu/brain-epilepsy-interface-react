@@ -59,7 +59,7 @@ export const CreateLineCurve = ({
 
         // console.log(percentileVal)
 
-        const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
+        const topEdges = sortedEdges.filter(edge => edge[1] > percentileVal);
 
         // console.log(topEdges)
         let edges = 0;
@@ -145,7 +145,7 @@ export const CreateLineCurve = ({
             const direction = new THREE.Vector3().subVectors(target, source);
             const length = direction.length();
             direction.normalize();
-        
+
             // Line geometry
             const lineGeometry = new THREE.BufferGeometry().setFromPoints([source, target]);
             const lineMaterial = new THREE.ShaderMaterial({
@@ -177,29 +177,29 @@ export const CreateLineCurve = ({
                     colorEnd: { value: new THREE.Color(colorEnd) }
                 }
             });
-        
+
             const line = new THREE.Line(lineGeometry, lineMaterial);
-        
+
             // Cone geometry for the arrowhead
             const coneGeometry = new THREE.ConeGeometry(0.01 * length, 0.05 * length, 32);
             const coneMaterial = new THREE.MeshBasicMaterial({ color: headColor });
             const cone = new THREE.Mesh(coneGeometry, coneMaterial);
-        
+
             // Position the cone
             const middlePosition = new THREE.Vector3().lerpVectors(source, target, 0.5);
             cone.position.copy(middlePosition);
-        
+
             // Adjust cone orientation to face along the direction of the line
             cone.lookAt(target);
-            cone.rotateX(Math.PI / 2); 
-        
+            cone.rotateX(Math.PI / 2);
+
             const arrow = new THREE.Group();
             arrow.add(line);
             arrow.add(cone);
-        
+
             return arrow;
         }
-        
+
         const arrows = [];
         for (let i = 0; i < edges; i++) {
             const sourceIndex = i * 6;

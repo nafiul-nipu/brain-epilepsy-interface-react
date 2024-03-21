@@ -129,7 +129,7 @@ const RegionWrapper = ({
 
     const percentileVal = ss.quantileSorted(sortedValues, topPercent / 100);
 
-    const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
+    const topEdges = sortedEdges.filter(edge => edge[1] > percentileVal);
 
     const sourceElectrodes = new Set();
 

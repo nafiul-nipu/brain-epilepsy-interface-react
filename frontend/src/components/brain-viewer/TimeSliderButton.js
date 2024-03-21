@@ -181,16 +181,16 @@ export const TimeSliderButton = ({
                                                 0 m
                                             </RangeSliderMark>
                                             <RangeSliderMark value={ranges[0]} mt='1' ml='-2.5' fontSize='sm'>
-                                                {`${ranges[0] / 60000} m`}
+                                                {`${(ranges[0] / 60000).toFixed(2)} m`}
                                             </RangeSliderMark>
                                             <RangeSliderMark value={ranges[1]} mt='1' ml='-2.5' fontSize='sm'>
-                                                {`${ranges[1] / 60000} m`}
+                                                {`${(ranges[1] / 60000).toFixed(2)} m`}
                                             </RangeSliderMark>
                                             <RangeSliderMark value={ranges[2]} mt='1' ml='-2.5' fontSize='sm'>
-                                                {`${ranges[2] / 60000} m`}
+                                                {`${(ranges[2] / 60000).toFixed(2)} m`}
                                             </RangeSliderMark>
                                             <RangeSliderMark value={ranges[3]} mt='1' ml='-2.5' fontSize='sm'>
-                                                {`${ranges[3] / 60000} m`}
+                                                {`${(ranges[3] / 60000).toFixed(2)} m`}
                                             </RangeSliderMark>
                                             <RangeSliderTrack bg='red.100'>
                                                 <RangeSliderFilledTrack bg='tomato' />

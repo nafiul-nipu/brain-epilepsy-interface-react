@@ -315,6 +315,7 @@ export const BrainViewer = ({
                                                 propagatoinButtonValue={propagatoinButtonValue}
                                                 setPropagationSlider={setPropagationSlider}
                                                 visualPanel={visualPanel}
+                                                endTime={dataRegisty[patientInformation.id].time}
                                             />
                                             <OrbitControls ref={ref => attachRef(index, ref)} enablePan={true} />
                                         </View>

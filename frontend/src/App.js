@@ -63,7 +63,7 @@ function App() {
   const allNetwork = useAllNetwork({ patientID: patientInfo.id });
 
   const networkPerMinute = useNetworkPerMinute({ patientID: patientInfo.id });
-  console.log(networkPerMinute)
+  // console.log(networkPerMinute)
 
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });

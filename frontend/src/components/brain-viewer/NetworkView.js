@@ -17,7 +17,8 @@ export const NetworkView = ({
     network_per_minute,
     visualPanel,
     propagatoinButtonValue,
-    setPropagationSlider
+    setPropagationSlider,
+    endTime
 }) => {
     const [edgeData, setEdgeData] = useState(null)
     const lineWidth = d3.scaleLinear()
@@ -29,7 +30,7 @@ export const NetworkView = ({
         if (propagatoinButtonValue === 'Pause') return;
         let positions = []
         if (visualPanel !== 'Propagation') {
-            console.log(visualPanel)
+            // console.log(visualPanel)
 
             const electrodeLabels = {};
             electrodeData.forEach(electrode => {
@@ -81,7 +82,7 @@ export const NetworkView = ({
 
 
             if (eegInBrain !== null && eegInBrain !== undefined) {
-                console.log('eeg in Brain Selected')
+                // console.log('eeg in Brain Selected')
                 for (const edge of topEdges) {
                     const source = parseInt(edge[0].split('_')[0]);
                     const target = parseInt(edge[0].split('_')[1]);
@@ -102,7 +103,7 @@ export const NetworkView = ({
                     }
                 }
             } else if (selectedRoi == null) {
-                console.log("selectedRoi is null")
+                // console.log("selectedRoi is null")
                 for (const edge of topEdges) {
                     // console.log(edge)
                     const source = parseInt(edge[0].split('_')[0]);
@@ -123,7 +124,7 @@ export const NetworkView = ({
                 }
             } else {
                 for (const edge of topEdges) {
-                    console.log("roi selected")
+                    // console.log("roi selected")
                     const source = parseInt(edge[0].split('_')[0]);
                     const target = parseInt(edge[0].split('_')[1]);
 
@@ -153,52 +154,57 @@ export const NetworkView = ({
                     electrodeLabels[electrode.electrode_number] = electrode.label;
                 }
             })
-            const currentSample = network_per_minute[currentIndex]
+            // console.log('paused ', currentIndex)
+            // console.log(network_per_minute)
+            let network_per_minute_keys = Object.keys(network_per_minute)
+            const currentSample = network_per_minute[network_per_minute_keys[currentIndex]];
 
-            if (currentSample.length === 0) return;
+            if (currentSample.length === 0) {
+                positions = [];
+            } else {
+                const edgeCounter = {}
+                for (const network of currentSample) {
+                    const source = parseInt(network.source);
+                    const target = parseInt(network.target);
+                    const key = `${source}_${target}`
 
-            const edgeCounter = {}
-            for (const network of currentSample) {
-                const source = parseInt(network.source);
-                const target = parseInt(network.target);
-                const key = `${source}_${target}`
-
-                if (key in edgeCounter) {
-                    edgeCounter[key] += 1;
-                } else {
-                    edgeCounter[key] = 1;
+                    if (key in edgeCounter) {
+                        edgeCounter[key] += 1;
+                    } else {
+                        edgeCounter[key] = 1;
+                    }
                 }
-            }
-            const sortedEdges = Object.entries(edgeCounter)
-                .filter(([key, value]) => value > 1) // Filter values not greater than 1
-                .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
+                const sortedEdges = Object.entries(edgeCounter)
+                    .filter(([key, value]) => value > 1) // Filter values not greater than 1
+                    .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
 
-            const sortedValues = sortedEdges.map(edge => edge[1])
-            // console.log(sortedValues)
-            const percentileVal = sortedValues.length === 0 ? 0 :
-                ss.quantileSorted(sortedValues, topPercent / 100);
+                const sortedValues = sortedEdges.map(edge => edge[1])
+                // console.log(sortedValues)
+                const percentileVal = sortedValues.length === 0 ? 0 :
+                    ss.quantileSorted(sortedValues, topPercent / 100);
 
-            const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
+                const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
 
-            lineWidth.domain([topEdges[topEdges.length - 1][1], topEdges[0][1]]);
+                lineWidth.domain([topEdges[topEdges.length - 1][1], topEdges[0][1]]);
 
-            for (const edge of topEdges) {
-                const source = parseInt(edge[0].split('_')[0]);
-                const target = parseInt(edge[0].split('_')[1]);
+                for (const edge of topEdges) {
+                    const source = parseInt(edge[0].split('_')[0]);
+                    const target = parseInt(edge[0].split('_')[1]);
 
-                const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
-                const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
+                    const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
+                    const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
 
-                if ((sourcePos !== undefined) && (targetPos !== undefined)) {
-                    positions.push({
-                        'source': new Vector3(sourcePos.position[0], sourcePos.position[1], sourcePos.position[2]),
-                        'sourceLabel': electrodeLabels[source],
-                        'target': new Vector3(targetPos.position[0], targetPos.position[1], targetPos.position[2]),
-                        'targetLabel': electrodeLabels[target],
-                        'frequency': lineWidth(edge[1]),
-                    })
+                    if ((sourcePos !== undefined) && (targetPos !== undefined)) {
+                        positions.push({
+                            'source': new Vector3(sourcePos.position[0], sourcePos.position[1], sourcePos.position[2]),
+                            'sourceLabel': electrodeLabels[source],
+                            'target': new Vector3(targetPos.position[0], targetPos.position[1], targetPos.position[2]),
+                            'targetLabel': electrodeLabels[target],
+                            'frequency': lineWidth(edge[1]),
+                        })
+                    }
                 }
-            }
+            };
 
         }
 
@@ -216,7 +222,7 @@ export const NetworkView = ({
 
     useEffect(() => {
         if (network_per_minute === null || network_per_minute === undefined) return;
-        console.log("interval")
+        // console.log("interval")
 
         let keys = Object.keys(network_per_minute)
         let interval;
@@ -263,42 +269,45 @@ export const NetworkView = ({
 
             }
             // console.log(sortedNetwokrPerMinute)
+            // console.log(currentIndex)
 
             interval = setInterval(() => {
                 currentIndex = (currentIndex + 1) % keys.length;
+                // console.log(currentIndex, keys[currentIndex])
                 // console.log()
                 const currentSample = sortedNetwokrPerMinute[keys[currentIndex]]
                 // console.log(currentSample)
-                const positions = []
-                if (currentSample.length === 0) return;
-                lineWidth.domain([currentSample[currentSample.length - 1][1], currentSample[0][1]]);
-                for (const edge of currentSample) {
-                    const source = parseInt(edge[0].split('_')[0]);
-                    const target = parseInt(edge[0].split('_')[1]);
+                let positions = []
+                if (currentSample.length === 0) {
+                    positions = [];
 
-                    const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
-                    const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
+                } else {
+                    lineWidth.domain([currentSample[currentSample.length - 1][1], currentSample[0][1]]);
+                    for (const edge of currentSample) {
+                        const source = parseInt(edge[0].split('_')[0]);
+                        const target = parseInt(edge[0].split('_')[1]);
 
-                    if ((sourcePos !== undefined) && (targetPos !== undefined)) {
-                        positions.push({
-                            'source': new Vector3(sourcePos.position[0], sourcePos.position[1], sourcePos.position[2]),
-                            'sourceLabel': electrodeLabels[source],
-                            'target': new Vector3(targetPos.position[0], targetPos.position[1], targetPos.position[2]),
-                            'targetLabel': electrodeLabels[target],
-                            'frequency': lineWidth(edge[1]),
-                        })
+                        const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
+                        const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
+
+                        if ((sourcePos !== undefined) && (targetPos !== undefined)) {
+                            positions.push({
+                                'source': new Vector3(sourcePos.position[0], sourcePos.position[1], sourcePos.position[2]),
+                                'sourceLabel': electrodeLabels[source],
+                                'target': new Vector3(targetPos.position[0], targetPos.position[1], targetPos.position[2]),
+                                'targetLabel': electrodeLabels[target],
+                                'frequency': lineWidth(edge[1]),
+                            })
+                        }
                     }
                 }
+                // console.log(positions)
                 setEdgeData(positions)
-                setPropagationSlider(prev => {
-                    if (prev[1] < parseInt(keys[keys.length - 1])) {
-                        return [prev[1], prev[1] + 60000]
-                    } else {
-                        return [0, 60000]
-                    }
-                })
+                const start = currentIndex * 60000;
+                const end = (currentIndex + 1) * 60000 > endTime ? endTime : (currentIndex + 1) * 60000;
+                setPropagationSlider([start, end])
 
-            }, 2500)
+            }, 2000)
 
         }
         return () => clearInterval(interval)

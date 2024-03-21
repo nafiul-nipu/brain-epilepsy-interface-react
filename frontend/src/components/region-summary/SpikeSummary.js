@@ -146,7 +146,7 @@ export const SpikeSummary = ({
         setIsSwitchChecked(checked);
     };
 
-    const dynamicCircleRadius = isSwitchChecked ? d3.scaleLinear().domain([minSource, maxSource]).range([7, 15]) : d3.scaleLinear().domain([minTarget, maxTarget]).range([7, 15]);
+    const dynamicCircleRadius = isSwitchChecked ? d3.scaleLinear().domain([minSource, maxSource]).range([5, 15]) : d3.scaleLinear().domain([minTarget, maxTarget]).range([5, 15]);
 
     // find max columns and rows in all patches
     const maxDimensions = {
@@ -172,7 +172,7 @@ export const SpikeSummary = ({
 
     const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
         const roiMatrix = processedPatchData[roiKey].matrix;
-        
+
         // For finding the max columns in one row
         const columnsPerRow = Math.max(...roiMatrix.map((a) => a.length));
 
@@ -307,8 +307,8 @@ export const SpikeSummary = ({
     const yCenter = 0;
 
     // Biswajit graph 4A Onset and Spread legend
-    const minCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(minTarget) - 3 : dynamicCircleRadius(minSource) - 3;
-    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxTarget) - 5 : dynamicCircleRadius(maxSource) - 5;
+    const minCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(minTarget) : dynamicCircleRadius(minSource);
+    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxTarget) : dynamicCircleRadius(maxSource);
 
     const sizeLegend = (
         <g ref={frequencyGRef}>

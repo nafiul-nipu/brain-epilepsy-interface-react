@@ -26,6 +26,7 @@ import { useAllNetwork } from "./library/useAllNetwork";
 import { PatchNetwork } from "./components/patch-network/PatchNetwork";
 import { useRegionData } from "./library/useRegionData";
 import { useBBoxcenter } from "./library/useBBoxcenter";
+import { useNetworkPerMinute } from "./library/useNetworkPerMinute";
 
 function App() {
 
@@ -60,6 +61,9 @@ function App() {
   // console.log(allEventData)
 
   const allNetwork = useAllNetwork({ patientID: patientInfo.id });
+
+  const networkPerMinute = useNetworkPerMinute({ patientID: patientInfo.id });
+  console.log(networkPerMinute)
 
   // loading the data
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
@@ -112,7 +116,7 @@ function App() {
           <Row>
             {/* brain - 50vh */}
             <Col md="12" style={{ height: "54vh", backgroundColor: "#FAFBFC" }}>
-              {allEventData && comData && allNetwork ? (
+              {allEventData && comData && allNetwork && networkPerMinute ? (
                 <ENTContainer
                   patientInformation={patientInfo}
                   electrodeData={electrodeDataCsv}
@@ -127,6 +131,7 @@ function App() {
                   eegList={eegList}
                   setEegInBrain={setEegInBrain}
                   patchRegionToggle={patchRegionToggle}
+                  network_per_minute={networkPerMinute[patientInfo.sample]}
                 />
               ) : null}
             </Col>

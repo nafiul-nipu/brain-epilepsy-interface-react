@@ -149,7 +149,7 @@ export const ElectrodeLoad = ({
                 meshRef.current.setMatrixAt(index, object.matrix);
             });
 
-        } else if (visualPanel === 'Patches') {
+        } else if (visualPanel === 'Patches' || visualPanel === 'Propagation') {
             // console.log(electrodeData)
             const uniqueRegions = patchRegionToggle === 'Region' ? [...new Set(electrodeData.map(obj => obj.region))] : null;
 

@@ -1,9 +1,11 @@
 import { CatmullRomLine, Line, QuadraticBezierLine, Cone } from "@react-three/drei"
-import { useLayoutEffect, useState } from "react"
+import { useLayoutEffect, useState, useEffect } from "react"
 import { Vector3, Euler, Quaternion, QuadraticBezierCurve3 } from "three"
 import React from 'react'
 import * as d3 from 'd3'
 import * as ss from 'simple-statistics'
+
+let currentIndex = 0;
 
 export const NetworkView = ({
     electrodeData,
@@ -11,7 +13,11 @@ export const NetworkView = ({
     topPercent,
     bbox,
     selectedRoi,
-    eegInBrain
+    eegInBrain,
+    network_per_minute,
+    visualPanel,
+    propagatoinButtonValue,
+    setPropagationSlider
 }) => {
     const [edgeData, setEdgeData] = useState(null)
     const lineWidth = d3.scaleLinear()
@@ -20,62 +26,88 @@ export const NetworkView = ({
         // console.log("create line is being called")
         // console.log(electrodeData)
         // console.log(networkData)
-        const electrodeLabels = {};
-        electrodeData.forEach(electrode => {
-            if (typeof selectedRoi === 'string') {
-                electrodeLabels[electrode.electrode_number] = electrode.region;
-            } else {
-                electrodeLabels[electrode.electrode_number] = electrode.label;
-            }
-        })
-        // console.log(typeof selectedRoi)
-        // console.log(electrodeLabels)
-        const edgeCounter = {}
-        for (const connection of networkData) {
-            if (connection.network.length === 0) {
-                continue;
-            }
-            for (const network of connection.network) {
-                const source = network.source;
-                const target = network.target;
-                const key = `${source}_${target}`
-                if (key in edgeCounter) {
-                    edgeCounter[key] += 1;
-                } else {
-                    edgeCounter[key] = 1;
-                }
-            }
-
-        }
-        // console.log(edgeCounter)
-
-        const sortedEdges = Object.entries(edgeCounter)
-            .filter(([key, value]) => value > 1) // Filter values not greater than 1
-            .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
-
-        // console.log(sortedEdges)
-
-        const sortedValues = sortedEdges.map(edge => edge[1])
-        // console.log(sortedValues)
-
-        const percentileVal = ss.quantileSorted(sortedValues, topPercent / 100);
-
-        // console.log(percentileVal)
-
-        const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
-
-        // console.log(topEdges)
-
-        lineWidth.domain([topEdges[topEdges.length - 1][1], topEdges[0][1]]);
-
+        if (propagatoinButtonValue === 'Pause') return;
         let positions = []
-        if (eegInBrain !== null && eegInBrain !== undefined) {
-            console.log('eeg in Brain Selected')
-            for (const edge of topEdges) {
-                const source = parseInt(edge[0].split('_')[0]);
-                const target = parseInt(edge[0].split('_')[1]);
+        if (visualPanel !== 'Propagation') {
+            console.log(visualPanel)
 
-                if (eegInBrain === source || eegInBrain === target) {
+            const electrodeLabels = {};
+            electrodeData.forEach(electrode => {
+                if (typeof selectedRoi === 'string') {
+                    electrodeLabels[electrode.electrode_number] = electrode.region;
+                } else {
+                    electrodeLabels[electrode.electrode_number] = electrode.label;
+                }
+            })
+            // console.log(typeof selectedRoi)
+            // console.log(electrodeLabels)
+            const edgeCounter = {}
+            for (const connection of networkData) {
+                if (connection.network.length === 0) {
+                    continue;
+                }
+                for (const network of connection.network) {
+                    const source = network.source;
+                    const target = network.target;
+                    const key = `${source}_${target}`
+                    if (key in edgeCounter) {
+                        edgeCounter[key] += 1;
+                    } else {
+                        edgeCounter[key] = 1;
+                    }
+                }
+
+            }
+            // console.log(edgeCounter)
+
+            const sortedEdges = Object.entries(edgeCounter)
+                .filter(([key, value]) => value > 1) // Filter values not greater than 1
+                .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
+
+            // console.log(sortedEdges)
+
+            const sortedValues = sortedEdges.map(edge => edge[1])
+            // console.log(sortedValues)
+
+            const percentileVal = ss.quantileSorted(sortedValues, topPercent / 100);
+
+            // console.log(percentileVal)
+
+            const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
+
+            // console.log(topEdges)
+
+            lineWidth.domain([topEdges[topEdges.length - 1][1], topEdges[0][1]]);
+
+
+            if (eegInBrain !== null && eegInBrain !== undefined) {
+                console.log('eeg in Brain Selected')
+                for (const edge of topEdges) {
+                    const source = parseInt(edge[0].split('_')[0]);
+                    const target = parseInt(edge[0].split('_')[1]);
+
+                    if (eegInBrain === source || eegInBrain === target) {
+                        const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
+                        const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
+
+                        if ((sourcePos !== undefined) && (targetPos !== undefined)) {
+                            positions.push({
+                                'source': new Vector3(sourcePos.position[0], sourcePos.position[1], sourcePos.position[2]),
+                                'sourceLabel': electrodeLabels[source],
+                                'target': new Vector3(targetPos.position[0], targetPos.position[1], targetPos.position[2]),
+                                'targetLabel': electrodeLabels[target],
+                                'frequency': lineWidth(edge[1]),
+                            })
+                        }
+                    }
+                }
+            } else if (selectedRoi == null) {
+                console.log("selectedRoi is null")
+                for (const edge of topEdges) {
+                    // console.log(edge)
+                    const source = parseInt(edge[0].split('_')[0]);
+                    const target = parseInt(edge[0].split('_')[1]);
+
                     const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
                     const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
 
@@ -89,54 +121,133 @@ export const NetworkView = ({
                         })
                     }
                 }
-            }
-        } else if (selectedRoi == null) {
-            console.log("selectedRoi is null")
-            for (const edge of topEdges) {
-                // console.log(edge)
-                const source = parseInt(edge[0].split('_')[0]);
-                const target = parseInt(edge[0].split('_')[1]);
+            } else {
+                for (const edge of topEdges) {
+                    console.log("roi selected")
+                    const source = parseInt(edge[0].split('_')[0]);
+                    const target = parseInt(edge[0].split('_')[1]);
 
-                const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
-                const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
+                    if (selectedRoi === electrodeLabels[source] && selectedRoi === electrodeLabels[target]) {
+                        const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
+                        const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
 
-                if ((sourcePos !== undefined) && (targetPos !== undefined)) {
-                    positions.push({
-                        'source': new Vector3(sourcePos.position[0], sourcePos.position[1], sourcePos.position[2]),
-                        'sourceLabel': electrodeLabels[source],
-                        'target': new Vector3(targetPos.position[0], targetPos.position[1], targetPos.position[2]),
-                        'targetLabel': electrodeLabels[target],
-                        'frequency': lineWidth(edge[1]),
-                    })
+                        if ((sourcePos !== undefined) && (targetPos !== undefined)) {
+                            positions.push({
+                                'source': new Vector3(sourcePos.position[0], sourcePos.position[1], sourcePos.position[2]),
+                                'sourceLabel': electrodeLabels[source],
+                                'target': new Vector3(targetPos.position[0], targetPos.position[1], targetPos.position[2]),
+                                'targetLabel': electrodeLabels[target],
+                                'frequency': lineWidth(edge[1]),
+                            })
+                        }
+                    }
                 }
             }
         } else {
-            for (const edge of topEdges) {
-                console.log("roi selected")
-                const source = parseInt(edge[0].split('_')[0]);
-                const target = parseInt(edge[0].split('_')[1]);
-
-                if (selectedRoi === electrodeLabels[source] && selectedRoi === electrodeLabels[target]) {
-                    const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
-                    const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
-
-                    if ((sourcePos !== undefined) && (targetPos !== undefined)) {
-                        positions.push({
-                            'source': new Vector3(sourcePos.position[0], sourcePos.position[1], sourcePos.position[2]),
-                            'sourceLabel': electrodeLabels[source],
-                            'target': new Vector3(targetPos.position[0], targetPos.position[1], targetPos.position[2]),
-                            'targetLabel': electrodeLabels[target],
-                            'frequency': lineWidth(edge[1]),
-                        })
-                    }
-                }
-            }
+            console.log(network_per_minute)
         }
 
         setEdgeData(positions)
 
-    }, [electrodeData, networkData, topPercent, selectedRoi, eegInBrain])
+    }, [electrodeData,
+        networkData,
+        topPercent,
+        selectedRoi,
+        eegInBrain,
+        visualPanel,
+        network_per_minute,
+        propagatoinButtonValue
+    ])
 
+    useEffect(() => {
+        if (network_per_minute === null || network_per_minute === undefined) return;
+        console.log("interval")
+
+        let keys = Object.keys(network_per_minute)
+        let interval;
+        if (propagatoinButtonValue === 'Pause') {
+
+            const electrodeLabels = {};
+            electrodeData.forEach(electrode => {
+                if (typeof selectedRoi === 'string') {
+                    electrodeLabels[electrode.electrode_number] = electrode.region;
+                } else {
+                    electrodeLabels[electrode.electrode_number] = electrode.label;
+                }
+            })
+
+            const sortedNetwokrPerMinute = {}
+            for (const minute in network_per_minute) {
+                const edgeCounter = {}
+                for (const network of network_per_minute[minute]) {
+                    const source = parseInt(network.source);
+                    const target = parseInt(network.target);
+                    const key = `${source}_${target}`
+
+                    if (key in edgeCounter) {
+                        edgeCounter[key] += 1;
+                    } else {
+                        edgeCounter[key] = 1;
+                    }
+                }
+                const sortedEdges = Object.entries(edgeCounter)
+                    .filter(([key, value]) => value > 1) // Filter values not greater than 1
+                    .sort((a, b) => a[1] - b[1]);      // Sort based on values in ascending order
+
+                const sortedValues = sortedEdges.map(edge => edge[1])
+                // console.log(sortedValues)
+
+                const percentileVal = sortedValues.length === 0 ? 0 :
+                    ss.quantileSorted(sortedValues, topPercent / 100);
+
+                // console.log(percentileVal)
+
+                const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
+
+                sortedNetwokrPerMinute[minute] = topEdges
+
+            }
+            // console.log(sortedNetwokrPerMinute)
+
+            interval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % keys.length;
+                // console.log()
+                const currentSample = sortedNetwokrPerMinute[keys[currentIndex]]
+                // console.log(currentSample)
+                const positions = []
+                if (currentSample.length === 0) return;
+                lineWidth.domain([currentSample[currentSample.length - 1][1], currentSample[0][1]]);
+                for (const edge of currentSample) {
+                    const source = parseInt(edge[0].split('_')[0]);
+                    const target = parseInt(edge[0].split('_')[1]);
+
+                    const sourcePos = electrodeData.find(electrode => electrode.electrode_number === source)
+                    const targetPos = electrodeData.find(electrode => electrode.electrode_number === target)
+
+                    if ((sourcePos !== undefined) && (targetPos !== undefined)) {
+                        positions.push({
+                            'source': new Vector3(sourcePos.position[0], sourcePos.position[1], sourcePos.position[2]),
+                            'sourceLabel': electrodeLabels[source],
+                            'target': new Vector3(targetPos.position[0], targetPos.position[1], targetPos.position[2]),
+                            'targetLabel': electrodeLabels[target],
+                            'frequency': lineWidth(edge[1]),
+                        })
+                    }
+                }
+                setEdgeData(positions)
+                setPropagationSlider(prev => {
+                    if (prev[1] < parseInt(keys[keys.length - 1])) {
+                        return [prev[1], prev[1] + 60000]
+                    } else {
+                        return [0, 60000]
+                    }
+                })
+
+            }, 2500)
+
+        }
+        return () => clearInterval(interval)
+    }, [electrodeData, network_per_minute, propagatoinButtonValue, selectedRoi, setPropagationSlider])
     const calculateRadialOffset = (sourcePos, targetPos, radian, radialDistance) => {
         // Calculate midpoint
         const midPoint = new Vector3(

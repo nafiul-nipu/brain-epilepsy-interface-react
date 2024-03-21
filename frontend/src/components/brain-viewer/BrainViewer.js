@@ -66,7 +66,10 @@ export const BrainViewer = ({
     eegList,
     sampleDomain,
     setEegInBrain,
-    patchRegionToggle
+    patchRegionToggle,
+    network_per_minute,
+    propagatoinButtonValue,
+    setPropagationSlider
 }) => {
 
     // console.log(topPercent)
@@ -309,6 +312,9 @@ export const BrainViewer = ({
                                                 bbox={dataRegisty[patientInformation.id].bbox}
                                                 selectedRoi={selectedRoi}
                                                 eegInBrain={eegInBrain}
+                                                propagatoinButtonValue={propagatoinButtonValue}
+                                                setPropagationSlider={setPropagationSlider}
+                                                visualPanel={visualPanel}
                                             />
                                             <OrbitControls ref={ref => attachRef(index, ref)} enablePan={true} />
                                         </View>
@@ -426,6 +432,9 @@ export const BrainViewer = ({
                                                     bbox={dataRegisty[patientInformation.id].bbox}
                                                     selectedRoi={selectedRoi}
                                                     eegInBrain={eegInBrain}
+                                                    propagatoinButtonValue={propagatoinButtonValue}
+                                                    setPropagationSlider={setPropagationSlider}
+                                                    visualPanel={visualPanel}
                                                 />
                                                 <OrbitControls ref={ref => attachRef(index, ref)} enablePan={true} />
                                             </View>
@@ -543,6 +552,9 @@ export const BrainViewer = ({
                                                         bbox={dataRegisty[patientInformation.id].bbox}
                                                         selectedRoi={selectedRoi}
                                                         eegInBrain={eegInBrain}
+                                                        propagatoinButtonValue={propagatoinButtonValue}
+                                                        setPropagationSlider={setPropagationSlider}
+                                                        visualPanel={visualPanel}
                                                     />
                                                     <OrbitControls ref={ref => attachRef(index, ref)} enablePan={true} />
                                                 </View>
@@ -638,6 +650,10 @@ export const BrainViewer = ({
                                                         bbox={dataRegisty[patientInformation.id].bbox}
                                                         selectedRoi={selectedRoi}
                                                         eegInBrain={eegInBrain}
+                                                        network_per_minute={network_per_minute}
+                                                        visualPanel={visualPanel}
+                                                        propagatoinButtonValue={propagatoinButtonValue}
+                                                        setPropagationSlider={setPropagationSlider}
                                                     />
                                                 ) : null
                                             }

@@ -18,7 +18,8 @@ export const ENTContainer = ({
     selectedRoi,
     eegList,
     setEegInBrain,
-    patchRegionToggle
+    patchRegionToggle,
+    network_per_minute
 }) => {
     // console.log(community)
     // console.log(topPercent)
@@ -140,6 +141,10 @@ export const ENTContainer = ({
                             sampleDomain={sampleDomain}
                             setEegInBrain={setEegInBrain}
                             patchRegionToggle={patchRegionToggle}
+                            network_per_minute={network_per_minute}
+                            propagatoinButtonValue={propagatoinButtonValue}
+                            setPropagationSlider={setPropagationSlider}
+
                         />
                     </Row>
                 </Col>

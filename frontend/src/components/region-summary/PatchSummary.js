@@ -119,11 +119,6 @@ export const PatchSummary = ({
     setSelectedRoi(Number(roi));
   }
 
-  const patchLabels = electrodeData.reduce((result, obj) =>
-    ({ ...result, [obj.electrode_number]: obj.label }), {});
-  const regiionLabels = electrodeData.reduce((result, obj) =>
-    ({ ...result, [obj.electrode_number]: obj.region }), {});
-
   const regions = [...new Set(electrodeData.map(obj => obj.region))];
 
   // getting each electrode frequency

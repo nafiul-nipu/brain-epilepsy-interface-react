@@ -172,7 +172,7 @@ export const SpikeSummary = ({
 
     const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
         const roiMatrix = processedPatchData[roiKey].matrix;
-        console.log(roiMatrix, "roiMatrix")
+        
         // For finding the max columns in one row
         const columnsPerRow = Math.max(...roiMatrix.map((a) => a.length));
 

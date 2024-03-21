@@ -17,6 +17,7 @@ const CustomAxesHelper = () => {
     const { camera, scene } = useThree();
     const axesHelperRef = useRef();
     const labelsRef = useRef({ x: null, y: null, z: null });
+    const arrowsRef = useRef({ x: null, y: null, z: null });
 
     const createLabel = (text, position, color) => {
         const canvas = document.createElement('canvas');
@@ -37,6 +38,17 @@ const CustomAxesHelper = () => {
         return sprite;
     };
 
+    const createArrow = (direction, position, color) => {
+        const arrowDir = direction.normalize(); 
+        const arrowLength = 5;
+        const arrowColor = new THREE.Color(color);
+        const arrowHeadLength = 1.2;
+        const arrowHeadWidth = 0.5;
+        const arrow = new THREE.ArrowHelper(arrowDir, position, arrowLength, arrowColor, arrowHeadLength, arrowHeadWidth);
+        scene.add(arrow);
+        return arrow;
+    };
+
     useEffect(() => {
         const axesHelper = new THREE.AxesHelper(5);
         axesHelperRef.current = axesHelper;
@@ -55,12 +67,21 @@ const CustomAxesHelper = () => {
         labelsRef.current.y = createLabel('Y', new THREE.Vector3(0, 5.5, 0), 'green');
         labelsRef.current.z = createLabel('Z', new THREE.Vector3(0, 0, 5.5), 'blue');
 
+        arrowsRef.current.x = createArrow(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 0, 0), 'red');
+        arrowsRef.current.y = createArrow(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0), 'green');
+        arrowsRef.current.z = createArrow(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), 'blue');
+
         return () => {
             scene.remove(axesHelper);
 
             Object.keys(labelsRef.current).forEach(key => {
                 const label = labelsRef.current[key];
                 if (label) scene.remove(label);
+            });
+
+            Object.keys(arrowsRef.current).forEach(key => {
+                const arrow = arrowsRef.current[key];
+                if (arrow) scene.remove(arrow);
             });
         };
     }, [scene]);
@@ -73,14 +94,21 @@ const CustomAxesHelper = () => {
         axesHelperRef.current.position.copy(position);
         axesHelperRef.current.scale.set(0.1, 0.1, 0.1);
 
-        // Adjust label positions
-        labelsRef.current.x.position.set(5 * 0.1 + position.x, position.y - 0.1, position.z);
-        labelsRef.current.y.position.set(position.x - 0.1, 5.5 * 0.1 + position.y - 0.2, position.z);
-        labelsRef.current.z.position.set(position.x, position.y - 0.2, 5.5 * 0.1 + position.z);
+        labelsRef.current.x.position.set(position.x + 0.4, position.y, position.z);
+        labelsRef.current.y.position.set(position.x, position.y + 0.4, position.z);
+        labelsRef.current.z.position.set(position.x, position.y, position.z + 0.4);
+        
+        Object.values(arrowsRef.current).forEach(arrow => {
+            if (arrow) {
+                arrow.position.copy(position);
+                arrow.scale.set(0.1, 0.1, 0.1);
+            }
+        });
     });
 
     return null;
 };
+
 
 export const BrainViewer = ({
     patientInformation,

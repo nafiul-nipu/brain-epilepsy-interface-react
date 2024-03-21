@@ -178,19 +178,19 @@ export const TimeSliderButton = ({
                                             max={time}
                                         >
                                             <RangeSliderMark value={0} mt='1' ml='-2.5' fontSize='sm'>
-                                                0
+                                                0 m
                                             </RangeSliderMark>
                                             <RangeSliderMark value={ranges[0]} mt='1' ml='-2.5' fontSize='sm'>
-                                                {ranges[0]}
+                                                {`${ranges[0] / 60000} m`}
                                             </RangeSliderMark>
                                             <RangeSliderMark value={ranges[1]} mt='1' ml='-2.5' fontSize='sm'>
-                                                {ranges[1]}
+                                                {`${ranges[1] / 60000} m`}
                                             </RangeSliderMark>
                                             <RangeSliderMark value={ranges[2]} mt='1' ml='-2.5' fontSize='sm'>
-                                                {ranges[2]}
+                                                {`${ranges[2] / 60000} m`}
                                             </RangeSliderMark>
                                             <RangeSliderMark value={ranges[3]} mt='1' ml='-2.5' fontSize='sm'>
-                                                {ranges[3]}
+                                                {`${ranges[3] / 60000} m`}
                                             </RangeSliderMark>
                                             <RangeSliderTrack bg='red.100'>
                                                 <RangeSliderFilledTrack bg='tomato' />
@@ -206,7 +206,7 @@ export const TimeSliderButton = ({
                                                 ml='-12'
                                                 w='14'
                                             >
-                                                {propagationSlider[0]}
+                                                {`${propagationSlider[0] / 60000} m`}
                                             </RangeSliderMark>
 
                                             {/* left slider marker */}
@@ -232,7 +232,7 @@ export const TimeSliderButton = ({
                                                 ml='0'
                                                 w='14'
                                             >
-                                                {propagationSlider[1]}
+                                                {`${propagationSlider[1] / 60000} m`}
                                             </RangeSliderMark>
                                             {/* right slider marker */}
                                             <RangeSliderMark

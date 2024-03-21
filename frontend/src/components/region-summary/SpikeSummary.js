@@ -27,7 +27,6 @@ export const SpikeSummary = ({
     selectedRoi,
     setSelectedRoi,
     samplePropagationData,
-    patientID,
     electrodeData,
     patchRegionToggle,
     setPatchRegionToggle
@@ -131,28 +130,6 @@ export const SpikeSummary = ({
         }
     }
 
-    // function findMaxInObject(obj) {
-    //     let maxVal = -Infinity;
-    //     function recurse(currentObj) {
-    //         Object.values(currentObj).forEach((value) => {
-    //             if (typeof value === "object" && value !== null) {
-    //                 recurse(value);
-    //             } else if (typeof value === "number") {
-    //                 maxVal = Math.max(maxVal, value);
-    //             }
-    //         });
-    //     }
-    //     recurse(obj);
-    //     return maxVal;
-    // }
-    // console.log(processedPatchData, 'processedPatchData')
-    // find the max frequency number in electrodes
-    // const maxOccurrence = findMaxInObject(processedPatchData);
-
-    // const ratios = samplePropagationData
-    //     .filter(item => item.source_counts !== 0 && item.target_counts !== 0)
-    //     .map(item => item.target_counts / item.source_counts);
-
     const initialMinMax = { minSource: Infinity, maxSource: -Infinity, minTarget: Infinity, maxTarget: -Infinity };
 
     const { minSource, maxSource, minTarget, maxTarget } = samplePropagationData.reduce((acc, item) => {
@@ -169,14 +146,7 @@ export const SpikeSummary = ({
         setIsSwitchChecked(checked);
     };
 
-    // max and min ratio(target counts / source counts) for each electrode
-    // const minTargetRatio = Math.min(...ratios);
-    // const maxTargetRatio = Math.max(...ratios);
-
-    // const source_target_lineScale = d3.scaleLog().domain([minTargetRatio, maxTargetRatio]).range([0.7, 1.3]);
-    // const frequency_lineScale = d3.scaleLinear().domain([0, maxOccurrence - minSum]).range([0, 1]);
-
-    const dynamicCircleRadius = isSwitchChecked ? d3.scaleLinear().domain([minSource, maxSource]).range([2, 15]) : d3.scaleLinear().domain([minTarget, maxTarget]).range([2, 12]);
+    const dynamicCircleRadius = isSwitchChecked ? d3.scaleLinear().domain([minSource, maxSource]).range([7, 15]) : d3.scaleLinear().domain([minTarget, maxTarget]).range([7, 15]);
 
     // find max columns and rows in all patches
     const maxDimensions = {
@@ -191,7 +161,7 @@ export const SpikeSummary = ({
         // For finding the rows
         const numRowsInSVG = roiMatrix.length;
 
-        // Update maxima in the object if current values are higher
+        // Update maximum in the object if current values are higher
         if (columnsPerRow > maxDimensions.columnsPerRow) {
             maxDimensions.columnsPerRow = columnsPerRow;
         }
@@ -202,9 +172,14 @@ export const SpikeSummary = ({
 
     const rows = Object.keys(processedPatchData).map((roiKey, roiIndex) => {
         const roiMatrix = processedPatchData[roiKey].matrix;
-
+        console.log(roiMatrix, "roiMatrix")
         // For finding the max columns in one row
         const columnsPerRow = Math.max(...roiMatrix.map((a) => a.length));
+
+        // For finding electrode range of each patch
+        const electrodeRange = roiMatrix.map((row) => row.filter((ele) => ele !== null)).flat();
+        const maxElectrodeId = Math.max(...electrodeRange.map((ele) => Object.keys(ele)[0]));
+        const minElectrodeId = Math.min(...electrodeRange.map((ele) => Object.keys(ele)[0]));
 
         // For finding the rows
         const numRowsInSVG = roiMatrix.length;
@@ -238,8 +213,7 @@ export const SpikeSummary = ({
         const yOffset = (svgHeight - totalMatrixHeight) / 2;
 
         const setBorderColorOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
-        // console.log(roiMatrix, 'roiMatrix')
-        // console.log(roiKey, 'roiKey')
+
         return (
             <Col
                 md="4"
@@ -257,10 +231,13 @@ export const SpikeSummary = ({
                 }}
                 onClick={() => patchOnClick(roiKey)}
             >
-                <svg width="100%" height={10}>
+                <svg width="100%" height={12}>
                     <g>
                         <text x={10} y={10} fontSize={12} fill="black" textAnchor="start">
                             {`Patch: ${roiKey}`}
+                        </text>
+                        <text x='97%' y={10} fontSize={12} fill="black" textAnchor="end">
+                            {`ID: ${minElectrodeId} - ${maxElectrodeId}`}
                         </text>
                     </g>
                 </svg>
@@ -274,7 +251,6 @@ export const SpikeSummary = ({
                             if (electrodeObj === null) {
                                 return null;
                             }
-                            // console.log(electrodeObj, 'electrodeObj')
 
                             const electrodeId = Object.keys(electrodeObj)[0];
                             const electrodePropagation = samplePropagationData.find(
@@ -331,8 +307,8 @@ export const SpikeSummary = ({
     const yCenter = 0;
 
     // Biswajit graph 4A Onset and Spread legend
-    const minCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(minTarget) : dynamicCircleRadius(minSource);
-    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxTarget) : dynamicCircleRadius(maxSource);
+    const minCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(minTarget) - 3 : dynamicCircleRadius(minSource) - 3;
+    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxTarget) - 5 : dynamicCircleRadius(maxSource) - 5;
 
     const sizeLegend = (
         <g ref={frequencyGRef}>

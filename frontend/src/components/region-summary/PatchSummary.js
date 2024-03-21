@@ -208,6 +208,11 @@ export const PatchSummary = ({
     // For finding the max columns in one row
     const columnsPerRow = Math.max(...roiMatrix.map((a) => a.length));
 
+    // For finding electrode range of each patch
+    const electrodeRange = roiMatrix.map((row) => row.filter((ele) => ele !== null)).flat();
+    const maxElectrodeId = Math.max(...electrodeRange.map((ele) => Object.keys(ele)[0]));
+    const minElectrodeId = Math.min(...electrodeRange.map((ele) => Object.keys(ele)[0]));
+
     // For finding the rows
     const numRowsInSVG = roiMatrix.length;
 
@@ -240,7 +245,7 @@ export const PatchSummary = ({
     const yOffset = (svgHeight - totalMatrixHeight) / 2;
 
     const setBorderColorOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
-    // console.log(Number(roiKey), electrodeColorList[Number(roiKey)])
+
     return (
       <Col
         md="4"
@@ -258,10 +263,13 @@ export const PatchSummary = ({
         }}
         onClick={() => patchOnClick(roiKey)}
       >
-        <svg width="100%" height={10}>
+        <svg width="100%" height={12}>
           <g>
             <text x={10} y={10} fontSize={12} fill="black" textAnchor="start">
               {`Patch: ${roiKey}`}
+            </text>
+            <text x='97%' y={10} fontSize={12} fill="black" textAnchor="end">
+              {`ID: ${minElectrodeId} - ${maxElectrodeId}`}
             </text>
           </g>
         </svg>
@@ -454,7 +462,7 @@ export const PatchSummary = ({
     </g>
   )
 
-  const minCircleLegendRadius = dynamicCircleRadius(minSpikesSum) - 4
+  const minCircleLegendRadius = dynamicCircleRadius(0) - 5
   const maxCircleLegendRadius = dynamicCircleRadius(maxSpikesSum) - 8
 
   const sizeLegend = (
@@ -475,7 +483,7 @@ export const PatchSummary = ({
         fontSize={10}
         alignmentBaseline="middle"
       >
-        {minSpikesSum}
+        0
       </text>
       <circle cx={xCenter} cy={yCenter} r={maxCircleLegendRadius} fill="none" stroke="black" strokeWidth={0.5}></circle>
       <line

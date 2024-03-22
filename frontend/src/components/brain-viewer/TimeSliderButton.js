@@ -1,5 +1,6 @@
 import { Col, Row } from "react-bootstrap"
 import dataRegistry from "../../data/dataRegistry.json";
+import { Button } from "antd";
 // import { getPercentValue } from "@chakra-ui/utils";
 
 import {
@@ -32,28 +33,26 @@ export const TimeSliderButton = ({
             <Row style={{ marginTop: '2%' }}>
                 {
                     visualPanel === 'Frequency' ? (
-                        <Col md='2'>
-                            <button
+                        <Col md='2' className="d-flex justify-content-center">
+                            <Button
                                 id={`play-pause-btn`}
-                                className="btn btn-light btn-sm"
-                                style={{ marginLeft: '5px' }}
+                                style={{ marginLeft: '5px', width: '80px'}}
                                 value={buttonValue}
                                 onClick={handleClick}
                             >{buttonValue}
-                            </button>
+                            </Button>
                         </Col>
                     )
                         :
                         visualPanel === 'Propagation' ? (
-                            <Col md='2'>
-                                <button
+                            <Col md='2' className="d-flex justify-content-center">
+                                <Button
                                     id={`play-pause-btn`}
-                                    className="btn btn-light btn-sm"
-                                    style={{ marginLeft: '5px' }}
+                                    style={{ marginLeft: '5px', width: '80px' }}
                                     value={propagatoinButtonValue}
                                     onClick={handlePropagationClick}
                                 >{propagatoinButtonValue}
-                                </button>
+                                </Button>
                             </Col>
                         )
                             : null
@@ -151,8 +150,7 @@ export const TimeSliderButton = ({
                                     key={index}
                                     md={12 / totalSamples.length}
                                 >
-                                    Sample: {sample + 1}
-                                    Com: {totalCommunities[index]}
+                                    <div style={{marginLeft: 10}}>Sample: {sample + 1} Com: {totalCommunities[index]}</div>
                                 </Col>
                             ))
 
@@ -162,7 +160,7 @@ export const TimeSliderButton = ({
                                     key={index}
                                     md={12 / totalSamples.length}
                                 >
-                                    Sample: {sample + 1}
+                                    <div style={{marginLeft: 10}}>Sample: {sample + 1}</div>
                                 </Col>
                             ))
                         ) : visualPanel === 'Propagation' ?

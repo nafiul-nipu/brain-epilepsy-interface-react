@@ -58,18 +58,18 @@ const CustomAxesHelper = () => {
         colors.setXYZ(1, 1, 0, 0); // Red
         colors.setXYZ(2, 0.290, 0.365, 0.137); // Green
         colors.setXYZ(3, 0.290, 0.365, 0.137); // Green
-        colors.setXYZ(4, 0, 0, 1); // Blue
-        colors.setXYZ(5, 0, 0, 1); // Blue
+        colors.setXYZ(4, 0, 0.49, 1); // Blue
+        colors.setXYZ(5, 0, 0.49, 1); // Blue
 
         scene.add(axesHelper);
 
         labelsRef.current.x = createLabel('X', new THREE.Vector3(5.5, 0, 0), 'red');
         labelsRef.current.y = createLabel('Y', new THREE.Vector3(0, 5.5, 0), 'green');
-        labelsRef.current.z = createLabel('Z', new THREE.Vector3(0, 0, 5.5), 'blue');
+        labelsRef.current.z = createLabel('Z', new THREE.Vector3(0, 0, 5.5), '#007FFF');
 
         arrowsRef.current.x = createArrow(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 0, 0), 'red');
         arrowsRef.current.y = createArrow(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0), 'green');
-        arrowsRef.current.z = createArrow(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), 'blue');
+        arrowsRef.current.z = createArrow(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), '#007FFF');
 
         return () => {
             scene.remove(axesHelper);
@@ -235,7 +235,7 @@ export const BrainViewer = ({
                         title="Left Brain"
                         style={{ width: "98%", margin: 5 }}
                     >
-                        <p style={{ marginLeft: 15 }}>Opacity:</p>
+                        <p style={{ margin: 0  }}>Opacity:</p>
                         <Slider
                             style={{ width: "100%" }}
                             defaultValue={1}
@@ -251,7 +251,7 @@ export const BrainViewer = ({
                         title="Right Brain"
                         style={{ width: "98%", margin: 5 }}
                     >
-                        <p style={{ marginLeft: 15 }}>Opacity:</p>
+                        <p style={{ margin: 0 }}>Opacity:</p>
                         <Slider
                             style={{ width: "100%" }}
                             defaultValue={1}

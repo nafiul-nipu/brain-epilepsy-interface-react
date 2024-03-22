@@ -307,7 +307,7 @@ export const SpikeSummary = ({
 
     // Biswajit graph 4A Onset and Spread legend
     const minCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(minTarget) : dynamicCircleRadius(minSource);
-    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxTarget) : dynamicCircleRadius(maxSource);
+    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxTarget) - 3 : dynamicCircleRadius(maxSource) - 3;
 
     const sizeLegend = (
         <g ref={frequencyGRef}>

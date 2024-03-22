@@ -116,7 +116,7 @@ export const PatchSummary = ({
 
   // connect each patch to the corresponding patch network
   function patchOnClick(roi) {
-    setSelectedRoi(Number(roi));
+    setSelectedRoi(roi);
   }
 
   const regions = [...new Set(electrodeData.map(obj => obj.region))];
@@ -240,7 +240,8 @@ export const PatchSummary = ({
     const yOffset = (svgHeight - totalMatrixHeight) / 2;
 
     const setBorderColorOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
-
+    
+    const matchIndex = patchRegionMark === 'patch' ? Number(roiKey) :roiKey
     return (
       <Col
         md="4"
@@ -249,14 +250,14 @@ export const PatchSummary = ({
           height: "25vh",
           padding: 0,
           backgroundColor:
-            selectedRoi === Number(roiKey)
+            selectedRoi === matchIndex
               ? "rgba(202, 204, 202, 0.4)"
               : "white",
           border: isNaN(Number(roiKey)) ?
             `3px solid ${setBorderColorOpacity(electrodeColorList[regions.indexOf(roiKey)], 0.5)}` :
             `3px solid ${setBorderColorOpacity(electrodeColorList[parseInt(roiKey)], 0.5)}`,
         }}
-        onClick={() => patchOnClick(roiKey)}
+        onClick={() => patchOnClick(matchIndex)}
       >
         <svg width="100%" height={12}>
           <g>

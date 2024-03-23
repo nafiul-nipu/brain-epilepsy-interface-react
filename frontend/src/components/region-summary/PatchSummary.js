@@ -522,12 +522,12 @@ export const PatchSummary = ({
   )
 
   const minCircleLegendRadius = dynamicCircleRadius(0) - 5
-  const maxCircleLegendRadius = dynamicCircleRadius(maxSpikesSum) - 8
+  const maxCircleLegendRadius = dynamicCircleRadius(maxSpikesSum) - 6
 
   const sizeLegend = (
     <g ref={frequencyGRef}>
       <text
-        x={xCenter + maxCircleLegendRadius - 90}
+        x={xCenter + maxCircleLegendRadius - 95}
         y={yCenter + 2}
         fontSize={10}
       >

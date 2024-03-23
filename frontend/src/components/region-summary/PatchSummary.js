@@ -391,6 +391,19 @@ export const PatchSummary = ({
                       )
                     }
 
+                    {/* if only nonpropagation exist*/}
+                    {
+                      propagationCounts.nonPropagation && propagationCounts.targetCount === 0 && propagationCounts.sourceCount === 0 && (
+                        <circle
+                          cx={cx}
+                          cy={cy}
+                          r={circleRadius}
+                          fill={electrodeColorList[0]}
+                        >
+                        </circle>
+                      )
+                    }
+
                     {/* if nothing exist */}
                     {propagationCounts.nonPropagation === 0 && propagationCounts.sourceCount === 0 && propagationCounts.targetCount === 0 && (
                       <circle

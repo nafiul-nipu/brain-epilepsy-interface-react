@@ -104,7 +104,7 @@ export const PatchSummary = ({
   ) => {
     setTooltip({
       visible: true,
-      content: `Electrode\u00A0ID: ${electrodeId}\n Total\u00A0Spikes: ${propagationCounts.propagation + propagationCounts.nonPropagation}\n Propagation\u00A0Counts: ${propagationCounts.propagation}\n Non\u00A0propagation\u00A0Counts: ${propagationCounts.nonPropagation}`,
+      content: `Electrode\u00A0ID: ${electrodeId}\n Total\u00A0Spikes: ${propagationCounts.propagation + propagationCounts.nonPropagation}\n Propagation\u00A0Counts: ${propagationCounts.propagation}\n Non\u00A0propagation\u00A0Counts: ${propagationCounts.nonPropagation}\n Onset\u00A0Counts: ${propagationCounts.sourceCount}\n Spread\u00A0Counts: ${propagationCounts.targetCount}`,
       x: e.clientX - 150,
       y: e.clientY + 50,
     });
@@ -143,25 +143,38 @@ export const PatchSummary = ({
   }
 
   // target and source arc Bézier curve points function
-  const CircularCurve = (cx, cy, radius, dynamicfrequencyLength) => {
-    const propagationKeyPositionX = cx - (radius - dynamicfrequencyLength) * Math.cos(45 * Math.PI / 180);
-    const propagationKeyPositionY = cy + (radius - dynamicfrequencyLength) * Math.sin(45 * Math.PI / 180);
+  const CircularCurve = (cx, cy, radius, dynamicNonpropagationLength, dynamicOnsetSpreadLength) => {
+    const propagationKeyPositionX = cx - (radius - dynamicNonpropagationLength) * Math.cos(45 * Math.PI / 180);
+    const propagationKeyPositionY = cy + (radius - dynamicNonpropagationLength) * Math.sin(45 * Math.PI / 180);
 
     const propagationEndPositionX = propagationKeyPositionX;
-    const propagationEndPositionY = cy + Math.sqrt(Math.pow(radius, 2) - Math.pow((radius - dynamicfrequencyLength) * Math.cos(45 * Math.PI / 180), 2));
+    const propagationEndPositionY = cy + Math.sqrt(Math.pow(radius, 2) - Math.pow((radius - dynamicNonpropagationLength) * Math.cos(45 * Math.PI / 180), 2));
 
-    const propagationStartPositionX = cx - Math.sqrt(Math.pow(radius, 2) - Math.pow((radius - dynamicfrequencyLength) * Math.sin(45 * Math.PI / 180), 2));
+    const propagationStartPositionX = cx - Math.sqrt(Math.pow(radius, 2) - Math.pow((radius - dynamicNonpropagationLength) * Math.sin(45 * Math.PI / 180), 2));
     const propagationStartPositionY = propagationKeyPositionY;
 
-    return { propagationStartPositionX, propagationStartPositionY, propagationEndPositionX, propagationEndPositionY, propagationKeyPositionX, propagationKeyPositionY }
+    const onset_spread_keyPositionX = cx - (radius - dynamicNonpropagationLength - dynamicOnsetSpreadLength) * Math.cos(45 * Math.PI / 180);
+    const onset_spread_keyPositionY = cy + (radius - dynamicNonpropagationLength - dynamicOnsetSpreadLength) * Math.sin(45 * Math.PI / 180);
+
+    const onset_spread_endPositionX = onset_spread_keyPositionX;
+    const onset_spread_endPositionY = cy + Math.sqrt(Math.pow(radius, 2) - Math.pow((radius - dynamicNonpropagationLength - dynamicOnsetSpreadLength) * Math.cos(45 * Math.PI / 180), 2));
+
+    const onset_spread_startPositionX = cx - Math.sqrt(Math.pow(radius, 2) - Math.pow((radius - dynamicNonpropagationLength - dynamicOnsetSpreadLength) * Math.sin(45 * Math.PI / 180), 2));
+    const onset_spread_startPositionY = onset_spread_keyPositionY;
+
+    return { propagationStartPositionX, propagationStartPositionY, propagationEndPositionX, propagationEndPositionY, propagationKeyPositionX, propagationKeyPositionY, onset_spread_startPositionX, onset_spread_startPositionY, onset_spread_keyPositionX, onset_spread_keyPositionY, onset_spread_endPositionX, onset_spread_endPositionY };
   }
 
-  const minPropagation = samplePropagationData
-    .map(item => item.propagation)
+  const ratios = samplePropagationData
+    .filter(item => (item.sourceCount + item.targetCount) !== 0)
+    .map(item => item.sourceCount / (item.sourceCount + item.targetCount));
+
+  const minNonpropagation = samplePropagationData
+    .map(item => item.nonPropagation)
     .reduce((min, current) => Math.min(min, current), Infinity);
 
-  const maxPropagation = samplePropagationData
-    .map(item => item.propagation)
+  const maxNonpropagation = samplePropagationData
+    .map(item => item.nonPropagation)
     .reduce((max, current) => Math.max(max, current), -Infinity);
 
   const minSpikesSum = samplePropagationData
@@ -172,7 +185,11 @@ export const PatchSummary = ({
     .map(item => item.propagation + item.nonPropagation)
     .reduce((max, current) => Math.max(max, current), -Infinity);
 
-  const propagation_lineScale = d3.scaleLinear().domain([minPropagation, maxPropagation]).range([0.5, 0.95]);
+  const minOnsetSpreadRatio = Math.min(...ratios);
+  const maxOnsetSpreadRatio = Math.max(...ratios);
+
+  const propagation_lineScale = d3.scaleLinear().domain([minNonpropagation, maxNonpropagation]).range([0, 1]);
+  const onset_spread_lineScale = d3.scaleLinear().domain([minOnsetSpreadRatio, maxOnsetSpreadRatio]).range([0, 1]);
   const dynamicCircleRadius = d3.scaleLinear().domain([minSpikesSum, maxSpikesSum]).range([10, 20]);
 
   // find max columns and rows in all patches
@@ -240,8 +257,8 @@ export const PatchSummary = ({
     const yOffset = (svgHeight - totalMatrixHeight) / 2;
 
     const setBorderColorOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
-    
-    const matchIndex = patchRegionMark === 'patch' ? Number(roiKey) :roiKey
+
+    const matchIndex = patchRegionMark === 'patch' ? Number(roiKey) : roiKey
     return (
       <Col
         md="4"
@@ -279,7 +296,7 @@ export const PatchSummary = ({
               if (electrodeObj === null) {
                 return null;
               }
-
+              let dynamicOnsetSpreadLength;
               const electrodeId = Object.keys(electrodeObj)[0];
               const electrodePropagation = samplePropagationData.find(
                 (e) => e.electrode_id === Number(electrodeId)
@@ -296,9 +313,12 @@ export const PatchSummary = ({
               const cy = yOffset + rowIndex * (45 + verticalSpacing) + 20;
 
               // dynamic Bézier curve keypoint
-              const dynamicLength = 2 * circleRadius * propagation_lineScale(propagationCounts.nonPropagation)
-              const points = CircularCurve(cx, cy, circleRadius, dynamicLength);
-
+              const dynamicNonpropagationLength = 2 * circleRadius * 0.75 * propagation_lineScale(propagationCounts.nonPropagation)
+              if (propagationCounts.targetCount + propagationCounts.sourceCount > 0) {
+                // dynamicOnsetSpreadLength = 2 * circleRadius * 0.75 *  onset_spread_lineScale(propagationCounts.sourceCount / propagationCounts.targetCount)
+                dynamicOnsetSpreadLength = (2 * circleRadius - dynamicNonpropagationLength) * onset_spread_lineScale(propagationCounts.sourceCount / (propagationCounts.sourceCount + propagationCounts.targetCount))
+              }
+              const points = CircularCurve(cx, cy, circleRadius, dynamicNonpropagationLength, dynamicOnsetSpreadLength);
               return (
                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
                   <g
@@ -311,57 +331,68 @@ export const PatchSummary = ({
                     }
                     onMouseLeave={handleMouseLeave}
                   >
-                    {/* propagation and nonPropagation exist */}
-                    {propagationCounts.propagation && propagationCounts.nonPropagation && (
+                    {/* nonPropagation, onset, and spread all exist */}
+                    {/* {propagationCounts.sourceCount && propagationCounts.targetCount && propagationCounts.nonPropagation && ( */}
                       <>
                         <path d={`M ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
                               Q ${points.propagationKeyPositionX} ${points.propagationKeyPositionY} ${points.propagationEndPositionX} ${points.propagationEndPositionY} 
                               A ${circleRadius} ${circleRadius} 0 0 1 ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
                               Z`}
-                          fill="#8073ac">
+                          fill={electrodeColorList[0]}>
                         </path>
-
-                        {dynamicLength < 2 * circleRadius ? (
-                          <path d={`M ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
-                              A ${circleRadius} ${circleRadius} 0 1 1 ${points.propagationEndPositionX} ${points.propagationEndPositionY} 
-                              Q ${points.propagationKeyPositionX} ${points.propagationKeyPositionY} ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
-                              Z`}
-                            fill="#fdb863">
-                          </path>) : (
-                          <path d={`M ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
+                        <path d={`M ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
+                              Q ${points.onset_spread_keyPositionX} ${points.onset_spread_keyPositionY} ${points.onset_spread_endPositionX} ${points.onset_spread_endPositionY} 
                               A ${circleRadius} ${circleRadius} 0 0 1 ${points.propagationEndPositionX} ${points.propagationEndPositionY} 
                               Q ${points.propagationKeyPositionX} ${points.propagationKeyPositionY} ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY}
+                              Z`}
+                          fill="#8073ac">
+                        </path>
+                        {dynamicNonpropagationLength + dynamicOnsetSpreadLength > 2 * circleRadius ? (
+                          <path d={`M ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${points.onset_spread_endPositionX} ${points.onset_spread_endPositionY} 
+                              Q ${points.onset_spread_keyPositionX} ${points.onset_spread_keyPositionY} ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
                               Z`}
                             fill="#fdb863">
                           </path>
-                        )}
+                        ) :
+                          <path d={`M ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 1 1 ${points.onset_spread_endPositionX} ${points.onset_spread_endPositionY} 
+                              Q ${points.onset_spread_keyPositionX} ${points.onset_spread_keyPositionY} ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
+                              Z`}
+                            fill="#fdb863">
+                          </path>}
                       </>
-                    )}
+                    {/* )} */}
 
-                    {/* if only have nonPropagation counts exist */}
-                    {propagationCounts.propagation === 0 && propagationCounts.nonPropagation && (
-                      <circle
-                        cx={cx}
-                        cy={cy}
-                        r={circleRadius}
-                        fill="#8073ac"
-                      >
-                      </circle>
-                    )}
+                    {/* if only onset counts exist when nonprogation not exist*/}
+                    {
+                      propagationCounts.nonPropagation === 0 && propagationCounts.sourceCount > 0 && propagationCounts.targetCount === 0 && (
+                        <circle
+                          cx={cx}
+                          cy={cy}
+                          r={circleRadius}
+                          fill={"#8073ac"}
+                        >
+                        </circle>
+                      )
+                    }
 
-                    {/* if only propagation counts exist */}
-                    {propagationCounts.propagation && propagationCounts.nonPropagation === 0 && (
-                      <circle
-                        cx={cx}
-                        cy={cy}
-                        r={circleRadius}
-                        fill="#fdb863"
-                      >
-                      </circle>
-                    )}
+                    {/* if only spread counts exist when nonprogation not exist*/}
+                    {
+                      propagationCounts.nonPropagation === 0 && propagationCounts.targetCount > 0 && propagationCounts.sourceCount === 0 && (
+                        <circle
+                          cx={cx}
+                          cy={cy}
+                          r={circleRadius}
+                          fill={"#fdb863"}
+                        >
+                        </circle>
+                      )
+                    }
 
                     {/* if nothing exist */}
-                    {propagationCounts.propagation === 0 && propagationCounts.nonPropagation === 0 && (
+                    {propagationCounts.nonPropagation === 0 && propagationCounts.sourceCount === 0 && propagationCounts.targetCount === 0 && (
                       <circle
                         cx={cx}
                         cy={cy}
@@ -385,8 +416,7 @@ export const PatchSummary = ({
   const yCenter = 0;
   const circleRadius = 18;
 
-
-  const legendCirclePoints = CircularCurve(xCenter, yCenter, circleRadius, circleRadius);
+  const legendCirclePoints = CircularCurve(xCenter, yCenter, circleRadius, circleRadius, circleRadius);
 
   const circleLegend = (
     <g ref={circleGRef}>
@@ -395,17 +425,29 @@ export const PatchSummary = ({
                 Q ${legendCirclePoints.propagationKeyPositionX} ${legendCirclePoints.propagationKeyPositionY} ${legendCirclePoints.propagationEndPositionX} ${legendCirclePoints.propagationEndPositionY} 
                 A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.propagationStartPositionX} ${legendCirclePoints.propagationStartPositionY} 
                 Z`}
-        fill="#8073ac"
+        fill={electrodeColorList[0]}
         stroke="black"
-        transform="translate(-1.5,1.5)"
+        transform="translate(-1.5, 1.5)"
         strokeWidth={0.5}
       >
       </path>
 
-      {/* legend propagation area */}
-      <path d={`M ${legendCirclePoints.propagationStartPositionX} ${legendCirclePoints.propagationStartPositionY} 
-                A ${circleRadius} ${circleRadius} 0 1 1 ${legendCirclePoints.propagationEndPositionX} ${legendCirclePoints.propagationEndPositionY} 
-                Q ${legendCirclePoints.propagationKeyPositionX} ${legendCirclePoints.propagationKeyPositionY} ${legendCirclePoints.propagationStartPositionX} ${legendCirclePoints.propagationStartPositionY} 
+      <path d={`M ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY} 
+                              Q ${legendCirclePoints.onset_spread_keyPositionX} ${legendCirclePoints.onset_spread_keyPositionY} ${legendCirclePoints.onset_spread_endPositionX} ${legendCirclePoints.onset_spread_endPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.propagationEndPositionX} ${legendCirclePoints.propagationEndPositionY} 
+                              Q ${legendCirclePoints.propagationKeyPositionX} ${legendCirclePoints.propagationKeyPositionY} ${legendCirclePoints.propagationStartPositionX} ${legendCirclePoints.propagationStartPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY}
+                              Z`}
+        fill="#8073ac"
+        stroke="black"
+        strokeWidth={0.5}
+      >
+      </path>
+
+      {/* legend spread area */}
+      <path d={`M ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY} 
+                A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.onset_spread_endPositionX} ${legendCirclePoints.onset_spread_endPositionY} 
+                Q ${legendCirclePoints.onset_spread_keyPositionX} ${legendCirclePoints.onset_spread_keyPositionY} ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY} 
                 Z`}
         fill="#fdb863"
         stroke="black"
@@ -425,12 +467,23 @@ export const PatchSummary = ({
         strokeDasharray={"1,1"}
       />
 
-      {/* propagation area line */}
+      {/* Onset area line */}
       <line
         x1={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 10}
         x2={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 50}
-        y1={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionY) / 2 - 11}
-        y2={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionY) / 2 - 11}
+        y1={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionY) / 2 - 5}
+        y2={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionY) / 2 - 5}
+        stroke="black"
+        strokeWidth={1}
+        strokeDasharray={"1,1"}
+      />
+
+      {/* Spread area line */}
+      <line
+        x1={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 20}
+        x2={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 50}
+        y1={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionY) / 2 - 20}
+        y2={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionY) / 2 - 20}
         stroke="black"
         strokeWidth={1}
         strokeDasharray={"1,1"}
@@ -446,14 +499,24 @@ export const PatchSummary = ({
         Non Propagation
       </text>
 
-      {/* propagation area text */}
+      {/* Onset area text */}
       <text
-        x={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 40}
+        x={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 50}
+        y={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionX) / 2 + 5}
+        fontSize={10}
+        alignmentBaseline="middle"
+      >
+        Onset
+      </text>
+
+      {/* Spread area text */}
+      <text
+        x={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 50}
         y={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionX) / 2 - 10}
         fontSize={10}
         alignmentBaseline="middle"
       >
-        Propagation
+        Spread
       </text>
     </g>
   )
@@ -463,6 +526,13 @@ export const PatchSummary = ({
 
   const sizeLegend = (
     <g ref={frequencyGRef}>
+      <text
+        x={xCenter + maxCircleLegendRadius - 90}
+        y={yCenter + 2}
+        fontSize={10}
+      >
+        Total Spikes:
+      </text>
       <circle cx={xCenter} cy={yCenter + maxCircleLegendRadius - minCircleLegendRadius} r={minCircleLegendRadius} fill="none" stroke="black" strokeWidth={0.5}></circle>
       <line
         x1={xCenter}

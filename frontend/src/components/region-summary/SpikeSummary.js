@@ -261,7 +261,7 @@ export const SpikeSummary = ({
                                 : { electrode_id: Number(electrodeId), sourceCount: 0, targetCount: 0 };
 
                             // const electrodeValue = electrodeObj[electrodeId];
-                            const countForRadius = isSwitchChecked ? propagationCounts.targetCount : propagationCounts.sourceCount;
+                            const countForRadius = isSwitchChecked ? propagationCounts.sourceCount : propagationCounts.targetCount;
                             const circleRadius = dynamicCircleRadius(countForRadius);
 
                             // adjust each electrode x and y position
@@ -306,8 +306,8 @@ export const SpikeSummary = ({
     const yCenter = 0;
 
     // Biswajit graph 4A Onset and Spread legend
-    const minCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(minTarget) : dynamicCircleRadius(minSource);
-    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxTarget) - 3 : dynamicCircleRadius(maxSource) - 3;
+    const minCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(minSource) : dynamicCircleRadius(minTarget);
+    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxSource) - 3 : dynamicCircleRadius(maxTarget) - 3;
 
     const sizeLegend = (
         <g ref={frequencyGRef}>
@@ -366,14 +366,14 @@ export const SpikeSummary = ({
             <Row>
                 <Col md="12" style={{ height: "5vh" }}>
                     <Row style={{ height: "100%", margin: 0, display: 'flex' }}>
-                        <Col md="5" className="summary">Spike Summary
+                        <Col md="6" className="summary">Spike Summary
                             <Switch style={{ marginLeft: 20, backgroundColor: isSwitchChecked ? '#007ed3' : '#2ca25f' }} checkedChildren="Onset" unCheckedChildren="Spread" onChange={onChangePatchSummary} defaultChecked />
                             <select id="patchRegionToggle" style={{ marginLeft: 20 }} value={patchRegionToggle} onChange={changePatchRegion}>
                                 <option value="Patch"> Patch </option>
                                 <option value="Region"> Region </option>
                             </select>
                         </Col>
-                        <Col md="7" className="summary">
+                        <Col md="6" className="summary">
                             <svg ref={frequencySvgRef} width="100%" height="100%" overflow="visible">
                                 {sizeLegend}
                             </svg>

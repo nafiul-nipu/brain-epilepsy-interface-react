@@ -188,9 +188,26 @@ export const PatchSummary = ({
   const minOnsetSpreadRatio = Math.min(...ratios);
   const maxOnsetSpreadRatio = Math.max(...ratios);
 
-  const propagation_lineScale = d3.scaleLinear().domain([minNonpropagation, maxNonpropagation]).range([0, 1]);
-  const onset_spread_lineScale = d3.scaleLinear().domain([minOnsetSpreadRatio, maxOnsetSpreadRatio]).range([0, 1]);
+  const propagation_lineScale = d3.scaleLinear().domain([minNonpropagation, maxNonpropagation]).range([0.1, 1]);
+  const onset_spread_lineScale = d3.scaleLinear().domain([minOnsetSpreadRatio, maxOnsetSpreadRatio]).range([0.1, 1.2]);
   const dynamicCircleRadius = d3.scaleLinear().domain([minSpikesSum, maxSpikesSum]).range([10, 20]);
+
+  // use for circle fill color when only one type of counts exist
+  function getCircleFillColor(propagationCounts, electrodeColorList) {
+    if (propagationCounts.nonPropagation === 0) {
+      if (propagationCounts.sourceCount > 0 && propagationCounts.targetCount === 0) {
+        return "#8073ac"; // Color for only onset counts exist
+      } else if (propagationCounts.targetCount > 0 && propagationCounts.sourceCount === 0) {
+        return "#fdb863"; // Color for only spread counts exist
+      } else if (propagationCounts.sourceCount === 0 && propagationCounts.targetCount === 0) {
+        return "#A9A9A9"; // Color if nothing exists
+      }
+    } else if (propagationCounts.nonPropagation && propagationCounts.targetCount === 0 && propagationCounts.sourceCount === 0) {
+      return electrodeColorList[0]; // Color for only nonpropagation exist
+    }
+
+    return "none";
+  }
 
   // find max columns and rows in all patches
   const maxDimensions = {
@@ -296,7 +313,6 @@ export const PatchSummary = ({
               if (electrodeObj === null) {
                 return null;
               }
-              let dynamicOnsetSpreadLength;
               const electrodeId = Object.keys(electrodeObj)[0];
               const electrodePropagation = samplePropagationData.find(
                 (e) => e.electrode_id === Number(electrodeId)
@@ -313,12 +329,11 @@ export const PatchSummary = ({
               const cy = yOffset + rowIndex * (45 + verticalSpacing) + 20;
 
               // dynamic Bézier curve keypoint
-              const dynamicNonpropagationLength = 2 * circleRadius * 0.75 * propagation_lineScale(propagationCounts.nonPropagation)
-              if (propagationCounts.targetCount + propagationCounts.sourceCount > 0) {
-                // dynamicOnsetSpreadLength = 2 * circleRadius * 0.75 *  onset_spread_lineScale(propagationCounts.sourceCount / propagationCounts.targetCount)
-                dynamicOnsetSpreadLength = (2 * circleRadius - dynamicNonpropagationLength) * onset_spread_lineScale(propagationCounts.sourceCount / (propagationCounts.sourceCount + propagationCounts.targetCount))
-              }
+              const dynamicNonpropagationLength = circleRadius * propagation_lineScale(propagationCounts.nonPropagation)
+              const dynamicOnsetSpreadLength = (propagationCounts.sourceCount + propagationCounts.targetCount) > 0 ? (2 * circleRadius - dynamicNonpropagationLength) * onset_spread_lineScale(propagationCounts.sourceCount / (propagationCounts.sourceCount + propagationCounts.targetCount)) : 0
               const points = CircularCurve(cx, cy, circleRadius, dynamicNonpropagationLength, dynamicOnsetSpreadLength);
+
+              const fillColor = getCircleFillColor(propagationCounts, electrodeColorList);
               return (
                 <g key={`${roiKey}-${rowIndex}-${columnIndex}`}>
                   <g
@@ -331,89 +346,50 @@ export const PatchSummary = ({
                     }
                     onMouseLeave={handleMouseLeave}
                   >
-                    {/* nonPropagation, onset, and spread all exist */}
-                    {/* {propagationCounts.sourceCount && propagationCounts.targetCount && propagationCounts.nonPropagation && ( */}
-                      <>
-                        <path d={`M ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
+                    <>
+                      <path d={`M ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
                               Q ${points.propagationKeyPositionX} ${points.propagationKeyPositionY} ${points.propagationEndPositionX} ${points.propagationEndPositionY} 
                               A ${circleRadius} ${circleRadius} 0 0 1 ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
                               Z`}
-                          fill={electrodeColorList[0]}>
-                        </path>
-                        <path d={`M ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
+                        fill={electrodeColorList[0]}>
+                      </path>
+
+                      {/* <path d={`M ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
+                              A ${circleRadius} ${circleRadius} 0 1 1 ${points.propagationEndPositionX} ${points.propagationEndPositionX}
+                              A ${circleRadius} ${circleRadius} 0 0 1 ${points.propagationStartPositionX} ${points.propagationStartPositionY}  
+                              Z`}
+                        fill={electrodeColorList[0]}>
+                      </path> */}
+                      <path d={`M ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
                               Q ${points.onset_spread_keyPositionX} ${points.onset_spread_keyPositionY} ${points.onset_spread_endPositionX} ${points.onset_spread_endPositionY} 
                               A ${circleRadius} ${circleRadius} 0 0 1 ${points.propagationEndPositionX} ${points.propagationEndPositionY} 
                               Q ${points.propagationKeyPositionX} ${points.propagationKeyPositionY} ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
                               A ${circleRadius} ${circleRadius} 0 0 1 ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY}
                               Z`}
-                          fill="#8073ac">
-                        </path>
-                        {dynamicNonpropagationLength + dynamicOnsetSpreadLength > 2 * circleRadius ? (
-                          <path d={`M ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
+                        fill="#8073ac">
+                      </path>
+                      {dynamicNonpropagationLength + dynamicOnsetSpreadLength > 2 * circleRadius ? (
+                        <path d={`M ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
                               A ${circleRadius} ${circleRadius} 0 0 1 ${points.onset_spread_endPositionX} ${points.onset_spread_endPositionY} 
                               Q ${points.onset_spread_keyPositionX} ${points.onset_spread_keyPositionY} ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
                               Z`}
-                            fill="#fdb863">
-                          </path>
-                        ) :
-                          <path d={`M ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
+                          fill="#fdb863">
+                        </path>
+                      ) :
+                        <path d={`M ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
                               A ${circleRadius} ${circleRadius} 0 1 1 ${points.onset_spread_endPositionX} ${points.onset_spread_endPositionY} 
                               Q ${points.onset_spread_keyPositionX} ${points.onset_spread_keyPositionY} ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
                               Z`}
-                            fill="#fdb863">
-                          </path>}
-                      </>
-                    {/* )} */}
-
-                    {/* if only onset counts exist when nonprogation not exist*/}
-                    {
-                      propagationCounts.nonPropagation === 0 && propagationCounts.sourceCount > 0 && propagationCounts.targetCount === 0 && (
-                        <circle
-                          cx={cx}
-                          cy={cy}
-                          r={circleRadius}
-                          fill={"#8073ac"}
-                        >
-                        </circle>
-                      )
-                    }
-
-                    {/* if only spread counts exist when nonprogation not exist*/}
-                    {
-                      propagationCounts.nonPropagation === 0 && propagationCounts.targetCount > 0 && propagationCounts.sourceCount === 0 && (
-                        <circle
-                          cx={cx}
-                          cy={cy}
-                          r={circleRadius}
-                          fill={"#fdb863"}
-                        >
-                        </circle>
-                      )
-                    }
-
-                    {/* if only nonpropagation exist*/}
-                    {
-                      propagationCounts.nonPropagation && propagationCounts.targetCount === 0 && propagationCounts.sourceCount === 0 && (
-                        <circle
-                          cx={cx}
-                          cy={cy}
-                          r={circleRadius}
-                          fill={electrodeColorList[0]}
-                        >
-                        </circle>
-                      )
-                    }
-
-                    {/* if nothing exist */}
-                    {propagationCounts.nonPropagation === 0 && propagationCounts.sourceCount === 0 && propagationCounts.targetCount === 0 && (
-                      <circle
-                        cx={cx}
-                        cy={cy}
-                        r={circleRadius}
-                        fill="#A9A9A9"
-                      >
-                      </circle>
-                    )}
+                          fill="#fdb863">
+                        </path>}
+                    </>
+                    <circle
+                      cx={cx}
+                      cy={cy}
+                      r={circleRadius}
+                      fill={fillColor}
+                    >
+                    </circle>
                   </g>
                 </g>
               );

@@ -329,7 +329,8 @@ export const PatchSummary = ({
               const cy = yOffset + rowIndex * (45 + verticalSpacing) + 20;
 
               // dynamic Bézier curve keypoint
-              const dynamicNonpropagationLength = circleRadius * propagation_lineScale(propagationCounts.nonPropagation)
+              // const dynamicNonpropagationLength = circleRadius * propagation_lineScale(propagationCounts.nonPropagation)
+              const dynamicNonpropagationLength = 0;
               const dynamicOnsetSpreadLength = (propagationCounts.sourceCount + propagationCounts.targetCount) > 0 ? (2 * circleRadius - dynamicNonpropagationLength) * onset_spread_lineScale(propagationCounts.sourceCount / (propagationCounts.sourceCount + propagationCounts.targetCount)) : 0
               const points = CircularCurve(cx, cy, circleRadius, dynamicNonpropagationLength, dynamicOnsetSpreadLength);
 
@@ -347,16 +348,9 @@ export const PatchSummary = ({
                     onMouseLeave={handleMouseLeave}
                   >
                     <>
-                      <path d={`M ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
+                      {/* <path d={`M ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
                               Q ${points.propagationKeyPositionX} ${points.propagationKeyPositionY} ${points.propagationEndPositionX} ${points.propagationEndPositionY} 
                               A ${circleRadius} ${circleRadius} 0 0 1 ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
-                              Z`}
-                        fill={electrodeColorList[0]}>
-                      </path>
-
-                      {/* <path d={`M ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
-                              A ${circleRadius} ${circleRadius} 0 1 1 ${points.propagationEndPositionX} ${points.propagationEndPositionX}
-                              A ${circleRadius} ${circleRadius} 0 0 1 ${points.propagationStartPositionX} ${points.propagationStartPositionY}  
                               Z`}
                         fill={electrodeColorList[0]}>
                       </path> */}
@@ -403,14 +397,14 @@ export const PatchSummary = ({
   // legend area setting
   const xCenter = 0;
   const yCenter = 0;
-  const circleRadius = 18;
+  const circleRadius = 15;
 
   const legendCirclePoints = CircularCurve(xCenter, yCenter, circleRadius, circleRadius, circleRadius);
 
   const circleLegend = (
     <g ref={circleGRef}>
       {/* legend non propagation area */}
-      <path d={`M ${legendCirclePoints.propagationStartPositionX} ${legendCirclePoints.propagationStartPositionY} 
+      {/* <path d={`M ${legendCirclePoints.propagationStartPositionX} ${legendCirclePoints.propagationStartPositionY} 
                 Q ${legendCirclePoints.propagationKeyPositionX} ${legendCirclePoints.propagationKeyPositionY} ${legendCirclePoints.propagationEndPositionX} ${legendCirclePoints.propagationEndPositionY} 
                 A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.propagationStartPositionX} ${legendCirclePoints.propagationStartPositionY} 
                 Z`}
@@ -419,19 +413,30 @@ export const PatchSummary = ({
         transform="translate(-1.5, 1.5)"
         strokeWidth={0.5}
       >
-      </path>
+      </path> */}
+
+      {/* <path d={`M ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY} 
+                Q ${legendCirclePoints.onset_spread_keyPositionX} ${legendCirclePoints.onset_spread_keyPositionY} ${legendCirclePoints.onset_spread_endPositionX} ${legendCirclePoints.onset_spread_endPositionY} 
+                A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.propagationEndPositionX} ${legendCirclePoints.propagationEndPositionY} 
+                Q ${legendCirclePoints.propagationKeyPositionX} ${legendCirclePoints.propagationKeyPositionY} ${legendCirclePoints.propagationStartPositionX} ${legendCirclePoints.propagationStartPositionY} 
+                A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY}
+                Z`}
+        fill="#8073ac"
+        stroke="black"
+        strokeWidth={0.5}
+      >
+      </path> */}
 
       <path d={`M ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY} 
-                              Q ${legendCirclePoints.onset_spread_keyPositionX} ${legendCirclePoints.onset_spread_keyPositionY} ${legendCirclePoints.onset_spread_endPositionX} ${legendCirclePoints.onset_spread_endPositionY} 
-                              A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.propagationEndPositionX} ${legendCirclePoints.propagationEndPositionY} 
-                              Q ${legendCirclePoints.propagationKeyPositionX} ${legendCirclePoints.propagationKeyPositionY} ${legendCirclePoints.propagationStartPositionX} ${legendCirclePoints.propagationStartPositionY} 
-                              A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY}
-                              Z`}
+                Q ${legendCirclePoints.onset_spread_keyPositionX} ${legendCirclePoints.onset_spread_keyPositionY} ${legendCirclePoints.onset_spread_endPositionX} ${legendCirclePoints.onset_spread_endPositionY} 
+                A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY}
+                Z`}
         fill="#8073ac"
         stroke="black"
         strokeWidth={0.5}
       >
       </path>
+
 
       {/* legend spread area */}
       <path d={`M ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY} 
@@ -446,7 +451,7 @@ export const PatchSummary = ({
       </path>
 
       {/* non propagation area line */}
-      <line
+      {/* <line
         x1={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2}
         x2={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 - 50}
         y1={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionY) / 2}
@@ -454,12 +459,12 @@ export const PatchSummary = ({
         stroke="black"
         strokeWidth={1}
         strokeDasharray={"1,1"}
-      />
+      /> */}
 
       {/* Onset area line */}
       <line
-        x1={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 10}
-        x2={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 50}
+        x1={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2}
+        x2={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 - 30}
         y1={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionY) / 2 - 5}
         y2={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionY) / 2 - 5}
         stroke="black"
@@ -469,7 +474,7 @@ export const PatchSummary = ({
 
       {/* Spread area line */}
       <line
-        x1={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 20}
+        x1={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 15}
         x2={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 50}
         y1={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionY) / 2 - 20}
         y2={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionY) / 2 - 20}
@@ -479,19 +484,19 @@ export const PatchSummary = ({
       />
 
       {/* non propagation area */}
-      <text
+      {/* <text
         x={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 - 100}
         y={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionX) / 2}
         fontSize={10}
         alignmentBaseline="middle"
       >
         Non Propagation
-      </text>
+      </text> */}
 
       {/* Onset area text */}
       <text
-        x={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 50}
-        y={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionX) / 2 + 5}
+        x={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 - 60}
+        y={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionX) / 2 + 3}
         fontSize={10}
         alignmentBaseline="middle"
       >
@@ -501,7 +506,7 @@ export const PatchSummary = ({
       {/* Spread area text */}
       <text
         x={(legendCirclePoints.propagationStartPositionX + legendCirclePoints.propagationEndPositionX) / 2 + 50}
-        y={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionX) / 2 - 10}
+        y={(legendCirclePoints.propagationStartPositionY + legendCirclePoints.propagationEndPositionX) / 2 - 13}
         fontSize={10}
         alignmentBaseline="middle"
       >

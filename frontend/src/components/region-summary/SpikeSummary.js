@@ -8,7 +8,6 @@ import "./PatchSummary.css";
 const electrodeColorList = [
     '#007ed3',
     '#FF004F',
-    '#9F8170',
     '#9400D3',
     '#FFC40C',
     '#59260B',
@@ -16,7 +15,8 @@ const electrodeColorList = [
     '#40E0D0',
     '#FF4F00',
     '#006D6F',
-    '#C19A6B'
+    '#C19A6B',
+    '#9F8170',
 ]
 
 
@@ -212,7 +212,7 @@ export const SpikeSummary = ({
         const yOffset = (svgHeight - totalMatrixHeight) / 2;
 
         const setBorderColorOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
-        const matchIndex = patchRegionToggle === 'patch' ? Number(roiKey) :roiKey
+        const matchIndex = patchRegionToggle === 'patch' ? Number(roiKey) : roiKey
         return (
             <Col
                 md="4"

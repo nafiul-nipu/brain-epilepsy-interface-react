@@ -39,7 +39,7 @@ const CustomAxesHelper = () => {
     };
 
     const createArrow = (direction, position, color) => {
-        const arrowDir = direction.normalize(); 
+        const arrowDir = direction.normalize();
         const arrowLength = 5;
         const arrowColor = new THREE.Color(color);
         const arrowHeadLength = 1.2;
@@ -97,7 +97,7 @@ const CustomAxesHelper = () => {
         labelsRef.current.x.position.set(position.x + 0.4, position.y, position.z);
         labelsRef.current.y.position.set(position.x, position.y + 0.4, position.z);
         labelsRef.current.z.position.set(position.x, position.y, position.z + 0.4);
-        
+
         Object.values(arrowsRef.current).forEach(arrow => {
             if (arrow) {
                 arrow.position.copy(position);
@@ -235,7 +235,7 @@ export const BrainViewer = ({
                         title="Left Brain"
                         style={{ width: "98%", margin: 5 }}
                     >
-                        <p style={{ margin: 0  }}>Opacity:</p>
+                        <p style={{ margin: 0 }}>Opacity:</p>
                         <Slider
                             style={{ width: "100%" }}
                             defaultValue={1}
@@ -355,7 +355,7 @@ export const BrainViewer = ({
                                         </View>
                                     ))
                                 }
-                                <Stats />
+                                {/* <Stats /> */}
                             </Canvas>
                         </div>
 
@@ -448,7 +448,7 @@ export const BrainViewer = ({
                                             </View>
                                         ))
                                     }
-                                    <Stats />
+                                    {/* <Stats /> */}
                                 </Canvas>
                             </div>
                             :
@@ -541,7 +541,7 @@ export const BrainViewer = ({
                                                 </View>
                                             ))
                                         }
-                                        <Stats />
+                                        {/* <Stats /> */}
                                     </Canvas>
                                 </div>
                                 :
@@ -614,7 +614,7 @@ export const BrainViewer = ({
                                             <OrbitControls ref={electrodeOrbitControlsRef} enablePan={true} />
                                         </Hud>
                                     </Suspense>
-                                    <Stats />
+                                    {/* <Stats /> */}
                                 </Canvas>
                             )
                         )

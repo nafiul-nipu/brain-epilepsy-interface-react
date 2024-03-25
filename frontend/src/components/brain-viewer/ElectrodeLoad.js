@@ -11,11 +11,11 @@ const colorslist = [
     '#FFC40C',
     '#59260B',
     '#FE4EDA',
-    '#40E0D0',
     '#FF4F00',
-    '#006D6F',
     '#C19A6B',
     '#9F8170',
+    '#006D6F',
+    '#40E0D0',
 ];
 const catColor = {
     1: '#1f77b4',

@@ -189,7 +189,7 @@ export const PatchSummary = ({
   const maxOnsetSpreadRatio = Math.max(...ratios);
 
   const propagation_lineScale = d3.scaleLinear().domain([minNonpropagation, maxNonpropagation]).range([0.1, 1]);
-  const onset_spread_lineScale = d3.scaleLinear().domain([minOnsetSpreadRatio, maxOnsetSpreadRatio]).range([0.1, 1.2]);
+  const onset_spread_lineScale = d3.scaleLinear().domain([minOnsetSpreadRatio, maxOnsetSpreadRatio]).range([0.1, 1]);
   const dynamicCircleRadius = d3.scaleLinear().domain([minSpikesSum, maxSpikesSum]).range([10, 20]);
 
   // use for circle fill color when only one type of counts exist
@@ -331,7 +331,7 @@ export const PatchSummary = ({
               // dynamic Bézier curve keypoint
               // const dynamicNonpropagationLength = circleRadius * propagation_lineScale(propagationCounts.nonPropagation)
               const dynamicNonpropagationLength = 0;
-              const dynamicOnsetSpreadLength = (propagationCounts.sourceCount + propagationCounts.targetCount) > 0 ? (2 * circleRadius - dynamicNonpropagationLength) * onset_spread_lineScale(propagationCounts.sourceCount / (propagationCounts.sourceCount + propagationCounts.targetCount)) : 0
+              const dynamicOnsetSpreadLength = (propagationCounts.sourceCount + propagationCounts.targetCount) > 0 ? (2 * circleRadius - dynamicNonpropagationLength) * onset_spread_lineScale(propagationCounts.sourceCount / (propagationCounts.sourceCount + propagationCounts.targetCount) * 1.1) : 0
               const points = CircularCurve(cx, cy, circleRadius, dynamicNonpropagationLength, dynamicOnsetSpreadLength);
 
               const fillColor = getCircleFillColor(propagationCounts, electrodeColorList);

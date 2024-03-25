@@ -399,7 +399,7 @@ export const PatchSummary = ({
   const yCenter = 0;
   const circleRadius = 15;
 
-  const legendCirclePoints = CircularCurve(xCenter, yCenter, circleRadius, circleRadius, circleRadius);
+  const legendCirclePoints = CircularCurve(xCenter, yCenter, circleRadius, 0, 25);
 
   const circleLegend = (
     <g ref={circleGRef}>
@@ -440,7 +440,7 @@ export const PatchSummary = ({
 
       {/* legend spread area */}
       <path d={`M ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY} 
-                A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.onset_spread_endPositionX} ${legendCirclePoints.onset_spread_endPositionY} 
+                A ${circleRadius} ${circleRadius} 0 1 1 ${legendCirclePoints.onset_spread_endPositionX} ${legendCirclePoints.onset_spread_endPositionY} 
                 Q ${legendCirclePoints.onset_spread_keyPositionX} ${legendCirclePoints.onset_spread_keyPositionY} ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY} 
                 Z`}
         fill="#fdb863"

@@ -11,11 +11,11 @@ const electrodeColorList = [
   '#FFC40C',
   '#59260B',
   '#FE4EDA',
-  '#40E0D0',
   '#FF4F00',
-  '#006D6F',
   '#C19A6B',
   '#9F8170',
+  '#006D6F',
+  '#40E0D0',
 ]
 
 export const PatchSummary = ({
@@ -288,8 +288,8 @@ export const PatchSummary = ({
               ? "rgba(202, 204, 202, 0.4)"
               : "white",
           border: isNaN(Number(roiKey)) ?
-            `3px solid ${setBorderColorOpacity(electrodeColorList[regions.indexOf(roiKey)], 0.5)}` :
-            `3px solid ${setBorderColorOpacity(electrodeColorList[parseInt(roiKey)], 0.5)}`,
+            `3px solid ${setBorderColorOpacity(electrodeColorList[regions.indexOf(roiKey)], 1)}` :
+            `3px solid ${setBorderColorOpacity(electrodeColorList[parseInt(roiKey)], 1)}`,
         }}
         onClick={() => patchOnClick(matchIndex)}
       >

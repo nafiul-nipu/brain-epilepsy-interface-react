@@ -32,6 +32,8 @@ export const SpikeSummary = ({
     setPatchRegionToggle
 }) => {
 
+    const patchRef = useRef(null);
+
     // frequency legend svg and g ref
     const frequencySvgRef = useRef(null);
     const frequencyGRef = useRef(null);
@@ -44,35 +46,46 @@ export const SpikeSummary = ({
     });
     const [isSwitchChecked, setIsSwitchChecked] = useState(true);
 
+    // for get each patch svg width and height
+    const [patchSvg, setpatchSvg] = useState({ svgWidth: 0, svgHeight: 0 });
+
     // dynamic move circle legend in the center of svg vertically
     useEffect(() => {
         // frequency legend observer
-        const frequencyObserver = new ResizeObserver(() => {
-            if (frequencySvgRef.current && frequencyGRef.current) {
-                const svgBox = frequencySvgRef.current.getBoundingClientRect();
-                const gBox = frequencyGRef.current.getBBox();
+        const frequencyObserver = new ResizeObserver((entries) => {
+            for (let entry of entries) {
+                setpatchSvg({
+                    svgWidth: entry.contentRect.width,
+                    svgHeight: entry.contentRect.height,
+                });
 
-                // frequency legend align center
-                const svgRightX = svgBox.width;
-                const svgCenterY = svgBox.height / 2;
-                const gRightX = gBox.x + gBox.width;
-                const gCenterY = gBox.y + gBox.height / 2;
+                if (frequencySvgRef.current && frequencyGRef.current) {
+                    const svgBox = frequencySvgRef.current.getBoundingClientRect();
+                    const gBox = frequencyGRef.current.getBBox();
 
-                const shiftX = svgRightX - gRightX;
-                const shiftY = svgCenterY - gCenterY;
+                    // frequency legend align center
+                    const svgRightX = svgBox.width;
+                    const svgCenterY = svgBox.height / 2;
+                    const gRightX = gBox.x + gBox.width;
+                    const gCenterY = gBox.y + gBox.height / 2;
 
-                frequencyGRef.current.setAttribute('transform', `translate(${shiftX}, ${shiftY})`);
+                    const shiftX = svgRightX - gRightX;
+                    const shiftY = svgCenterY - gCenterY;
+
+                    frequencyGRef.current.setAttribute('transform', `translate(${shiftX}, ${shiftY})`);
+                }
             }
         });
 
-        if (frequencySvgRef.current) {
+        if (frequencySvgRef.current && patchRef.current) {
             frequencyObserver.observe(frequencySvgRef.current);
+            frequencyObserver.observe(patchRef.current);
         }
 
         return () => {
             frequencyObserver.disconnect();
         }
-    }, []);
+    }, [patchRegionToggle]);
 
     // tooltip controller
     const handleMouseEnter = (
@@ -153,6 +166,11 @@ export const SpikeSummary = ({
         numRowsInSVG: 0
     };
 
+    const patchViewSize = {
+        svgWidth: 0,
+        svgHeight: 0
+    }
+
     Object.keys(processedPatchData).forEach((roiKey) => {
         const roiMatrix = processedPatchData[roiKey].matrix;
         // For finding the max columns in one row
@@ -193,6 +211,9 @@ export const SpikeSummary = ({
 
         let horizontalSpacing, verticalSpacing;
 
+        patchViewSize.svgWidth = svgWidth;
+        patchViewSize.svgHeight = svgHeight;
+
         if (columnsPerRow > 1) {
             horizontalSpacing = Math.max(minSpace, totalAvailableWidth / (columnsPerRow - 1));
         } else {
@@ -213,6 +234,7 @@ export const SpikeSummary = ({
 
         const setBorderColorOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
         const matchIndex = patchRegionToggle === 'patch' ? Number(roiKey) : roiKey
+
         return (
             <Col
                 md="4"
@@ -241,6 +263,7 @@ export const SpikeSummary = ({
                     </g>
                 </svg>
                 <svg
+                    ref={patchRef}
                     width="100%"
                     height="calc(100% - 10px)"
                     viewBox={`0 0 ${svgWidth} ${svgHeight}`}
@@ -305,9 +328,11 @@ export const SpikeSummary = ({
     const xCenter = 0;
     const yCenter = 0;
 
+    const uniformScale = Math.min(patchSvg.svgWidth / patchViewSize.svgWidth, patchSvg.svgHeight / patchViewSize.svgHeight);
+
     // Biswajit graph 4A Onset and Spread legend
-    const minCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(minSource) : dynamicCircleRadius(minTarget);
-    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxSource) - 3 : dynamicCircleRadius(maxTarget) - 3;
+    const minCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(minSource) * uniformScale : dynamicCircleRadius(minTarget) * uniformScale;
+    const maxCircleLegendRadius = isSwitchChecked ? dynamicCircleRadius(maxSource) * uniformScale : dynamicCircleRadius(maxTarget) * uniformScale;
 
     const sizeLegend = (
         <g ref={frequencyGRef}>
@@ -366,14 +391,14 @@ export const SpikeSummary = ({
             <Row>
                 <Col md="12" style={{ height: "5vh" }}>
                     <Row style={{ height: "100%", margin: 0, display: 'flex' }}>
-                        <Col md="6" className="summary">Spike Summary
+                        <Col md="8" className="summary">Spike Summary
                             <Switch style={{ marginLeft: 20, backgroundColor: isSwitchChecked ? '#007ed3' : '#2ca25f' }} checkedChildren="Onset" unCheckedChildren="Spread" onChange={onChangePatchSummary} defaultChecked />
                             <select id="patchRegionToggle" style={{ marginLeft: 20 }} value={patchRegionToggle} onChange={changePatchRegion}>
                                 <option value="Patch"> Patch </option>
                                 <option value="Region"> Region </option>
                             </select>
                         </Col>
-                        <Col md="6" className="summary">
+                        <Col md="4" className="summary">
                             <svg ref={frequencySvgRef} width="100%" height="100%" overflow="visible">
                                 {sizeLegend}
                             </svg>

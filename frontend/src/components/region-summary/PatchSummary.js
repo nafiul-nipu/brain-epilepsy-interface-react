@@ -28,6 +28,8 @@ export const PatchSummary = ({
   patchRegionMark
 }) => {
 
+  const patchRef = useRef(null);
+
   // circle legend svg and g ref
   const circleSvgRef = useRef(null);
   const circleGRef = useRef(null);
@@ -42,6 +44,9 @@ export const PatchSummary = ({
     x: 0,
     y: 0,
   });
+
+  // for get each patch svg width and height
+  const [patchSvg, setpatchSvg] = useState({ svgWidth: 0, svgHeight: 0 });
 
   // dynamic move circle legend in the center of svg vertically
   useEffect(() => {
@@ -65,29 +70,37 @@ export const PatchSummary = ({
     });
 
     // frequency legend observer
-    const frequencyObserver = new ResizeObserver(() => {
+    const frequencyObserver = new ResizeObserver((entries) => {
       if (frequencySvgRef.current && frequencyGRef.current) {
-        const svgBox = frequencySvgRef.current.getBoundingClientRect();
-        const gBox = frequencyGRef.current.getBBox();
+        for (let entry of entries) {
+          setpatchSvg({
+            svgWidth: entry.contentRect.width,
+            svgHeight: entry.contentRect.height,
+          });
+          const svgBox = frequencySvgRef.current.getBoundingClientRect();
+          const gBox = frequencyGRef.current.getBBox();
 
-        // frequency legend align center
-        const svgRightX = svgBox.width;
-        const svgCenterY = svgBox.height / 2;
-        const gRightX = gBox.x + gBox.width;
-        const gCenterY = gBox.y + gBox.height / 2;
+          // frequency legend align center
+          const svgRightX = svgBox.width;
+          const svgCenterY = svgBox.height / 2;
+          const gRightX = gBox.x + gBox.width;
+          const gCenterY = gBox.y + gBox.height / 2;
 
-        const shiftX = svgRightX - gRightX;
-        const shiftY = svgCenterY - gCenterY;
+          const shiftX = svgRightX - gRightX;
+          const shiftY = svgCenterY - gCenterY;
 
-        frequencyGRef.current.setAttribute('transform', `translate(${shiftX}, ${shiftY})`);
+          frequencyGRef.current.setAttribute('transform', `translate(${shiftX}, ${shiftY})`);
+        }
       }
     });
 
     if (circleSvgRef.current) {
       circleObserver.observe(circleSvgRef.current);
     }
-    if (frequencySvgRef.current) {
+
+    if (frequencySvgRef.current && patchRef.current) {
       frequencyObserver.observe(frequencySvgRef.current);
+      frequencyObserver.observe(patchRef.current);
     }
 
     return () => {
@@ -215,6 +228,11 @@ export const PatchSummary = ({
     numRowsInSVG: 0
   };
 
+  const patchViewSize = {
+    svgWidth: 0,
+    svgHeight: 0
+  }
+
   Object.keys(processedPatchData).forEach((roiKey) => {
     const roiMatrix = processedPatchData[roiKey].matrix;
     // For finding the max columns in one row
@@ -255,6 +273,9 @@ export const PatchSummary = ({
 
     let horizontalSpacing, verticalSpacing;
 
+    patchViewSize.svgWidth = svgWidth;
+    patchViewSize.svgHeight = svgHeight;
+
     if (columnsPerRow > 1) {
       horizontalSpacing = Math.max(minSpace, totalAvailableWidth / (columnsPerRow - 1));
     } else {
@@ -276,6 +297,7 @@ export const PatchSummary = ({
     const setBorderColorOpacity = (hex, alpha) => `${hex}${Math.floor(alpha * 255).toString(16).padStart(2, 0)}`;
 
     const matchIndex = patchRegionMark === 'patch' ? Number(roiKey) : roiKey
+
     return (
       <Col
         md="4"
@@ -304,6 +326,7 @@ export const PatchSummary = ({
           </g>
         </svg>
         <svg
+          ref={patchRef}
           width="100%"
           height="calc(100% - 10px)"
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
@@ -354,12 +377,6 @@ export const PatchSummary = ({
                         fill={electrodeColorList[0]}>
                       </path>
 
-                      {/* <path d={`M ${points.propagationStartPositionX} ${points.propagationStartPositionY} 
-                              A ${circleRadius} ${circleRadius} 0 1 1 ${points.propagationEndPositionX} ${points.propagationEndPositionX}
-                              A ${circleRadius} ${circleRadius} 0 0 1 ${points.propagationStartPositionX} ${points.propagationStartPositionY}  
-                              Z`}
-                        fill={electrodeColorList[0]}>
-                      </path> */}
                       <path d={`M ${points.onset_spread_startPositionX} ${points.onset_spread_startPositionY} 
                               Q ${points.onset_spread_keyPositionX} ${points.onset_spread_keyPositionY} ${points.onset_spread_endPositionX} ${points.onset_spread_endPositionY} 
                               A ${circleRadius} ${circleRadius} 0 0 1 ${points.propagationEndPositionX} ${points.propagationEndPositionY} 
@@ -422,11 +439,11 @@ export const PatchSummary = ({
       </path>
 
       <path d={`M ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY} 
-                              Q ${legendCirclePoints.onset_spread_keyPositionX} ${legendCirclePoints.onset_spread_keyPositionY} ${legendCirclePoints.onset_spread_endPositionX} ${legendCirclePoints.onset_spread_endPositionY} 
-                              A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.propagationEndPositionX} ${legendCirclePoints.propagationEndPositionY} 
-                              Q ${legendCirclePoints.propagationKeyPositionX} ${legendCirclePoints.propagationKeyPositionY} ${legendCirclePoints.propagationStartPositionX} ${legendCirclePoints.propagationStartPositionY} 
-                              A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY}
-                              Z`}
+                Q ${legendCirclePoints.onset_spread_keyPositionX} ${legendCirclePoints.onset_spread_keyPositionY} ${legendCirclePoints.onset_spread_endPositionX} ${legendCirclePoints.onset_spread_endPositionY} 
+                A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.propagationEndPositionX} ${legendCirclePoints.propagationEndPositionY} 
+                Q ${legendCirclePoints.propagationKeyPositionX} ${legendCirclePoints.propagationKeyPositionY} ${legendCirclePoints.propagationStartPositionX} ${legendCirclePoints.propagationStartPositionY} 
+                A ${circleRadius} ${circleRadius} 0 0 1 ${legendCirclePoints.onset_spread_startPositionX} ${legendCirclePoints.onset_spread_startPositionY}
+                Z`}
         fill="#8073ac"
         stroke="black"
         strokeWidth={0.5}
@@ -510,8 +527,11 @@ export const PatchSummary = ({
     </g>
   )
 
-  const minCircleLegendRadius = dynamicCircleRadius(0) - 5
-  const maxCircleLegendRadius = dynamicCircleRadius(maxSpikesSum) - 6
+
+  const uniformScale = Math.min(patchSvg.svgWidth / patchViewSize.svgWidth, patchSvg.svgHeight / patchViewSize.svgHeight);
+
+  const minCircleLegendRadius = dynamicCircleRadius(0) * uniformScale;
+  const maxCircleLegendRadius = dynamicCircleRadius(maxSpikesSum) * uniformScale;
 
   const sizeLegend = (
     <g ref={frequencyGRef}>

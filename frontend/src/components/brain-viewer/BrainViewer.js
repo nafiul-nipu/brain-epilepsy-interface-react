@@ -200,8 +200,21 @@ export const BrainViewer = ({
                 <ambientLight intensity={0.5} />
                 <directionalLight
                     castShadow
-                    position={[0, 10, 55]}
-                    intensity={1}
+                    position={[-15, 0, -250]}
+                    intensity={0.8}
+                    shadow-mapSize-width={2048}
+                    shadow-mapSize-height={2048}
+                    shadow-camera-near={0.5}
+                    shadow-camera-far={500}
+                    shadow-camera-left={-5}
+                    shadow-camera-right={5}
+                    shadow-camera-top={5}
+                    shadow-camera-bottom={-5}
+                />
+                <directionalLight
+                    castShadow
+                    position={[-15, 0, 250]}
+                    intensity={0.8}
                     shadow-mapSize-width={2048}
                     shadow-mapSize-height={2048}
                     shadow-camera-near={0.5}
@@ -214,7 +227,6 @@ export const BrainViewer = ({
             </>
         )
     };
-    console.log(visualPanel, '////')
     // console.log(allnetworks)
     // console.log(Object.keys(allnetworks))
 
@@ -344,10 +356,36 @@ export const BrainViewer = ({
                                                 fov={40}
                                             />
                                             <ambientLight intensity={0.5} />
-                                            <directionalLight
+                                            {/* <directionalLight
                                                 castShadow
                                                 position={[0, 5, 5]}
                                                 intensity={1}
+                                                shadow-mapSize-width={2048}
+                                                shadow-mapSize-height={2048}
+                                                shadow-camera-near={0.5}
+                                                shadow-camera-far={500}
+                                                shadow-camera-left={-5}
+                                                shadow-camera-right={5}
+                                                shadow-camera-top={5}
+                                                shadow-camera-bottom={-5}
+                                            /> */}
+                                            <directionalLight
+                                                castShadow
+                                                position={[-15, 0, -250]}
+                                                intensity={0.8}
+                                                shadow-mapSize-width={2048}
+                                                shadow-mapSize-height={2048}
+                                                shadow-camera-near={0.5}
+                                                shadow-camera-far={500}
+                                                shadow-camera-left={-5}
+                                                shadow-camera-right={5}
+                                                shadow-camera-top={5}
+                                                shadow-camera-bottom={-5}
+                                            />
+                                            <directionalLight
+                                                castShadow
+                                                position={[-15, 0, 250]}
+                                                intensity={0.8}
                                                 shadow-mapSize-width={2048}
                                                 shadow-mapSize-height={2048}
                                                 shadow-camera-near={0.5}
@@ -437,10 +475,36 @@ export const BrainViewer = ({
                                                     fov={40}
                                                 />
                                                 <ambientLight intensity={0.5} />
-                                                <directionalLight
+                                                {/* <directionalLight
                                                     castShadow
                                                     position={[0, 5, 5]}
                                                     intensity={1}
+                                                    shadow-mapSize-width={2048}
+                                                    shadow-mapSize-height={2048}
+                                                    shadow-camera-near={0.5}
+                                                    shadow-camera-far={500}
+                                                    shadow-camera-left={-5}
+                                                    shadow-camera-right={5}
+                                                    shadow-camera-top={5}
+                                                    shadow-camera-bottom={-5}
+                                                /> */}
+                                                <directionalLight
+                                                    castShadow
+                                                    position={[-15, 0, -250]}
+                                                    intensity={0.8}
+                                                    shadow-mapSize-width={2048}
+                                                    shadow-mapSize-height={2048}
+                                                    shadow-camera-near={0.5}
+                                                    shadow-camera-far={500}
+                                                    shadow-camera-left={-5}
+                                                    shadow-camera-right={5}
+                                                    shadow-camera-top={5}
+                                                    shadow-camera-bottom={-5}
+                                                />
+                                                <directionalLight
+                                                    castShadow
+                                                    position={[-15, 0, 250]}
+                                                    intensity={0.8}
                                                     shadow-mapSize-width={2048}
                                                     shadow-mapSize-height={2048}
                                                     shadow-camera-near={0.5}
@@ -530,10 +594,36 @@ export const BrainViewer = ({
                                                         fov={40}
                                                     />
                                                     <ambientLight intensity={0.5} />
-                                                    <directionalLight
+                                                    {/* <directionalLight
                                                         castShadow
                                                         position={[0, 5, 5]}
                                                         intensity={1}
+                                                        shadow-mapSize-width={2048}
+                                                        shadow-mapSize-height={2048}
+                                                        shadow-camera-near={0.5}
+                                                        shadow-camera-far={500}
+                                                        shadow-camera-left={-5}
+                                                        shadow-camera-right={5}
+                                                        shadow-camera-top={5}
+                                                        shadow-camera-bottom={-5}
+                                                    /> */}
+                                                    <directionalLight
+                                                        castShadow
+                                                        position={[-15, 0, -250]}
+                                                        intensity={0.8}
+                                                        shadow-mapSize-width={2048}
+                                                        shadow-mapSize-height={2048}
+                                                        shadow-camera-near={0.5}
+                                                        shadow-camera-far={500}
+                                                        shadow-camera-left={-5}
+                                                        shadow-camera-right={5}
+                                                        shadow-camera-top={5}
+                                                        shadow-camera-bottom={-5}
+                                                    />
+                                                    <directionalLight
+                                                        castShadow
+                                                        position={[-15, 0, 250]}
+                                                        intensity={0.8}
                                                         shadow-mapSize-width={2048}
                                                         shadow-mapSize-height={2048}
                                                         shadow-camera-near={0.5}

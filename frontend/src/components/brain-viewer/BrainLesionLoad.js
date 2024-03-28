@@ -42,7 +42,7 @@ export function BrainLesionLoad(props) {
                     <CustomOBJModel
                         key={index}
                         url={`${partURL}${props.patientInformation.id}/${props.patientInformation.id}_lesion${lesion}.obj`}
-                        color="#505050"
+                        color="#787775"
                         opacity={1}
                         transparent={false}
                         type="lesion"

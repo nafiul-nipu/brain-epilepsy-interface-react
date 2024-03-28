@@ -319,11 +319,11 @@ export const SpikeSummary = ({
                                             cy={cy}
                                             r={circleRadius}
                                             fill={
-                                                // seizure[patientID].includes(Number(electrodeId)) ?
-                                                //     "#050df0" :
-                                                patchRegionToggle === "Patch" ?
-                                                    electrodeColorList[patchLabels[electrodeId]] :
-                                                    electrodeColorList[regions.indexOf(regiionLabels[electrodeId])]
+                                                seizure[patientID].includes(Number(electrodeId)) ?
+                                                    "#050df0" :
+                                                    patchRegionToggle === "Patch" ?
+                                                        electrodeColorList[patchLabels[electrodeId]] :
+                                                        electrodeColorList[regions.indexOf(regiionLabels[electrodeId])]
                                             }
                                         >
                                         </circle>

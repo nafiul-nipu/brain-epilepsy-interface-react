@@ -9,7 +9,7 @@ import { Card, Slider, Button, Dropdown, Menu } from "antd";
 import * as THREE from 'three';
 import { CreateLineCurve } from "./CreateLineCurve";
 import { NetworkView } from "./NetworkView";
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, ControlOutlined } from '@ant-design/icons';
 
 // const width = (window.innerWidth / 2) - 10;
 // const height = window.innerHeight / 2.3 - 10;
@@ -237,12 +237,12 @@ export const BrainViewer = ({
                     }}
                 >
                     {
-                        visualPanel === 'Community' ? <a id="titleBrain1" onClick={panelVisible}>{`${patientInformation.id}: Community`} <DownOutlined /></a> :
-                            visualPanel === 'Patches' ? <a id="titleBrain1" onClick={panelVisible}>{`${patientInformation.id}: Brain Patches`} <DownOutlined /></a> :
-                                visualPanel === 'Frequency' ? <a id="titleBrain1" onClick={panelVisible}>{`${patientInformation.id}: Spikes Over Time`} <DownOutlined /></a> :
-                                    visualPanel === 'Propagation' ? <a id="titleBrain1" onClick={panelVisible}>{`${patientInformation.id}: Propagation Over Time`} <DownOutlined /></a> :
-                                        visualPanel === 'Patch-Com-Net' ? <a id="titleBrain1" onClick={panelVisible}>{`${patientInformation.id}: Patch Network`} <DownOutlined /></a> :
-                                            <a id="titleBrain1" onClick={panelVisible}>{`${patientInformation.id}: Region Network`} <DownOutlined /></a>
+                        visualPanel === 'Community' ?<a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Community`} <DownOutlined /></a> :
+                            visualPanel === 'Patches' ?<a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Brain Patches`} <DownOutlined /></a> :
+                                visualPanel === 'Frequency' ?<a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Spikes Over Time`} <DownOutlined /></a> :
+                                    visualPanel === 'Propagation' ?<a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Propagation Over Time`} <DownOutlined /></a> :
+                                        visualPanel === 'Patch-Com-Net' ?<a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Patch Network`} <DownOutlined /></a> :
+                                        <a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Region Network`} <DownOutlined /></a>
                     }
                     {isCardVisible && (
                         <>
@@ -565,7 +565,7 @@ export const BrainViewer = ({
                                     </Canvas>
                                 </div>
                                 :
-                                <Canvas style={{ background: "black" }}>
+                                <Canvas style={{ background: "#33393E" }}>
                                     <Suspense fallback={null}>
                                         <Hud renderPriority={1}>
                                             <CustomAxesHelper />

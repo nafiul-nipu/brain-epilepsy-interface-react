@@ -5,13 +5,17 @@ import { Suspense, useRef, useState, useEffect } from "react";
 import dataRegisty from '../../data/dataRegistry.json'
 import { BrainLesionLoad } from "./BrainLesionLoad";
 import { ElectrodeLoad } from "./ElectrodeLoad";
-import { Card, Slider, Button } from "antd";
+import { Card, Slider, Button, Dropdown, Menu } from "antd";
 import * as THREE from 'three';
 import { CreateLineCurve } from "./CreateLineCurve";
 import { NetworkView } from "./NetworkView";
+import { DownOutlined } from '@ant-design/icons';
 
-const width = (window.innerWidth / 2) - 10;
-const height = window.innerHeight / 2.3 - 10
+// const width = (window.innerWidth / 2) - 10;
+// const height = window.innerHeight / 2.3 - 10;
+const width = window.innerWidth / 1.71;
+const height = window.innerHeight / 2;
+
 
 const CustomAxesHelper = () => {
     const { camera, scene } = useThree();
@@ -89,7 +93,7 @@ const CustomAxesHelper = () => {
     useFrame(() => {
         if (!axesHelperRef.current) return;
 
-        const desiredPosition = new THREE.Vector3(0.9, 0.5, 0.5);
+        const desiredPosition = new THREE.Vector3(0.9, -0.8, 0.5);
         const position = desiredPosition.unproject(camera);
         axesHelperRef.current.position.copy(position);
         axesHelperRef.current.scale.set(0.1, 0.1, 0.1);
@@ -140,13 +144,13 @@ export const BrainViewer = ({
 
     const [leftBrainOpacity, setLeftBrainOpacity] = useState(1);
     const [rightBrainOpacity, setRightBrainOpacity] = useState(1);
+    const [isCardVisible, setIsCardVisible] = useState(true);
     const containerRef = useRef();
     const electrodeOrbitControlsRef = useRef(null);
     const brainOrbitControlsRef = useRef(null);
     const orbitControlsRefs = useRef([]);
     const views = [useRef(), useRef(), useRef()];
     // console.log(sampleData)
-
     // console.log(electrodeData)
     const changeLeftBrainOpacity = (value) => {
         setLeftBrainOpacity(value);
@@ -156,6 +160,9 @@ export const BrainViewer = ({
         setRightBrainOpacity(value);
     };
 
+    const panelVisible = () => {
+        setIsCardVisible(!isCardVisible);
+    }    
     // reset orbit controls for brain and electrode when visual panel is patches or frequency
     const brainandElectrodeResetOrbitControls = () => {
         if (electrodeOrbitControlsRef.current && brainOrbitControlsRef.current) {
@@ -213,61 +220,74 @@ export const BrainViewer = ({
 
     return (
         <>
-            <Col md='4'>
+            <div style={{ position: "relative" }}>
+
                 <Card
                     className="brainViewerCard"
                     style={{
-                        width: width * 0.2,
+                        width: width * 0.25,
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
                         position: "absolute",
-                        top: "10%",
-                        left: "48%",
+                        // top: "20px",
+                        left: "74%",
                         zIndex: 100,
                     }}
                 >
-                    {/* left brain control */}
-                    <Card
-                        className="leftBrainControlCard"
-                        size="small"
-                        title="Left Brain"
-                        style={{ width: "98%", margin: 5 }}
-                    >
-                        <p style={{ margin: 0 }}>Opacity:</p>
-                        <Slider
-                            style={{ width: "100%" }}
-                            defaultValue={1}
-                            step={0.1}
-                            max={1}
-                            onChange={changeLeftBrainOpacity}
-                        />
-                    </Card>
-                    {/* right brain control */}
-                    <Card
-                        className="rightBrainControlCard"
-                        size="small"
-                        title="Right Brain"
-                        style={{ width: "98%", margin: 5 }}
-                    >
-                        <p style={{ margin: 0 }}>Opacity:</p>
-                        <Slider
-                            style={{ width: "100%" }}
-                            defaultValue={1}
-                            step={0.1}
-                            max={1}
-                            onChange={changeRightBrainOpacity}
-                        />
-                    </Card>
-                    {/* <Button onClick={handleButtonClick} style={{marginTop: 20, marginBottom: 20}}>Update Projection</Button> */}
-                    <Button onClick={reset}>Reset Brain</Button>
+                    {
+                        visualPanel === 'Community' ? <a id="titleBrain1" onClick={panelVisible}>{`${patientInformation.id}: Community`} <DownOutlined /></a> :
+                            visualPanel === 'Patches' ? <a id="titleBrain1" onClick={panelVisible}>{`${patientInformation.id}: Brain Patches`} <DownOutlined /></a> :
+                                visualPanel === 'Frequency' ? <a id="titleBrain1" onClick={panelVisible}>{`${patientInformation.id}: Spikes Over Time`} <DownOutlined /></a> :
+                                    visualPanel === 'Propagation' ? <a id="titleBrain1" onClick={panelVisible}>{`${patientInformation.id}: Propagation Over Time`} <DownOutlined /></a> :
+                                        visualPanel === 'Patch-Com-Net' ? <a id="titleBrain1" onClick={panelVisible}>{`${patientInformation.id}: Patch Network`} <DownOutlined /></a> :
+                                            <a id="titleBrain1" onClick={panelVisible}>{`${patientInformation.id}: Region Network`} <DownOutlined /></a>
+                    }
+                    {isCardVisible && (
+                        <>
+                            {/* left brain control */}
+                            <Card
+                                className="leftBrainControlCard"
+                                size="small"
+                                title="Left Brain"
+                                style={{ width: "98%", margin: 5 }}
+                            >
+                                <p style={{ margin: 0 }}>Opacity:</p>
+                                <Slider
+                                    style={{ width: "100%" }}
+                                    defaultValue={1}
+                                    step={0.1}
+                                    max={1}
+                                    onChange={changeLeftBrainOpacity}
+                                />
+                            </Card>
+                            {/* right brain control */}
+                            <Card
+                                className="rightBrainControlCard"
+                                size="small"
+                                title="Right Brain"
+                                style={{ width: "98%", margin: 5 }}
+                            >
+                                <p style={{ margin: 0 }}>Opacity:</p>
+                                <Slider
+                                    style={{ width: "100%" }}
+                                    defaultValue={1}
+                                    step={0.1}
+                                    max={1}
+                                    onChange={changeRightBrainOpacity}
+                                />
+                            </Card>
+                            {/* <Button onClick={handleButtonClick} style={{marginTop: 20, marginBottom: 20}}>Update Projection</Button> */}
+                            <Button onClick={reset}>Reset Brain</Button>
+                        </>
+                    )}
                 </Card>
-            </Col>
-            <Col md='8' style={{ height: height, width: width }}>
+            </div>
+            <Col md='12' style={{ height: height, width: width, padding: 0 }}>
                 {
                     visualPanel === 'Community' ?
-                        <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden' }}>
+                        <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden', backgroundColor: 'black' }}>
                             {
                                 community.map((item, index) => (
                                     <div
@@ -296,7 +316,7 @@ export const BrainViewer = ({
                                             <CustomAxesHelper />
                                             <PerspectiveCamera
                                                 makeDefault
-                                                position={[-250, -10, 0]}
+                                                position={[-300, -10, 0]}
                                                 up={[0, 0, 1]}
                                                 aspect={width / height}
                                                 near={1}
@@ -360,7 +380,7 @@ export const BrainViewer = ({
                         </div>
 
                         : (visualPanel === 'Patch-Com-Net' ?
-                            <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden' }}>
+                            <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden', backgroundColor: 'black' }}>
                                 {
                                     Object.keys(allnetworks).map((item, index) => (
                                         <div
@@ -389,7 +409,7 @@ export const BrainViewer = ({
                                                 <CustomAxesHelper />
                                                 <PerspectiveCamera
                                                     makeDefault
-                                                    position={[-250, -10, 0]}
+                                                    position={[-300, -10, 0]}
                                                     up={[0, 0, 1]}
                                                     aspect={width / height}
                                                     near={1}
@@ -453,7 +473,7 @@ export const BrainViewer = ({
                             </div>
                             :
                             (visualPanel === 'Region-Com-Net' ?
-                                <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden' }}>
+                                <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden', backgroundColor: 'black' }}>
                                     {
                                         Object.keys(allnetworks).map((item, index) => (
                                             <div
@@ -482,7 +502,7 @@ export const BrainViewer = ({
                                                     <CustomAxesHelper />
                                                     <PerspectiveCamera
                                                         makeDefault
-                                                        position={[-250, -10, 0]}
+                                                        position={[-300, -10, 0]}
                                                         up={[0, 0, 1]}
                                                         aspect={width / height}
                                                         near={1}
@@ -545,13 +565,13 @@ export const BrainViewer = ({
                                     </Canvas>
                                 </div>
                                 :
-                                <Canvas>
+                                <Canvas style={{ background: "black" }}>
                                     <Suspense fallback={null}>
                                         <Hud renderPriority={1}>
                                             <CustomAxesHelper />
                                             <PerspectiveCamera
                                                 makeDefault
-                                                position={[-250, -10, 0]}
+                                                position={[-300, -10, 0]}
                                                 up={[0, 0, 1]}
                                                 aspect={width / height}
                                                 near={1}
@@ -571,7 +591,7 @@ export const BrainViewer = ({
                                         <Hud renderPriority={2}>
                                             <PerspectiveCamera
                                                 makeDefault
-                                                position={[-250, -10, 0]}
+                                                position={[-300, -10, 0]}
                                                 up={[0, 0, 1]}
                                                 aspect={width / height}
                                                 near={1}

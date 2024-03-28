@@ -5,9 +5,9 @@
 }
 
 
-#titleBrain1 {
+/* #titleBrain1 {
     position: absolute;
-    /* top: 51%; */
+    top: 51%;
     right: 92%;
     width: 7%;
     text-align: center;
@@ -15,11 +15,16 @@
     display: block;
     color: black;
     font-size: 0.9em;
+  } */
+  #titleBrain1 {
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 5px 0 5px 0;
   }
 
   .brainViewerCard .ant-card-body {
     width: 100%;
-    padding: 5px !important;
+    padding: 0px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -50,5 +55,16 @@
     left: 0px;
     width: 100vw !important;
     height: 100vh !important;
+  }
+  .timeSliderTab {
+    background-color: white;
+    padding: 12px 0 18px 0;
+    margin: 0 -1px 0 0
+  }
+
+  .titleTab {
+    background-color: white;
+    padding: 5px 0 5px 0;
+    margin: 0 -1px 0 0
   }
   

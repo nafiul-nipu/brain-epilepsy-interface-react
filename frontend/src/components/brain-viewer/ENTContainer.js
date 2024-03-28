@@ -87,7 +87,7 @@ export const ENTContainer = ({
     return (
         <>
             <Row>
-                <Col md='12' style={{ height: '5vh' }}>
+                <Col md='12' style={{ height: '4vh'}} className="d-flex align-items-center">
                     <Segmented
                         options={["Patches", "Frequency", "Propagation", "Community", "Patch-Com-Net", "Region-Com-Net"]}
                         onChange={onSegmentChange}
@@ -96,7 +96,7 @@ export const ENTContainer = ({
                     </Segmented>
                 </Col>
             </Row>
-            <Row >
+            <Row style={{position: 'relative'}}>
                 <TimeSliderButton
                     buttonValue={buttonValue}
                     handleClick={handleClick}
@@ -115,14 +115,14 @@ export const ENTContainer = ({
             <Row>
                 <Col md='12' style={{ height: '35vh' }}>
                     <Row>
-                        {
+                        {/* {
                             segment === 'Community' ? null :
                                 segment === 'Patches' ? <div id="titleBrain1">{`${patientInformation.id}: Brain Patches`}</div> :
                                     segment === 'Frequency' ? <div id="titleBrain1">{`${patientInformation.id}: Spikes Over Time`}</div> :
                                         segment === 'Propagation' ? <div id="titleBrain1">{`${patientInformation.id}: Propagation Over Time`}</div> :
                                             segment === 'Patch-Com-Net' ? <div id="titleBrain1">{`${patientInformation.id}: Patch Network`}</div> :
                                                 <div id="titleBrain1">{`${patientInformation.id}: Region Network`}</div>
-                        }
+                        } */}
                         <BrainViewer
                             patientInformation={patientInformation}
                             electrodeData={electrodeData}

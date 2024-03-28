@@ -1,0 +1,450 @@
+[
+    {
+        "electrode_id": 57,
+        "sourceCount": 0,
+        "targetCount": 0,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 58,
+        "sourceCount": 350,
+        "targetCount": 316,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 59,
+        "sourceCount": 431,
+        "targetCount": 451,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 60,
+        "sourceCount": 651,
+        "targetCount": 724,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 61,
+        "sourceCount": 208,
+        "targetCount": 230,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 62,
+        "sourceCount": 282,
+        "targetCount": 209,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 63,
+        "sourceCount": 388,
+        "targetCount": 417,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 64,
+        "sourceCount": 997,
+        "targetCount": 942,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 65,
+        "sourceCount": 1150,
+        "targetCount": 1490,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 66,
+        "sourceCount": 135,
+        "targetCount": 142,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 67,
+        "sourceCount": 1037,
+        "targetCount": 1146,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 68,
+        "sourceCount": 748,
+        "targetCount": 795,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 69,
+        "sourceCount": 661,
+        "targetCount": 661,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 70,
+        "sourceCount": 732,
+        "targetCount": 660,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 71,
+        "sourceCount": 1166,
+        "targetCount": 1013,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 72,
+        "sourceCount": 1265,
+        "targetCount": 1588,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 73,
+        "sourceCount": 1587,
+        "targetCount": 1772,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 74,
+        "sourceCount": 1394,
+        "targetCount": 1239,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 75,
+        "sourceCount": 1442,
+        "targetCount": 1190,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 76,
+        "sourceCount": 1025,
+        "targetCount": 962,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 77,
+        "sourceCount": 588,
+        "targetCount": 461,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 78,
+        "sourceCount": 672,
+        "targetCount": 825,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 79,
+        "sourceCount": 1064,
+        "targetCount": 1587,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 80,
+        "sourceCount": 1259,
+        "targetCount": 1562,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 81,
+        "sourceCount": 1058,
+        "targetCount": 1188,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 82,
+        "sourceCount": 1175,
+        "targetCount": 1136,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 83,
+        "sourceCount": 811,
+        "targetCount": 793,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 84,
+        "sourceCount": 678,
+        "targetCount": 620,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 85,
+        "sourceCount": 1569,
+        "targetCount": 1487,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 86,
+        "sourceCount": 1461,
+        "targetCount": 1287,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 87,
+        "sourceCount": 1314,
+        "targetCount": 1660,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 88,
+        "sourceCount": 925,
+        "targetCount": 903,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 89,
+        "sourceCount": 1022,
+        "targetCount": 1426,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 90,
+        "sourceCount": 502,
+        "targetCount": 405,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 91,
+        "sourceCount": 961,
+        "targetCount": 919,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 92,
+        "sourceCount": 1012,
+        "targetCount": 938,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 93,
+        "sourceCount": 1572,
+        "targetCount": 1576,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 94,
+        "sourceCount": 1232,
+        "targetCount": 1220,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 95,
+        "sourceCount": 1330,
+        "targetCount": 1087,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 96,
+        "sourceCount": 969,
+        "targetCount": 971,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 97,
+        "sourceCount": 1192,
+        "targetCount": 1217,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 98,
+        "sourceCount": 521,
+        "targetCount": 521,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 99,
+        "sourceCount": 990,
+        "targetCount": 1034,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 100,
+        "sourceCount": 816,
+        "targetCount": 731,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 101,
+        "sourceCount": 1072,
+        "targetCount": 1193,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 102,
+        "sourceCount": 1479,
+        "targetCount": 1413,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 103,
+        "sourceCount": 1047,
+        "targetCount": 972,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 104,
+        "sourceCount": 870,
+        "targetCount": 827,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 105,
+        "sourceCount": 993,
+        "targetCount": 1058,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 106,
+        "sourceCount": 638,
+        "targetCount": 715,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 107,
+        "sourceCount": 1651,
+        "targetCount": 1340,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 108,
+        "sourceCount": 941,
+        "targetCount": 779,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 109,
+        "sourceCount": 1499,
+        "targetCount": 1291,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 110,
+        "sourceCount": 1197,
+        "targetCount": 1273,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 111,
+        "sourceCount": 1101,
+        "targetCount": 845,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 112,
+        "sourceCount": 1164,
+        "targetCount": 1241,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 113,
+        "sourceCount": 933,
+        "targetCount": 954,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 114,
+        "sourceCount": 769,
+        "targetCount": 789,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 115,
+        "sourceCount": 466,
+        "targetCount": 430,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 116,
+        "sourceCount": 588,
+        "targetCount": 559,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 117,
+        "sourceCount": 1442,
+        "targetCount": 1332,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 118,
+        "sourceCount": 1685,
+        "targetCount": 1649,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 119,
+        "sourceCount": 1187,
+        "targetCount": 974,
+        "nonPropagation": 0,
+        "propagation": 0
+    },
+    {
+        "electrode_id": 120,
+        "sourceCount": 1028,
+        "targetCount": 957,
+        "nonPropagation": 0,
+        "propagation": 0
+    }
+]

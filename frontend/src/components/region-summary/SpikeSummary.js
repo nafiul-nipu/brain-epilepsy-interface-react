@@ -17,15 +17,15 @@ const seizure = {
 const electrodeColorList = [
     '#007ed3',
     '#FF004F',
-    '#9F8170',
     '#9400D3',
     '#FFC40C',
     '#59260B',
     '#FE4EDA',
-    '#40E0D0',
     '#FF4F00',
+    '#C19A6B',
+    '#9F8170',
     '#006D6F',
-    '#C19A6B'
+    '#40E0D0',
 ]
 
 

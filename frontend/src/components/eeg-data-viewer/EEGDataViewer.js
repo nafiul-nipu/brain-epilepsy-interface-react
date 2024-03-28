@@ -273,7 +273,8 @@ const EEGChartWrapper = ({ data, electrodeList, electrodeName, currenElectrode, 
                 cx={xScale(index)}
                 cy={yLineScale(data[index])}
                 r={3}
-                fill={show !== 'na' ? 'black' : 'red'}
+                // fill={show !== 'na' ? 'black' : 'red'}
+                fill="red"
               /><title>{`Time: ${el.time}`}</title>
             </g>
           )

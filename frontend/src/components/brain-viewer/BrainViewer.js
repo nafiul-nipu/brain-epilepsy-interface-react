@@ -287,7 +287,7 @@ export const BrainViewer = ({
             <Col md='12' style={{ height: height, width: width, padding: 0 }}>
                 {
                     visualPanel === 'Community' ?
-                        <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden', backgroundColor: 'black' }}>
+                        <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden', backgroundColor: '#33393E' }}>
                             {
                                 community.map((item, index) => (
                                     <div
@@ -380,7 +380,7 @@ export const BrainViewer = ({
                         </div>
 
                         : (visualPanel === 'Patch-Com-Net' ?
-                            <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden', backgroundColor: 'black' }}>
+                            <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden', backgroundColor: '#33393E' }}>
                                 {
                                     Object.keys(allnetworks).map((item, index) => (
                                         <div
@@ -473,7 +473,7 @@ export const BrainViewer = ({
                             </div>
                             :
                             (visualPanel === 'Region-Com-Net' ?
-                                <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden', backgroundColor: 'black' }}>
+                                <div ref={containerRef} style={{ height: height, width: width, overflow: 'hidden', backgroundColor: '#33393E' }}>
                                     {
                                         Object.keys(allnetworks).map((item, index) => (
                                             <div

@@ -24,7 +24,7 @@
 
   .brainViewerCard .ant-card-body {
     width: 100%;
-    padding: 0 0 5px 0;
+    padding: 0;
     height: 100%;
     display: flex;
     flex-direction: column;

@@ -162,7 +162,7 @@ export const BrainViewer = ({
 
     const panelVisible = () => {
         setIsCardVisible(!isCardVisible);
-    }    
+    }
     // reset orbit controls for brain and electrode when visual panel is patches or frequency
     const brainandElectrodeResetOrbitControls = () => {
         if (electrodeOrbitControlsRef.current && brainOrbitControlsRef.current) {
@@ -214,35 +214,55 @@ export const BrainViewer = ({
             </>
         )
     };
-
+    console.log(visualPanel, '////')
     // console.log(allnetworks)
     // console.log(Object.keys(allnetworks))
 
     return (
         <>
             <div style={{ position: "relative" }}>
-
                 <Card
                     className="brainViewerCard"
-                    style={{
+                    style={visualPanel === 'Patches' ? {
                         width: width * 0.25,
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
                         position: "absolute",
-                        // top: "20px",
-                        left: "74%",
+                        top: "5px",
+                        left: "73%",
                         zIndex: 100,
-                    }}
+                    } : visualPanel === 'Patch-Com-Net' || visualPanel === 'Region-Com-Net' || visualPanel === 'Community' ? {
+                        width: width * 0.25,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        position: "absolute",
+                        top: "33px",
+                        left: "73%",
+                        zIndex: 100,
+                    } : {
+                        width: width * 0.3,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        position: "absolute",
+                        top: "20px",
+                        left: "69%",
+                        zIndex: 100,
+                    }
+                    }
                 >
                     {
-                        visualPanel === 'Community' ?<a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Community`} <DownOutlined /></a> :
-                            visualPanel === 'Patches' ?<a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Brain Patches`} <DownOutlined /></a> :
-                                visualPanel === 'Frequency' ?<a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Spikes Over Time`} <DownOutlined /></a> :
-                                    visualPanel === 'Propagation' ?<a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Propagation Over Time`} <DownOutlined /></a> :
-                                        visualPanel === 'Patch-Com-Net' ?<a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Patch Network`} <DownOutlined /></a> :
-                                        <a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Region Network`} <DownOutlined /></a>
+                        visualPanel === 'Community' ? <a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Community`} <DownOutlined /></a> :
+                            visualPanel === 'Patches' ? <a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Brain Patches`} <DownOutlined /></a> :
+                                visualPanel === 'Frequency' ? <a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Spikes Over Time`} <DownOutlined /></a> :
+                                    visualPanel === 'Propagation' ? <a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Propagation Over Time`} <DownOutlined /></a> :
+                                        visualPanel === 'Patch-Com-Net' ? <a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Patch Network`} <DownOutlined /></a> :
+                                            <a id="titleBrain1" onClick={panelVisible}><ControlOutlined /> {`${patientInformation.id}: Region Network`} <DownOutlined /></a>
                     }
                     {isCardVisible && (
                         <>
@@ -256,7 +276,7 @@ export const BrainViewer = ({
                                 <p style={{ margin: 0 }}>Opacity:</p>
                                 <Slider
                                     style={{ width: "100%" }}
-                                    defaultValue={1}
+                                    defaultValue={leftBrainOpacity}
                                     step={0.1}
                                     max={1}
                                     onChange={changeLeftBrainOpacity}
@@ -272,14 +292,14 @@ export const BrainViewer = ({
                                 <p style={{ margin: 0 }}>Opacity:</p>
                                 <Slider
                                     style={{ width: "100%" }}
-                                    defaultValue={1}
+                                    defaultValue={rightBrainOpacity}
                                     step={0.1}
                                     max={1}
                                     onChange={changeRightBrainOpacity}
                                 />
                             </Card>
                             {/* <Button onClick={handleButtonClick} style={{marginTop: 20, marginBottom: 20}}>Update Projection</Button> */}
-                            <Button onClick={reset}>Reset Brain</Button>
+                            <Button onClick={reset} style={{ marginBottom: 5 }}>Reset Brain</Button>
                         </>
                     )}
                 </Card>

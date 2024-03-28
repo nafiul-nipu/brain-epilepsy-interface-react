@@ -320,7 +320,7 @@ export const SpikeSummary = ({
                                             r={seizure[patientID].includes(Number(electrodeId)) ? 15 : 5}
                                             fill={
                                                 seizure[patientID].includes(Number(electrodeId)) ?
-                                                    "#f01a73" : "grey"
+                                                    "#1aacf0" : "grey"
                                                 // patchRegionToggle === "Patch" ?
                                                 //     electrodeColorList[patchLabels[electrodeId]] :
                                                 //     electrodeColorList[regions.indexOf(regiionLabels[electrodeId])]

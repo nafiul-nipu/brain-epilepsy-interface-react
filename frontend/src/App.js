@@ -33,7 +33,7 @@ function App() {
   // first three d
   // console.log(dataRegistry)
   const [patientInfo, setPatientInfo] = useState({
-    id: "ep164",
+    id: "ep129",
     sample: "sample1",
   });
   // console.log('patient', patientInfo)

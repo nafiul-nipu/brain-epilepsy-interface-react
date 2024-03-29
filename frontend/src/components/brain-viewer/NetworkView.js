@@ -414,7 +414,7 @@ export const NetworkView = ({
                                         key={`cone-${index}`}
                                         position={[midpoint.cone.x, midpoint.cone.y, midpoint.cone.z]}
                                         rotation={orientation}
-                                        args={[0.5, 2, 32]}
+                                        args={[0.7, 2.5, 32]}
                                         material-color="#333"
                                     />
                                 </>

@@ -30,7 +30,6 @@ export const TimeSliderButton = ({
     const ranges = Array.from({ length: 5 }, (_, i) => (i + 1) * (time / 4));
 
     if (visualPanel !== 'Patches') {
-        console.log(`visualPanel: ${visualPanel}, className: ${visualPanel === 'Frequency' || visualPanel === 'Propagation' ? "timeSliderTab" : "titleTab"}`);
         return (
             <Col md='12' style={{ height: '8vh', position: 'absolute', zIndex: 100 }}>
                 <Row className={visualPanel === 'Frequency' || visualPanel === 'Propagation' ? "timeSliderTab" : "titleTab"}>

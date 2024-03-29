@@ -270,7 +270,7 @@ export const ElectrodeLoad = ({
                 args={[null, null, electrodeData.length]}
                 position={[bbox.x, bbox.y, bbox.z]}
             >
-                <sphereBufferGeometry args={[1.5, 32, 32]} />
+                <sphereGeometry args={[1.5, 32, 32]} />
                 <meshStandardMaterial
                     attach="material"
                     color="#fff"

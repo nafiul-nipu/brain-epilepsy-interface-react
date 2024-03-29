@@ -27,7 +27,7 @@ export const PatchSummary = ({
   electrodeData,
   patchRegionMark
 }) => {
-  console.log(patchData, '///')
+  // console.log(patchData, '///')
   const patchRef = useRef(null);
 
   // circle legend svg and g ref

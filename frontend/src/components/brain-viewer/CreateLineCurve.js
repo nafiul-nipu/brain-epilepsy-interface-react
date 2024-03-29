@@ -59,7 +59,7 @@ export const CreateLineCurve = ({
 
         // console.log(percentileVal)
 
-        const topEdges = sortedEdges.filter(edge => edge[1] > percentileVal);
+        const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
 
         // console.log(topEdges)
         let edges = 0;

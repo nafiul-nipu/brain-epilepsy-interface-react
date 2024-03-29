@@ -74,9 +74,9 @@ export const NetworkView = ({
 
             // console.log(percentileVal)
 
-            const topEdges = sortedEdges.filter(edge => edge[1] > percentileVal);
+            const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
 
-            // console.log(topEdges)
+            // console.log(topEdges.length)
 
             lineWidth.domain([topEdges[topEdges.length - 1][1], topEdges[0][1]]);
 
@@ -183,7 +183,7 @@ export const NetworkView = ({
                 const percentileVal = sortedValues.length === 0 ? 0 :
                     ss.quantileSorted(sortedValues, topPercent / 100);
 
-                const topEdges = sortedEdges.filter(edge => edge[1] > percentileVal);
+                const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
 
                 lineWidth.domain([topEdges[topEdges.length - 1][1], topEdges[0][1]]);
 
@@ -263,7 +263,7 @@ export const NetworkView = ({
 
                 // console.log(percentileVal)
 
-                const topEdges = sortedEdges.filter(edge => edge[1] > percentileVal);
+                const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
 
                 sortedNetwokrPerMinute[minute] = topEdges
 

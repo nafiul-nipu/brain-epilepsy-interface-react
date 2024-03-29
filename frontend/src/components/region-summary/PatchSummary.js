@@ -27,7 +27,7 @@ export const PatchSummary = ({
   electrodeData,
   patchRegionMark
 }) => {
-
+  console.log(patchData, '///')
   const patchRef = useRef(null);
 
   // circle legend svg and g ref
@@ -71,12 +71,12 @@ export const PatchSummary = ({
 
     // frequency legend observer
     const frequencyObserver = new ResizeObserver((entries) => {
-      if (frequencySvgRef.current && frequencyGRef.current) {
-        for (let entry of entries) {
-          setpatchSvg({
-            svgWidth: entry.contentRect.width,
-            svgHeight: entry.contentRect.height,
-          });
+      for (let entry of entries) {
+        setpatchSvg({
+          svgWidth: entry.contentRect.width,
+          svgHeight: entry.contentRect.height,
+        });
+        if (frequencySvgRef.current && frequencyGRef.current) {
           const svgBox = frequencySvgRef.current.getBoundingClientRect();
           const gBox = frequencyGRef.current.getBBox();
 
@@ -107,7 +107,7 @@ export const PatchSummary = ({
       circleObserver.disconnect();
       frequencyObserver.disconnect();
     }
-  }, []);
+  }, [patchData]);
 
   // tooltip controller
   const handleMouseEnter = (

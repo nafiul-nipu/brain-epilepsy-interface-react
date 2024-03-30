@@ -74,12 +74,12 @@ export const NetworkView = ({
 
             // for ep165 python code generated percentile value of 99
             // but for this code it is generating 100 TODO: check why
-            console.log(percentileVal)
-            percentileVal = percentileVal === 100 ? 99 : percentileVal;
+            // console.log(percentileVal)
+            // percentileVal = percentileVal === 100 ? 99 : percentileVal;
 
             const topEdges = sortedEdges.filter(edge => edge[1] >= percentileVal);
 
-            console.log(topEdges.length)
+            // console.log(topEdges.length)
 
             lineWidth.domain([topEdges[topEdges.length - 1][1], topEdges[0][1]]);
 

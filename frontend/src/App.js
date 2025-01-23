@@ -16,7 +16,7 @@ import { ENTContainer } from "./components/brain-viewer/ENTContainer";
 
 import { useAllEventData } from "./library/useAllEventData";
 import { usePatchData } from "./library/usePatchData";
-import { useSamplePropagation } from "./library/useSamplePropagation"
+import { useSamplePropagation } from "./library/useSamplePropagation";
 import { RegionSummary } from "./components/region-summary/RegionSummary";
 import { EEGDataContainer } from "./components/eeg-data-viewer/EEGDataContainer";
 import { PatchSummary } from "./components/region-summary/PatchSummary";
@@ -27,9 +27,9 @@ import { PatchNetwork } from "./components/patch-network/PatchNetwork";
 import { useRegionData } from "./library/useRegionData";
 import { useBBoxcenter } from "./library/useBBoxcenter";
 import { useNetworkPerMinute } from "./library/useNetworkPerMinute";
+import { usePatternBoundaryPoints } from "./library/usePatternBoundaryPoints";
 
 function App() {
-
   // first three d
   // console.log(dataRegistry)
   const [patientInfo, setPatientInfo] = useState({
@@ -54,7 +54,7 @@ function App() {
     patientID: patientInfo.id,
     sampleName: patientInfo.sample,
     range: timeRange,
-  })
+  });
 
   const allEventData = useAllEventData({ patientID: patientInfo.id });
 
@@ -69,31 +69,33 @@ function App() {
   const electrodeDataCsv = useElectrodeData({ id: patientInfo.id });
   // console.log(electrodeDataCsv)
 
-  const patchData = usePatchData({ patientID: patientInfo.id })
+  const patchData = usePatchData({ patientID: patientInfo.id });
   const samplePropagationData = useSamplePropagation({
     patientID: patientInfo.id,
     sampleID: patientInfo.sample,
-  })
+  });
 
-  const regionData = useRegionData({ patientID: patientInfo.id })
+  const patternBoundaries = usePatternBoundaryPoints({
+    patientID: patientInfo.id,
+  });
 
+  const regionData = useRegionData({ patientID: patientInfo.id });
 
   const [selectedRoi, setSelectedRoi] = useState(null);
 
   const [eegInBrain, setEegInBrain] = useState(null);
-  const [eegList, setEegList] = useState(null)
+  const [eegList, setEegList] = useState(null);
 
-
-  const [topPercent, setTopPercent] = useState(99)
-  const [viewColor, setViewColor] = useState('na')
+  const [topPercent, setTopPercent] = useState(99);
+  const [viewColor, setViewColor] = useState("na");
 
   const onViewChange = (event) => {
     setViewColor(event.target.value);
   };
 
   const topOnChange = (event) => {
-    setTopPercent(event.target.value)
-  }
+    setTopPercent(event.target.value);
+  };
 
   const [patchRegionToggle, setPatchRegionToggle] = useState("Patch");
 
@@ -116,7 +118,11 @@ function App() {
           <Row>
             {/* brain - 50vh */}
             <Col md="12" style={{ height: "54vh", backgroundColor: "#FAFBFC" }}>
-              {allEventData && comData && allNetwork && networkPerMinute ? (
+              {allEventData &&
+              comData &&
+              allNetwork &&
+              networkPerMinute &&
+              patternBoundaries ? (
                 <ENTContainer
                   patientInformation={patientInfo}
                   electrodeData={electrodeDataCsv}
@@ -132,6 +138,7 @@ function App() {
                   setEegInBrain={setEegInBrain}
                   patchRegionToggle={patchRegionToggle}
                   network_per_minute={networkPerMinute[patientInfo.sample]}
+                  patternBoundaries={patternBoundaries}
                 />
               ) : null}
             </Col>
@@ -160,13 +167,15 @@ function App() {
             </select>
           </div>
 
-          <Row style={{ margin: '5px 0' }}>
+          <Row style={{ margin: "5px 0" }}>
             <Tabs
               variant="enclosed"
               colorScheme="green"
-              size='sm'
+              size="sm"
               style={{ paddingRight: 0 }}
-              onChange={(index) => { setEegList(null) }}
+              onChange={(index) => {
+                setEegList(null);
+              }}
             >
               <TabList>
                 <Tab>Patch Network</Tab>
@@ -174,7 +183,7 @@ function App() {
                 <Tab>All Networks</Tab>
               </TabList>
               <TabPanels>
-                <TabPanel style={{ padding: '0px' }}>
+                <TabPanel style={{ padding: "0px" }}>
                   {/* patch network */}
                   {allNetwork && electrodeDataCsv && comData && patchData ? (
                     <PatchNetwork
@@ -186,19 +195,17 @@ function App() {
                       viewColor={viewColor}
                       topPercent={topPercent}
                       rowLength={Array.from(
-                        new Set(
-                          electrodeDataCsv.map((el) => el.label)
-                        )
+                        new Set(electrodeDataCsv.map((el) => el.label))
                       ).sort((a, b) => a - b)}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
                       eegList={eegList}
                       setEegList={setEegList}
-                      networkType={'patch'}
+                      networkType={"patch"}
                     />
                   ) : null}
                 </TabPanel>
-                <TabPanel style={{ padding: '0px' }}>
+                <TabPanel style={{ padding: "0px" }}>
                   {/* region network */}
                   {allNetwork && electrodeDataCsv && comData && regionData ? (
                     <PatchNetwork
@@ -209,16 +216,18 @@ function App() {
                       communityData={comData}
                       viewColor={viewColor}
                       topPercent={topPercent}
-                      rowLength={[...new Set(electrodeDataCsv.map(obj => obj.region))]}
+                      rowLength={[
+                        ...new Set(electrodeDataCsv.map((obj) => obj.region)),
+                      ]}
                       selectedRoi={selectedRoi}
                       setSelectedRoi={setSelectedRoi}
                       eegList={eegList}
                       setEegList={setEegList}
-                      networkType={'region'}
+                      networkType={"region"}
                     />
                   ) : null}
                 </TabPanel>
-                <TabPanel style={{ padding: '0px' }}>
+                <TabPanel style={{ padding: "0px" }}>
                   {/* region - 35vh */}
                   {/* this will be 2D similar view */}
                   {allNetwork && electrodeDataCsv && comData ? (
@@ -231,19 +240,23 @@ function App() {
                       topPercent={topPercent}
                       eegList={eegList}
                       setEegList={setEegList}
-                      networkType={'all'}
+                      networkType={"all"}
                     />
                   ) : null}
                 </TabPanel>
               </TabPanels>
             </Tabs>
-
           </Row>
         </Col>
         {/* right panel */}
         <Col md="5">
           <Row>
-            <Tabs variant="enclosed" colorScheme="green" size='sm' style={{ padding: 0 }}>
+            <Tabs
+              variant="enclosed"
+              colorScheme="green"
+              size="sm"
+              style={{ padding: 0 }}
+            >
               <TabList>
                 <Tab>EEG</Tab>
                 <Tab>Spikes</Tab>
@@ -252,9 +265,12 @@ function App() {
               </TabList>
 
               <TabPanels>
-                <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
+                <TabPanel style={{ padding: "0px", marginRight: "12px" }}>
                   {/* eeg 89.5vh */}
-                  <Col md="12" style={{ height: "89.5vh", backgroundColor: "#FAFBFC" }}>
+                  <Col
+                    md="12"
+                    style={{ height: "89.5vh", backgroundColor: "#FAFBFC" }}
+                  >
                     {allEventData && electrodeDataCsv && comData ? (
                       <EEGDataContainer
                         viewColor={viewColor}
@@ -263,7 +279,9 @@ function App() {
                         communityData={comData}
                         sampleName={patientInfo.sample}
                         topPercent={topPercent}
-                        electrodeList={electrodeDataCsv.map((el) => el.electrode_number)}
+                        electrodeList={electrodeDataCsv.map(
+                          (el) => el.electrode_number
+                        )}
                         electrodeName={electrodeDataCsv.map((el) => el.E_Brain)}
                         eegInBrain={eegInBrain}
                         setEegInBrain={setEegInBrain}
@@ -272,8 +290,12 @@ function App() {
                     ) : null}
                   </Col>
                 </TabPanel>
-                <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
-                  {allEventData && patchData && regionData && samplePropagationData && electrodeDataCsv ? (
+                <TabPanel style={{ padding: "0px", marginRight: "12px" }}>
+                  {allEventData &&
+                  patchData &&
+                  regionData &&
+                  samplePropagationData &&
+                  electrodeDataCsv ? (
                     <SpikeSummary
                       patchData={patchData}
                       regionData={regionData}
@@ -288,11 +310,14 @@ function App() {
                     />
                   ) : null}
                 </TabPanel>
-                <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
-                  {allEventData && patchData && samplePropagationData && electrodeDataCsv ? (
+                <TabPanel style={{ padding: "0px", marginRight: "12px" }}>
+                  {allEventData &&
+                  patchData &&
+                  samplePropagationData &&
+                  electrodeDataCsv ? (
                     <PatchSummary
                       patchData={patchData}
-                      patchRegionMark={'patch'}
+                      patchRegionMark={"patch"}
                       samplePropagationData={samplePropagationData}
                       eventData={allEventData[patientInfo.sample]}
                       selectedRoi={selectedRoi}
@@ -301,11 +326,14 @@ function App() {
                     />
                   ) : null}
                 </TabPanel>
-                <TabPanel style={{ padding: '0px', marginRight: "12px" }}>
-                  {allEventData && samplePropagationData && regionData && electrodeDataCsv ? (
+                <TabPanel style={{ padding: "0px", marginRight: "12px" }}>
+                  {allEventData &&
+                  samplePropagationData &&
+                  regionData &&
+                  electrodeDataCsv ? (
                     <PatchSummary
                       patchData={regionData}
-                      patchRegionMark={'region'}
+                      patchRegionMark={"region"}
                       samplePropagationData={samplePropagationData}
                       eventData={allEventData[patientInfo.sample]}
                       selectedRoi={selectedRoi}
@@ -315,7 +343,6 @@ function App() {
                   ) : null}
                 </TabPanel>
               </TabPanels>
-
             </Tabs>
           </Row>
         </Col>

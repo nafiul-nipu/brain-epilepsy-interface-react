@@ -17,6 +17,7 @@ import * as THREE from "three";
 import { CreateLineCurve } from "./CreateLineCurve";
 import { NetworkView } from "./NetworkView";
 import { DownOutlined, ControlOutlined } from "@ant-design/icons";
+import { ActivationPattern } from "./ActivationPattern";
 
 // const width = (window.innerWidth / 2) - 10;
 // const height = window.innerHeight / 2.3 - 10;
@@ -167,6 +168,7 @@ export const BrainViewer = ({
   network_per_minute,
   propagatoinButtonValue,
   setPropagationSlider,
+  patternBoundaries,
 }) => {
   // console.log(topPercent)
 
@@ -785,7 +787,7 @@ export const BrainViewer = ({
                 />
                 <OrbitControls ref={brainOrbitControlsRef} enablePan={true} />
               </Hud>
-              {/* <Hud renderPriority={2}>
+              <Hud renderPriority={2}>
                 <PerspectiveCamera
                   makeDefault
                   position={[-300, -10, 0]}
@@ -812,11 +814,15 @@ export const BrainViewer = ({
                   sampleDomain={sampleDomain}
                   patchRegionToggle={patchRegionToggle}
                 />
+                <ActivationPattern
+                  patternData={patternBoundaries[topPercent]}
+                  bbox={dataRegisty[patientInformation.id].bbox}
+                />
                 <OrbitControls
                   ref={electrodeOrbitControlsRef}
                   enablePan={true}
                 />
-              </Hud> */}
+              </Hud>
             </Suspense>
             {/* <Stats /> */}
           </Canvas>

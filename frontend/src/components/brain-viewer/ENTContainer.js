@@ -20,6 +20,7 @@ export const ENTContainer = ({
   setEegInBrain,
   patchRegionToggle,
   network_per_minute,
+  patternBoundaries,
 }) => {
   // console.log(community)
   // console.log(topPercent)
@@ -156,6 +157,7 @@ export const ENTContainer = ({
               network_per_minute={network_per_minute}
               propagatoinButtonValue={propagatoinButtonValue}
               setPropagationSlider={setPropagationSlider}
+              patternBoundaries={patternBoundaries}
             />
           </Row>
         </Col>

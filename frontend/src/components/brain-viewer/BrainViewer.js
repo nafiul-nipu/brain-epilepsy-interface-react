@@ -169,6 +169,7 @@ export const BrainViewer = ({
   propagatoinButtonValue,
   setPropagationSlider,
   patternBoundaries,
+  patternBoundariesPerSample,
 }) => {
   // console.log(topPercent)
 

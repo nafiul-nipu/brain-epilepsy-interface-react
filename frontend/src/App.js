@@ -28,6 +28,7 @@ import { useRegionData } from "./library/useRegionData";
 import { useBBoxcenter } from "./library/useBBoxcenter";
 import { useNetworkPerMinute } from "./library/useNetworkPerMinute";
 import { usePatternBoundaryPoints } from "./library/usePatternBoundaryPoints";
+import { usePatternBoundaryPerSample } from "./library/usePatternBoundaryPerSample";
 
 function App() {
   // first three d
@@ -79,6 +80,10 @@ function App() {
     patientID: patientInfo.id,
   });
 
+  const patternBoundariesPerSample = usePatternBoundaryPerSample({
+    patientID: patientInfo.id,
+  });
+
   const regionData = useRegionData({ patientID: patientInfo.id });
 
   const [selectedRoi, setSelectedRoi] = useState(null);
@@ -122,7 +127,8 @@ function App() {
               comData &&
               allNetwork &&
               networkPerMinute &&
-              patternBoundaries ? (
+              patternBoundaries &&
+              patternBoundariesPerSample ? (
                 <ENTContainer
                   patientInformation={patientInfo}
                   electrodeData={electrodeDataCsv}
@@ -139,6 +145,7 @@ function App() {
                   patchRegionToggle={patchRegionToggle}
                   network_per_minute={networkPerMinute[patientInfo.sample]}
                   patternBoundaries={patternBoundaries}
+                  patternBoundariesPerSample={patternBoundariesPerSample}
                 />
               ) : null}
             </Col>

@@ -21,6 +21,7 @@ export const ENTContainer = ({
   patchRegionToggle,
   network_per_minute,
   patternBoundaries,
+  patternBoundariesPerSample,
 }) => {
   // console.log(community)
   // console.log(topPercent)
@@ -158,6 +159,7 @@ export const ENTContainer = ({
               propagatoinButtonValue={propagatoinButtonValue}
               setPropagationSlider={setPropagationSlider}
               patternBoundaries={patternBoundaries}
+              patternBoundariesPerSample={patternBoundariesPerSample}
             />
           </Row>
         </Col>

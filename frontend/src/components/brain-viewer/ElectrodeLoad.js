@@ -168,9 +168,11 @@ export const ElectrodeLoad = ({
     } else if (
       visualPanel === "Patches" ||
       visualPanel === "Propagation" ||
-      visualPanel === "Pattern"
+      visualPanel === "Pattern" ||
+      visualPanel === "Pattern-Sample"
     ) {
       // console.log(electrodeData)
+      console.log("i am changing");
       const uniqueRegions =
         patchRegionToggle === "Region"
           ? [...new Set(electrodeData.map((obj) => obj.region))]

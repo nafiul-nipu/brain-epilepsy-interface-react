@@ -222,7 +222,8 @@ export const BrainViewer = ({
     if (
       visualPanel !== "Community" &&
       visualPanel !== "Patch-Com-Net" &&
-      visualPanel !== "Region-Com-Net"
+      visualPanel !== "Region-Com-Net" &&
+      visualPanel !== "Pattern-Sample"
     ) {
       brainandElectrodeResetOrbitControls();
     } else {
@@ -288,7 +289,8 @@ export const BrainViewer = ({
                 }
               : visualPanel === "Patch-Com-Net" ||
                 visualPanel === "Region-Com-Net" ||
-                visualPanel === "Community"
+                visualPanel === "Community" ||
+                visualPanel === "Pattern-Sample"
               ? {
                   width: width * 0.25,
                   display: "flex",
@@ -317,6 +319,11 @@ export const BrainViewer = ({
             <a id="titleBrain1" onClick={panelVisible}>
               <ControlOutlined /> {`${patientInformation.id}: Community`}{" "}
               <DownOutlined />
+            </a>
+          ) : visualPanel === "Pattern-Sample" ? (
+            <a id="titleBrain1" onClick={panelVisible}>
+              <ControlOutlined />{" "}
+              {`${patientInformation.id}: Activation Pattern`} <DownOutlined />
             </a>
           ) : visualPanel === "Patches" ? (
             <a id="titleBrain1" onClick={panelVisible}>
@@ -827,6 +834,110 @@ export const BrainViewer = ({
             </Suspense>
             {/* <Stats /> */}
           </Canvas>
+        ) : visualPanel === "Pattern-Sample" ? (
+          <div
+            ref={containerRef}
+            style={{
+              height: height,
+              width: width,
+              overflow: "hidden",
+              backgroundColor: "#33393E",
+            }}
+          >
+            {Object.keys(patternBoundariesPerSample).map((item, index) => (
+              <div
+                key={index}
+                ref={views[index]}
+                style={{
+                  height: height,
+                  width: (width - 15) / community.length,
+                  display: "inline-block",
+                  padding: "2px",
+                  margin: "2px",
+                  // border: "0.5px solid grey",
+                  // backgroundColor: "yellowgreen"
+                }}
+              ></div>
+            ))}
+            <Canvas eventSource={containerRef} className="canvas">
+              {Object.keys(patternBoundariesPerSample).map((item, index) => (
+                <View index={index} key={index} track={views[index]}>
+                  <CustomAxesHelper />
+                  <PerspectiveCamera
+                    makeDefault
+                    position={[-300, -10, 0]}
+                    up={[0, 0, 1]}
+                    aspect={width / height}
+                    near={1}
+                    far={2000}
+                    fov={40}
+                  />
+                  <ambientLight intensity={0.5} />
+                  <directionalLight
+                    castShadow
+                    position={[-15, 0, -250]}
+                    intensity={0.8}
+                    shadow-mapSize-width={2048}
+                    shadow-mapSize-height={2048}
+                    shadow-camera-near={0.5}
+                    shadow-camera-far={500}
+                    shadow-camera-left={-5}
+                    shadow-camera-right={5}
+                    shadow-camera-top={5}
+                    shadow-camera-bottom={-5}
+                  />
+                  <directionalLight
+                    castShadow
+                    position={[-15, 0, 250]}
+                    intensity={0.8}
+                    shadow-mapSize-width={2048}
+                    shadow-mapSize-height={2048}
+                    shadow-camera-near={0.5}
+                    shadow-camera-far={500}
+                    shadow-camera-left={-5}
+                    shadow-camera-right={5}
+                    shadow-camera-top={5}
+                    shadow-camera-bottom={-5}
+                  />
+                  <BrainLesionLoad
+                    patientInformation={patientInformation}
+                    lesionArray={dataRegisty[patientInformation.id].lesionArray}
+                    brainPartition={
+                      dataRegisty[patientInformation.id].brainPartition
+                    }
+                    leftBrainOpacity={leftBrainOpacity}
+                    rightBrainOpacity={rightBrainOpacity}
+                  />
+                  <ElectrodeLoad
+                    electrodeData={electrodeData}
+                    sampleData={sample}
+                    community={community}
+                    bbox={dataRegisty[patientInformation.id].bbox}
+                    eegInBrain={eegInBrain}
+                    timeRange={time}
+                    eventData={events}
+                    allnetwork={allnetworks}
+                    visualPanel={visualPanel}
+                    buttonValue={buttonValue}
+                    sliderObj={sliderObj}
+                    eegList={eegList}
+                    sampleDomain={sampleDomain}
+                    patchRegionToggle={patchRegionToggle}
+                  />
+
+                  <ActivationPattern
+                    patternData={patternBoundariesPerSample[item][topPercent]}
+                    bbox={dataRegisty[patientInformation.id].bbox}
+                  />
+                  <OrbitControls
+                    ref={(ref) => attachRef(index, ref)}
+                    enablePan={true}
+                  />
+                </View>
+              ))}
+              {/* <Stats /> */}
+            </Canvas>
+          </div>
         ) : (
           <Canvas style={{ background: "#33393E" }}>
             <Suspense fallback={null}>

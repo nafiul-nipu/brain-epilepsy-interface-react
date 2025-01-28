@@ -102,6 +102,7 @@ export const ENTContainer = ({
               "Patch-Com-Net",
               "Region-Com-Net",
               "Pattern",
+              "Pattern-Sample",
             ]}
             onChange={onSegmentChange}
             defaultValue={"Patches"}

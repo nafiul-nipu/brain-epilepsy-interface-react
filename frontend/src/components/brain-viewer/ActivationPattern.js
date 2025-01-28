@@ -61,6 +61,7 @@ const HullMesh = ({ weight, points, minWeight, maxWeight }) => {
 };
 
 export const ActivationPattern = ({ patternData, bbox }) => {
+  // console.log(patternData);
   const weights = patternData.map((obj) => obj.weight);
   const minWeight = Math.min(...weights);
   const maxWeight = Math.max(...weights);

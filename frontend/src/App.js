@@ -84,7 +84,7 @@ function App() {
     patientID: patientInfo.id,
   });
 
-  // console.log(patternBoundariesPerSample);
+  console.log(patternBoundariesPerSample);
 
   const regionData = useRegionData({ patientID: patientInfo.id });
 

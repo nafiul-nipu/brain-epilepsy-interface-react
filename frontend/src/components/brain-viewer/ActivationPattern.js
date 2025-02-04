@@ -32,7 +32,7 @@ const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
   } else if (type === "line") {
     const linePoints = points.map(([x, y, z]) => new THREE.Vector3(x, y, z));
 
-    return <Line points={linePoints} color={color} lineWidth={10} />;
+    return <Line points={linePoints} color={color} lineWidth={5} />;
   } else if (type === "other") {
     if (points.length === 1) {
       // Single point → Draw sphere

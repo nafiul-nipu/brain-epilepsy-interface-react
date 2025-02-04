@@ -4,7 +4,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         59.44711685,
                         171.0057678,
@@ -24,7 +24,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         38.61865616,
                         99.38539124,
@@ -38,7 +38,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         42.56768036,
                         109.0180054,
@@ -98,7 +98,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         59.44711685,
                         171.0057678,
@@ -206,7 +206,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -336,7 +336,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -350,7 +350,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         51.2840004,
                         165.7919006,
@@ -370,7 +370,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         44.20722198,
                         119.0409088,
@@ -390,7 +390,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -526,7 +526,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -546,7 +546,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         51.2840004,
                         165.7919006,
@@ -566,7 +566,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         44.20722198,
                         119.0409088,
@@ -586,7 +586,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -722,7 +722,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -742,7 +742,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         51.2840004,
                         165.7919006,
@@ -762,7 +762,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         44.20722198,
                         119.0409088,
@@ -782,7 +782,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -842,7 +842,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.11058807,
                         179.6183167,
@@ -940,7 +940,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -960,7 +960,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         59.72214127,
                         62.80955505,
@@ -974,7 +974,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         52.44224548,
                         170.8167877,
@@ -994,7 +994,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.11058807,
                         179.6183167,
@@ -1014,7 +1014,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -1034,7 +1034,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         59.72214127,
                         62.80955505,
@@ -1285,7 +1285,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         33.36973572,
                         85.51229858,
@@ -1305,7 +1305,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         120.5362473,
                         44.73541641,
@@ -1319,7 +1319,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         77.87369537,
                         31.06650925,
@@ -1333,7 +1333,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         59.72214127,
                         62.80955505,
@@ -1397,7 +1397,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         64.83947754,
                         153.8170471,
@@ -1411,7 +1411,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         52.44224548,
                         170.8167877,
@@ -1431,7 +1431,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         32.5107193,
                         107.2374268,
@@ -1451,7 +1451,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         33.36973572,
                         85.51229858,
@@ -1471,7 +1471,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         120.5362473,
                         44.73541641,
@@ -1491,7 +1491,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         77.87369537,
                         31.06650925,
@@ -1511,7 +1511,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         49.3511467,
                         70.0541687,
@@ -1531,7 +1531,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         53.5224762,
                         150.5645752,
@@ -1551,7 +1551,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         64.83947754,
                         153.8170471,
@@ -1698,7 +1698,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.11058807,
                         179.6183167,
@@ -1763,7 +1763,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -1777,7 +1777,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         32.5107193,
                         107.2374268,
@@ -1791,7 +1791,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         52.44224548,
                         170.8167877,
@@ -1811,7 +1811,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.11058807,
                         179.6183167,
@@ -1831,7 +1831,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -1851,7 +1851,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         32.5107193,
                         107.2374268,
@@ -1911,7 +1911,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.11058807,
                         179.6183167,
@@ -1982,7 +1982,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -1996,7 +1996,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         33.60301971,
                         113.0844498,
@@ -2016,7 +2016,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         52.44224548,
                         170.8167877,
@@ -2036,7 +2036,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.11058807,
                         179.6183167,
@@ -2056,7 +2056,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -2076,7 +2076,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         33.60301971,
                         113.0844498,
@@ -2212,7 +2212,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -2226,7 +2226,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         33.60301971,
                         113.0844498,
@@ -2246,7 +2246,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         53.52826309,
                         158.8329773,
@@ -2266,7 +2266,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -2286,7 +2286,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         33.60301971,
                         113.0844498,
@@ -2422,7 +2422,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -2468,7 +2468,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         53.52826309,
                         158.8329773,
@@ -2488,7 +2488,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -2508,7 +2508,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         37.79614639,
                         122.8765488,
@@ -2644,7 +2644,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -2696,7 +2696,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         49.99071884,
                         146.2094421,
@@ -2710,7 +2710,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         55.12334442,
                         175.8678894,
@@ -2730,7 +2730,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -2750,7 +2750,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         37.79614639,
                         122.8765488,
@@ -2770,7 +2770,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         49.99071884,
                         146.2094421,
@@ -3046,7 +3046,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         33.36973572,
                         85.51229858,
@@ -3060,7 +3060,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         120.5362473,
                         44.73541641,
@@ -3074,7 +3074,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         54.50421906,
                         66.29293823,
@@ -3088,7 +3088,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         60.28677368,
                         160.8241577,
@@ -3152,7 +3152,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         52.44224548,
                         170.8167877,
@@ -3172,7 +3172,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         40.50615692,
                         136.464386,
@@ -3192,7 +3192,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         33.36973572,
                         85.51229858,
@@ -3212,7 +3212,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         120.5362473,
                         44.73541641,
@@ -3232,7 +3232,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         54.50421906,
                         66.29293823,
@@ -3252,7 +3252,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         60.28677368,
                         160.8241577,
@@ -3272,7 +3272,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         46.10832214,
                         142.8703003,
@@ -3385,7 +3385,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         32.5107193,
                         107.2374268,
@@ -3399,7 +3399,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         51.2840004,
                         165.7919006,
@@ -3419,7 +3419,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         32.5107193,
                         107.2374268,
@@ -3543,7 +3543,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -3557,7 +3557,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         33.60301971,
                         113.0844498,
@@ -3577,7 +3577,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         53.52826309,
                         158.8329773,
@@ -3597,7 +3597,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -3617,7 +3617,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         33.60301971,
                         113.0844498,
@@ -3741,7 +3741,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -3761,7 +3761,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         33.60301971,
                         113.0844498,
@@ -3781,7 +3781,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         53.52826309,
                         158.8329773,
@@ -3801,7 +3801,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -3821,7 +3821,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         33.60301971,
                         113.0844498,
@@ -3887,7 +3887,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.11058807,
                         179.6183167,
@@ -3959,7 +3959,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -4011,7 +4011,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         52.44224548,
                         170.8167877,
@@ -4031,7 +4031,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.11058807,
                         179.6183167,
@@ -4051,7 +4051,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -4071,7 +4071,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         37.79614639,
                         122.8765488,
@@ -4137,7 +4137,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.11058807,
                         179.6183167,
@@ -4209,7 +4209,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -4261,7 +4261,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         52.44224548,
                         170.8167877,
@@ -4281,7 +4281,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.11058807,
                         179.6183167,
@@ -4301,7 +4301,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -4321,7 +4321,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         37.79614639,
                         122.8765488,
@@ -4463,7 +4463,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -4515,7 +4515,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         53.52826309,
                         158.8329773,
@@ -4535,7 +4535,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         58.59506226,
                         43.15229034,
@@ -4555,7 +4555,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         37.79614639,
                         122.8765488,
@@ -4843,7 +4843,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         59.72214127,
                         62.80955505,
@@ -4857,7 +4857,7 @@
             {
                 "type": "other",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         60.28677368,
                         160.8241577,
@@ -4921,7 +4921,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         52.44224548,
                         170.8167877,
@@ -4941,7 +4941,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         40.50615692,
                         136.464386,
@@ -4961,7 +4961,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         59.72214127,
                         62.80955505,
@@ -4981,7 +4981,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         60.28677368,
                         160.8241577,
@@ -5001,7 +5001,7 @@
             {
                 "type": "line",
                 "weight": 1,
-                "hull_points": [
+                "points": [
                     [
                         46.10832214,
                         142.8703003,

@@ -84,6 +84,8 @@ function App() {
     patientID: patientInfo.id,
   });
 
+  console.log(patternBoundariesPerSample[0]);
+
   const regionData = useRegionData({ patientID: patientInfo.id });
 
   const [selectedRoi, setSelectedRoi] = useState(null);

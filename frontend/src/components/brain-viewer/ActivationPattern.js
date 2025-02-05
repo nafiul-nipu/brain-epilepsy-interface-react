@@ -52,10 +52,44 @@ const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
     }
 
     if (points.length === 3) {
-      // Three points → Draw triangle
-      const vertices = new Float32Array(points.flat());
-      const geometry = new THREE.BufferGeometry();
-      geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+      // Three points → Create convex geometry
+      const [p1, p2, p3] = points;
+
+      // Convert array to THREE.Vector3
+      const v1 = new THREE.Vector3(...p1);
+      const v2 = new THREE.Vector3(...p2);
+      const v3 = new THREE.Vector3(...p3);
+
+      // Calculate midpoints of edges
+      const midpoint12 = new THREE.Vector3()
+        .addVectors(v1, v2)
+        .multiplyScalar(0.5);
+      const midpoint23 = new THREE.Vector3()
+        .addVectors(v2, v3)
+        .multiplyScalar(0.5);
+      const midpoint31 = new THREE.Vector3()
+        .addVectors(v3, v1)
+        .multiplyScalar(0.5);
+
+      // Add an additional point inside the triangle (centroid)
+      const centroid = new THREE.Vector3()
+        .addVectors(v1, v2)
+        .add(v3)
+        .multiplyScalar(1 / 3);
+
+      // Combine original points, midpoints, and centroid
+      const allPoints = [
+        v1,
+        v2,
+        v3,
+        midpoint12,
+        midpoint23,
+        midpoint31,
+        centroid,
+      ];
+
+      // Create ConvexGeometry
+      const geometry = new ConvexGeometry(allPoints);
 
       return (
         <mesh geometry={geometry}>
@@ -67,7 +101,7 @@ const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
 };
 
 export const ActivationPattern = ({ patternData, bbox }) => {
-  console.log(patternData);
+  // console.log(patternData);
   const weights = patternData.map((obj) => obj.weight);
   const minWeight = Math.min(...weights);
   const maxWeight = Math.max(...weights);

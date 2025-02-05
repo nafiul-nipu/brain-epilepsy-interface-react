@@ -32,7 +32,7 @@ const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
   } else if (type === "line") {
     const linePoints = points.map(([x, y, z]) => new THREE.Vector3(x, y, z));
 
-    return <Line points={linePoints} color={color} lineWidth={20} />;
+    return <Line points={linePoints} color={color} lineWidth={15} />;
   } else if (type === "other") {
     if (points.length === 1) {
       // Single point → Draw sphere
@@ -48,54 +48,57 @@ const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
       // Two points → Draw line
       const linePoints = points.map(([x, y, z]) => new THREE.Vector3(x, y, z));
 
-      return <Line points={linePoints} color={color} lineWidth={20} />;
+      return <Line points={linePoints} color={color} lineWidth={15} />;
     }
 
     if (points.length === 3) {
-      // Three points → Create convex geometry
-      const [p1, p2, p3] = points;
+      const linePoints = points.map(([x, y, z]) => new THREE.Vector3(x, y, z));
 
-      // Convert array to THREE.Vector3
-      const v1 = new THREE.Vector3(...p1);
-      const v2 = new THREE.Vector3(...p2);
-      const v3 = new THREE.Vector3(...p3);
+      return <Line points={linePoints} color={color} lineWidth={15} />;
+      // // Three points → Create convex geometry
+      // const [p1, p2, p3] = points;
 
-      // Calculate midpoints of edges
-      const midpoint12 = new THREE.Vector3()
-        .addVectors(v1, v2)
-        .multiplyScalar(0.5);
-      const midpoint23 = new THREE.Vector3()
-        .addVectors(v2, v3)
-        .multiplyScalar(0.5);
-      const midpoint31 = new THREE.Vector3()
-        .addVectors(v3, v1)
-        .multiplyScalar(0.5);
+      // // Convert array to THREE.Vector3
+      // const v1 = new THREE.Vector3(...p1);
+      // const v2 = new THREE.Vector3(...p2);
+      // const v3 = new THREE.Vector3(...p3);
 
-      // Add an additional point inside the triangle (centroid)
-      const centroid = new THREE.Vector3()
-        .addVectors(v1, v2)
-        .add(v3)
-        .multiplyScalar(1 / 3);
+      // // Calculate midpoints of edges
+      // const midpoint12 = new THREE.Vector3()
+      //   .addVectors(v1, v2)
+      //   .multiplyScalar(0.5);
+      // const midpoint23 = new THREE.Vector3()
+      //   .addVectors(v2, v3)
+      //   .multiplyScalar(0.5);
+      // const midpoint31 = new THREE.Vector3()
+      //   .addVectors(v3, v1)
+      //   .multiplyScalar(0.5);
 
-      // Combine original points, midpoints, and centroid
-      const allPoints = [
-        v1,
-        v2,
-        v3,
-        midpoint12,
-        midpoint23,
-        midpoint31,
-        centroid,
-      ];
+      // // Add an additional point inside the triangle (centroid)
+      // const centroid = new THREE.Vector3()
+      //   .addVectors(v1, v2)
+      //   .add(v3)
+      //   .multiplyScalar(1 / 3);
 
-      // Create ConvexGeometry
-      const geometry = new ConvexGeometry(allPoints);
+      // // Combine original points, midpoints, and centroid
+      // const allPoints = [
+      //   v1,
+      //   v2,
+      //   v3,
+      //   midpoint12,
+      //   midpoint23,
+      //   midpoint31,
+      //   centroid,
+      // ];
 
-      return (
-        <mesh geometry={geometry}>
-          <meshBasicMaterial color={color} side={THREE.DoubleSide} />
-        </mesh>
-      );
+      // // Create ConvexGeometry
+      // const geometry = new ConvexGeometry(allPoints);
+
+      // return (
+      //   <mesh geometry={geometry}>
+      //     <meshBasicMaterial color={color} side={THREE.DoubleSide} />
+      //   </mesh>
+      // );
     }
   }
 };

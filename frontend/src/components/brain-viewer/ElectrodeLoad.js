@@ -205,8 +205,7 @@ export const ElectrodeLoad = ({
       // console.log("patches")
       electrodeData.forEach((electrode, index) => {
         meshRef.current.setColorAt(index, new Color("#FFFFFF"));
-        object.scale.set(0.75, 0.75, 0.75);
-        object.scale.set(1, 1, 1);
+        object.scale.set(0.6, 0.6, 0.6);
 
         object.position.set(
           electrode.position[0],

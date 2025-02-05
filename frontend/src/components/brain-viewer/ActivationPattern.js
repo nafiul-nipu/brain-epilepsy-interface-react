@@ -38,7 +38,7 @@ const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
       // Single point → Draw sphere
       return (
         <mesh position={points[0]}>
-          <sphereGeometry args={[3, 32, 32]} />
+          <sphereGeometry args={[1.6, 32, 32]} />
           <meshBasicMaterial color={color} />
         </mesh>
       );

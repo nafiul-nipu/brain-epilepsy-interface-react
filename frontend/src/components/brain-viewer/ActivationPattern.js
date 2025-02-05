@@ -3,8 +3,8 @@ import * as d3 from "d3";
 import * as THREE from "three";
 import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
 
-const twoColors = ["#ffff99", "#e41a1c"];
-const threeColors = ["#ffff99", "#984ea3", "#e41a1c"];
+const twoColors = ["#e41a1c", "#ffff99", ];
+const threeColors = ["#e41a1c", "#ffff99", "#984ea3" ];
 const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
   const colorScale = d3
     .scaleOrdinal()
@@ -32,7 +32,7 @@ const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
   } else if (type === "line") {
     const linePoints = points.map(([x, y, z]) => new THREE.Vector3(x, y, z));
 
-    return <Line points={linePoints} color={color} lineWidth={15} />;
+    return <Line points={linePoints} color={color} lineWidth={5} />;
   } else if (type === "other") {
     if (points.length === 1) {
       // Single point → Draw sphere

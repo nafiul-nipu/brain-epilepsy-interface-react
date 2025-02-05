@@ -167,9 +167,7 @@ export const ElectrodeLoad = ({
       });
     } else if (
       visualPanel === "Patches" ||
-      visualPanel === "Propagation" ||
-      visualPanel === "Pattern" ||
-      visualPanel === "Pattern-Sample"
+      visualPanel === "Propagation"
     ) {
       // console.log(electrodeData)
       console.log("i am changing");
@@ -190,6 +188,24 @@ export const ElectrodeLoad = ({
             new Color(colorslist[electrode.label])
           );
         }
+        object.scale.set(1, 1, 1);
+
+        object.position.set(
+          electrode.position[0],
+          electrode.position[1],
+          electrode.position[2]
+        );
+        object.updateMatrix();
+        meshRef.current.setMatrixAt(index, object.matrix);
+      });
+    } else if (visualPanel === "Pattern" ||
+      visualPanel === "Pattern-Sample"
+    ) {
+       // console.log(uniqueRegions);
+      // console.log("patches")
+      electrodeData.forEach((electrode, index) => {
+        meshRef.current.setColorAt(index, new Color("#FFFFFF"));
+        object.scale.set(0.75, 0.75, 0.75);
         object.scale.set(1, 1, 1);
 
         object.position.set(

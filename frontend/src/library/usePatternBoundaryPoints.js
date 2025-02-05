@@ -6,7 +6,7 @@ export const usePatternBoundaryPoints = ({ patientID }) => {
 
   useEffect(() => {
     if (patientID) {
-      const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/refs/heads/master/frontend/src/data/pattern_boundary_points/${patientID}_boundary_points_quantiles.json`;
+      const url = `https://raw.githubusercontent.com/nafiul-nipu/brain-epilepsy-interface-react/refs/heads/master/frontend/src/data/pattern_boundary_points/${patientID}_boundary_points_all_samples.json`;
 
       json(url)
         .then((jData) => {

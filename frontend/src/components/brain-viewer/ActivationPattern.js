@@ -3,8 +3,8 @@ import * as d3 from "d3";
 import * as THREE from "three";
 import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
 
-const twoColors = ["#e41a1c", "#ffff99", ];
-const threeColors = ["#e41a1c", "#ffff99", "#984ea3" ];
+const twoColors = ["#ff9999", "#e41a1c", "#ffff99"];
+const threeColors = ["#ff9999", "#e41a1c", "#ffff99", "#984ea3"];
 const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
   const colorScale = d3
     .scaleOrdinal()
@@ -55,50 +55,6 @@ const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
       const linePoints = points.map(([x, y, z]) => new THREE.Vector3(x, y, z));
 
       return <Line points={linePoints} color={color} lineWidth={15} />;
-      // // Three points → Create convex geometry
-      // const [p1, p2, p3] = points;
-
-      // // Convert array to THREE.Vector3
-      // const v1 = new THREE.Vector3(...p1);
-      // const v2 = new THREE.Vector3(...p2);
-      // const v3 = new THREE.Vector3(...p3);
-
-      // // Calculate midpoints of edges
-      // const midpoint12 = new THREE.Vector3()
-      //   .addVectors(v1, v2)
-      //   .multiplyScalar(0.5);
-      // const midpoint23 = new THREE.Vector3()
-      //   .addVectors(v2, v3)
-      //   .multiplyScalar(0.5);
-      // const midpoint31 = new THREE.Vector3()
-      //   .addVectors(v3, v1)
-      //   .multiplyScalar(0.5);
-
-      // // Add an additional point inside the triangle (centroid)
-      // const centroid = new THREE.Vector3()
-      //   .addVectors(v1, v2)
-      //   .add(v3)
-      //   .multiplyScalar(1 / 3);
-
-      // // Combine original points, midpoints, and centroid
-      // const allPoints = [
-      //   v1,
-      //   v2,
-      //   v3,
-      //   midpoint12,
-      //   midpoint23,
-      //   midpoint31,
-      //   centroid,
-      // ];
-
-      // // Create ConvexGeometry
-      // const geometry = new ConvexGeometry(allPoints);
-
-      // return (
-      //   <mesh geometry={geometry}>
-      //     <meshBasicMaterial color={color} side={THREE.DoubleSide} />
-      //   </mesh>
-      // );
     }
   }
 };

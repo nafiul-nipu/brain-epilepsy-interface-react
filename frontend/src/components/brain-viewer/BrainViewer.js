@@ -323,7 +323,8 @@ export const BrainViewer = ({
           ) : visualPanel === "Pattern-Sample" ? (
             <a id="titleBrain1" onClick={panelVisible}>
               <ControlOutlined />{" "}
-              {`${patientInformation.id}: Activation Pattern`} <DownOutlined />
+              {`${patientInformation.id}: Activation Pattern Conservation`}{" "}
+              <DownOutlined />
             </a>
           ) : visualPanel === "Patches" ? (
             <a id="titleBrain1" onClick={panelVisible}>
@@ -333,7 +334,8 @@ export const BrainViewer = ({
           ) : visualPanel === "Pattern" ? (
             <a id="titleBrain1" onClick={panelVisible}>
               <ControlOutlined />{" "}
-              {`${patientInformation.id}: Activation Pattern`} <DownOutlined />
+              {`${patientInformation.id}: Activation Pattern Conservation`}{" "}
+              <DownOutlined />
             </a>
           ) : visualPanel === "Frequency" ? (
             <a id="titleBrain1" onClick={panelVisible}>
@@ -348,7 +350,8 @@ export const BrainViewer = ({
             </a>
           ) : visualPanel === "Patch-Com-Net" ? (
             <a id="titleBrain1" onClick={panelVisible}>
-              <ControlOutlined /> {`${patientInformation.id}: Patch Network`}{" "}
+              <ControlOutlined />{" "}
+              {`${patientInformation.id}: Activation Pattern Conservation`}{" "}
               <DownOutlined />
             </a>
           ) : (
@@ -400,7 +403,7 @@ export const BrainViewer = ({
         </Card>
       </div>
       <Col md="12" style={{ height: height, width: width, padding: 0 }}>
-        {visualPanel === "Community" ? (
+        {visualPanel === "Patch-Com-Net" ? (
           <div
             ref={containerRef}
             style={{
@@ -410,612 +413,186 @@ export const BrainViewer = ({
               backgroundColor: "#33393E",
             }}
           >
-            {community.map((item, index) => (
+            {[0, 1, 2].map((item, index) => (
               <div
                 key={index}
                 ref={views[index]}
                 style={{
                   height: height,
-                  width: (width - 15) / community.length,
+                  width: (width - 15) / 3,
                   display: "inline-block",
                   padding: "2px",
                   margin: "2px",
-                  // border: "0.5px solid grey",
-                  // backgroundColor: "yellowgreen"
                 }}
               ></div>
             ))}
             <Canvas eventSource={containerRef} className="canvas">
-              {community.map((item, index) => (
-                <View index={index} key={index} track={views[index]}>
-                  <CustomAxesHelper />
-                  <PerspectiveCamera
-                    makeDefault
-                    position={[-300, -10, 0]}
-                    up={[0, 0, 1]}
-                    aspect={width / height}
-                    near={1}
-                    far={2000}
-                    fov={40}
-                  />
-                  <ambientLight intensity={0.5} />
-                  {/* <directionalLight
-                                                castShadow
-                                                position={[0, 5, 5]}
-                                                intensity={1}
-                                                shadow-mapSize-width={2048}
-                                                shadow-mapSize-height={2048}
-                                                shadow-camera-near={0.5}
-                                                shadow-camera-far={500}
-                                                shadow-camera-left={-5}
-                                                shadow-camera-right={5}
-                                                shadow-camera-top={5}
-                                                shadow-camera-bottom={-5}
-                                            /> */}
-                  <directionalLight
-                    castShadow
-                    position={[-15, 0, -250]}
-                    intensity={0.8}
-                    shadow-mapSize-width={2048}
-                    shadow-mapSize-height={2048}
-                    shadow-camera-near={0.5}
-                    shadow-camera-far={500}
-                    shadow-camera-left={-5}
-                    shadow-camera-right={5}
-                    shadow-camera-top={5}
-                    shadow-camera-bottom={-5}
-                  />
-                  <directionalLight
-                    castShadow
-                    position={[-15, 0, 250]}
-                    intensity={0.8}
-                    shadow-mapSize-width={2048}
-                    shadow-mapSize-height={2048}
-                    shadow-camera-near={0.5}
-                    shadow-camera-far={500}
-                    shadow-camera-left={-5}
-                    shadow-camera-right={5}
-                    shadow-camera-top={5}
-                    shadow-camera-bottom={-5}
-                  />
-                  <BrainLesionLoad
-                    patientInformation={patientInformation}
-                    lesionArray={dataRegisty[patientInformation.id].lesionArray}
-                    brainPartition={
-                      dataRegisty[patientInformation.id].brainPartition
-                    }
-                    leftBrainOpacity={leftBrainOpacity}
-                    rightBrainOpacity={rightBrainOpacity}
-                  />
-                  <ElectrodeLoad
-                    electrodeData={electrodeData}
-                    sampleData={sample}
-                    community={item}
-                    bbox={dataRegisty[patientInformation.id].bbox}
-                    eegInBrain={eegInBrain}
-                    timeRange={time}
-                    eventData={events}
-                    allnetwork={allnetworks}
-                    visualPanel={visualPanel}
-                    buttonValue={buttonValue}
-                    sliderObj={sliderObj}
-                    eegList={eegList}
-                    sampleDomain={sampleDomain}
-                  />
-                  <NetworkView
-                    electrodeData={electrodeData}
-                    networkData={allnetworks[`sample${index + 1}`]}
-                    topPercent={topPercent}
-                    bbox={dataRegisty[patientInformation.id].bbox}
-                    selectedRoi={selectedRoi}
-                    eegInBrain={eegInBrain}
-                    propagatoinButtonValue={propagatoinButtonValue}
-                    setPropagationSlider={setPropagationSlider}
-                    visualPanel={visualPanel}
-                    endTime={dataRegisty[patientInformation.id].time}
-                  />
-                  <OrbitControls
-                    ref={(ref) => attachRef(index, ref)}
-                    enablePan={true}
-                  />
-                </View>
-              ))}
-              {/* <Stats /> */}
-            </Canvas>
-          </div>
-        ) : visualPanel === "Patch-Com-Net" ? (
-          <div
-            ref={containerRef}
-            style={{
-              height: height,
-              width: width,
-              overflow: "hidden",
-              backgroundColor: "#33393E",
-            }}
-          >
-            {Object.keys(allnetworks).map((item, index) => (
-              <div
-                key={index}
-                ref={views[index]}
-                style={{
-                  height: height,
-                  width: (width - 15) / community.length,
-                  display: "inline-block",
-                  padding: "2px",
-                  margin: "2px",
-                  // border: "0.5px solid grey",
-                  // backgroundColor: "yellowgreen"
-                }}
-              ></div>
-            ))}
-            <Canvas eventSource={containerRef} className="canvas">
-              {Object.keys(allnetworks).map((item, index) => (
-                <View index={index} key={index} track={views[index]}>
-                  <CustomAxesHelper />
-                  <PerspectiveCamera
-                    makeDefault
-                    position={[-300, -10, 0]}
-                    up={[0, 0, 1]}
-                    aspect={width / height}
-                    near={1}
-                    far={2000}
-                    fov={40}
-                  />
-                  <ambientLight intensity={0.5} />
-                  {/* <directionalLight
-                                                    castShadow
-                                                    position={[0, 5, 5]}
-                                                    intensity={1}
-                                                    shadow-mapSize-width={2048}
-                                                    shadow-mapSize-height={2048}
-                                                    shadow-camera-near={0.5}
-                                                    shadow-camera-far={500}
-                                                    shadow-camera-left={-5}
-                                                    shadow-camera-right={5}
-                                                    shadow-camera-top={5}
-                                                    shadow-camera-bottom={-5}
-                                                /> */}
-                  <directionalLight
-                    castShadow
-                    position={[-15, 0, -250]}
-                    intensity={0.8}
-                    shadow-mapSize-width={2048}
-                    shadow-mapSize-height={2048}
-                    shadow-camera-near={0.5}
-                    shadow-camera-far={500}
-                    shadow-camera-left={-5}
-                    shadow-camera-right={5}
-                    shadow-camera-top={5}
-                    shadow-camera-bottom={-5}
-                  />
-                  <directionalLight
-                    castShadow
-                    position={[-15, 0, 250]}
-                    intensity={0.8}
-                    shadow-mapSize-width={2048}
-                    shadow-mapSize-height={2048}
-                    shadow-camera-near={0.5}
-                    shadow-camera-far={500}
-                    shadow-camera-left={-5}
-                    shadow-camera-right={5}
-                    shadow-camera-top={5}
-                    shadow-camera-bottom={-5}
-                  />
-                  <BrainLesionLoad
-                    patientInformation={patientInformation}
-                    lesionArray={dataRegisty[patientInformation.id].lesionArray}
-                    brainPartition={
-                      dataRegisty[patientInformation.id].brainPartition
-                    }
-                    leftBrainOpacity={leftBrainOpacity}
-                    rightBrainOpacity={rightBrainOpacity}
-                  />
-                  <ElectrodeLoad
-                    electrodeData={electrodeData}
-                    sampleData={sample}
-                    community={community}
-                    bbox={dataRegisty[patientInformation.id].bbox}
-                    eegInBrain={eegInBrain}
-                    timeRange={time}
-                    eventData={events}
-                    allnetwork={allnetworks[item]}
-                    visualPanel={visualPanel}
-                    buttonValue={buttonValue}
-                    sliderObj={sliderObj}
-                    eegList={eegList}
-                    sampleDomain={sampleDomain}
-                  />
+              {["sample1", "sample2", "pattern"].map((item, index) =>
+                index !== 2 ? (
+                  <View index={index} key={index} track={views[index]}>
+                    <CustomAxesHelper />
+                    <PerspectiveCamera
+                      makeDefault
+                      position={[-300, -10, 0]}
+                      up={[0, 0, 1]}
+                      aspect={width / height}
+                      near={1}
+                      far={2000}
+                      fov={40}
+                    />
+                    <ambientLight intensity={0.5} />
+                    <directionalLight
+                      castShadow
+                      position={[-15, 0, -250]}
+                      intensity={0.8}
+                      shadow-mapSize-width={2048}
+                      shadow-mapSize-height={2048}
+                      shadow-camera-near={0.5}
+                      shadow-camera-far={500}
+                      shadow-camera-left={-5}
+                      shadow-camera-right={5}
+                      shadow-camera-top={5}
+                      shadow-camera-bottom={-5}
+                    />
+                    <directionalLight
+                      castShadow
+                      position={[-15, 0, 250]}
+                      intensity={0.8}
+                      shadow-mapSize-width={2048}
+                      shadow-mapSize-height={2048}
+                      shadow-camera-near={0.5}
+                      shadow-camera-far={500}
+                      shadow-camera-left={-5}
+                      shadow-camera-right={5}
+                      shadow-camera-top={5}
+                      shadow-camera-bottom={-5}
+                    />
+                    <BrainLesionLoad
+                      patientInformation={patientInformation}
+                      lesionArray={
+                        dataRegisty[patientInformation.id].lesionArray
+                      }
+                      brainPartition={
+                        dataRegisty[patientInformation.id].brainPartition
+                      }
+                      leftBrainOpacity={leftBrainOpacity}
+                      rightBrainOpacity={rightBrainOpacity}
+                    />
+                    <ElectrodeLoad
+                      electrodeData={electrodeData}
+                      sampleData={sample}
+                      community={community}
+                      bbox={dataRegisty[patientInformation.id].bbox}
+                      eegInBrain={eegInBrain}
+                      timeRange={time}
+                      eventData={events}
+                      allnetwork={allnetworks[item]}
+                      visualPanel={visualPanel}
+                      buttonValue={buttonValue}
+                      sliderObj={sliderObj}
+                      eegList={eegList}
+                      sampleDomain={sampleDomain}
+                    />
 
-                  <NetworkView
-                    electrodeData={electrodeData}
-                    networkData={allnetworks[item]}
-                    topPercent={topPercent}
-                    bbox={dataRegisty[patientInformation.id].bbox}
-                    selectedRoi={selectedRoi}
-                    eegInBrain={eegInBrain}
-                    propagatoinButtonValue={propagatoinButtonValue}
-                    setPropagationSlider={setPropagationSlider}
-                    visualPanel={visualPanel}
-                  />
-                  <OrbitControls
-                    ref={(ref) => attachRef(index, ref)}
-                    enablePan={true}
-                  />
-                </View>
-              ))}
-              {/* <Stats /> */}
-            </Canvas>
-          </div>
-        ) : visualPanel === "Region-Com-Net" ? (
-          <div
-            ref={containerRef}
-            style={{
-              height: height,
-              width: width,
-              overflow: "hidden",
-              backgroundColor: "#33393E",
-            }}
-          >
-            {Object.keys(allnetworks).map((item, index) => (
-              <div
-                key={index}
-                ref={views[index]}
-                style={{
-                  height: height,
-                  width: (width - 15) / community.length,
-                  display: "inline-block",
-                  padding: "2px",
-                  margin: "2px",
-                  // border: "0.5px solid grey",
-                  // backgroundColor: "yellowgreen"
-                }}
-              ></div>
-            ))}
-            <Canvas eventSource={containerRef} className="canvas">
-              {Object.keys(allnetworks).map((item, index) => (
-                <View index={index} key={index} track={views[index]}>
-                  <CustomAxesHelper />
-                  <PerspectiveCamera
-                    makeDefault
-                    position={[-300, -10, 0]}
-                    up={[0, 0, 1]}
-                    aspect={width / height}
-                    near={1}
-                    far={2000}
-                    fov={40}
-                  />
-                  <ambientLight intensity={0.5} />
-                  {/* <directionalLight
-                                                        castShadow
-                                                        position={[0, 5, 5]}
-                                                        intensity={1}
-                                                        shadow-mapSize-width={2048}
-                                                        shadow-mapSize-height={2048}
-                                                        shadow-camera-near={0.5}
-                                                        shadow-camera-far={500}
-                                                        shadow-camera-left={-5}
-                                                        shadow-camera-right={5}
-                                                        shadow-camera-top={5}
-                                                        shadow-camera-bottom={-5}
-                                                    /> */}
-                  <directionalLight
-                    castShadow
-                    position={[-15, 0, -250]}
-                    intensity={0.8}
-                    shadow-mapSize-width={2048}
-                    shadow-mapSize-height={2048}
-                    shadow-camera-near={0.5}
-                    shadow-camera-far={500}
-                    shadow-camera-left={-5}
-                    shadow-camera-right={5}
-                    shadow-camera-top={5}
-                    shadow-camera-bottom={-5}
-                  />
-                  <directionalLight
-                    castShadow
-                    position={[-15, 0, 250]}
-                    intensity={0.8}
-                    shadow-mapSize-width={2048}
-                    shadow-mapSize-height={2048}
-                    shadow-camera-near={0.5}
-                    shadow-camera-far={500}
-                    shadow-camera-left={-5}
-                    shadow-camera-right={5}
-                    shadow-camera-top={5}
-                    shadow-camera-bottom={-5}
-                  />
-                  <BrainLesionLoad
-                    patientInformation={patientInformation}
-                    lesionArray={dataRegisty[patientInformation.id].lesionArray}
-                    brainPartition={
-                      dataRegisty[patientInformation.id].brainPartition
-                    }
-                    leftBrainOpacity={leftBrainOpacity}
-                    rightBrainOpacity={rightBrainOpacity}
-                  />
-                  <ElectrodeLoad
-                    electrodeData={electrodeData}
-                    sampleData={sample}
-                    community={community}
-                    bbox={dataRegisty[patientInformation.id].bbox}
-                    eegInBrain={eegInBrain}
-                    timeRange={time}
-                    eventData={events}
-                    allnetwork={allnetworks[item]}
-                    visualPanel={visualPanel}
-                    buttonValue={buttonValue}
-                    sliderObj={sliderObj}
-                    eegList={eegList}
-                    sampleDomain={sampleDomain}
-                  />
+                    <NetworkView
+                      electrodeData={electrodeData}
+                      networkData={allnetworks[item]}
+                      topPercent={topPercent}
+                      bbox={dataRegisty[patientInformation.id].bbox}
+                      selectedRoi={selectedRoi}
+                      eegInBrain={eegInBrain}
+                      propagatoinButtonValue={propagatoinButtonValue}
+                      setPropagationSlider={setPropagationSlider}
+                      visualPanel={visualPanel}
+                    />
+                    <OrbitControls
+                      ref={(ref) => attachRef(index, ref)}
+                      enablePan={true}
+                    />
+                  </View>
+                ) : (
+                  <View index={index} key={index} track={views[index]}>
+                    <CustomAxesHelper />
+                    <PerspectiveCamera
+                      makeDefault
+                      position={[-300, -10, 0]}
+                      up={[0, 0, 1]}
+                      aspect={width / height}
+                      near={1}
+                      far={2000}
+                      fov={40}
+                    />
+                    <ambientLight intensity={0.5} />
+                    <directionalLight
+                      castShadow
+                      position={[-15, 0, -250]}
+                      intensity={0.8}
+                      shadow-mapSize-width={2048}
+                      shadow-mapSize-height={2048}
+                      shadow-camera-near={0.5}
+                      shadow-camera-far={500}
+                      shadow-camera-left={-5}
+                      shadow-camera-right={5}
+                      shadow-camera-top={5}
+                      shadow-camera-bottom={-5}
+                    />
+                    <directionalLight
+                      castShadow
+                      position={[-15, 0, 250]}
+                      intensity={0.8}
+                      shadow-mapSize-width={2048}
+                      shadow-mapSize-height={2048}
+                      shadow-camera-near={0.5}
+                      shadow-camera-far={500}
+                      shadow-camera-left={-5}
+                      shadow-camera-right={5}
+                      shadow-camera-top={5}
+                      shadow-camera-bottom={-5}
+                    />
+                    <BrainLesionLoad
+                      patientInformation={patientInformation}
+                      lesionArray={
+                        dataRegisty[patientInformation.id].lesionArray
+                      }
+                      brainPartition={
+                        dataRegisty[patientInformation.id].brainPartition
+                      }
+                      leftBrainOpacity={leftBrainOpacity}
+                      rightBrainOpacity={rightBrainOpacity}
+                    />
+                    <ElectrodeLoad
+                      electrodeData={electrodeData}
+                      sampleData={sample}
+                      community={community}
+                      bbox={dataRegisty[patientInformation.id].bbox}
+                      eegInBrain={eegInBrain}
+                      timeRange={time}
+                      eventData={events}
+                      allnetwork={allnetworks}
+                      visualPanel={"Pattern"}
+                      buttonValue={buttonValue}
+                      sliderObj={sliderObj}
+                      eegList={eegList}
+                      sampleDomain={sampleDomain}
+                      patchRegionToggle={patchRegionToggle}
+                    />
 
-                  <NetworkView
-                    electrodeData={electrodeData}
-                    networkData={allnetworks[item]}
-                    topPercent={topPercent}
-                    bbox={dataRegisty[patientInformation.id].bbox}
-                    selectedRoi={selectedRoi}
-                    eegInBrain={eegInBrain}
-                    propagatoinButtonValue={propagatoinButtonValue}
-                    setPropagationSlider={setPropagationSlider}
-                    visualPanel={visualPanel}
-                  />
-                  <OrbitControls
-                    ref={(ref) => attachRef(index, ref)}
-                    enablePan={true}
-                  />
-                </View>
-              ))}
+                    <ActivationPattern
+                      patternData={patternBoundaries[topPercent]}
+                      bbox={dataRegisty[patientInformation.id].bbox}
+                      patternType="Pattern"
+                    />
+                    <OrbitControls
+                      ref={(ref) => attachRef(index, ref)}
+                      enablePan={true}
+                    />
+                  </View>
+                )
+              )}
               {/* <Stats /> */}
             </Canvas>
           </div>
-        ) : visualPanel === "Pattern" ? (
-          <Canvas style={{ background: "#33393E" }}>
-            <Suspense fallback={null}>
-              <Hud renderPriority={1}>
-                <CustomAxesHelper />
-                <PerspectiveCamera
-                  makeDefault
-                  position={[-300, -10, 0]}
-                  up={[0, 0, 1]}
-                  aspect={width / height}
-                  near={1}
-                  far={2000}
-                  fov={40}
-                />
-                <Lighting />
-                <BrainLesionLoad
-                  patientInformation={patientInformation}
-                  lesionArray={dataRegisty[patientInformation.id].lesionArray}
-                  brainPartition={
-                    dataRegisty[patientInformation.id].brainPartition
-                  }
-                  leftBrainOpacity={leftBrainOpacity}
-                  rightBrainOpacity={rightBrainOpacity}
-                />
-                <OrbitControls ref={brainOrbitControlsRef} enablePan={true} />
-              </Hud>
-              <Hud renderPriority={2}>
-                <PerspectiveCamera
-                  makeDefault
-                  position={[-300, -10, 0]}
-                  up={[0, 0, 1]}
-                  aspect={width / height}
-                  near={1}
-                  far={2000}
-                  fov={40}
-                />
-                <Lighting />
-                <ElectrodeLoad
-                  electrodeData={electrodeData}
-                  sampleData={sample}
-                  community={community}
-                  bbox={dataRegisty[patientInformation.id].bbox}
-                  eegInBrain={eegInBrain}
-                  timeRange={time}
-                  eventData={events}
-                  allnetwork={allnetworks}
-                  visualPanel={visualPanel}
-                  buttonValue={buttonValue}
-                  sliderObj={sliderObj}
-                  eegList={eegList}
-                  sampleDomain={sampleDomain}
-                  patchRegionToggle={patchRegionToggle}
-                />
-                <ActivationPattern
-                  patternData={patternBoundaries[topPercent]}
-                  bbox={dataRegisty[patientInformation.id].bbox}
-                  patternType="Pattern"
-                />
-                <OrbitControls
-                  ref={electrodeOrbitControlsRef}
-                  enablePan={true}
-                />
-              </Hud>
-            </Suspense>
-            {/* <Stats /> */}
-          </Canvas>
-        ) : visualPanel === "Pattern-Sample" ? (
-          <div
-            ref={containerRef}
-            style={{
-              height: height,
-              width: width,
-              overflow: "hidden",
-              backgroundColor: "#33393E",
-            }}
-          >
-            {Object.keys(patternBoundariesPerSample).map((item, index) => (
-              <div
-                key={index}
-                ref={views[index]}
-                style={{
-                  height: height,
-                  width: (width - 15) / community.length,
-                  display: "inline-block",
-                  padding: "2px",
-                  margin: "2px",
-                  // border: "0.5px solid grey",
-                  // backgroundColor: "yellowgreen"
-                }}
-              ></div>
-            ))}
-            <Canvas eventSource={containerRef} className="canvas">
-              {Object.keys(patternBoundariesPerSample).map((item, index) => (
-                <View index={index} key={index} track={views[index]}>
-                  <CustomAxesHelper />
-                  <PerspectiveCamera
-                    makeDefault
-                    position={[-300, -10, 0]}
-                    up={[0, 0, 1]}
-                    aspect={width / height}
-                    near={1}
-                    far={2000}
-                    fov={40}
-                  />
-                  <ambientLight intensity={0.5} />
-                  <directionalLight
-                    castShadow
-                    position={[-15, 0, -250]}
-                    intensity={0.8}
-                    shadow-mapSize-width={2048}
-                    shadow-mapSize-height={2048}
-                    shadow-camera-near={0.5}
-                    shadow-camera-far={500}
-                    shadow-camera-left={-5}
-                    shadow-camera-right={5}
-                    shadow-camera-top={5}
-                    shadow-camera-bottom={-5}
-                  />
-                  <directionalLight
-                    castShadow
-                    position={[-15, 0, 250]}
-                    intensity={0.8}
-                    shadow-mapSize-width={2048}
-                    shadow-mapSize-height={2048}
-                    shadow-camera-near={0.5}
-                    shadow-camera-far={500}
-                    shadow-camera-left={-5}
-                    shadow-camera-right={5}
-                    shadow-camera-top={5}
-                    shadow-camera-bottom={-5}
-                  />
-                  <BrainLesionLoad
-                    patientInformation={patientInformation}
-                    lesionArray={dataRegisty[patientInformation.id].lesionArray}
-                    brainPartition={
-                      dataRegisty[patientInformation.id].brainPartition
-                    }
-                    leftBrainOpacity={leftBrainOpacity}
-                    rightBrainOpacity={rightBrainOpacity}
-                  />
-                  <ElectrodeLoad
-                    electrodeData={electrodeData}
-                    sampleData={sample}
-                    community={community}
-                    bbox={dataRegisty[patientInformation.id].bbox}
-                    eegInBrain={eegInBrain}
-                    timeRange={time}
-                    eventData={events}
-                    allnetwork={allnetworks}
-                    visualPanel={visualPanel}
-                    buttonValue={buttonValue}
-                    sliderObj={sliderObj}
-                    eegList={eegList}
-                    sampleDomain={sampleDomain}
-                    patchRegionToggle={patchRegionToggle}
-                  />
-
-                  <ActivationPattern
-                    patternData={patternBoundariesPerSample[item][topPercent]}
-                    bbox={dataRegisty[patientInformation.id].bbox}
-                    patternType="Pattern-sample"
-                  />
-                  <OrbitControls
-                    ref={(ref) => attachRef(index, ref)}
-                    enablePan={true}
-                  />
-                </View>
-              ))}
-              {/* <Stats /> */}
-            </Canvas>
-          </div>
-        ) : (
-          <Canvas style={{ background: "#33393E" }}>
-            <Suspense fallback={null}>
-              <Hud renderPriority={1}>
-                <CustomAxesHelper />
-                <PerspectiveCamera
-                  makeDefault
-                  position={[-300, -10, 0]}
-                  up={[0, 0, 1]}
-                  aspect={width / height}
-                  near={1}
-                  far={2000}
-                  fov={40}
-                />
-                <Lighting />
-                <BrainLesionLoad
-                  patientInformation={patientInformation}
-                  lesionArray={dataRegisty[patientInformation.id].lesionArray}
-                  brainPartition={
-                    dataRegisty[patientInformation.id].brainPartition
-                  }
-                  leftBrainOpacity={leftBrainOpacity}
-                  rightBrainOpacity={rightBrainOpacity}
-                />
-                <OrbitControls ref={brainOrbitControlsRef} enablePan={true} />
-              </Hud>
-              <Hud renderPriority={2}>
-                <PerspectiveCamera
-                  makeDefault
-                  position={[-300, -10, 0]}
-                  up={[0, 0, 1]}
-                  aspect={width / height}
-                  near={1}
-                  far={2000}
-                  fov={40}
-                />
-                <Lighting />
-                <ElectrodeLoad
-                  electrodeData={electrodeData}
-                  sampleData={sample}
-                  community={community}
-                  bbox={dataRegisty[patientInformation.id].bbox}
-                  eegInBrain={eegInBrain}
-                  timeRange={time}
-                  eventData={events}
-                  allnetwork={allnetworks}
-                  visualPanel={visualPanel}
-                  buttonValue={buttonValue}
-                  sliderObj={sliderObj}
-                  eegList={eegList}
-                  sampleDomain={sampleDomain}
-                  patchRegionToggle={patchRegionToggle}
-                />
-                {visualPanel === "Propagation" ? (
-                  <NetworkView
-                    electrodeData={electrodeData}
-                    networkData={allnetworks[patientInformation.sample]}
-                    topPercent={topPercent}
-                    bbox={dataRegisty[patientInformation.id].bbox}
-                    selectedRoi={selectedRoi}
-                    eegInBrain={eegInBrain}
-                    network_per_minute={network_per_minute}
-                    visualPanel={visualPanel}
-                    propagatoinButtonValue={propagatoinButtonValue}
-                    setPropagationSlider={setPropagationSlider}
-                  />
-                ) : null}
-                <OrbitControls
-                  ref={electrodeOrbitControlsRef}
-                  enablePan={true}
-                />
-              </Hud>
-            </Suspense>
-            {/* <Stats /> */}
-          </Canvas>
-        )}
+        ) : null}
       </Col>
     </>
   );

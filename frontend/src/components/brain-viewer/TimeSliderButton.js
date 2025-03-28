@@ -179,7 +179,7 @@ export const TimeSliderButton = ({
             visualPanel === "Region-Com-Net" ||
             visualPanel === "Pattern-Sample" ? (
             totalSamples.map((sample, index) => (
-              <Col key={index} md={12 / totalSamples.length}>
+              <Col key={index} md={12 / 3}>
                 <div style={{ marginLeft: 10, fontSize: "0.9em" }}>
                   Sample: {sample + 1}
                 </div>

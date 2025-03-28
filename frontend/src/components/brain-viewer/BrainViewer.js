@@ -825,6 +825,7 @@ export const BrainViewer = ({
                 <ActivationPattern
                   patternData={patternBoundaries[topPercent]}
                   bbox={dataRegisty[patientInformation.id].bbox}
+                  patternType="Pattern"
                 />
                 <OrbitControls
                   ref={electrodeOrbitControlsRef}
@@ -928,6 +929,7 @@ export const BrainViewer = ({
                   <ActivationPattern
                     patternData={patternBoundariesPerSample[item][topPercent]}
                     bbox={dataRegisty[patientInformation.id].bbox}
+                    patternType="Pattern-sample"
                   />
                   <OrbitControls
                     ref={(ref) => attachRef(index, ref)}

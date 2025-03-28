@@ -3,9 +3,17 @@ import * as d3 from "d3";
 import * as THREE from "three";
 import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
 
-const twoColors = ["#ff9999", "#e41a1c", "#ffff99"];
-const threeColors = ["#ff9999", "#e41a1c", "#ffff99", "#984ea3"];
-const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
+const twoColors = ["#ff9999", "#ffff99", "#e41a1c"];
+const threeColors = ["#ffff99", "#e41a1c", "#ffff99", "#984ea3"];
+const HullMesh = ({
+  type,
+  weight,
+  points,
+  minWeight,
+  maxWeight,
+  patternType,
+}) => {
+  // console.log(minWeight, maxWeight);
   const colorScale = d3
     .scaleOrdinal()
     .domain(
@@ -13,7 +21,7 @@ const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
         ? [minWeight, maxWeight]
         : [minWeight, (minWeight + maxWeight) / 2, maxWeight]
     )
-    .range(maxWeight === 2 ? twoColors : threeColors);
+    .range(patternType === "Pattern" ? twoColors : threeColors);
   const color = new THREE.Color(colorScale(weight));
 
   if (type === "hull") {
@@ -59,7 +67,7 @@ const HullMesh = ({ type, weight, points, minWeight, maxWeight }) => {
   }
 };
 
-export const ActivationPattern = ({ patternData, bbox }) => {
+export const ActivationPattern = ({ patternData, bbox, patternType }) => {
   // console.log(patternData);
   const weights = patternData.map((obj) => obj.weight);
   const minWeight = Math.min(...weights);
@@ -75,6 +83,7 @@ export const ActivationPattern = ({ patternData, bbox }) => {
           points={pattern.points}
           minWeight={minWeight}
           maxWeight={maxWeight}
+          patternType={patternType}
         />
       ))}
     </group>

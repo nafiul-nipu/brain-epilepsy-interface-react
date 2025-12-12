@@ -6,6 +6,8 @@
 
 #### Frontend
 
+node version v20.17.0
+
 Go to frontend and create an .env file and add
 
 ```
